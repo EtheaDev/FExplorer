@@ -62,9 +62,9 @@ Per installare manualmente FExplorer.dll seguire questi step:
 
 ## Credits
 
-Grazie a ** Rodrigo Ruz V. ** (autore di [theroadtodelphi.com] [7] Blog) per il suo ottimolavoro su [delphi-preview-handler] [8] da cui questo progetto ha usato codice e ispirazione.
+Grazie a ** Rodrigo Ruz V. ** (autore di [theroadtodelphi.com][7] Blog) per il suo ottimolavoro su [delphi-preview-handler][8] da cui questo progetto ha usato codice e ispirazione.
 
-Grazie a ** Carlo Barazzetta ** per il suo ottimo lavoro su [SvgShellExtensions] [13] da cui questo progetto ha usato molto codice e ispirazione.
+Grazie a ** Carlo Barazzetta ** per il suo ottimo lavoro su [SvgShellExtensions][13] da cui questo progetto ha usato molto codice e ispirazione.
 
 ## Licenza
 
@@ -89,6 +89,5 @@ Related links: [embarcadero.com][11] - [learndelphi.org][12]
 [10]: https://github.com/EtheaDev/FExplorer/wiki/Using-The-SVG-Text-Editor
 [11]: https://www.embarcadero.com/
 [12]: https://learndelphi.org/
-
 [13]: https://github.com/EtheaDev/SVGShellExtensions/
 
