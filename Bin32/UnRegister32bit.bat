@@ -1,0 +1,1 @@
+%systemroot%\SysWoW64\regsvr32 /u "D:\ETHEA\FExplorer\Bin32\FExplorer32.dll"
