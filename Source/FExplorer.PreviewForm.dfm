@@ -208,15 +208,6 @@ object FrmPreview: TFrmPreview
     ParentBackground = False
     TabOrder = 3
     StyleElements = []
-    object SVGIconImage: TSVGIconImage
-      Left = 0
-      Top = 40
-      Width = 531
-      Height = 149
-      AutoSize = False
-      Proportional = True
-      Align = alClient
-    end
     object panelPreview: TPanel
       Left = 0
       Top = 0
@@ -225,7 +216,7 @@ object FrmPreview: TFrmPreview
       Align = alTop
       ParentBackground = False
       ShowCaption = False
-      TabOrder = 1
+      TabOrder = 0
       object BackgroundGrayScaleLabel: TLabel
         Left = 10
         Top = 6

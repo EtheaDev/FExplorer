@@ -62,7 +62,7 @@ begin
     Show;
     Update;
     Application.HelpFile := '';
-    TStyleManager.TrySetStyle('Flat UI Light');
+    TStyleManager.TrySetStyle('Windows10 SlateGray');
   Application.CreateForm(TdmResources, dmResources);
   Application.CreateForm(TfrmMain, frmMain);
   Application.CreateForm(TTestPrintPreviewDlg, TestPrintPreviewDlg);

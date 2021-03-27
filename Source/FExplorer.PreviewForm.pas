@@ -59,7 +59,6 @@ type
     ToolButtonShowText: TToolButton;
     ToolButtonReformat: TToolButton;
     ImagePanel: TPanel;
-    SVGIconImage: TSVGIconImage;
     Splitter: TSplitter;
     panelPreview: TPanel;
     BackgroundGrayScaleLabel: TLabel;
@@ -263,7 +262,6 @@ begin
   TLogPreview.Add('TFrmEditor.LoadFromFile Init');
   FFileName := AFileName;
   SynEdit.Lines.LoadFromFile(FFileName);
-  SVGIconImage.SVGText := SynEdit.Lines.Text;
   TLogPreview.Add('TFrmEditor.LoadFromFile Done');
 end;
 
@@ -277,7 +275,6 @@ begin
   try
     LStringStream.LoadFromStream(AStream);
     SynEdit.Lines.Text := LStringStream.DataString;
-    SVGIconImage.SVGText := LStringStream.DataString;
   finally
     LStringStream.Free;
   end;
