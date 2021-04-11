@@ -49,7 +49,8 @@ uses
   SynEditOptionsDialog in 'SynEditOptionsDialog.pas' {fmEditorOptionsDialog},
   FExplorer.Settings in 'FExplorer.Settings.pas',
   FExplorer.SettingsForm in 'FExplorer.SettingsForm.pas' {SVGSettingsForm},
-  FExplorer.Registry in 'FExplorer.Registry.pas';
+  FExplorer.Registry in 'FExplorer.Registry.pas',
+  FExplorer.InvoiceToImage in 'FExplorer.InvoiceToImage.pas';
 
 {$R *.res}
 

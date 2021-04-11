@@ -41,9 +41,19 @@ uses
   Vcl.Menus, SynEditExport,
   SynExportHTML, SynExportRTF, SynEditMiscClasses,
   FExplorer.Settings, System.ImageList, SynEditCodeFolding,
-  SVGIconImageList, SVGIconImageListBase, SVGIconImage, Vcl.VirtualImageList;
+  SVGIconImageList, SVGIconImageListBase, SVGIconImage, Vcl.VirtualImageList,
+  Vcl.OleCtrls, SHDocVw, Xml.xmldom, Xml.XMLIntf, Xml.Win.msxmldom, Xml.XMLDoc;
 
 type
+  TAllegato = record
+    FileName: string;
+    FileType: string;
+    Compressione: string;
+    Data: string;
+    Button: TButton;
+    procedure DumpAndOpen;
+    procedure Clear;
+  end;
   TFrmPreview = class(TForm)
     SynEdit: TSynEdit;
     PanelTop: TPanel;
@@ -58,11 +68,9 @@ type
     SeparatorEditor: TToolButton;
     ToolButtonShowText: TToolButton;
     ToolButtonReformat: TToolButton;
-    ImagePanel: TPanel;
     Splitter: TSplitter;
-    panelPreview: TPanel;
-    BackgroundGrayScaleLabel: TLabel;
-    BackgroundTrackBar: TTrackBar;
+    WebBrowser: TWebBrowser;
+    gbAllegati: TGroupBox;
     procedure FormCreate(Sender: TObject);
     procedure ToolButtonZoomInClick(Sender: TObject);
     procedure ToolButtonZommOutClick(Sender: TObject);
@@ -78,12 +86,15 @@ type
     procedure SplitterMoved(Sender: TObject);
     procedure FormAfterMonitorDpiChanged(Sender: TObject; OldDPI,
       NewDPI: Integer);
-    procedure BackgroundTrackBarChange(Sender: TObject);
+    procedure WebBrowserDocumentComplete(ASender: TObject;
+      const pDisp: IDispatch; const URL: OleVariant);
+    procedure FormShow(Sender: TObject);
   private
-    FFontSize: Integer;
+    FEditorFontSize: Integer;
     FSimpleText: string;
     FFileName: string;
     FPreviewSettings: TPreviewSettings;
+    FAllegati: TArray<TAllegato>;
 
     class var FExtensions: TDictionary<TSynCustomHighlighterClass, TStrings>;
     class var FAParent: TWinControl;
@@ -95,6 +106,12 @@ type
     procedure SaveSettings;
     procedure SetEditorFontSize(const Value: Integer);
     procedure UpdateHighlighter;
+
+    //Visualizzatore Fattura
+    function SetOpticalZoom(Value: integer): integer;
+    procedure MostraFatturaXML;
+    procedure ParseAllegati(const AXMLDoc: IXMLDocument);
+    procedure AllegatoButtonClick(Sender: TObject);
   protected
   public
     procedure ScaleControls(const ANewPPI: Integer);
@@ -104,7 +121,7 @@ type
     class property AParent: TWinControl read FAParent write FAParent;
     procedure LoadFromFile(const AFileName: string);
     procedure LoadFromStream(const AStream: TStream);
-    property EditorFontSize: Integer read FFontSize write SetEditorFontSize;
+    property EditorFontSize: Integer read FEditorFontSize write SetEditorFontSize;
   end;
 
 
@@ -116,8 +133,10 @@ uses
 {$IFNDEF DISABLE_STYLES}
   , Vcl.Themes
 {$ENDIF}
+  , WinApi.ActiveX
   , uLogExcept
   , System.Types
+  , System.NetEncoding
   , Registry
   , uMisc
   , IOUtils
@@ -126,13 +145,22 @@ uses
   , IniFiles
   , GraphUtil
   , FExplorer.About
-  , Xml.XMLDoc
   , FExplorer.SettingsForm
   , FExplorer.Resources
   ;
 
 {$R *.dfm}
   { TFrmEditor }
+
+procedure TFrmPreview.AllegatoButtonClick(Sender: TObject);
+var
+  LButton: TButton;
+  LAllegato: TAllegato;
+begin
+  LButton := Sender as TButton;
+  LAllegato := FAllegati[LButton.Tag];
+  LAllegato.DumpAndOpen;
+end;
 
 procedure TFrmPreview.AppException(Sender: TObject; E: Exception);
 begin
@@ -141,16 +169,98 @@ begin
   TLogPreview.Add(E);
 end;
 
-procedure TFrmPreview.BackgroundTrackBarChange(Sender: TObject);
+procedure TFrmPreview.MostraFatturaXML;
 var
-  LValue: byte;
+  LXML: IXMLDocument;
+  LOutput: WideString;
+  LStream: TStringStream;
+  Stream : IStream;
+  LPersistStreamInit : IPersistStreamInit;
 begin
-  LValue := BackgroundTrackBar.Position;
-  BackgroundGrayScaleLabel.Caption := Format(
-    Background_Grayscale_Caption,
-    [LValue * 100 div 255]);
-  ImagePanel.Color := RGB(LValue, LValue, LValue);
-  FPreviewSettings.LightBackground := BackgroundTrackBar.Position;
+  try
+    //Inizializza il Documento XML dal testo caricato dentro synedit
+    LXML := LoadXMLData(SynEdit.Lines.Text);
+    //Usa il template disponibile nel datamodule
+    dmResources.AssoSoftwareTemplate.Active := True;
+    LXML.Node.TransformNode(dmResources.AssoSoftwareTemplate.DocumentElement, LOutput);
+    //Carica il contenuto HTML trasformato dentro il WebBrowser
+    LStream := TStringStream.Create(LOutput);
+    try
+      (WebBrowser.Document as IPersistStreamInit).Load(
+        TStreamAdapter.Create(LStream, soReference));
+    finally
+      LStream.Free;
+    end;
+    ParseAllegati(LXML);
+  except
+    on E: Exception do
+    begin
+      Raise
+    end;
+  end;
+end;
+
+procedure TFrmPreview.ParseAllegati(const AXMLDoc: IXMLDocument);
+var
+  LAllegati: IDOMNodeList;
+  LAllegato: TAllegato;
+  LButton: TButton;
+  LAllegatoNode: IDOMNode;
+  LAllegatoElement: IDOMElement;
+  LList: IDOMNodeList;
+  LIndex: Integer;
+  LNomeAttachment: string;
+  LFormatoAttachment: string;
+  LAlgoritmoCompressione: string;
+  LData: string;
+begin
+  LAllegati := AXMLDoc.DOMDocument.getElementsByTagName('Allegati');
+  for LAllegato in  FAllegati do
+    LAllegato.Button.Free;
+  FAllegati := [];
+  for LIndex := 0 to LAllegati.length - 1 do
+  begin
+    LAllegato.Clear;
+    LAllegatoNode := LAllegati.item[LIndex];
+    LAllegatoElement := LAllegatoNode as IDOMElement;
+    if Assigned(LAllegatoElement) then
+    begin
+      LList := LAllegatoElement.getElementsByTagName('NomeAttachment');
+      LNomeAttachment := '';
+      if (LList.length = 1) and (LList.item[0].hasChildNodes) then
+        LNomeAttachment := LList.item[0].firstChild.nodeValue;
+      LList := LAllegatoElement.getElementsByTagName('FormatoAttachment');
+      LFormatoAttachment := '';
+      if (LList.length = 1) and (LList.item[0].hasChildNodes) then
+        LFormatoAttachment := LList.item[0].firstChild.nodeValue;
+      LList := LAllegatoElement.getElementsByTagName('AlgoritmoCompressione');
+      LAlgoritmoCompressione := '';
+      if (LList.length = 1) and (LList.item[0].hasChildNodes) then
+        LAlgoritmoCompressione := LList.item[0].firstChild.nodeValue;
+      LList := LAllegatoElement.getElementsByTagName('Attachment');
+      LData := '';
+      if (LList.length = 1) and (LList.item[0].hasChildNodes) then
+        LData := LList.item[0].firstChild.nodeValue;
+
+      LAllegato.FileName := LNomeAttachment;
+      LAllegato.FileType := LFormatoAttachment;
+      LAllegato.Compressione := LAlgoritmoCompressione;
+      LAllegato.Data := LData;
+      LButton := TButton.Create(Self);
+      try
+        LButton.Caption := LNomeAttachment;
+        gbAllegati.InsertControl(LButton);
+        LButton.Align := TAlign.alTop;
+        FAllegati := FAllegati + [LAllegato];
+        LButton.Tag := Length(FAllegati) -1;
+        LButton.OnClick := AllegatoButtonClick;
+      except
+        LButton.Free;
+        raise;
+      end;
+    end;
+  end;
+  gbAllegati.Visible := Length(FAllegati) > 0;
 end;
 
 constructor TFrmPreview.Create(AOwner: TComponent);
@@ -196,8 +306,6 @@ begin
   ToolButtonAbout.Visible := True;
   ToolButtonSettings.Visible := True;
   ToolButtonReformat.Visible := PanelEditor.Visible;
-  ToolButtonZoomIn.Visible := PanelEditor.Visible;
-  ToolButtonZommOut.Visible := PanelEditor.Visible;
 end;
 
 procedure TFrmPreview.UpdateHighlighter;
@@ -223,6 +331,12 @@ begin
 {$ENDIF}
 end;
 
+procedure TFrmPreview.WebBrowserDocumentComplete(ASender: TObject;
+  const pDisp: IDispatch; const URL: OleVariant);
+begin
+  FPreviewSettings.OpticalZoom := SetOpticalZoom(FPreviewSettings.OpticalZoom);
+end;
+
 procedure TFrmPreview.FormAfterMonitorDpiChanged(Sender: TObject; OldDPI,
   NewDPI: Integer);
 begin
@@ -233,6 +347,7 @@ end;
 procedure TFrmPreview.FormCreate(Sender: TObject);
 begin
   TLogPreview.Add('TFrmEditor.FormCreate');
+  FAllegati := [];
   Application.OnException := AppException;
   FSimpleText := StatusBar.SimpleText;
   UpdateFromSettings;
@@ -257,11 +372,18 @@ begin
   UpdateGUI;
 end;
 
+procedure TFrmPreview.FormShow(Sender: TObject);
+begin
+  //Load blank doc into Browser
+  WebBrowser.Navigate('about:blank', EmptyParam, EmptyParam, EmptyParam, EmptyParam);
+end;
+
 procedure TFrmPreview.LoadFromFile(const AFileName: string);
 begin
   TLogPreview.Add('TFrmEditor.LoadFromFile Init');
   FFileName := AFileName;
   SynEdit.Lines.LoadFromFile(FFileName);
+  MostraFatturaXML;
   TLogPreview.Add('TFrmEditor.LoadFromFile Done');
 end;
 
@@ -275,6 +397,7 @@ begin
   try
     LStringStream.LoadFromStream(AStream);
     SynEdit.Lines.Text := LStringStream.DataString;
+    MostraFatturaXML;
   finally
     LStringStream.Free;
   end;
@@ -315,14 +438,32 @@ begin
       ' CurrentPPI: '+Self.CurrentPPI.ToString+
       ' ScaleFactor: '+ScaleFactor.ToString+
       ' Value: '+Value.ToString);
-    if FFontSize <> 0 then
-      LScaleFactor := SynEdit.Font.Size / FFontSize
+    if FEditorFontSize <> 0 then
+      LScaleFactor := SynEdit.Font.Size / FEditorFontSize
     else
       LScaleFactor := 1;
-    FFontSize := Value;
-    SynEdit.Font.Size := Round(FFontSize * LScaleFactor);
+    FEditorFontSize := Value;
+    SynEdit.Font.Size := Round(FEditorFontSize * LScaleFactor);
     SynEdit.Gutter.Font.Size := SynEdit.Font.Size;
   end;
+end;
+
+function TFrmPreview.SetOpticalZoom(Value: integer): Integer;
+var
+  vaIn, vaOut : OleVariant;
+begin
+  vaIn := null;
+  vaOut := null;
+  WebBrowser.ExecWB(OLECMDID_OPTICAL_GETZOOMRANGE,OLECMDEXECOPT_DONTPROMPTUSER,vaIn,vaOut);
+  if Value < LoWord(DWORD(vaOut)) then
+      vaIn := LoWord(DWORD(vaOut))
+    else
+      if Value > HiWord(DWORD(vaOut)) then
+        vaIn := HiWord(DWORD(vaOut))
+      else
+        vaIn := Value;
+  WebBrowser.ExecWB(OLECMDID_OPTICAL_ZOOM,OLECMDEXECOPT_DONTPROMPTUSER,vaIn,vaOut);
+  Result := vaIn;
 end;
 
 procedure TFrmPreview.SplitterMoved(Sender: TObject);
@@ -371,7 +512,7 @@ begin
 {$IFNDEF DISABLE_STYLES}
   TStyleManager.TrySetStyle(FPreviewSettings.StyleName, False);
 {$ENDIF}
-  BackgroundTrackBar.Position := FPreviewSettings.LightBackground;
+  //BackgroundTrackBar.Position := FPreviewSettings.LightBackground;
   UpdateHighlighter;
   UpdateGUI;
 end;
@@ -392,14 +533,46 @@ end;
 
 procedure TFrmPreview.ToolButtonZommOutClick(Sender: TObject);
 begin
-  EditorFontSize := EditorFontSize - 1;
+  FPreviewSettings.OpticalZoom := SetOpticalZoom(FPreviewSettings.OpticalZoom - 10);
   SaveSettings;
 end;
 
 procedure TFrmPreview.ToolButtonZoomInClick(Sender: TObject);
 begin
-  EditorFontSize := EditorFontSize + 1;
+  FPreviewSettings.OpticalZoom := SetOpticalZoom(FPreviewSettings.OpticalZoom + 10);
   SaveSettings;
 end;
 
+{ TAllegato }
+
+procedure TAllegato.Clear;
+begin
+  FileName := '';
+  FileType := '';
+  Compressione := '';
+  Data := '';
+  if Assigned(Button) then
+    FreeAndNil(Button);
+end;
+procedure TAllegato.DumpAndOpen;
+var
+  LTempFileName: string;
+  LBytes: TBytes;
+  LBytesStream: TBytesStream;
+begin
+  if Compressione <> '' then
+    raise Exception.Create('Compressione ' + Compressione + ' non supportata, allegato: ' + FileName);
+  LTempFileName := TPath.Combine(TPath.GetTempPath, ExtractFileName(FileName));
+  LBytes := TNetEncoding.Base64.DecodeStringToBytes(Data);
+  LBytesStream := TBytesStream.Create(LBytes);
+  try
+    LBytesStream.SaveToFile(LTempFileName);
+    ShellExecute(0, nil
+      , PWideChar(LTempFileName)
+      , nil // PWideChar(TPath.Combine(BASE_FOLDER, FatturePassiveNomeFile.AsString))
+      , nil, SW_NORMAL);
+  finally
+    LBytesStream.Free;
+  end;
+end;
 end.

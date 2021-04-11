@@ -40,7 +40,8 @@ uses
   , SynEditCodeFolding
   , SynEditHighlighter
   , SVGIconImageListBase
-  , SVGIconImageList, Vcl.BaseImageCollection, SVGIconImageCollection
+  , SVGIconImageList, Vcl.BaseImageCollection, SVGIconImageCollection,
+  Xml.xmldom, Xml.XMLIntf, Xml.Win.msxmldom, Xml.XMLDoc
   ;
 
 type
@@ -55,6 +56,7 @@ type
     SynXMLSyn: TSynXMLSyn;
     SynXMLSynDark: TSynXMLSyn;
     SVGIconImageCollection: TSVGIconImageCollection;
+    AssoSoftwareTemplate: TXMLDocument;
     procedure DataModuleCreate(Sender: TObject);
   private
   public

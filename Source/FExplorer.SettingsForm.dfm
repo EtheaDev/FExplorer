@@ -36,15 +36,134 @@ object SVGSettingsForm: TSVGSettingsForm
     Align = alClient
     Images = SettingsImageList
     TabOrder = 0
+    object stGeneral: TTabSheet
+      Caption = 'Preview settings'
+      ImageIndex = 4
+      ImageName = 'eye-settings'
+      object RenderingGroupBox: TGroupBox
+        Left = 3
+        Top = 3
+        Width = 238
+        Height = 62
+        Caption = 'Rendering options'
+        TabOrder = 0
+        object PreferD2DCheckBox: TCheckBox
+          Left = 13
+          Top = 21
+          Width = 156
+          Height = 17
+          Caption = 'Prefer Direct 2D Engine'
+          TabOrder = 0
+        end
+      end
+    end
+    object stTheme: TTabSheet
+      Caption = 'Theme'
+      ImageIndex = 2
+      ImageName = 'theme-light-dark'
+      object ThemeLeftPanel: TPanel
+        Left = 0
+        Top = 0
+        Width = 185
+        Height = 402
+        Align = alLeft
+        BevelOuter = bvNone
+        TabOrder = 0
+        object ThemesRadioGroup: TRadioGroup
+          Left = 0
+          Top = 0
+          Width = 185
+          Height = 118
+          Align = alTop
+          Caption = 'Theme'
+          ItemIndex = 0
+          Items.Strings = (
+            'Same as Windows'
+            'Force Dark'
+            'Force Light')
+          TabOrder = 0
+          OnClick = ThemesRadioGroupClick
+        end
+        object SelectThemeRadioGroup: TRadioGroup
+          Left = 0
+          Top = 118
+          Width = 185
+          Height = 284
+          Align = alClient
+          Caption = 'Selected Theme'
+          TabOrder = 1
+          OnClick = SelectThemeRadioGroupClick
+        end
+      end
+      object ThemeClientPanel: TPanel
+        Left = 185
+        Top = 0
+        Width = 469
+        Height = 402
+        Align = alClient
+        BevelOuter = bvNone
+        TabOrder = 1
+        StyleElements = []
+      end
+    end
+    object tsFont: TTabSheet
+      Caption = 'Font'
+      ImageIndex = 1
+      ImageName = 'alphabetical-variant'
+      object FontLabel: TLabel
+        Left = 8
+        Top = 8
+        Width = 57
+        Height = 15
+        Caption = 'Font name'
+      end
+      object SizeLabel: TLabel
+        Left = 8
+        Top = 54
+        Width = 20
+        Height = 15
+        Caption = 'Size'
+      end
+      object CbFont: TComboBox
+        Left = 8
+        Top = 25
+        Width = 225
+        Height = 22
+        Style = csOwnerDrawFixed
+        Sorted = True
+        TabOrder = 0
+        OnDrawItem = CbFontDrawItem
+      end
+      object EditFontSize: TEdit
+        Left = 8
+        Top = 71
+        Width = 34
+        Height = 23
+        Alignment = taRightJustify
+        NumbersOnly = True
+        TabOrder = 1
+        Text = '12'
+      end
+      object FontSizeUpDown: TUpDown
+        Left = 42
+        Top = 71
+        Width = 16
+        Height = 23
+        Associate = EditFontSize
+        Min = 8
+        Max = 30
+        Position = 12
+        TabOrder = 2
+      end
+    end
     object tsColors: TTabSheet
       Caption = 'Text color'
       ImageName = 'palette'
-      TabVisible = False
       object VertSplitter: TSplitter
         Left = 193
         Top = 0
         Width = 4
-        Height = 441
+        Height = 402
         MinSize = 100
         ExplicitLeft = 143
         ExplicitHeight = 366
@@ -53,7 +172,7 @@ object SVGSettingsForm: TSVGSettingsForm
         Left = 0
         Top = 0
         Width = 193
-        Height = 441
+        Height = 402
         Align = alLeft
         BevelOuter = bvNone
         TabOrder = 0
@@ -61,7 +180,7 @@ object SVGSettingsForm: TSVGSettingsForm
           Left = 0
           Top = 0
           Width = 193
-          Height = 283
+          Height = 244
           Align = alClient
           BevelOuter = bvLowered
           TabOrder = 0
@@ -69,7 +188,7 @@ object SVGSettingsForm: TSVGSettingsForm
             Left = 1
             Top = 17
             Width = 191
-            Height = 265
+            Height = 226
             Align = alClient
             BevelOuter = bvNone
             ItemHeight = 15
@@ -89,7 +208,7 @@ object SVGSettingsForm: TSVGSettingsForm
         end
         object ElementColorGroupBox: TGroupBox
           Left = 0
-          Top = 283
+          Top = 244
           Width = 193
           Height = 116
           Align = alBottom
@@ -139,7 +258,7 @@ object SVGSettingsForm: TSVGSettingsForm
         end
         object ResetPanel: TPanel
           Left = 0
-          Top = 399
+          Top = 360
           Width = 193
           Height = 42
           Align = alBottom
@@ -163,7 +282,7 @@ object SVGSettingsForm: TSVGSettingsForm
         Left = 197
         Top = 0
         Width = 457
-        Height = 441
+        Height = 402
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 1
@@ -256,7 +375,7 @@ object SVGSettingsForm: TSVGSettingsForm
           Left = 0
           Top = 65
           Width = 457
-          Height = 376
+          Height = 337
           Align = alClient
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
@@ -280,129 +399,6 @@ object SVGSettingsForm: TSVGSettingsForm
           Gutter.Font.Name = 'Terminal'
           Gutter.Font.Style = []
           FontSmoothing = fsmNone
-        end
-      end
-    end
-    object tsFont: TTabSheet
-      Caption = 'Font'
-      ImageIndex = 1
-      ImageName = 'alphabetical-variant'
-      TabVisible = False
-      object FontLabel: TLabel
-        Left = 8
-        Top = 8
-        Width = 57
-        Height = 15
-        Caption = 'Font name'
-      end
-      object SizeLabel: TLabel
-        Left = 8
-        Top = 54
-        Width = 20
-        Height = 15
-        Caption = 'Size'
-      end
-      object CbFont: TComboBox
-        Left = 8
-        Top = 25
-        Width = 225
-        Height = 22
-        Style = csOwnerDrawFixed
-        Sorted = True
-        TabOrder = 0
-        OnDrawItem = CbFontDrawItem
-      end
-      object EditFontSize: TEdit
-        Left = 8
-        Top = 71
-        Width = 34
-        Height = 23
-        Alignment = taRightJustify
-        NumbersOnly = True
-        TabOrder = 1
-        Text = '12'
-      end
-      object FontSizeUpDown: TUpDown
-        Left = 42
-        Top = 71
-        Width = 16
-        Height = 23
-        Associate = EditFontSize
-        Min = 8
-        Max = 30
-        Position = 12
-        TabOrder = 2
-      end
-    end
-    object stTheme: TTabSheet
-      Caption = 'Theme'
-      ImageIndex = 2
-      ImageName = 'theme-light-dark'
-      TabVisible = False
-      object ThemeLeftPanel: TPanel
-        Left = 0
-        Top = 0
-        Width = 185
-        Height = 441
-        Align = alLeft
-        BevelOuter = bvNone
-        TabOrder = 0
-        object ThemesRadioGroup: TRadioGroup
-          Left = 0
-          Top = 0
-          Width = 185
-          Height = 118
-          Align = alTop
-          Caption = 'Theme'
-          ItemIndex = 0
-          Items.Strings = (
-            'Same as Windows'
-            'Force Dark'
-            'Force Light')
-          TabOrder = 0
-          OnClick = ThemesRadioGroupClick
-        end
-        object SelectThemeRadioGroup: TRadioGroup
-          Left = 0
-          Top = 118
-          Width = 185
-          Height = 323
-          Align = alClient
-          Caption = 'Selected Theme'
-          TabOrder = 1
-          OnClick = SelectThemeRadioGroupClick
-        end
-      end
-      object ThemeClientPanel: TPanel
-        Left = 185
-        Top = 0
-        Width = 469
-        Height = 441
-        Align = alClient
-        BevelOuter = bvNone
-        TabOrder = 1
-        StyleElements = []
-      end
-    end
-    object stGeneral: TTabSheet
-      Caption = 'Preview settings'
-      ImageIndex = 3
-      ImageName = 'arrow-left'
-      TabVisible = False
-      object RenderingGroupBox: TGroupBox
-        Left = 3
-        Top = 3
-        Width = 238
-        Height = 62
-        Caption = 'Rendering options'
-        TabOrder = 0
-        object PreferD2DCheckBox: TCheckBox
-          Left = 13
-          Top = 21
-          Width = 156
-          Height = 17
-          Caption = 'Prefer Direct 2D Engine'
-          TabOrder = 0
         end
       end
     end
@@ -435,14 +431,9 @@ object SVGSettingsForm: TSVGSettingsForm
         ImageName = 'arrow-left'
       end
       item
-        Caption = '  Text colors'
-        ImageIndex = 0
-        ImageName = 'palette'
-      end
-      item
-        Caption = '  Font'
-        ImageIndex = 1
-        ImageName = 'alphabetical-variant'
+        Caption = '  Preview'
+        ImageIndex = 4
+        ImageName = 'eye-settings'
       end
       item
         Caption = '  Theme'
@@ -450,9 +441,14 @@ object SVGSettingsForm: TSVGSettingsForm
         ImageName = 'theme-light-dark'
       end
       item
-        Caption = '  Preview'
-        ImageIndex = 4
-        ImageName = 'eye-settings'
+        Caption = '  Font'
+        ImageIndex = 1
+        ImageName = 'alphabetical-variant'
+      end
+      item
+        Caption = '  Text colors'
+        ImageIndex = 0
+        ImageName = 'palette'
       end>
     TabOrder = 2
     OnButtonClicked = MenuButtonGroupButtonClicked

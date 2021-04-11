@@ -134,7 +134,7 @@ end;
 function DefaultStyleName: string;
 begin
   if IsWindowsAppThemeLight then
-    Result := 'Windows10'
+    Result := 'Windows'
   else
     Result := 'Glow';
 end;

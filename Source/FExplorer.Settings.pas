@@ -73,6 +73,7 @@ type
     FPreferD2D: Boolean;
     FActivePageIndex: Integer;
     FThemeSelection: TThemeSelection;
+    FOpticalZoom: integer;
     function GetUseDarkStyle: Boolean;
     procedure SetPreferD2D(const Value: Boolean);
     function GetThemeSectionName: string;
@@ -108,6 +109,7 @@ type
     property PreferD2D: Boolean read FPreferD2D write SetPreferD2D;
     property ActivePageIndex: Integer read FActivePageIndex write FActivePageIndex;
     property ThemeSelection: TThemeSelection read FThemeSelection write FThemeSelection;
+    property OpticalZoom: integer read FOpticalZoom write FOpticalZoom;
   end;
 
   TPreviewSettings = class(TSettings)
@@ -264,9 +266,15 @@ begin
 end;
 
 function TSettings.GetButtonTextColor: TColor;
+var
+  LStyleServices: TCustomStyleServices;
 begin
 {$IFNDEF DISABLE_STYLES}
-  Result := TStyleManager.Style[Self.StyleName].GetStyleFontColor(sfButtonTextNormal);
+  LStyleServices := TStyleManager.Style[Self.StyleName];
+  if Assigned(LStyleServices) then
+    Result := LStyleServices.GetStyleFontColor(sfButtonTextNormal)
+  else
+    Result := clBtnText;
 {$ELSE}
   Result := clBtnText;
 {$ENDIF}
@@ -304,6 +312,7 @@ begin
   FSplitterPos := FIniFile.ReadInteger('Global', 'SplitterPos', 33);
   PreferD2D := Boolean(FIniFile.ReadInteger('Global', 'PreferD2D', -1));
   FActivePageIndex := FIniFile.ReadInteger('Global', 'ActivePageIndex', 0);
+  FOpticalZoom := FIniFile.ReadInteger('Browser', 'OpticalZoom', 100);
   FStyleName := FIniFile.ReadString('Global', 'StyleName', DefaultStyleName);
   FThemeSelection := TThemeSelection(FIniFile.ReadInteger('Global', 'ThemeSelection', 0));
   //Select Style by default on Actual Windows Theme
@@ -367,6 +376,8 @@ begin
   FIniFile.WriteInteger('Global', 'SplitterPos', FSplitterPos);
   FIniFile.WriteInteger('Global', 'PreferD2D', Ord(FPreferD2D));
   FIniFile.WriteInteger('Global', 'ActivePageIndex', FActivePageIndex);
+  FIniFile.WriteInteger('Browser', 'OpticalZoom', FOpticalZoom);
+
   FIniFile.WriteInteger('Global', 'ThemeSelection', Ord(FThemeSelection));
   if (FUseDarkStyle and (LightBackground <> default_darkbackground)) or
     (not FUseDarkStyle and (LightBackground <> default_lightbackground)) then

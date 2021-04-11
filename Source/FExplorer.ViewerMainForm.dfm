@@ -238,8 +238,8 @@ object frmMain: TfrmMain
         AlignWithMargins = True
         Left = 36
         Top = 4
-        Width = 210
-        Height = 26
+        Width = 4
+        Height = 4
         Align = alClient
         Alignment = taCenter
         TabOrder = 1
@@ -381,11 +381,10 @@ object frmMain: TfrmMain
       Left = 40
       Top = 3
       Width = 170
-      Height = 30
+      Height = 15
       Align = alLeft
       Caption = 'Visualizzatore Fattura Elettronica'
       Layout = tlCenter
-      ExplicitHeight = 15
     end
     object SettingsToolBar: TToolBar
       AlignWithMargins = True

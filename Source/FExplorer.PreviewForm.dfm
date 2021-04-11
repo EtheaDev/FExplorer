@@ -1,8 +1,8 @@
 object FrmPreview: TFrmPreview
   Left = 522
   Top = 286
-  ClientHeight = 543
-  ClientWidth = 531
+  ClientHeight = 788
+  ClientWidth = 672
   Color = clBtnFace
   DoubleBuffered = True
   Font.Charset = DEFAULT_CHARSET
@@ -15,12 +15,13 @@ object FrmPreview: TFrmPreview
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnResize = FormResize
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Splitter: TSplitter
     Left = 0
     Top = 329
-    Width = 531
+    Width = 672
     Height = 6
     Cursor = crVSplit
     Align = alTop
@@ -32,7 +33,7 @@ object FrmPreview: TFrmPreview
   object PanelTop: TPanel
     Left = 0
     Top = 0
-    Width = 531
+    Width = 672
     Height = 35
     Align = alTop
     BevelOuter = bvNone
@@ -40,7 +41,7 @@ object FrmPreview: TFrmPreview
     object ToolBar: TToolBar
       Left = 0
       Top = 0
-      Width = 531
+      Width = 672
       Height = 35
       Align = alClient
       AutoSize = True
@@ -65,8 +66,34 @@ object FrmPreview: TFrmPreview
         OnMouseEnter = ToolButtonMouseEnter
         OnMouseLeave = ToolButtonMouseLeave
       end
-      object ToolButtonAbout: TToolButton
+      object ToolButtonZoomIn: TToolButton
         Left = 85
+        Top = 0
+        Cursor = crHandPoint
+        Hint = 'Zoom in (increase font size)'
+        AutoSize = True
+        Caption = 'Zoom In'
+        ImageIndex = 6
+        ImageName = 'plus'
+        OnClick = ToolButtonZoomInClick
+        OnMouseEnter = ToolButtonMouseEnter
+        OnMouseLeave = ToolButtonMouseLeave
+      end
+      object ToolButtonZommOut: TToolButton
+        Left = 166
+        Top = 0
+        Cursor = crHandPoint
+        Hint = 'Zoom out (decrease font size)'
+        AutoSize = True
+        Caption = 'Zoom Out'
+        ImageIndex = 7
+        ImageName = 'minus'
+        OnClick = ToolButtonZommOutClick
+        OnMouseEnter = ToolButtonMouseEnter
+        OnMouseLeave = ToolButtonMouseLeave
+      end
+      object ToolButtonAbout: TToolButton
+        Left = 257
         Top = 0
         Cursor = crHandPoint
         Hint = 'Show about...'
@@ -80,7 +107,7 @@ object FrmPreview: TFrmPreview
         OnMouseLeave = ToolButtonMouseLeave
       end
       object ToolButtonSettings: TToolButton
-        Left = 165
+        Left = 337
         Top = 0
         Cursor = crHandPoint
         Hint = 'Preview settings...'
@@ -94,7 +121,7 @@ object FrmPreview: TFrmPreview
         OnMouseLeave = ToolButtonMouseLeave
       end
       object SeparatorEditor: TToolButton
-        Left = 255
+        Left = 427
         Top = 0
         Width = 8
         Caption = 'SeparatorEditor'
@@ -102,7 +129,7 @@ object FrmPreview: TFrmPreview
         Style = tbsSeparator
       end
       object ToolButtonReformat: TToolButton
-        Left = 263
+        Left = 435
         Top = 0
         Hint = 'Reformat XML text'
         AutoSize = True
@@ -113,49 +140,22 @@ object FrmPreview: TFrmPreview
         OnMouseEnter = ToolButtonMouseEnter
         OnMouseLeave = ToolButtonMouseLeave
       end
-      object ToolButtonZoomIn: TToolButton
-        Left = 338
-        Top = 0
-        Cursor = crHandPoint
-        Hint = 'Zoom in (increase font size)'
-        AutoSize = True
-        Caption = 'Zoom In'
-        ImageIndex = 6
-        ImageName = 'plus'
-        Visible = False
-        OnClick = ToolButtonZoomInClick
-        OnMouseEnter = ToolButtonMouseEnter
-        OnMouseLeave = ToolButtonMouseLeave
-      end
-      object ToolButtonZommOut: TToolButton
-        Left = 419
-        Top = 0
-        Cursor = crHandPoint
-        Hint = 'Zoom out (decrease font size)'
-        AutoSize = True
-        Caption = 'Zoom Out'
-        ImageIndex = 7
-        ImageName = 'minus'
-        Visible = False
-        OnClick = ToolButtonZommOutClick
-        OnMouseEnter = ToolButtonMouseEnter
-        OnMouseLeave = ToolButtonMouseLeave
-      end
     end
   end
   object PanelEditor: TPanel
     Left = 0
     Top = 35
-    Width = 531
+    Width = 672
     Height = 294
     Align = alTop
     BevelOuter = bvNone
     Caption = 'PanelEditor'
     TabOrder = 1
+    Visible = False
     object SynEdit: TSynEdit
       Left = 0
       Top = 0
-      Width = 531
+      Width = 672
       Height = 294
       Align = alClient
       Font.Charset = DEFAULT_CHARSET
@@ -186,8 +186,8 @@ object FrmPreview: TFrmPreview
   end
   object StatusBar: TStatusBar
     Left = 0
-    Top = 524
-    Width = 531
+    Top = 769
+    Width = 672
     Height = 19
     Panels = <>
     ParentFont = True
@@ -198,50 +198,32 @@ object FrmPreview: TFrmPreview
     SizeGrip = False
     UseSystemFont = False
   end
-  object ImagePanel: TPanel
+  object WebBrowser: TWebBrowser
+    Left = 193
+    Top = 335
+    Width = 479
+    Height = 434
+    Align = alClient
+    TabOrder = 3
+    OnDocumentComplete = WebBrowserDocumentComplete
+    ExplicitWidth = 938
+    ExplicitHeight = 665
+    ControlData = {
+      4C00000082310000DB2C00000000000000000000000000000000000000000000
+      000000004C000000000000000000000001000000E0D057007335CF11AE690800
+      2B2E12620A000000000000004C0000000114020000000000C000000000000046
+      8000000000000000000000000000000000000000000000000000000000000000
+      00000000000000000100000000000000000000000000000000000000}
+  end
+  object gbAllegati: TGroupBox
     Left = 0
     Top = 335
-    Width = 531
-    Height = 189
-    Align = alClient
-    BevelOuter = bvNone
-    ParentBackground = False
-    TabOrder = 3
-    StyleElements = []
-    object panelPreview: TPanel
-      Left = 0
-      Top = 0
-      Width = 531
-      Height = 40
-      Align = alTop
-      ParentBackground = False
-      ShowCaption = False
-      TabOrder = 0
-      object BackgroundGrayScaleLabel: TLabel
-        Left = 10
-        Top = 6
-        Width = 56
-        Height = 29
-        AutoSize = False
-        Caption = 'Backlight %:'
-        WordWrap = True
-      end
-      object BackgroundTrackBar: TTrackBar
-        AlignWithMargins = True
-        Left = 81
-        Top = 4
-        Width = 446
-        Height = 32
-        Margins.Left = 80
-        Align = alClient
-        Max = 255
-        Frequency = 10
-        Position = 117
-        TabOrder = 0
-        TabStop = False
-        OnChange = BackgroundTrackBarChange
-      end
-    end
+    Width = 193
+    Height = 434
+    Align = alLeft
+    Caption = ' Allegati '
+    TabOrder = 4
+    Visible = False
   end
   object SVGIconImageList: TVirtualImageList
     DisabledGrayscale = False

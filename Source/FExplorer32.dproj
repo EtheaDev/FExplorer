@@ -1,7 +1,7 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
         <ProjectGuid>{95d663b8-387e-46f6-b1bb-c52302c593dc}</ProjectGuid>
-        <Config Condition="'$(Config)'==''">Release</Config>
+        <Config Condition="'$(Config)'==''">Debug</Config>
         <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
         <ProjectVersion>19.2</ProjectVersion>
         <FrameworkType>VCL</FrameworkType>
@@ -93,6 +93,7 @@
         <Debugger_CWD>c:\Windows\SysWoW64</Debugger_CWD>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
         <Debugger_RunParams>D:\ETHEA\FExplorer\FExplorer.dll</Debugger_RunParams>
+        <Debugger_HostApplication>D:\ETHEA\FExplorer\Debug\Preview Handlers\PreviewHandler Host\Bin\PreviewHost.exe</Debugger_HostApplication>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win64)'!=''">
         <DCC_DebugInfoInExe>true</DCC_DebugInfoInExe>

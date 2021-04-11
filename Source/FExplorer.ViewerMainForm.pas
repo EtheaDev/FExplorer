@@ -290,7 +290,7 @@ type
     function CurrentEditorState : string;
     procedure UpdateStatusBarPanels;
     procedure AddOpenedFile(const AFileName: string);
-    procedure AssignSVGToImage;
+    procedure AssignInvoiceToImage;
     procedure SynEditChange(Sender: TObject);
     procedure SynEditEnter(Sender: TObject);
     procedure UpdateHighlighter(ASynEditor: TSynEdit);
@@ -423,7 +423,7 @@ begin
     for i := 0 to OpenDialog.Files.Count -1 do
       OpenFile(OpenDialog.Files[i], False);
   end;
-  AssignSVGToImage;
+  AssignInvoiceToImage;
 end;
 
 function TfrmMain.OpenFile(const FileName : string;
@@ -727,7 +727,7 @@ begin
   end;
   if LIndex <> -1 then
     PageControl.ActivePageIndex := LIndex;
-  AssignSVGToImage;
+  AssignInvoiceToImage;
 end;
 
 procedure TfrmMain.FormCreate(Sender: TObject);
@@ -781,7 +781,7 @@ begin
     //Carico l'eventuale file esterno
     InitialDir := ParamStr(1);
     OpenFile(ParamStr(1));
-    AssignSVGToImage;
+    AssignInvoiceToImage;
   end
   else
     InitialDir := '.';
@@ -870,7 +870,7 @@ begin
       pageControl.ActivePage.Imagename := 'svg-logo'
     else
       pageControl.ActivePage.Imagename := 'svg-logo-gray';
-    AssignSVGToImage;
+    AssignInvoiceToImage;
   end;
 end;
 
@@ -932,12 +932,13 @@ begin
   PageControl.OnChange(PageControl);
 end;
 
-procedure TfrmMain.AssignSVGToImage;
+procedure TfrmMain.AssignInvoiceToImage;
 var
   LSVGText: string;
 begin
   if FProcessingFiles then
     Exit;
+(*
   //Assegna l'immagine SVG
   try
     if CurrentEditor <> nil then
@@ -967,6 +968,7 @@ begin
       StatusStaticText.Caption := E.Message;
     end;
   end;
+*)
 end;
 
 procedure TfrmMain.BackgroundTrackBarChange(Sender: TObject);
@@ -986,7 +988,7 @@ begin
   //Imposto la caption dell'Editor
   if CurrentEditFile <> nil then
     Caption := Application.Title+' - '+CurrentEditFile.FileName;
-  AssignSVGToImage;
+  AssignInvoiceToImage;
 end;
 
 procedure TfrmMain.acSaveUpdate(Sender: TObject);
@@ -1541,7 +1543,7 @@ begin
   LFilename := (Sender as TMenuItem).Hint;
   //Carico il file selezionato
   OpenFile(LFileName);
-  AssignSVGToImage;
+  AssignInvoiceToImage;
   if (CurrentEditor <> nil) and (CurrentEditor.CanFocus) then
     (CurrentEditor.SetFocus);
   CloseSplitViewMenu;
