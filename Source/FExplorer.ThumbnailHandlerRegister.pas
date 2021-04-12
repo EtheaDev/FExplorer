@@ -167,7 +167,12 @@ begin
       //Add extension for .xml files di Fattura Elettronica
       LRegKey := RootPrefix + '.xml' + '\shellex\' + ThumbnailProviderGUID;
       CreateRegKey(LRegKey, '', sClassID, RootKey);
+
+      LRegKey := RootPrefix + '.xml.p7m' + '\shellex\' + ThumbnailProviderGUID;
+      CreateRegKey(LRegKey, '', sClassID, RootKey);
+
       CreateRegKey(sComServerKey, 'VersionIndependentProgID', ProgID, RootKey);
+
       LRegKey := RootPrefix + ProgID + '\shellex\' + ThumbnailProviderGUID;
       CreateRegKey(LRegKey, '', sClassID, RootKey);
     end;
@@ -181,6 +186,7 @@ begin
       DeleteRegValue(LRegKey, 'DllSurrogate', RootKey);
       DeleteRegValue(LRegKey, 'DisableLowILProcessIsolation', RootKey);
       //Delete extension for xml
+      DeleteRegKey(RootPrefix + '.xml.p7m' + '\shellex\' + ThumbnailProviderGUID, RootKey);
       DeleteRegKey(RootPrefix + '.xml' + '\shellex\' + ThumbnailProviderGUID, RootKey);
     end;
     inherited UpdateRegistry(False);

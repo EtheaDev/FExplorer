@@ -89,6 +89,7 @@ uses
   , ComServ
   , Messages
   , SysUtils
+  , StrUtils
   , Registry
   , uLogExcept
   , System.Classes
@@ -106,6 +107,7 @@ function TFEContextMenu.InitShellExt(pidlFolder: PItemIDList;
 var
   medium: TStgMedium;
   fe: TFormatEtc;
+  LFileExt: string;
 begin
   Result := E_FAIL;
   // check if the lpdobj pointer is nil
@@ -130,8 +132,9 @@ begin
         DragQueryFile(medium.hGlobal, 0, PChar (fFileName), 1000);
         // realign string
         fFileName := PChar(fFileName);
-        // only for .xml files di Fatture Elettroniche
-        if SameText(ExtractFileExt(fFileName),'.xml') then
+        LFileExt := ExtractFileExt(fFileName);
+        // only for .xml and .xml.p7m files di Fatture Elettroniche
+        if IndexText(LFileExt, ['.xml', '.xml.p7m']) <> -1 then
           Result := NOERROR
         else
           Result := E_FAIL;

@@ -410,7 +410,7 @@ constructor TPreviewSettings.CreateSettings(
 begin
   inherited CreateSettings(
     IncludeTrailingPathDelimiter(
-      GetSpecialFolder(CSIDL_APPDATA)) +'FEPreview\Settings.ini',
+      GetSpecialFolder(CSIDL_APPDATA)) +'FExplorer\PreviewSettings.ini',
     ASynEditHighilighter, nil);
 end;
 
@@ -423,7 +423,7 @@ begin
   OpenedFileList := TStringList.Create;
   inherited CreateSettings(
     IncludeTrailingPathDelimiter(
-      GetSpecialFolder(CSIDL_APPDATA)) +'FEViewer\Settings.ini',
+      GetSpecialFolder(CSIDL_APPDATA)) +'FExplorer\ViewerSettings.ini',
     ASynEditHighilighter, ASynEditorOptions);
   ReadSynEditorOptions(ASynEditorOptions);
 end;

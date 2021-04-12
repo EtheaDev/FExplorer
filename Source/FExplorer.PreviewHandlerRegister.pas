@@ -195,6 +195,7 @@ begin
 
       //Add extension for .xml files
       CreateRegKey(RootPrefix + '.xml' + '\shellex\' + SID_IPreviewHandler, '', sClassID, RootKey);
+      CreateRegKey(RootPrefix + '.xml.p7m' + '\shellex\' + SID_IPreviewHandler, '', sClassID, RootKey);
 
       CreateRegKey(sComServerKey, 'VersionIndependentProgID', ProgID, RootKey);
       CreateRegKey(RootPrefix + ProgID + '\shellex\' + SID_IPreviewHandler, '', sClassID, RootKey);
@@ -210,6 +211,7 @@ begin
       DeleteRegValue(Format('%sCLSID\%s',[RootPrefix, sClassID]), 'DllSurrogate', RootKey);
       DeleteRegValue(Format('%sCLSID\%s',[RootPrefix, sClassID]), 'DisableLowILProcessIsolation', RootKey);
       //Delete extension for xml
+      DeleteRegKey(RootPrefix + '.xml.p7m' + '\shellex\' + SID_IPreviewHandler, RootKey);
       DeleteRegKey(RootPrefix + '.xml' + '\shellex\' + SID_IPreviewHandler, RootKey);
     end;
     inherited UpdateRegistry(False);
