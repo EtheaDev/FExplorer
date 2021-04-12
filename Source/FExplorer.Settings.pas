@@ -266,8 +266,10 @@ begin
 end;
 
 function TSettings.GetButtonTextColor: TColor;
+{$IFNDEF DISABLE_STYLES}
 var
   LStyleServices: TCustomStyleServices;
+{$ENDIF}
 begin
 {$IFNDEF DISABLE_STYLES}
   LStyleServices := TStyleManager.Style[Self.StyleName];
