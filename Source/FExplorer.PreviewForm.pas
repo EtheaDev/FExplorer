@@ -178,7 +178,11 @@ begin
     finally
       LStream.Free;
     end;
+
     RenderAllegati;
+
+    // dump HTML to temp folder (DEBUG ONLY!)
+    //TFile.WriteAllText('c:\temp\' +  ChangeFileExt(FFileName, '.html'), FInvoice.HTML, TEncoding.UTF8);
 
   except
     on E: Exception do
