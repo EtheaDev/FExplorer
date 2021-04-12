@@ -1114,6 +1114,26 @@ object dmResources: TdmResources
           '196F3" cx="24" cy="24" r="21"/>'#13#10'    <rect x="22" y="22" fill="#' +
           'fff" width="4" height="11"/>'#13#10'    <circle fill="#fff" cx="24" cy' +
           '="16.5" r="2.5"/>'#13#10'</svg>'#13#10
+      end
+      item
+        IconName = 'attachment'
+        SVGText = 
+          '<?xml version="1.0" encoding="iso-8859-1"?>'#13#10'<!-- Generator: Ado' +
+          'be Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Bu' +
+          'ild 0)  -->'#13#10'<svg version="1.1" id="Layer_1" xmlns="http://www.w' +
+          '3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0p' +
+          'x" y="0px"'#13#10#9' viewBox="0 0 512 512" style="enable-background:new' +
+          ' 0 0 512 512;" xml:space="preserve">'#13#10'<polygon style="fill:#9999' +
+          '99;" points="255.976,512 234.368,480.32 234.368,280.624 255.976,' +
+          '280.624 "/>'#13#10'<polygon style="fill:#E0E0E0;" points="256.024,512 ' +
+          '277.632,480.32 277.632,280.624 256.024,280.624 "/>'#13#10'<path style=' +
+          '"fill:#6B6B6B;" d="M203.024,56.464v112.08c0,0-74.16,32.128-74.16' +
+          ',112.08h254.272c0-79.952-74.16-112.08-74.16-112.08'#13#10#9'V56.464H203' +
+          '.024z"/>'#13#10'<rect x="168.64" style="fill:#E21B1B;" width="174.656"' +
+          ' height="56.736"/>'#13#10'<g>'#13#10'</g>'#13#10'<g>'#13#10'</g>'#13#10'<g>'#13#10'</g>'#13#10'<g>'#13#10'</g>'#13#10 +
+          '<g>'#13#10'</g>'#13#10'<g>'#13#10'</g>'#13#10'<g>'#13#10'</g>'#13#10'<g>'#13#10'</g>'#13#10'<g>'#13#10'</g>'#13#10'<g>'#13#10'</g>' +
+          #13#10'<g>'#13#10'</g>'#13#10'<g>'#13#10'</g>'#13#10'<g>'#13#10'</g>'#13#10'<g>'#13#10'</g>'#13#10'<g>'#13#10'</g>'#13#10'</svg>'#13 +
+          #10
       end>
     Left = 248
     Top = 152

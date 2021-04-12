@@ -186,9 +186,9 @@ object FrmPreview: TFrmPreview
   end
   object StatusBar: TStatusBar
     Left = 0
-    Top = 769
+    Top = 758
     Width = 672
-    Height = 19
+    Height = 30
     Panels = <>
     ParentFont = True
     SimplePanel = True
@@ -197,33 +197,43 @@ object FrmPreview: TFrmPreview
       ' e Andrea Magni'
     SizeGrip = False
     UseSystemFont = False
+    ExplicitLeft = 8
+    ExplicitTop = 776
   end
   object WebBrowser: TWebBrowser
-    Left = 193
+    Left = 0
     Top = 335
-    Width = 479
-    Height = 434
+    Width = 672
+    Height = 393
     Align = alClient
     TabOrder = 3
     OnDocumentComplete = WebBrowserDocumentComplete
-    ExplicitWidth = 938
-    ExplicitHeight = 665
+    ExplicitLeft = 30
+    ExplicitTop = 341
+    ExplicitHeight = 405
     ControlData = {
-      4C00000082310000DB2C00000000000000000000000000000000000000000000
+      4C000000744500009E2800000000000000000000000000000000000000000000
       000000004C000000000000000000000001000000E0D057007335CF11AE690800
       2B2E12620A000000000000004C0000000114020000000000C000000000000046
       8000000000000000000000000000000000000000000000000000000000000000
       00000000000000000100000000000000000000000000000000000000}
   end
-  object gbAllegati: TGroupBox
+  object ToolBar1: TToolBar
     Left = 0
-    Top = 335
-    Width = 193
-    Height = 434
-    Align = alLeft
-    Caption = ' Allegati '
+    Top = 728
+    Width = 672
+    Height = 30
+    Align = alBottom
+    AutoSize = True
+    ButtonHeight = 30
+    ButtonWidth = 81
+    EdgeInner = esNone
+    EdgeOuter = esNone
+    Images = SVGIconImageList
+    List = True
+    ShowCaptions = True
     TabOrder = 4
-    Visible = False
+    ExplicitTop = 733
   end
   object SVGIconImageList: TVirtualImageList
     DisabledGrayscale = False
@@ -294,6 +304,12 @@ object FrmPreview: TFrmPreview
         CollectionName = 'Reformat'
         Disabled = False
         Name = 'Reformat'
+      end
+      item
+        CollectionIndex = 48
+        CollectionName = 'attachment'
+        Disabled = False
+        Name = 'attachment'
       end>
     ImageCollection = dmResources.SVGIconImageCollection
     Width = 24

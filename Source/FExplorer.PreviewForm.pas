@@ -63,7 +63,7 @@ type
     ToolButtonReformat: TToolButton;
     Splitter: TSplitter;
     WebBrowser: TWebBrowser;
-    gbAllegati: TGroupBox;
+    ToolBar1: TToolBar;
     procedure FormCreate(Sender: TObject);
     procedure ToolButtonZoomInClick(Sender: TObject);
     procedure ToolButtonZommOutClick(Sender: TObject);
@@ -88,7 +88,7 @@ type
     FFileName: string;
     FPreviewSettings: TPreviewSettings;
     FInvoice: TLegalInvoice;
-    FAllegatiButtons: TObjectList<TButton>;
+    FAllegatiButtons: TObjectList<TToolButton>;
 
     class var FExtensions: TDictionary<TSynCustomHighlighterClass, TStrings>;
     class var FAParent: TWinControl;
@@ -147,10 +147,10 @@ uses
 
 procedure TFrmPreview.AllegatoButtonClick(Sender: TObject);
 var
-  LButton: TButton;
+  LButton: TToolButton;
   LAllegato: TAllegato;
 begin
-  LButton := Sender as TButton;
+  LButton := Sender as TToolButton;
   LAllegato := FInvoice.Allegati[LButton.Tag];
   LAllegato.DumpAndOpen;
 end;
@@ -196,28 +196,32 @@ procedure TFrmPreview.RenderAllegati;
 var
   LIndex: Integer;
   LAllegato: TAllegato;
-  LButton: TButton;
+  LButton: TToolButton;
 begin
   FAllegatiButtons.Clear;
 
   for LIndex := 0 to Length(FInvoice.Allegati) -1 do
   begin
     LAllegato := FInvoice.Allegati[LIndex];
-    LButton := TButton.Create(nil);
+
+    LButton := TToolButton.Create(nil);
     try
+      LButton.Cursor := crHandPoint;
+      LButton.AutoSize := True;
       LButton.Caption := LAllegato.FileName;
-      gbAllegati.InsertControl(LButton);
-      LButton.Align := TAlign.alTop;
+      LButton.ImageIndex := 11;
+      LButton.ImageName := 'attachment';
       LButton.Tag := LIndex;
       LButton.OnClick := AllegatoButtonClick;
+      Toolbar1.InsertControl(LButton);
       FAllegatiButtons.Add(LButton);
     except
       LButton.Free;
       raise;
-    end;
+    end
   end;
 
-  gbAllegati.Visible := Length(FInvoice.Allegati) > 0;
+  ToolBar1.Visible := Length(FInvoice.Allegati) > 0;
 end;
 
 constructor TFrmPreview.Create(AOwner: TComponent);
@@ -225,7 +229,7 @@ begin
   inherited;
   FPreviewSettings := TPreviewSettings.CreateSettings(SynEdit.Highlighter);
   dmResources := TdmResources.Create(nil);
-  FAllegatiButtons := TObjectList<TButton>.Create(True);
+  FAllegatiButtons := TObjectList<TToolButton>.Create(True);
 end;
 
 destructor TFrmPreview.Destroy;
