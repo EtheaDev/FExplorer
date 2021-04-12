@@ -42,18 +42,11 @@ uses
   SynExportHTML, SynExportRTF, SynEditMiscClasses,
   FExplorer.Settings, System.ImageList, SynEditCodeFolding,
   SVGIconImageList, SVGIconImageListBase, SVGIconImage, Vcl.VirtualImageList,
-  Vcl.OleCtrls, SHDocVw, Xml.xmldom, Xml.XMLIntf, Xml.Win.msxmldom, Xml.XMLDoc;
+  Vcl.OleCtrls, SHDocVw, Xml.xmldom, Xml.XMLIntf, Xml.Win.msxmldom, Xml.XMLDoc,
+  FExplorer.Resources
+  ;
 
 type
-  TAllegato = record
-    FileName: string;
-    FileType: string;
-    Compressione: string;
-    Data: string;
-    Button: TButton;
-    procedure DumpAndOpen;
-    procedure Clear;
-  end;
   TFrmPreview = class(TForm)
     SynEdit: TSynEdit;
     PanelTop: TPanel;
@@ -94,7 +87,8 @@ type
     FSimpleText: string;
     FFileName: string;
     FPreviewSettings: TPreviewSettings;
-    FAllegati: TArray<TAllegato>;
+    FInvoice: TLegalInvoice;
+    FAllegatiButtons: TObjectList<TButton>;
 
     class var FExtensions: TDictionary<TSynCustomHighlighterClass, TStrings>;
     class var FAParent: TWinControl;
@@ -110,7 +104,7 @@ type
     //Visualizzatore Fattura
     function SetOpticalZoom(Value: integer): integer;
     procedure MostraFatturaXML;
-    procedure ParseAllegati(const AXMLDoc: IXMLDocument);
+    procedure RenderAllegati;
     procedure AllegatoButtonClick(Sender: TObject);
   protected
   public
@@ -146,7 +140,6 @@ uses
   , GraphUtil
   , FExplorer.About
   , FExplorer.SettingsForm
-  , FExplorer.Resources
   ;
 
 {$R *.dfm}
@@ -158,7 +151,7 @@ var
   LAllegato: TAllegato;
 begin
   LButton := Sender as TButton;
-  LAllegato := FAllegati[LButton.Tag];
+  LAllegato := FInvoice.Allegati[LButton.Tag];
   LAllegato.DumpAndOpen;
 end;
 
@@ -171,27 +164,26 @@ end;
 
 procedure TFrmPreview.MostraFatturaXML;
 var
-  LXML: IXMLDocument;
-  LOutput: WideString;
   LStream: TStringStream;
-  Stream : IStream;
-  LPersistStreamInit : IPersistStreamInit;
 begin
   try
-    //Inizializza il Documento XML dal testo caricato dentro synedit
-    LXML := LoadXMLData(SynEdit.Lines.Text);
-    //Usa il template disponibile nel datamodule
-    dmResources.AssoSoftwareTemplate.Active := True;
-    LXML.Node.TransformNode(dmResources.AssoSoftwareTemplate.DocumentElement, LOutput);
+    FInvoice := TLegalInvoice.Create(SynEdit.Lines.Text, False);
+    FInvoice.StylesheetName := FPreviewSettings.StylesheetName;
+    FInvoice.Parse;
+
+    if not FInvoice.Parsed then
+      raise Exception.Create('Impossibile caricare la fattura');
+
     //Carica il contenuto HTML trasformato dentro il WebBrowser
-    LStream := TStringStream.Create(LOutput);
+    LStream := TStringStream.Create(FInvoice.HTML);
     try
-      (WebBrowser.Document as IPersistStreamInit).Load(
-        TStreamAdapter.Create(LStream, soReference));
+      (WebBrowser.Document as IPersistStreamInit).Load( TStreamAdapter.Create(LStream, soReference));
     finally
       LStream.Free;
     end;
-    ParseAllegati(LXML);
+
+    RenderAllegati;
+
   except
     on E: Exception do
     begin
@@ -200,67 +192,32 @@ begin
   end;
 end;
 
-procedure TFrmPreview.ParseAllegati(const AXMLDoc: IXMLDocument);
+procedure TFrmPreview.RenderAllegati;
 var
-  LAllegati: IDOMNodeList;
+  LIndex: Integer;
   LAllegato: TAllegato;
   LButton: TButton;
-  LAllegatoNode: IDOMNode;
-  LAllegatoElement: IDOMElement;
-  LList: IDOMNodeList;
-  LIndex: Integer;
-  LNomeAttachment: string;
-  LFormatoAttachment: string;
-  LAlgoritmoCompressione: string;
-  LData: string;
 begin
-  LAllegati := AXMLDoc.DOMDocument.getElementsByTagName('Allegati');
-  for LAllegato in  FAllegati do
-    LAllegato.Button.Free;
-  FAllegati := [];
-  for LIndex := 0 to LAllegati.length - 1 do
-  begin
-    LAllegato.Clear;
-    LAllegatoNode := LAllegati.item[LIndex];
-    LAllegatoElement := LAllegatoNode as IDOMElement;
-    if Assigned(LAllegatoElement) then
-    begin
-      LList := LAllegatoElement.getElementsByTagName('NomeAttachment');
-      LNomeAttachment := '';
-      if (LList.length = 1) and (LList.item[0].hasChildNodes) then
-        LNomeAttachment := LList.item[0].firstChild.nodeValue;
-      LList := LAllegatoElement.getElementsByTagName('FormatoAttachment');
-      LFormatoAttachment := '';
-      if (LList.length = 1) and (LList.item[0].hasChildNodes) then
-        LFormatoAttachment := LList.item[0].firstChild.nodeValue;
-      LList := LAllegatoElement.getElementsByTagName('AlgoritmoCompressione');
-      LAlgoritmoCompressione := '';
-      if (LList.length = 1) and (LList.item[0].hasChildNodes) then
-        LAlgoritmoCompressione := LList.item[0].firstChild.nodeValue;
-      LList := LAllegatoElement.getElementsByTagName('Attachment');
-      LData := '';
-      if (LList.length = 1) and (LList.item[0].hasChildNodes) then
-        LData := LList.item[0].firstChild.nodeValue;
+  FAllegatiButtons.Clear;
 
-      LAllegato.FileName := LNomeAttachment;
-      LAllegato.FileType := LFormatoAttachment;
-      LAllegato.Compressione := LAlgoritmoCompressione;
-      LAllegato.Data := LData;
-      LButton := TButton.Create(Self);
-      try
-        LButton.Caption := LNomeAttachment;
-        gbAllegati.InsertControl(LButton);
-        LButton.Align := TAlign.alTop;
-        FAllegati := FAllegati + [LAllegato];
-        LButton.Tag := Length(FAllegati) -1;
-        LButton.OnClick := AllegatoButtonClick;
-      except
-        LButton.Free;
-        raise;
-      end;
+  for LIndex := 0 to Length(FInvoice.Allegati) -1 do
+  begin
+    LAllegato := FInvoice.Allegati[LIndex];
+    LButton := TButton.Create(nil);
+    try
+      LButton.Caption := LAllegato.FileName;
+      gbAllegati.InsertControl(LButton);
+      LButton.Align := TAlign.alTop;
+      LButton.Tag := LIndex;
+      LButton.OnClick := AllegatoButtonClick;
+      FAllegatiButtons.Add(LButton);
+    except
+      LButton.Free;
+      raise;
     end;
   end;
-  gbAllegati.Visible := Length(FAllegati) > 0;
+
+  gbAllegati.Visible := Length(FInvoice.Allegati) > 0;
 end;
 
 constructor TFrmPreview.Create(AOwner: TComponent);
@@ -268,10 +225,12 @@ begin
   inherited;
   FPreviewSettings := TPreviewSettings.CreateSettings(SynEdit.Highlighter);
   dmResources := TdmResources.Create(nil);
+  FAllegatiButtons := TObjectList<TButton>.Create(True);
 end;
 
 destructor TFrmPreview.Destroy;
 begin
+  FreeAndNil(FAllegatiButtons);
   FreeAndNil(FPreviewSettings);
   FreeAndNil(dmResources);
   inherited;
@@ -347,7 +306,6 @@ end;
 procedure TFrmPreview.FormCreate(Sender: TObject);
 begin
   TLogPreview.Add('TFrmEditor.FormCreate');
-  FAllegati := [];
   Application.OnException := AppException;
   FSimpleText := StatusBar.SimpleText;
   UpdateFromSettings;
@@ -543,36 +501,4 @@ begin
   SaveSettings;
 end;
 
-{ TAllegato }
-
-procedure TAllegato.Clear;
-begin
-  FileName := '';
-  FileType := '';
-  Compressione := '';
-  Data := '';
-  if Assigned(Button) then
-    FreeAndNil(Button);
-end;
-procedure TAllegato.DumpAndOpen;
-var
-  LTempFileName: string;
-  LBytes: TBytes;
-  LBytesStream: TBytesStream;
-begin
-  if Compressione <> '' then
-    raise Exception.Create('Compressione ' + Compressione + ' non supportata, allegato: ' + FileName);
-  LTempFileName := TPath.Combine(TPath.GetTempPath, ExtractFileName(FileName));
-  LBytes := TNetEncoding.Base64.DecodeStringToBytes(Data);
-  LBytesStream := TBytesStream.Create(LBytes);
-  try
-    LBytesStream.SaveToFile(LTempFileName);
-    ShellExecute(0, nil
-      , PWideChar(LTempFileName)
-      , nil // PWideChar(TPath.Combine(BASE_FOLDER, FatturePassiveNomeFile.AsString))
-      , nil, SW_NORMAL);
-  finally
-    LBytesStream.Free;
-  end;
-end;
 end.

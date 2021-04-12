@@ -74,6 +74,7 @@ type
     FActivePageIndex: Integer;
     FThemeSelection: TThemeSelection;
     FOpticalZoom: integer;
+    FStylesheetName: string;
     function GetUseDarkStyle: Boolean;
     procedure SetPreferD2D(const Value: Boolean);
     function GetThemeSectionName: string;
@@ -110,6 +111,7 @@ type
     property ActivePageIndex: Integer read FActivePageIndex write FActivePageIndex;
     property ThemeSelection: TThemeSelection read FThemeSelection write FThemeSelection;
     property OpticalZoom: integer read FOpticalZoom write FOpticalZoom;
+    property StylesheetName: string read FStylesheetName write FStylesheetName;
   end;
 
   TPreviewSettings = class(TSettings)
@@ -316,6 +318,7 @@ begin
   FActivePageIndex := FIniFile.ReadInteger('Global', 'ActivePageIndex', 0);
   FOpticalZoom := FIniFile.ReadInteger('Browser', 'OpticalZoom', 100);
   FStyleName := FIniFile.ReadString('Global', 'StyleName', DefaultStyleName);
+  FStylesheetName := FIniFile.ReadString('Global', 'StylesheetName', '');
   FThemeSelection := TThemeSelection(FIniFile.ReadInteger('Global', 'ThemeSelection', 0));
   //Select Style by default on Actual Windows Theme
   if FThemeSelection = tsAsWindows then
@@ -379,6 +382,7 @@ begin
   FIniFile.WriteInteger('Global', 'PreferD2D', Ord(FPreferD2D));
   FIniFile.WriteInteger('Global', 'ActivePageIndex', FActivePageIndex);
   FIniFile.WriteInteger('Browser', 'OpticalZoom', FOpticalZoom);
+  FIniFile.WriteString('Global', 'StylesheetName', FStylesheetName);
 
   FIniFile.WriteInteger('Global', 'ThemeSelection', Ord(FThemeSelection));
   if (FUseDarkStyle and (LightBackground <> default_darkbackground)) or
