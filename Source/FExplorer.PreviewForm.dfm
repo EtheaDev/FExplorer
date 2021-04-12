@@ -1,7 +1,7 @@
 object FrmPreview: TFrmPreview
   Left = 522
   Top = 286
-  ClientHeight = 788
+  ClientHeight = 651
   ClientWidth = 672
   Color = clBtnFace
   DoubleBuffered = True
@@ -15,12 +15,11 @@ object FrmPreview: TFrmPreview
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnResize = FormResize
-  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Splitter: TSplitter
     Left = 0
-    Top = 329
+    Top = 145
     Width = 672
     Height = 6
     Cursor = crVSplit
@@ -28,6 +27,7 @@ object FrmPreview: TFrmPreview
     AutoSnap = False
     MinSize = 100
     OnMoved = SplitterMoved
+    ExplicitTop = 329
     ExplicitWidth = 888
   end
   object PanelTop: TPanel
@@ -37,7 +37,7 @@ object FrmPreview: TFrmPreview
     Height = 35
     Align = alTop
     BevelOuter = bvNone
-    TabOrder = 0
+    TabOrder = 2
     object ToolBar: TToolBar
       Left = 0
       Top = 0
@@ -146,7 +146,7 @@ object FrmPreview: TFrmPreview
     Left = 0
     Top = 35
     Width = 672
-    Height = 294
+    Height = 110
     Align = alTop
     BevelOuter = bvNone
     Caption = 'PanelEditor'
@@ -156,7 +156,7 @@ object FrmPreview: TFrmPreview
       Left = 0
       Top = 0
       Width = 672
-      Height = 294
+      Height = 110
       Align = alClient
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
@@ -186,9 +186,9 @@ object FrmPreview: TFrmPreview
   end
   object StatusBar: TStatusBar
     Left = 0
-    Top = 758
+    Top = 630
     Width = 672
-    Height = 30
+    Height = 21
     Panels = <>
     ParentFont = True
     SimplePanel = True
@@ -197,43 +197,50 @@ object FrmPreview: TFrmPreview
       ' e Andrea Magni'
     SizeGrip = False
     UseSystemFont = False
-    ExplicitLeft = 8
-    ExplicitTop = 776
   end
-  object WebBrowser: TWebBrowser
+  object PanelBottom: TPanel
     Left = 0
-    Top = 335
-    Width = 672
-    Height = 393
-    Align = alClient
-    TabOrder = 3
-    OnDocumentComplete = WebBrowserDocumentComplete
-    ExplicitLeft = 30
-    ExplicitTop = 341
-    ExplicitHeight = 405
-    ControlData = {
-      4C000000744500009E2800000000000000000000000000000000000000000000
-      000000004C000000000000000000000001000000E0D057007335CF11AE690800
-      2B2E12620A000000000000004C0000000114020000000000C000000000000046
-      8000000000000000000000000000000000000000000000000000000000000000
-      00000000000000000100000000000000000000000000000000000000}
-  end
-  object ToolBar1: TToolBar
-    Left = 0
-    Top = 728
+    Top = 600
     Width = 672
     Height = 30
     Align = alBottom
-    AutoSize = True
-    ButtonHeight = 30
-    ButtonWidth = 81
-    EdgeInner = esNone
-    EdgeOuter = esNone
-    Images = SVGIconImageList
-    List = True
-    ShowCaptions = True
+    BevelOuter = bvNone
+    TabOrder = 0
+    object ToolBarAllegati: TToolBar
+      Left = 0
+      Top = 0
+      Width = 672
+      Height = 30
+      Align = alClient
+      AutoSize = True
+      ButtonHeight = 30
+      ButtonWidth = 81
+      EdgeInner = esNone
+      EdgeOuter = esNone
+      Images = SVGIconImageList
+      List = True
+      ShowCaptions = True
+      TabOrder = 0
+      Transparent = True
+    end
+  end
+  object HtmlViewer: THtmlViewer
+    Left = 0
+    Top = 151
+    Width = 672
+    Height = 449
+    BorderStyle = htFocused
+    HistoryMaxCount = 0
+    NoSelect = False
+    PrintMarginBottom = 2.000000000000000000
+    PrintMarginLeft = 2.000000000000000000
+    PrintMarginRight = 2.000000000000000000
+    PrintMarginTop = 2.000000000000000000
+    PrintScale = 1.000000000000000000
+    Align = alClient
     TabOrder = 4
-    ExplicitTop = 733
+    Touch.InteractiveGestures = [igPan]
+    Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia]
   end
   object SVGIconImageList: TVirtualImageList
     DisabledGrayscale = False

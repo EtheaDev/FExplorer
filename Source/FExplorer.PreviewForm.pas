@@ -43,7 +43,7 @@ uses
   FExplorer.Settings, System.ImageList, SynEditCodeFolding,
   SVGIconImageList, SVGIconImageListBase, SVGIconImage, Vcl.VirtualImageList,
   Vcl.OleCtrls, SHDocVw, Xml.xmldom, Xml.XMLIntf, Xml.Win.msxmldom, Xml.XMLDoc,
-  FExplorer.Resources
+  FExplorer.Resources, HTMLUn2, HtmlView
   ;
 
 type
@@ -62,8 +62,8 @@ type
     ToolButtonShowText: TToolButton;
     ToolButtonReformat: TToolButton;
     Splitter: TSplitter;
-    WebBrowser: TWebBrowser;
-    ToolBar1: TToolBar;
+    ToolBarAllegati: TToolBar;
+    HtmlViewer: THtmlViewer;
     procedure FormCreate(Sender: TObject);
     procedure ToolButtonZoomInClick(Sender: TObject);
     procedure ToolButtonZommOutClick(Sender: TObject);
@@ -79,9 +79,6 @@ type
     procedure SplitterMoved(Sender: TObject);
     procedure FormAfterMonitorDpiChanged(Sender: TObject; OldDPI,
       NewDPI: Integer);
-    procedure WebBrowserDocumentComplete(ASender: TObject;
-      const pDisp: IDispatch; const URL: OleVariant);
-    procedure FormShow(Sender: TObject);
   private
     FEditorFontSize: Integer;
     FSimpleText: string;
@@ -174,14 +171,13 @@ begin
     if not FInvoice.Parsed then
       raise Exception.Create('Impossibile caricare la fattura');
 
-    //Carica il contenuto HTML trasformato dentro il WebBrowser
+    //Carica il contenuto HTML trasformato dentro l'HTML-Viewer
     LStream := TStringStream.Create(FInvoice.HTML);
     try
-      (WebBrowser.Document as IPersistStreamInit).Load( TStreamAdapter.Create(LStream, soReference));
+      HtmlViewer.LoadFromStream(LStream);
     finally
       LStream.Free;
     end;
-
     RenderAllegati;
 
   except
@@ -213,7 +209,7 @@ begin
       LButton.ImageName := 'attachment';
       LButton.Tag := LIndex;
       LButton.OnClick := AllegatoButtonClick;
-      Toolbar1.InsertControl(LButton);
+      ToolbarAllegati.InsertControl(LButton);
       FAllegatiButtons.Add(LButton);
     except
       LButton.Free;
@@ -221,7 +217,7 @@ begin
     end
   end;
 
-  ToolBar1.Visible := Length(FInvoice.Allegati) > 0;
+  ToolbarAllegati.Visible := Length(FInvoice.Allegati) > 0;
 end;
 
 constructor TFrmPreview.Create(AOwner: TComponent);
@@ -294,12 +290,6 @@ begin
 {$ENDIF}
 end;
 
-procedure TFrmPreview.WebBrowserDocumentComplete(ASender: TObject;
-  const pDisp: IDispatch; const URL: OleVariant);
-begin
-  FPreviewSettings.OpticalZoom := SetOpticalZoom(FPreviewSettings.OpticalZoom);
-end;
-
 procedure TFrmPreview.FormAfterMonitorDpiChanged(Sender: TObject; OldDPI,
   NewDPI: Integer);
 begin
@@ -332,12 +322,6 @@ begin
   else
     Toolbar.ShowCaptions := True;
   UpdateGUI;
-end;
-
-procedure TFrmPreview.FormShow(Sender: TObject);
-begin
-  //Load blank doc into Browser
-  WebBrowser.Navigate('about:blank', EmptyParam, EmptyParam, EmptyParam, EmptyParam);
 end;
 
 procedure TFrmPreview.LoadFromFile(const AFileName: string);
@@ -416,6 +400,7 @@ var
 begin
   vaIn := null;
   vaOut := null;
+  (*
   WebBrowser.ExecWB(OLECMDID_OPTICAL_GETZOOMRANGE,OLECMDEXECOPT_DONTPROMPTUSER,vaIn,vaOut);
   if Value < LoWord(DWORD(vaOut)) then
       vaIn := LoWord(DWORD(vaOut))
@@ -425,7 +410,10 @@ begin
       else
         vaIn := Value;
   WebBrowser.ExecWB(OLECMDID_OPTICAL_ZOOM,OLECMDEXECOPT_DONTPROMPTUSER,vaIn,vaOut);
+
   Result := vaIn;
+*)
+  Result := Value;
 end;
 
 procedure TFrmPreview.SplitterMoved(Sender: TObject);

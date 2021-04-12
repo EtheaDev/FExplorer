@@ -52,6 +52,7 @@ object FrmMain: TFrmMain
       HideSelection = False
       OnChange = ShellListView1Change
       TabOrder = 0
+      ViewStyle = vsReport
     end
   end
 end
