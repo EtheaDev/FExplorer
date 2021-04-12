@@ -410,7 +410,7 @@ constructor TPreviewSettings.CreateSettings(
 begin
   inherited CreateSettings(
     IncludeTrailingPathDelimiter(
-      GetSpecialFolder(CSIDL_APPDATA)) +'SVGPreviewHandler\Settings.ini',
+      GetSpecialFolder(CSIDL_APPDATA)) +'FEPreview\Settings.ini',
     ASynEditHighilighter, nil);
 end;
 
