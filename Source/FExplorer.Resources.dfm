@@ -6285,6 +6285,9 @@ object dmResources: TdmResources
       #9#9#9'<head>'
       #9#9#9#9'<meta http-equiv="X-UA-Compatible" content="IE=edge"/>'
       #9#9#9#9'<style type="text/css">'
+      #9#9'  body {'
+      #9#9'  margin-right: 3em;'
+      #9#9'  }'
       ''
       '          #fattura-elettronica'
       '          {'
@@ -6566,7 +6569,8 @@ object dmResources: TdmResources
       #9#9#9'</body>'
       #9#9'</html>'
       #9'</xsl:template>'
-      '</xsl:stylesheet>')
+      '</xsl:stylesheet>'
+      '')
     Left = 75
     Top = 150
     DOMVendorDesc = 'MSXML'

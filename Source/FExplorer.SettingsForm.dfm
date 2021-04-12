@@ -42,7 +42,7 @@ object SVGSettingsForm: TSVGSettingsForm
       ImageName = 'eye-settings'
       object RenderingGroupBox: TGroupBox
         Left = 3
-        Top = 3
+        Top = 0
         Width = 238
         Height = 62
         Caption = 'Rendering options'
@@ -54,6 +54,28 @@ object SVGSettingsForm: TSVGSettingsForm
           Height = 17
           Caption = 'Prefer Direct 2D Engine'
           TabOrder = 0
+        end
+      end
+      object GroupBox1: TGroupBox
+        Left = 3
+        Top = 68
+        Width = 238
+        Height = 62
+        Caption = 'Stylesheet options'
+        TabOrder = 1
+        DesignSize = (
+          238
+          62)
+        object StylesheetComboBox: TComboBox
+          Left = 16
+          Top = 24
+          Width = 209
+          Height = 23
+          Anchors = [akLeft, akTop, akRight]
+          TabOrder = 0
+          Items.Strings = (
+            'AssoSoftware'
+            'Custom')
         end
       end
     end
@@ -452,6 +474,8 @@ object SVGSettingsForm: TSVGSettingsForm
       end>
     TabOrder = 2
     OnButtonClicked = MenuButtonGroupButtonClicked
+    ExplicitLeft = -2
+    ExplicitTop = 35
   end
   object TitlePanel: TPanel
     Left = 0

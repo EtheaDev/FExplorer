@@ -84,6 +84,8 @@ type
     stGeneral: TTabSheet;
     RenderingGroupBox: TGroupBox;
     PreferD2DCheckBox: TCheckBox;
+    GroupBox1: TGroupBox;
+    StylesheetComboBox: TComboBox;
     procedure BoxElementsClick(Sender: TObject);
     procedure cbForegroundClick(Sender: TObject);
     procedure cbBackgroundClick(Sender: TObject);
@@ -518,6 +520,7 @@ begin
   CbFont.ItemIndex := CbFont.Items.IndexOf(ASettings.FontName);
   FontSizeUpDown.Position := ASettings.FontSize;
   PreferD2DCheckBox.Checked := ASettings.PreferD2D;
+  StylesheetComboBox.ItemIndex := StylesheetComboBox.Items.IndexOf(ASettings.StylesheetName);
   PopulateAvailThemes;
 end;
 
@@ -548,6 +551,7 @@ begin
   ASettings.FontSize := FontSizeUpDown.Position;
   ASettings.StyleName := SelectedStyleName;
   ASettings.PreferD2D := PreferD2DCheckBox.Checked;
+  ASettings.StylesheetName := StylesheetComboBox.Text;
 end;
 
 procedure TSVGSettingsForm.MenuButtonGroupButtonClicked(Sender: TObject;
