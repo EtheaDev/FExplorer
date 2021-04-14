@@ -50,11 +50,11 @@ type
   TFrmPreview = class(TForm)
     SynEdit: TSynEdit;
     PanelTop: TPanel;
-    PanelEditor: TPanel;
+    PanelXML: TPanel;
     StatusBar: TStatusBar;
     SVGIconImageList: TVirtualImageList;
     ToolButtonZoomIn: TToolButton;
-    ToolButtonZommOut: TToolButton;
+    ToolButtonZoomOut: TToolButton;
     ToolBar: TToolBar;
     ToolButtonSettings: TToolButton;
     ToolButtonAbout: TToolButton;
@@ -66,7 +66,7 @@ type
     HtmlViewer: THtmlViewer;
     procedure FormCreate(Sender: TObject);
     procedure ToolButtonZoomInClick(Sender: TObject);
-    procedure ToolButtonZommOutClick(Sender: TObject);
+    procedure ToolButtonZoomOutClick(Sender: TObject);
     procedure ToolButtonSettingsClick(Sender: TObject);
     procedure ToolButtonAboutClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -80,7 +80,8 @@ type
     procedure FormAfterMonitorDpiChanged(Sender: TObject; OldDPI,
       NewDPI: Integer);
   private
-    FEditorFontSize: Integer;
+    FXMLFontSize: Integer;
+    FHTMLFontSize: Integer;
     FSimpleText: string;
     FFileName: string;
     FPreviewSettings: TPreviewSettings;
@@ -95,14 +96,15 @@ type
     procedure UpdateGUI;
     procedure UpdateFromSettings;
     procedure SaveSettings;
-    procedure SetEditorFontSize(const Value: Integer);
+    procedure SetXMLFontSize(const Value: Integer);
+    procedure SetHTMLFontSize(const Value: Integer);
     procedure UpdateHighlighter;
 
     //Visualizzatore Fattura
-    function SetOpticalZoom(Value: integer): integer;
     procedure MostraFatturaXML;
     procedure RenderAllegati;
     procedure AllegatoButtonClick(Sender: TObject);
+    procedure AdjustZoom(AValue: Integer);
   protected
   public
     procedure ScaleControls(const ANewPPI: Integer);
@@ -112,7 +114,8 @@ type
     class property AParent: TWinControl read FAParent write FAParent;
     procedure LoadFromFile(const AFileName: string);
     procedure LoadFromStream(const AStream: TStream);
-    property EditorFontSize: Integer read FEditorFontSize write SetEditorFontSize;
+    property XMLFontSize: Integer read FXMLFontSize write SetXMLFontSize;
+    property HTMLFontSize: Integer read FHTMLFontSize write SetHTMLFontSize;
   end;
 
 
@@ -250,9 +253,9 @@ end;
 
 procedure TFrmPreview.UpdateGUI;
 begin
-  if PanelEditor.Visible then
+  if PanelXML.Visible then
   begin
-    Splitter.Top := PanelEditor.Top + PanelEditor.Height;
+    Splitter.Top := PanelXML.Top + PanelXML.Height;
     Splitter.Visible := True;
     ToolButtonShowText.Caption := 'Nascondi XML';
     ToolButtonShowText.Hint := 'Nascondi il contenuto XML del file';
@@ -268,7 +271,7 @@ begin
   ToolButtonShowText.Visible := True;
   ToolButtonAbout.Visible := True;
   ToolButtonSettings.Visible := True;
-  ToolButtonReformat.Visible := PanelEditor.Visible;
+  ToolButtonReformat.Visible := PanelXML.Visible;
 end;
 
 procedure TFrmPreview.UpdateHighlighter;
@@ -319,9 +322,9 @@ end;
 
 procedure TFrmPreview.FormResize(Sender: TObject);
 begin
-  PanelEditor.Height := Round(Self.Height * (FPreviewSettings.SplitterPos / 100));
-  Splitter.Top := PanelEditor.Height;
-  if Self.Width < (250 * Self.ScaleFactor) then
+  PanelXML.Height := Round(Self.Height * (FPreviewSettings.SplitterPos / 100));
+  Splitter.Top := PanelXML.Height;
+  if Self.Width < (550 * Self.ScaleFactor) then
     ToolBar.ShowCaptions := False
   else
     Toolbar.ShowCaptions := True;
@@ -359,8 +362,9 @@ begin
   if Assigned(FPreviewSettings) then
   begin
     FPreviewSettings.UpdateSettings(SynEdit.Font.Name,
-      EditorFontSize,
-      PanelEditor.Visible);
+      HtmlViewer.DefFontName,
+      XMLFontSize, HTMLFontSize,
+      PanelXML.Visible);
     FPreviewSettings.WriteSettings(SynEdit.Highlighter, nil);
   end;
 end;
@@ -378,46 +382,43 @@ begin
   end;
 end;
 
-procedure TFrmPreview.SetEditorFontSize(const Value: Integer);
+procedure TFrmPreview.SetXMLFontSize(const Value: Integer);
 var
   LScaleFactor: Single;
 begin
   if (Value >= MinfontSize) and (Value <= MaxfontSize) then
   begin
-    TLogPreview.Add('TFrmEditor.SetEditorFontSize'+
+    TLogPreview.Add('TFrmEditor.SetXMLFontSize'+
       ' CurrentPPI: '+Self.CurrentPPI.ToString+
       ' ScaleFactor: '+ScaleFactor.ToString+
       ' Value: '+Value.ToString);
-    if FEditorFontSize <> 0 then
-      LScaleFactor := SynEdit.Font.Size / FEditorFontSize
+    if FXMLFontSize <> 0 then
+      LScaleFactor := SynEdit.Font.Size / FXMLFontSize
     else
       LScaleFactor := 1;
-    FEditorFontSize := Value;
-    SynEdit.Font.Size := Round(FEditorFontSize * LScaleFactor);
+    FXMLFontSize := Value;
+    SynEdit.Font.Size := Round(FXMLFontSize * LScaleFactor);
     SynEdit.Gutter.Font.Size := SynEdit.Font.Size;
   end;
 end;
 
-function TFrmPreview.SetOpticalZoom(Value: integer): Integer;
+procedure TFrmPreview.SetHTMLFontSize(const Value: Integer);
 var
-  vaIn, vaOut : OleVariant;
+  LScaleFactor: Single;
 begin
-  vaIn := null;
-  vaOut := null;
-  (*
-  WebBrowser.ExecWB(OLECMDID_OPTICAL_GETZOOMRANGE,OLECMDEXECOPT_DONTPROMPTUSER,vaIn,vaOut);
-  if Value < LoWord(DWORD(vaOut)) then
-      vaIn := LoWord(DWORD(vaOut))
+  if (Value >= MinfontSize) and (Value <= MaxfontSize) then
+  begin
+    TLogPreview.Add('TFrmEditor.SetXMLFontSize'+
+      ' CurrentPPI: '+Self.CurrentPPI.ToString+
+      ' ScaleFactor: '+ScaleFactor.ToString+
+      ' Value: '+Value.ToString);
+    if FHTMLFontSize <> 0 then
+      LScaleFactor := HtmlViewer.DefFontSize / FHTMLFontSize
     else
-      if Value > HiWord(DWORD(vaOut)) then
-        vaIn := HiWord(DWORD(vaOut))
-      else
-        vaIn := Value;
-  WebBrowser.ExecWB(OLECMDID_OPTICAL_ZOOM,OLECMDEXECOPT_DONTPROMPTUSER,vaIn,vaOut);
-
-  Result := vaIn;
-*)
-  Result := Value;
+      LScaleFactor := 1;
+    FHTMLFontSize := Value;
+    HtmlViewer.DefFontSize := Round(FHTMLFontSize * LScaleFactor);
+  end;
 end;
 
 procedure TFrmPreview.SplitterMoved(Sender: TObject);
@@ -429,7 +430,9 @@ end;
 
 procedure TFrmPreview.ToolButtonShowTextClick(Sender: TObject);
 begin
-  PanelEditor.Visible := not PanelEditor.Visible;
+  PanelXML.Visible := not PanelXML.Visible;
+  if not PanelXML.Visible and HTMLViewer.CanFocus then
+    HTMLViewer.SetFocus;
   UpdateGUI;
   SaveSettings;
 end;
@@ -457,12 +460,19 @@ end;
 procedure TFrmPreview.UpdateFromSettings;
 begin
   FPreviewSettings.ReadSettings(SynEdit.Highlighter, nil);
-  if FPreviewSettings.FontSize >= MinfontSize then
-    EditorFontSize := FPreviewSettings.FontSize
+  if FPreviewSettings.XMLFontSize >= MinfontSize then
+    XMLFontSize := FPreviewSettings.XMLFontSize
   else
-    EditorFontSize := MinfontSize;
-  SynEdit.Font.Name := FPreviewSettings.FontName;
-  PanelEditor.Visible := FPreviewSettings.ShowEditor;
+    XMLFontSize := MinfontSize;
+  SynEdit.Font.Name := FPreviewSettings.XMLFontName;
+
+  if FPreviewSettings.HTMLFontSize >= MinfontSize then
+    HTMLFontSize := FPreviewSettings.HTMLFontSize
+  else
+    HTMLFontSize := 12;
+  HtmlViewer.DefFontName := FPreviewSettings.HTMLFontName;
+
+  PanelXML.Visible := FPreviewSettings.ShowXML;
 {$IFNDEF DISABLE_STYLES}
   TStyleManager.TrySetStyle(FPreviewSettings.StyleName, False);
 {$ENDIF}
@@ -486,15 +496,25 @@ begin
   TToolButton(Sender).CheckMenuDropdown;
 end;
 
-procedure TFrmPreview.ToolButtonZommOutClick(Sender: TObject);
+procedure TFrmPreview.ToolButtonZoomOutClick(Sender: TObject);
 begin
-  FPreviewSettings.OpticalZoom := SetOpticalZoom(FPreviewSettings.OpticalZoom - 10);
-  SaveSettings;
+  AdjustZoom(-1);
 end;
 
 procedure TFrmPreview.ToolButtonZoomInClick(Sender: TObject);
 begin
-  FPreviewSettings.OpticalZoom := SetOpticalZoom(FPreviewSettings.OpticalZoom + 10);
+  AdjustZoom(1);
+end;
+
+procedure TFrmPreview.AdjustZoom(AValue: Integer);
+begin
+  if Synedit.Focused then
+    XMLFontSize := XMLFontSize + AValue
+  else
+  begin
+    HTMLFontSize := HTMLFontSize + AValue;
+    MostraFatturaXML;
+  end;
   SaveSettings;
 end;
 

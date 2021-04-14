@@ -196,6 +196,11 @@ type
     CloseAll1: TMenuItem;
     ClientPanel: TPanel;
     PageControl: TPageControl;
+    PopHTMLViewer: TPopupMenu;
+    acZoomIn: TAction;
+    acZoomOut: TAction;
+    Zoom1: TMenuItem;
+    Zoom2: TMenuItem;
     procedure acOpenFileExecute(Sender: TObject);
     procedure acSaveExecute(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -267,6 +272,7 @@ type
     procedure FormMouseWheelDown(Sender: TObject; Shift: TShiftState;
       MousePos: TPoint; var Handled: Boolean);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure acZoomExecute(Sender: TObject);
   private
     FThumbnailResource: TdmThumbnailResources;
     FProcessingFiles: Boolean;
@@ -337,6 +343,8 @@ uses
   , Math
   , Winapi.SHFolder
   , FExplorer.SettingsForm
+  , BegaHtmlPrintPreviewForm
+  , BegaPreview
   ;
 
 {$R *.dfm}
@@ -922,7 +930,7 @@ end;
 
 procedure TfrmMain.acEditCopyExecute(Sender: TObject);
 begin
-  CurrentEditor.CopyToClipboard;
+ CurrentEditor.CopyToClipboard;
 end;
 
 procedure TfrmMain.acEditCutExecute(Sender: TObject);
@@ -1005,14 +1013,12 @@ begin
     FEditorOptions.AssignTo(Editor);
     Editor.MaxScrollWidth := 3000;
     EditingFile.SynEditor := Editor;
-    UpdateFromSettings(Editor);
-    UpdateHighlighter(Editor);
-    Editor.Visible := True;
 
     FEViewer := THtmlViewer.Create(ts);
     FEViewer.Align := alRight;
     FEViewer.Width := ts.Width div 2;
     FEViewer.Parent := ts;
+    FEViewer.PopupMenu := PopHTMLViewer;
 
     ToolBarAllegati := TToolbar.Create(ts);
     ToolBarAllegati.Align := alTop;
@@ -1033,6 +1039,10 @@ begin
     EditingFile.Splitter := Splitter;
     EditingFile.ToolbarAllegati := ToolBarAllegati;
     EditingFile.HTMLViewer := FEViewer;
+
+    UpdateFromSettings(Editor);
+    UpdateHighlighter(Editor);
+    Editor.Visible := True;
 
     //Visualizzo il tabsheet
     ts.Visible := True;
@@ -1267,8 +1277,17 @@ begin
 end;
 
 procedure TfrmMain.actnPrinterSetupExecute(Sender: TObject);
+var
+  PreviewForm: TBegaHtmlPrintPreviewForm;
 begin
-  PrinterSetupDialog.Execute;
+  //PrinterSetupDialog.Execute;
+  PreviewForm := TBegaHtmlPrintPreviewForm.Create(nil);
+  try
+    PreviewForm.HtmlViewer := CurrentEditFile.HTMLViewer;
+    PreviewForm.ShowModal;
+  finally
+    PreviewForm.free;
+  end;
 end;
 
 procedure TfrmMain.actnPrintPreviewExecute(Sender: TObject);
@@ -1309,7 +1328,7 @@ begin
     else
       LScaleFactor := 1;
     CurrentEditor.Font.Size := Round(Value * LScaleFactor);
-    FEditorSettings.FontSize := Value;
+    FEditorSettings.XMLFontSize := Value;
   end;
   FFontSize := Value;
 end;
@@ -1343,13 +1362,15 @@ var
   i : integer;
   EditingFile : TEditingFile;
 begin
-  FEditorSettings.FontName := FEditorOptions.Font.Name;
+  FEditorSettings.XMLFontName := FEditorOptions.Font.Name;
   EditorFontSize := FEditorOptions.Font.Size;
 
   for i := 0 to EditFileList.Count -1 do
   begin
     EditingFile := TEditingFile(EditFileList.items[i]);
     FEditorOptions.AssignTo(EditingFile.SynEditor);
+    EditingFile.HTMLViewer.DefFontName := FEditorSettings.HTMLFontName;
+    EditingFile.HTMLViewer.DefFontSize := FEditorSettings.HTMLFontSize;
   end;
   Statusbar.Panels[STATUSBAR_PANEL_FONTNAME].Text := FEditorOptions.Font.Name;
   Statusbar.Panels[STATUSBAR_PANEL_FONTSIZE].Text := IntToStr(FEditorOptions.Font.Size);
@@ -1361,8 +1382,8 @@ begin
     FEditorSettings.ReadSettings(AEditor.Highlighter, self.FEditorOptions)
   else
     FEditorSettings.ReadSettings(nil, self.FEditorOptions);
-  if FEditorSettings.FontSize >= MinfontSize then
-    EditorFontSize := FEditorSettings.FontSize
+  if FEditorSettings.XMLFontSize >= MinfontSize then
+    EditorFontSize := FEditorSettings.XMLFontSize
   else
     EditorFontSize := MinfontSize;
   InitEditorOptions;
@@ -1418,7 +1439,7 @@ procedure TfrmMain.InitEditorOptions;
 begin
   with FEditorOptions do
   begin
-    Font.Name := FEditorSettings.FontName;
+    Font.Name := FEditorSettings.XMLFontName;
     Font.Size := EditorFontSize;
     TabWidth := 2;
     WantTabs := False;
@@ -1442,6 +1463,18 @@ begin
     //Forzo "change" della pagina
     PageControl.OnChange(PageControl);
   end;
+end;
+
+procedure TfrmMain.acZoomExecute(Sender: TObject);
+var
+  LValue: Integer;
+begin
+  if Sender = acZoomIn then
+    LValue := 1
+  else
+    LValue := -1;
+  CurrentEditFile.HTMLViewer.DefFontSize :=
+    CurrentEditFile.HTMLViewer.DefFontSize + LValue;
 end;
 
 procedure TfrmMain.RecentPopupMenuPopup(Sender: TObject);

@@ -32,7 +32,7 @@ object SVGSettingsForm: TSVGSettingsForm
     Top = 41
     Width = 662
     Height = 451
-    ActivePage = stGeneral
+    ActivePage = tsFont
     Align = alClient
     Images = SettingsImageList
     TabOrder = 0
@@ -56,12 +56,12 @@ object SVGSettingsForm: TSVGSettingsForm
           TabOrder = 0
         end
       end
-      object GroupBox1: TGroupBox
+      object PreviewStyleGroupBox: TGroupBox
         Left = 3
         Top = 68
         Width = 238
         Height = 62
-        Caption = 'Opzioni Stile'
+        Caption = 'Stile anteprima fattura'
         TabOrder = 1
         DesignSize = (
           238
@@ -73,10 +73,33 @@ object SVGSettingsForm: TSVGSettingsForm
           Height = 23
           Anchors = [akLeft, akTop, akRight]
           TabOrder = 0
+          Text = 'Custom'
           Items.Strings = (
             'AssoSoftware'
             'AgenziaEntrate'
             'Custom')
+        end
+      end
+      object IconStyleGroupBox: TGroupBox
+        Left = 2
+        Top = 136
+        Width = 238
+        Height = 62
+        Caption = 'Stile anteprima Icone'
+        TabOrder = 2
+        DesignSize = (
+          238
+          62)
+        object IconStyleSheetComboBox: TComboBox
+          Left = 16
+          Top = 24
+          Width = 209
+          Height = 23
+          Anchors = [akLeft, akTop, akRight]
+          TabOrder = 0
+          Text = 'Default'
+          Items.Strings = (
+            'Default')
         end
       end
     end
@@ -133,50 +156,119 @@ object SVGSettingsForm: TSVGSettingsForm
       Caption = 'Carattere'
       ImageIndex = 1
       ImageName = 'alphabetical-variant'
-      object FontLabel: TLabel
-        Left = 8
-        Top = 8
-        Width = 57
-        Height = 15
-        Caption = 'Font name'
-      end
-      object SizeLabel: TLabel
-        Left = 8
-        Top = 54
-        Width = 63
-        Height = 15
-        Caption = 'Dimensione'
-      end
-      object CbFont: TComboBox
-        Left = 8
-        Top = 25
-        Width = 225
-        Height = 22
-        Style = csOwnerDrawFixed
-        Sorted = True
-        TabOrder = 0
-        OnDrawItem = CbFontDrawItem
-      end
-      object EditFontSize: TEdit
-        Left = 8
-        Top = 71
-        Width = 34
-        Height = 23
-        Alignment = taRightJustify
-        NumbersOnly = True
+      object XMLGroupBox: TGroupBox
+        Left = 16
+        Top = 164
+        Width = 281
+        Height = 149
+        Caption = 'Testo XML'
         TabOrder = 1
-        Text = '12'
+        object FontLabel: TLabel
+          Left = 8
+          Top = 44
+          Width = 57
+          Height = 15
+          Caption = 'Font name'
+        end
+        object SizeLabel: TLabel
+          Left = 8
+          Top = 90
+          Width = 63
+          Height = 15
+          Caption = 'Dimensione'
+        end
+        object XMLFontComboBox: TComboBox
+          Left = 8
+          Top = 61
+          Width = 225
+          Height = 22
+          Style = csOwnerDrawFixed
+          Sorted = True
+          TabOrder = 1
+          OnDrawItem = FontDrawItem
+        end
+        object XMLFontSizeEdit: TEdit
+          Left = 8
+          Top = 107
+          Width = 34
+          Height = 23
+          Alignment = taRightJustify
+          NumbersOnly = True
+          TabOrder = 2
+          Text = '12'
+        end
+        object XMLUpDown: TUpDown
+          Left = 42
+          Top = 107
+          Width = 16
+          Height = 23
+          Associate = XMLFontSizeEdit
+          Min = 8
+          Max = 30
+          Position = 12
+          TabOrder = 3
+        end
+        object ShowXMLCheckBox: TCheckBox
+          Left = 8
+          Top = 24
+          Width = 121
+          Height = 17
+          Caption = 'Mostra testo XML'
+          TabOrder = 0
+        end
       end
-      object FontSizeUpDown: TUpDown
-        Left = 42
-        Top = 71
-        Width = 16
-        Height = 23
-        Associate = EditFontSize
-        Min = 8
-        Max = 30
-        Position = 12
-        TabOrder = 2
+      object HTMLGroupBox: TGroupBox
+        Left = 16
+        Top = 16
+        Width = 281
+        Height = 121
+        Caption = 'Testo HTML (default)'
+        TabOrder = 0
+        object Label1: TLabel
+          Left = 8
+          Top = 19
+          Width = 57
+          Height = 15
+          Caption = 'Font name'
+        end
+        object Label2: TLabel
+          Left = 8
+          Top = 65
+          Width = 63
+          Height = 15
+          Caption = 'Dimensione'
+        end
+        object HTMLFontComboBox: TComboBox
+          Left = 8
+          Top = 36
+          Width = 225
+          Height = 22
+          Style = csOwnerDrawFixed
+          Sorted = True
+          TabOrder = 0
+          OnDrawItem = FontDrawItem
+        end
+        object HTMLFontSizeEdit: TEdit
+          Left = 8
+          Top = 82
+          Width = 34
+          Height = 23
+          Alignment = taRightJustify
+          NumbersOnly = True
+          TabOrder = 1
+          Text = '12'
+        end
+        object HTMLUpDown: TUpDown
+          Left = 42
+          Top = 82
+          Width = 16
+          Height = 23
+          Associate = HTMLFontSizeEdit
+          Min = 8
+          Max = 30
+          Position = 12
+          TabOrder = 2
+        end
       end
     end
     object tsColors: TTabSheet

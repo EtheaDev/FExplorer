@@ -65,16 +65,18 @@ type
   TSettings = class
   private
     FSplitterPos: Integer;
-    FFontSize: Integer;
+    FXMLFontSize: Integer;
     FStyleName: string;
     FUseDarkStyle: boolean;
-    FFontName: string;
-    FShowEditor: Boolean;
+    FXMLFontName: string;
+    FShowXML: Boolean;
     FPreferD2D: Boolean;
     FActivePageIndex: Integer;
     FThemeSelection: TThemeSelection;
-    FOpticalZoom: integer;
     FStylesheetName: string;
+    FHTMLFontSize: Integer;
+    FHTMLFontName: string;
+    FIconStylesheetName: string;
     function GetUseDarkStyle: Boolean;
     procedure SetPreferD2D(const Value: Boolean);
     function GetThemeSectionName: string;
@@ -93,8 +95,8 @@ type
     class var FSettingsPath: string;
     class property SettingsFileName: string read GetSettingsFileName;
 
-    procedure UpdateSettings(const AFontName: string;
-      AFontSize: Integer; AEditorVisible: Boolean);
+    procedure UpdateSettings(const AXMLFontName, AHTMLFontName: string;
+      AXMLFontSize, AHTMLFontSize: Integer; AEditorVisible: Boolean);
     procedure ReadSettings(const ASynEditHighilighter: TSynCustomHighlighter;
       const ASynEditorOptions: TSynEditorOptionsContainer); virtual;
     procedure WriteSettings(const ASynEditHighilighter: TSynCustomHighlighter;
@@ -102,16 +104,18 @@ type
 
     property UseDarkStyle: Boolean read GetUseDarkStyle;
     property ButtonTextColor: TColor read GetButtonTextColor;
-    property FontSize: Integer read FFontSize write FFontSize;
-    property FontName: string read FFontName write FFontName;
+    property XMLFontSize: Integer read FXMLFontSize write FXMLFontSize;
+    property XMLFontName: string read FXMLFontName write FXMLFontName;
+    property HTMLFontSize: Integer read FHTMLFontSize write FHTMLFontSize;
+    property HTMLFontName: string read FHTMLFontName write FHTMLFontName;
     property StyleName: string read FStyleName write FStyleName;
-    property ShowEditor: Boolean read FShowEditor write FShowEditor;
+    property ShowXML: Boolean read FShowXML write FShowXML;
     property SplitterPos: Integer read FSplitterPos write FSplitterPos;
     property PreferD2D: Boolean read FPreferD2D write SetPreferD2D;
     property ActivePageIndex: Integer read FActivePageIndex write FActivePageIndex;
     property ThemeSelection: TThemeSelection read FThemeSelection write FThemeSelection;
-    property OpticalZoom: integer read FOpticalZoom write FOpticalZoom;
     property StylesheetName: string read FStylesheetName write FStylesheetName;
+    property IconStylesheetName: string read FIconStylesheetName write FIconStylesheetName;
   end;
 
   TPreviewSettings = class(TSettings)
@@ -310,15 +314,17 @@ var
   LAttribute: TSynHighlighterAttributes;
 begin
   TLogPreview.Add('ReadSettings '+SettingsFileName);
-  FFontSize := FIniFile.ReadInteger('Global', 'FontSize', 10);
-  FFontName := FIniFile.ReadString('Global', 'FontName', 'Consolas');
-  FShowEditor := FIniFile.ReadInteger('Global', 'ShowEditor', 1) = 1;
+  FXMLFontSize := FIniFile.ReadInteger('Global', 'XMLFontSize', 10);
+  FHTMLFontSize := FIniFile.ReadInteger('Global', 'FontSize', 12);
+  FXMLFontName := FIniFile.ReadString('Global', 'XMLFontName', 'Consolas');
+  FHTMLFontName := FIniFile.ReadString('Global', 'HTMLFontName', 'Serif');
+  FShowXML := FIniFile.ReadInteger('Global', 'ShowXML', 1) = 1;
   FSplitterPos := FIniFile.ReadInteger('Global', 'SplitterPos', 33);
   PreferD2D := Boolean(FIniFile.ReadInteger('Global', 'PreferD2D', -1));
   FActivePageIndex := FIniFile.ReadInteger('Global', 'ActivePageIndex', 0);
-  FOpticalZoom := FIniFile.ReadInteger('Browser', 'OpticalZoom', 100);
   FStyleName := FIniFile.ReadString('Global', 'StyleName', DefaultStyleName);
-  FStylesheetName := FIniFile.ReadString('Global', 'StylesheetName', '');
+  FStylesheetName := FIniFile.ReadString('Global', 'StylesheetName', 'Custom');
+  FIconStylesheetName := FIniFile.ReadString('Global', 'IconStylesheetName', 'Default');
   FThemeSelection := TThemeSelection(FIniFile.ReadInteger('Global', 'ThemeSelection', 0));
   //Select Style by default on Actual Windows Theme
   if FThemeSelection = tsAsWindows then
@@ -359,12 +365,14 @@ begin
     SetGlobalSvgFactory(GetPasSVGFactory);
 end;
 
-procedure TSettings.UpdateSettings(const AFontName: string;
-  AFontSize: Integer; AEditorVisible: Boolean);
+procedure TSettings.UpdateSettings(const AXMLFontName, AHTMLFontName: string;
+  AXMLFontSize, AHTMLFontSize: Integer; AEditorVisible: Boolean);
 begin
-  FontSize := AFontSize;
-  FontName := AFontName;
-  ShowEditor := AEditorVisible;
+  XMLFontSize := AXMLFontSize;
+  XMLFontName := AXMLFontName;
+  HTMLFontSize := AHTMLFontSize;
+  HTMLFontName := AHTMLFontName;
+  ShowXML := AEditorVisible;
 end;
 
 procedure TSettings.WriteSettings(const ASynEditHighilighter: TSynCustomHighlighter;
@@ -374,15 +382,19 @@ var
   LAttribute: TSynHighlighterAttributes;
   LThemeSection: string;
 begin
-  FIniFile.WriteInteger('Global', 'FontSize', FFontSize);
-  FIniFile.WriteString('Global', 'FontName', FFontName);
+  FIniFile.WriteInteger('Global', 'XMLFontSize', FXMLFontSize);
+  FIniFile.WriteInteger('Global', 'HTMLFontSize', FHTMLFontSize);
+
+  FIniFile.WriteString('Global', 'XMLFontName', FXMLFontName);
+  FIniFile.WriteString('Global', 'HTMLFontName', FHTMLFontName);
+
   FIniFile.WriteString('Global', 'StyleName', FStyleName);
-  FIniFile.WriteInteger('Global', 'ShowEditor', Ord(FShowEditor));
+  FIniFile.WriteInteger('Global', 'ShowXML', Ord(FShowXML));
   FIniFile.WriteInteger('Global', 'SplitterPos', FSplitterPos);
   FIniFile.WriteInteger('Global', 'PreferD2D', Ord(FPreferD2D));
   FIniFile.WriteInteger('Global', 'ActivePageIndex', FActivePageIndex);
-  FIniFile.WriteInteger('Browser', 'OpticalZoom', FOpticalZoom);
   FIniFile.WriteString('Global', 'StylesheetName', FStylesheetName);
+  FIniFile.WriteString('Global', 'IconStylesheetName', FIconStylesheetName);
 
   FIniFile.WriteInteger('Global', 'ThemeSelection', Ord(FThemeSelection));
   if (FUseDarkStyle and (LightBackground <> default_darkbackground)) or

@@ -2,7 +2,7 @@ object dmThumbnailResources: TdmThumbnailResources
   OldCreateOrder = False
   Height = 260
   Width = 341
-  object ThumbTemplate: TXMLDocument
+  object DefaultTemplate: TXMLDocument
     NodeIndentStr = #9
     Options = [doNodeAutoIndent]
     XML.Strings = (

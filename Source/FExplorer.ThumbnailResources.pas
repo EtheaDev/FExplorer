@@ -40,7 +40,7 @@ const
 
 type
   TdmThumbnailResources = class(TDataModule)
-    ThumbTemplate: TXMLDocument;
+    DefaultTemplate: TXMLDocument;
     SourceXML: TXMLDocument;
   private
     function Parse: string;
@@ -63,13 +63,13 @@ var
   LXSLTOutput: WideString;
 begin
   Result := '';
-  ThumbTemplate.Active := True;
+  DefaultTemplate.Active := True;
   SourceXML.Active := True;
   try
-    SourceXML.Node.TransformNode(ThumbTemplate.DocumentElement, LXSLTOutput);
+    SourceXML.Node.TransformNode(DefaultTemplate.DocumentElement, LXSLTOutput);
   finally
     SourceXML.Active := False;
-    ThumbTemplate.Active := True;
+    DefaultTemplate.Active := True;
   end;
   Result := LXSLTOutput;
 end;

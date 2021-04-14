@@ -680,11 +680,11 @@ object frmMain: TfrmMain
       OnUpdate = actnEditingUpdate
     end
     object actnEditOptions: TAction
-      Category = 'Impostazioni'
+      Category = 'Edit'
       Caption = 'Impostazioni visualizzatore ...'
       Hint = 'Editor Options'
-      ImageIndex = 28
-      ImageName = 'preferences-desktop'
+      ImageIndex = 44
+      ImageName = 'Support'
       OnExecute = actnEditOptionsExecute
     end
     object actnEnlargeFont: TAction
@@ -716,8 +716,8 @@ object frmMain: TfrmMain
       Category = 'Settings'
       Caption = 'Impostazione stile'
       Hint = 'Impostazioni del visualizzatore (colori, font, temi)'
-      ImageIndex = 0
-      ImageName = 'Style'
+      ImageIndex = 28
+      ImageName = 'preferences-desktop'
       OnExecute = actnColorSettingsExecute
       OnUpdate = actnColorSettingsUpdate
     end
@@ -745,6 +745,20 @@ object frmMain: TfrmMain
       ImageIndex = 5
       ImageName = 'Close-all-folder'
       OnExecute = OpenRecentActionExecute
+    end
+    object acZoomIn: TAction
+      Category = 'HTMLViewer'
+      Caption = 'Zoom +'
+      ImageIndex = 26
+      ImageName = 'plus'
+      OnExecute = acZoomExecute
+    end
+    object acZoomOut: TAction
+      Category = 'HTMLViewer'
+      Caption = 'Zoom -'
+      ImageIndex = 25
+      ImageName = 'Minus'
+      OnExecute = acZoomExecute
     end
   end
   object SaveDialog: TSaveDialog
@@ -1112,6 +1126,12 @@ object frmMain: TfrmMain
         CollectionName = 'fattura-elettronica-gray'
         Disabled = False
         Name = 'fattura-elettronica-gray'
+      end
+      item
+        CollectionIndex = 41
+        CollectionName = 'Support'
+        Disabled = False
+        Name = 'Support'
       end>
     ImageCollection = dmResources.SVGIconImageCollection
     Width = 24
@@ -1123,5 +1143,16 @@ object frmMain: TfrmMain
     OnPopup = RecentPopupMenuPopup
     Left = 456
     Top = 216
+  end
+  object PopHTMLViewer: TPopupMenu
+    Images = VirtualImageList
+    Left = 528
+    Top = 152
+    object Zoom1: TMenuItem
+      Action = acZoomIn
+    end
+    object Zoom2: TMenuItem
+      Action = acZoomOut
+    end
   end
 end

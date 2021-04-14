@@ -51,7 +51,8 @@ uses
   FExplorer.SettingsForm in 'FExplorer.SettingsForm.pas' {SVGSettingsForm},
   FExplorer.Registry in 'FExplorer.Registry.pas',
   FExplorer.InvoiceToImage in 'FExplorer.InvoiceToImage.pas',
-  FExplorer.ThumbnailResources in 'FExplorer.ThumbnailResources.pas' {dmThumbnailResources: TDataModule};
+  FExplorer.ThumbnailResources in 'FExplorer.ThumbnailResources.pas' {dmThumbnailResources: TDataModule},
+  BegaHtmlPrintPreviewForm in '..\Ext\HTMLViewer\Source\BegaHtmlPrintPreviewForm.pas';
 
 {$R *.res}
 

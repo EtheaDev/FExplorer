@@ -64,11 +64,6 @@ type
     cbBackground: TCheckBox;
     OpenDialog: TOpenDialog;
     SettingsImageList: TSVGIconImageList;
-    FontLabel: TLabel;
-    CbFont: TComboBox;
-    SizeLabel: TLabel;
-    EditFontSize: TEdit;
-    FontSizeUpDown: TUpDown;
     ElementColorGroupBox: TGroupBox;
     ForegroundColorBox: TColorBox;
     ForegroundColorLabel: TLabel;
@@ -84,8 +79,23 @@ type
     ResetButton: TButton;
     RenderingGroupBox: TGroupBox;
     PreferD2DCheckBox: TCheckBox;
-    GroupBox1: TGroupBox;
+    PreviewStyleGroupBox: TGroupBox;
     StylesheetComboBox: TComboBox;
+    XMLGroupBox: TGroupBox;
+    FontLabel: TLabel;
+    XMLFontComboBox: TComboBox;
+    SizeLabel: TLabel;
+    XMLFontSizeEdit: TEdit;
+    XMLUpDown: TUpDown;
+    HTMLGroupBox: TGroupBox;
+    Label1: TLabel;
+    Label2: TLabel;
+    HTMLFontComboBox: TComboBox;
+    HTMLFontSizeEdit: TEdit;
+    HTMLUpDown: TUpDown;
+    IconStyleGroupBox: TGroupBox;
+    IconStyleSheetComboBox: TComboBox;
+    ShowXMLCheckBox: TCheckBox;
     procedure BoxElementsClick(Sender: TObject);
     procedure cbForegroundClick(Sender: TObject);
     procedure cbBackgroundClick(Sender: TObject);
@@ -103,7 +113,7 @@ type
     procedure ThemesRadioGroupClick(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure ResetButtonClick(Sender: TObject);
-    procedure CbFontDrawItem(Control: TWinControl; Index: Integer; Rect: TRect;
+    procedure FontDrawItem(Control: TWinControl; Index: Integer; Rect: TRect;
       State: TOwnerDrawState);
   private
     FHighlighter: TSynCustomHighlighter;
@@ -360,10 +370,10 @@ begin
   RefreshDefaultCheckBox;
 end;
 
-procedure TSVGSettingsForm.CbFontDrawItem(Control: TWinControl; Index: Integer;
+procedure TSVGSettingsForm.FontDrawItem(Control: TWinControl; Index: Integer;
   Rect: TRect; State: TOwnerDrawState);
 begin
-  with CbFont do
+  with Control as TComboBox do
   begin
     Canvas.fillrect(rect);
     Canvas.Font.Name  := Items[Index];
@@ -480,7 +490,8 @@ end;
 
 procedure TSVGSettingsForm.FormCreate(Sender: TObject);
 begin
-  CbFont.Items.Assign(Screen.Fonts);
+  XMLFontComboBox.Items.Assign(Screen.Fonts);
+  HTMLFontComboBox.Items.Assign(Screen.Fonts);
   tsColors.TabVisible := false;
   stGeneral.TabVisible := false;
   tsFont.TabVisible := false;
@@ -522,10 +533,17 @@ begin
   SettingsImageList.FixedColor := ASettings.ButtonTextColor;
   FFileName := ASettings.SettingsFileName;
   ThemesRadioGroup.ItemIndex := Ord(ASettings.ThemeSelection);
-  CbFont.ItemIndex := CbFont.Items.IndexOf(ASettings.FontName);
-  FontSizeUpDown.Position := ASettings.FontSize;
+
+  ShowXMLCheckBox.Checked := ASettings.ShowXML;
+  XMLFontComboBox.ItemIndex := XMLFontComboBox.Items.IndexOf(ASettings.XMLFontName);
+  XMLUpDown.Position := ASettings.XMLFontSize;
+
+  HTMLFontComboBox.ItemIndex := HTMLFontComboBox.Items.IndexOf(ASettings.HTMLFontName);
+  HTMLUpDown.Position := ASettings.HTMLFontSize;
+
   PreferD2DCheckBox.Checked := ASettings.PreferD2D;
   StylesheetComboBox.ItemIndex := StylesheetComboBox.Items.IndexOf(ASettings.StylesheetName);
+  IconStyleSheetComboBox.ItemIndex := IconStyleSheetComboBox.Items.IndexOf(ASettings.IconStylesheetName);
   PopulateAvailThemes;
 end;
 
@@ -552,11 +570,19 @@ procedure TSVGSettingsForm.UpdateSettings(ASettings: TSettings);
 begin
   ASettings.ActivePageIndex := pc.ActivePageIndex;
   ASettings.ThemeSelection := TThemeSelection(ThemesRadioGroup.ItemIndex);
-  ASettings.FontName := CbFont.Text;
-  ASettings.FontSize := FontSizeUpDown.Position;
+
+  ASettings.ShowXML := ShowXMLCheckBox.Checked;
+  ASettings.XMLFontName := XMLFontComboBox.Text;
+  ASettings.XMLFontSize := XMLUpDown.Position;
+
+  ASettings.HTMLFontName := HTMLFontComboBox.Text;
+  ASettings.HTMLFontSize := HTMLUpDown.Position;
+
   ASettings.StyleName := SelectedStyleName;
   ASettings.PreferD2D := PreferD2DCheckBox.Checked;
+
   ASettings.StylesheetName := StylesheetComboBox.Text;
+  ASettings.IconStylesheetName := IconStyleSheetComboBox.Text;
 end;
 
 procedure TSVGSettingsForm.MenuButtonGroupButtonClicked(Sender: TObject;

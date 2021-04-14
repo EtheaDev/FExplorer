@@ -353,7 +353,7 @@ begin
   FZoom := 1.0;
   ZoomBox.ItemIndex := 0;
   ContentZoomBox.ItemIndex := 6;
-  UnitsBox.ItemIndex := 0;
+  UnitsBox.ItemIndex := 1;
   loadPreviewCursors;
 //  ZoomingClick(Zooming);
   FMFPrinter := TBegaMetaFilePrinter.Create(Self);

@@ -75,12 +75,11 @@ object FrmPreview: TFrmPreview
         Caption = 'Zoom +'
         ImageIndex = 6
         ImageName = 'plus'
-        Visible = False
         OnClick = ToolButtonZoomInClick
         OnMouseEnter = ToolButtonMouseEnter
         OnMouseLeave = ToolButtonMouseLeave
       end
-      object ToolButtonZommOut: TToolButton
+      object ToolButtonZoomOut: TToolButton
         Left = 190
         Top = 0
         Cursor = crHandPoint
@@ -89,8 +88,7 @@ object FrmPreview: TFrmPreview
         Caption = 'Zoom -'
         ImageIndex = 7
         ImageName = 'minus'
-        Visible = False
-        OnClick = ToolButtonZommOutClick
+        OnClick = ToolButtonZoomOutClick
         OnMouseEnter = ToolButtonMouseEnter
         OnMouseLeave = ToolButtonMouseLeave
       end
@@ -143,7 +141,7 @@ object FrmPreview: TFrmPreview
       end
     end
   end
-  object PanelEditor: TPanel
+  object PanelXML: TPanel
     Left = 0
     Top = 35
     Width = 672
