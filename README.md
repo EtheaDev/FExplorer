@@ -52,8 +52,10 @@ Per installare manualmente FExplorer.dll seguire questi step:
 
 ## Release Notes ##
 
-26 Mar 2021
+14 Apr 2021
+- Versione 1.0.0
 
+26 Mar 2021
 - Creazione Repo
 
 ## Credits
