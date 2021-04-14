@@ -32,9 +32,9 @@ object FrmAbout: TFrmAbout
   object LabelVersion: TLabel
     Left = 229
     Top = 64
-    Width = 35
+    Width = 41
     Height = 13
-    Caption = 'Version'
+    Caption = 'Versione'
   end
   object Panel1: TPanel
     Left = 0
@@ -61,7 +61,7 @@ object FrmAbout: TFrmAbout
       Top = 16
       Width = 125
       Height = 25
-      Caption = 'Submit issue...'
+      Caption = 'Segnala problema...'
       ImageIndex = 0
       TabOrder = 1
       OnClick = btnIssuesClick
@@ -71,7 +71,7 @@ object FrmAbout: TFrmAbout
       Top = 16
       Width = 125
       Height = 25
-      Caption = 'Check for updates'
+      Caption = 'Verifica aggiornamenti'
       ImageIndex = 3
       TabOrder = 2
       Visible = False

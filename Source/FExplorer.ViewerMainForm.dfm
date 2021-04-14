@@ -138,7 +138,7 @@ object frmMain: TfrmMain
         Width = 63
         Height = 39
         AutoSize = False
-        Caption = 'Retroilluminazione %:'
+        Caption = 'Luce %:'
         WordWrap = True
       end
       object BackgroundTrackBar: TTrackBar

@@ -60,10 +60,10 @@ Name: Viewer; Description: Visualizzatore Fattura Elettronica; Flags: fixed; Typ
 Name: ShellExtensions; Description: Fattura Elettronica Explorer (integrato in Windows); Types: custom compact full
 
 [Registry]
-Root: HKCR; SubKey: .xml; ValueType: string; ValueData: Open; Flags: uninsdeletekey;
-Root: HKCR; SubKey: Open; ValueType: string; ValueData: File Fattura elettronica; Flags: uninsdeletekey;
-Root: HKCR; SubKey: Open\Shell\Open\Command; ValueType: string; ValueData: """{app}\FEViewer.exe"" ""%1"""; Flags: uninsdeletevalue
-Root: HKCR; Subkey: Open\DefaultIcon; ValueType: string; ValueData: {app}\FEViewer.exe,0; Flags: uninsdeletevalue
+Root: "HKCR"; Subkey: ".xml"; ValueType: string; ValueData: "Open"; Flags: uninsdeletekey
+Root: "HKCR"; Subkey: "OpenFEViewer"; ValueType: string; ValueData: "File Fattura elettronica"; Flags: uninsdeletekey
+Root: "HKCR"; Subkey: "OpenFEViewer\Shell\Open\Command"; ValueType: string; ValueData: """{app}\FEViewer.exe"" ""%1"""; Flags: uninsdeletevalue
+Root: "HKCR"; Subkey: "OpenFEViewer\DefaultIcon"; ValueType: string; ValueData: "{app}\FEViewer.exe,0"; Flags: uninsdeletevalue
 
 [Code]
 function InitializeSetup(): Boolean;

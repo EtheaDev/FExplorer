@@ -46,7 +46,7 @@ object FrmPreview: TFrmPreview
       Align = alClient
       AutoSize = True
       ButtonHeight = 30
-      ButtonWidth = 87
+      ButtonWidth = 110
       EdgeInner = esNone
       EdgeOuter = esNone
       Images = SVGIconImageList
@@ -58,7 +58,7 @@ object FrmPreview: TFrmPreview
         Top = 0
         Cursor = crHandPoint
         AutoSize = True
-        Caption = 'Hide text'
+        Caption = 'Nascondi XML'
         ImageIndex = 1
         ImageName = 'Hide-Text'
         Visible = False
@@ -67,38 +67,54 @@ object FrmPreview: TFrmPreview
         OnMouseLeave = ToolButtonMouseLeave
       end
       object ToolButtonZoomIn: TToolButton
-        Left = 85
+        Left = 111
         Top = 0
         Cursor = crHandPoint
-        Hint = 'Zoom in (increase font size)'
+        Hint = 'Zoom + (aumento lo zoom)'
         AutoSize = True
-        Caption = 'Zoom In'
+        Caption = 'Zoom +'
         ImageIndex = 6
         ImageName = 'plus'
+        Visible = False
         OnClick = ToolButtonZoomInClick
         OnMouseEnter = ToolButtonMouseEnter
         OnMouseLeave = ToolButtonMouseLeave
       end
       object ToolButtonZommOut: TToolButton
-        Left = 166
+        Left = 190
         Top = 0
         Cursor = crHandPoint
-        Hint = 'Zoom out (decrease font size)'
+        Hint = 'Zoom - (diminuisce lo zoom)'
         AutoSize = True
-        Caption = 'Zoom Out'
+        Caption = 'Zoom -'
         ImageIndex = 7
         ImageName = 'minus'
+        Visible = False
         OnClick = ToolButtonZommOutClick
         OnMouseEnter = ToolButtonMouseEnter
         OnMouseLeave = ToolButtonMouseLeave
       end
-      object ToolButtonAbout: TToolButton
-        Left = 257
+      object ToolButtonSettings: TToolButton
+        Left = 265
         Top = 0
         Cursor = crHandPoint
-        Hint = 'Show about...'
+        Hint = 'Modifica impostazioni...'
         AutoSize = True
-        Caption = 'About...'
+        Caption = 'Impostazioni...'
+        ImageIndex = 12
+        ImageName = 'preferences-desktop'
+        Visible = False
+        OnClick = ToolButtonSettingsClick
+        OnMouseEnter = ToolButtonMouseEnter
+        OnMouseLeave = ToolButtonMouseLeave
+      end
+      object ToolButtonAbout: TToolButton
+        Left = 379
+        Top = 0
+        Cursor = crHandPoint
+        Hint = 'Mostra info...'
+        AutoSize = True
+        Caption = 'Info...'
         ImageIndex = 2
         ImageName = 'about'
         Visible = False
@@ -106,34 +122,19 @@ object FrmPreview: TFrmPreview
         OnMouseEnter = ToolButtonMouseEnter
         OnMouseLeave = ToolButtonMouseLeave
       end
-      object ToolButtonSettings: TToolButton
-        Left = 337
-        Top = 0
-        Cursor = crHandPoint
-        Hint = 'Preview settings...'
-        AutoSize = True
-        Caption = 'Settings...'
-        ImageIndex = 4
-        ImageName = 'Style'
-        Visible = False
-        OnClick = ToolButtonSettingsClick
-        OnMouseEnter = ToolButtonMouseEnter
-        OnMouseLeave = ToolButtonMouseLeave
-      end
       object SeparatorEditor: TToolButton
-        Left = 427
+        Left = 448
         Top = 0
         Width = 8
-        Caption = 'SeparatorEditor'
         ImageName = 'settings'
         Style = tbsSeparator
       end
       object ToolButtonReformat: TToolButton
-        Left = 435
+        Left = 456
         Top = 0
-        Hint = 'Reformat XML text'
+        Hint = 'Riformatta testo XML'
         AutoSize = True
-        Caption = 'Format'
+        Caption = 'Formatta'
         ImageIndex = 10
         ImageName = 'Reformat'
         OnClick = ToolButtonReformatClick
@@ -149,7 +150,6 @@ object FrmPreview: TFrmPreview
     Height = 110
     Align = alTop
     BevelOuter = bvNone
-    Caption = 'PanelEditor'
     TabOrder = 1
     Visible = False
     object SynEdit: TSynEdit
@@ -317,6 +317,18 @@ object FrmPreview: TFrmPreview
         CollectionName = 'attachment'
         Disabled = False
         Name = 'attachment'
+      end
+      item
+        CollectionIndex = 28
+        CollectionName = 'preferences-desktop'
+        Disabled = False
+        Name = 'preferences-desktop'
+      end
+      item
+        CollectionIndex = 16
+        CollectionName = 'Print-preview'
+        Disabled = False
+        Name = 'Print-preview'
       end>
     ImageCollection = dmResources.SVGIconImageCollection
     Width = 24

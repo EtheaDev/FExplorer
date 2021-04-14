@@ -30,43 +30,58 @@ object dmThumbnailResources: TdmThumbnailResources
       #9#9'<xsl:value-of select="$year"/>'
       #9'</xsl:template>'
       #9'<xsl:template match="/">'
+      #9'<xsl:if test="a:FatturaElettronica">'
+      '        <xsl:variable name="TD">'
       
-        #9#9'<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"' +
-        ' version="1">'
+        '            <xsl:value-of select="a:FatturaElettronica/FatturaEl' +
+        'ettronicaBody[1]/DatiGenerali/DatiGeneraliDocumento/TipoDocument' +
+        'o"/>'
+      '        </xsl:variable>'
       
-        #9#9#9'<path style="opacity:0.2" d="m 14.5,7.9999999 c -1.385,0 -2.5' +
-        ',1.115 -2.5,2.5000001 v 45 c 0,1.385 1.115,2.5 2.5,2.5 h 35 C 50' +
-        '.885,58 52,56.885 52,55.5 V 23 L 38.25,21.75 37,7.9999999 Z"/>'
+        #9#9'<svg width="210mm" height="210mm" version="1.1" viewBox="0 0 2' +
+        '10 210" xmlns="http://www.w3.org/2000/svg">'
+      '        <xsl:choose>'
+      '            <xsl:when test="$TD='#39'TD01'#39' or $TD='#39'TD02'#39'">'
       
-        #9#9#9'<path fill="#e4e4e4" d="m14.5 7c-1.385 0-2.5 1.115-2.5 2.5v45' +
-        'c0 1.385 1.115 2.5 2.5 2.5h35c1.385 0 2.5-1.115 2.5-2.5v-32.5l-1' +
-        '3.75-1.25-1.25-13.75z"/>'
+        #9#9'       <path fill="darkblue" d="m15 5 145 1.9e-6 45 45v145c0 5' +
+        '.54-4.46 10-10 10h-180c-5.54 0-10-4.46-10-10v-180c0-5.54 4.46-10' +
+        ' 10-10z"/>'
+      '            </xsl:when>'
+      '            <xsl:when test="$TD='#39'TD24'#39' or $TD='#39'TD25'#39'">'
       
-        #9#9#9'<path style="opacity:0.2" d="M 37,7.9999999 V 20.5 c 0,1.3808' +
-        ' 1.1193,2.5 2.5,2.5 H 52 Z"/>'
+        #9#9'       <path fill="darkgreen" d="m15 5 145 1.9e-6 45 45v145c0 ' +
+        '5.54-4.46 10-10 10h-180c-5.54 0-10-4.46-10-10v-180c0-5.54 4.46-1' +
+        '0 10-10z"/>'
+      '            </xsl:when>'
+      '            <xsl:otherwise>'
       
-        #9#9#9'<path fill="#fafafa" d="m37 7v12.5c0 1.3808 1.1193 2.5 2.5 2.' +
-        '5h12.5l-15-15z"/>'
+        #9#9'       <path fill="darkred" d="m15 5 145 1.9e-6 45 45v145c0 5.' +
+        '54-4.46 10-10 10h-180c-5.54 0-10-4.46-10-10v-180c0-5.54 4.46-10 ' +
+        '10-10z"/>'
+      '            </xsl:otherwise>'
+      '        </xsl:choose>'
       
-        #9#9#9'<text font-family="Segoe UI" font-size="6" style="fill:red;fo' +
-        'nt-weight: bold;">'
-      ''
-      #9#9#9#9'<xsl:if test="a:FatturaElettronica">'
-      ''
-      #9#9#9#9#9'<tspan x="13" y="45">'
-      #9#9#9#9#9#9'<!--Cliente-->'
+        #9#9'   <path d="m205 50c-12.913-0.0125-22.087 0.03402-35 0-8.1511-' +
+        '0.06177-10.038-5.8522-10-10v-35z" fill="#b1d1e0"/>'
+      
+        #9#9'   <text font-family="Segoe UI" font-size="22" style="fill:whi' +
+        'te">'
+      #9#9#9#9#9'<tspan x="13" y="130">'
+      #9#9#9#9#9#9'<!--FORNITORE-->'
       
         #9#9#9#9#9#9'<xsl:value-of select="a:FatturaElettronica/FatturaElettron' +
         'icaHeader/CedentePrestatore/DatiAnagrafici[1]/Anagrafica/Denomin' +
         'azione"/>'
       #9#9#9#9#9'</tspan>'
-      ''
-      #9#9#9#9#9'<tspan x="13" y="15">'
-      #9#9#9#9#9#9'<xsl:variable name="TD">'
+      #9#9#9#9#9'<tspan x="13" y="160">'
+      #9#9#9#9#9#9'<!--CLIENTE-->'
       
-        #9#9#9#9#9#9#9'<xsl:value-of select="a:FatturaElettronica/FatturaElettro' +
-        'nicaBody[1]/DatiGenerali/DatiGeneraliDocumento/TipoDocumento"/>'
-      #9#9#9#9#9#9'</xsl:variable>'
+        #9#9#9#9#9#9'<xsl:value-of select="a:FatturaElettronica/FatturaElettron' +
+        'icaHeader/CessionarioCommittente/DatiAnagrafici[1]/Anagrafica/De' +
+        'nominazione"/>'
+      #9#9#9#9#9'</tspan>'
+      #9#9#9#9#9'<tspan x="13" y="40" font-size="32"  font-weight="bold">'
+      #9#9#9#9#9#9'<!--TIPO FATTURA-->'
       #9#9#9#9#9#9'<xsl:choose>'
       #9#9#9#9#9#9#9'<xsl:when test="$TD='#39'TD01'#39'">Fattura</xsl:when>'
       #9#9#9#9#9#9#9'<xsl:when test="$TD='#39'TD02'#39'">Acc/Fatt.</xsl:when>'
@@ -90,12 +105,14 @@ object dmThumbnailResources: TdmThumbnailResources
       #9#9#9#9#9#9#9'</xsl:when>'
       #9#9#9#9#9#9'</xsl:choose>'
       #9#9#9#9#9'</tspan>'
-      #9#9#9#9#9'<tspan x="13" y="25">'
+      #9#9#9#9#9'<tspan x="13" y="70">'
+      #9#9#9#9#9#9'<!--NUMERO FATTURA-->'
       
         #9#9#9#9#9#9'<xsl:value-of select="a:FatturaElettronica/FatturaElettron' +
         'icaBody[1]/DatiGenerali/DatiGeneraliDocumento/Numero"/>'
       #9#9#9#9#9'</tspan>'
-      #9#9#9#9#9'<tspan x="13" y="35">'
+      #9#9#9#9#9'<tspan x="13" y="105" font-size="32" font-weight="bold">'
+      #9#9#9#9#9#9'<!--DATA FATTURA-->'
       #9#9#9#9#9#9'<xsl:call-template name="FormatDateIta">'
       
         #9#9#9#9#9#9#9'<xsl:with-param name="DateTime" select="a:FatturaElettron' +
@@ -103,32 +120,38 @@ object dmThumbnailResources: TdmThumbnailResources
         '/Data"/>'
       #9#9#9#9#9#9'</xsl:call-template>'
       #9#9#9#9#9'</tspan>'
-      #9#9#9#9#9'<tspan x="13" y="55">'
+      #9#9#9#9#9'<tspan x="13" y="195" font-size="32"  font-weight="bold">'
+      #9#9#9#9#9#9'<!--IMPORTO TOTALE-->'
+      #9#9#9#9#9#9'<xsl:choose>'
       
-        #9#9#9#9#9#9'<xsl:for-each select="a:FatturaElettronica/FatturaElettron' +
-        'icaBody[1]/DatiPagamento">'
-      #9#9#9#9#9#9#9#9'<xsl:for-each select="DettaglioPagamento">'
+        #9#9#9#9#9#9#9'<xsl:when test="a:FatturaElettronica/FatturaElettronicaBo' +
+        'dy[1]/DatiGenerali/DatiGeneraliDocumento/ImportoTotaleDocumento"' +
+        '>'
       
-        #9#9#9#9#9#9#9#9#9'  <xsl:value-of select="format-number(sum(ImportoPagame' +
-        'nto), '#39#8364' ###.###.##0,00'#39', '#39'euro'#39')"/>'
-      #9#9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9#9'<!--'
-      #9#9#9#9#9#9#9#9#9'<xsl:if test="ImportoPagamento">'
+        #9#9#9#9#9#9#9#9'<xsl:value-of select="format-number(a:FatturaElettronica' +
+        '/FatturaElettronicaBody[1]/DatiGenerali/DatiGeneraliDocumento/Im' +
+        'portoTotaleDocumento, '#39#8364' ###.###.##0,00'#39', '#39'euro'#39')"/>'
+      #9#9#9#9#9#9#9'</xsl:when>'
+      #9#9#9#9#9#9#9'<xsl:otherwise>'
       
-        #9#9#9#9#9#9#9#9#9'<xsl:value-of select="format-number(ImportoPagamento, '#39 +
-        '###.###.##0,00'#39', '#39'euro'#39')"/>'
-      #9#9#9#9#9#9#9#9'</xsl:if>'
+        #9#9#9#9#9#9#9'<xsl:for-each select="a:FatturaElettronica/FatturaElettro' +
+        'nicaBody[1]/DatiPagamento">'
+      #9#9#9#9#9#9#9#9#9'<xsl:for-each select="DettaglioPagamento">'
+      
+        #9#9#9#9#9#9#9#9#9#9'  <xsl:value-of select="format-number(sum(ImportoPagam' +
+        'ento), '#39#8364' ###.###.##0,00'#39', '#39'euro'#39')"/>'
+      #9#9#9#9#9#9#9#9#9'</xsl:for-each>'
       #9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9#9'-->'
-      #9#9#9#9#9#9'</xsl:for-each>'
+      #9#9#9#9#9#9#9'</xsl:otherwise>'
+      #9#9#9#9#9#9'</xsl:choose>'
       #9#9#9#9#9'</tspan>'
-      #9#9#9#9'</xsl:if>'
       #9#9#9'</text>'
       
         #9#9#9'<path style="opacity:0.2;fill:#ffffff" d="m 14.5,6.9999999 c ' +
         '-1.385,0 -2.5,1.115 -2.5,2.5 V 10.5 C 12,9.1149999 13.115,7.9999' +
         '999 14.5,7.9999999 H 37 c 0,-1 0,0 0,-1 z"/>'
       #9#9'</svg>'
+      #9#9#9#9'</xsl:if>'
       #9'</xsl:template>'
       '</xsl:stylesheet>')
     Left = 35

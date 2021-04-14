@@ -169,28 +169,35 @@ begin
 
   FileVersionStr:=uMisc.GetFileVersion(GetModuleLocation());
   {$IFDEF WIN32}
-  LabelVersion.Caption := Format('Version %s (32bit)', [FileVersionStr]);
+  LabelVersion.Caption := Format('Versione %s (32bit)', [FileVersionStr]);
   {$ELSE}
-  LabelVersion.Caption := Format('Version %s (64bit)', [FileVersionStr]);
+  LabelVersion.Caption := Format('Versione %s (64bit)', [FileVersionStr]);
   {$ENDIF}
-  MemoCopyRights.Lines.Add('Authors:');
+  MemoCopyRights.Lines.Add('Autori:');
   MemoCopyRights.Lines.Add('Carlo Barazzetta & Andrea Magni');
-  MemoCopyRights.Lines.Add('Custom icons: Ariel Montes');
   MemoCopyRights.Lines.Add('https://github.com/EtheaDev/FExplorer');
   MemoCopyRights.Lines.Add('Copyright © 2021 all rights reserved.');
   MemoCopyRights.Lines.Add('');
-  MemoCopyRights.Lines.Add('Third Party libraries and tools used from Ethea:');
+  MemoCopyRights.Lines.Add('Librerie di terze parti di Ethea:');
   MemoCopyRights.Lines.Add('SVGIconImageList https://github.com/EtheaDev/SVGIconImageList/');
   MemoCopyRights.Lines.Add('');
   MemoCopyRights.Lines.Add('The Initial Developer of the Original Code is Rodrigo Ruz V.');
   MemoCopyRights.Lines.Add('Portions created by Rodrigo Ruz V. are Copyright © 2011-2021 Rodrigo Ruz V.');
   MemoCopyRights.Lines.Add('https://github.com/RRUZ/delphi-preview-handler');
   MemoCopyRights.Lines.Add('');
-  MemoCopyRights.Lines.Add('Third Party libraries and tools used');
+  MemoCopyRights.Lines.Add('Librerie di terze parti utilizzate');
   MemoCopyRights.Lines.Add('SynEdit http://synedit.svn.sourceforge.net/viewvc/synedit/ all rights reserved.');
   MemoCopyRights.Lines.Add('');
   MemoCopyRights.Lines.Add('TSVG Library - http://www.mwcs.de');
   MemoCopyRights.Lines.Add('Original version © 2005, 2008 Martin Walter.');
+  MemoCopyRights.Lines.Add('');
+  MemoCopyRights.Lines.Add('HTMLViewer - https://github.com/BerndGabriel/HtmlViewer');
+  MemoCopyRights.Lines.Add('Copyright (c) 1995 - 2008 by L. David Baldwin');
+  MemoCopyRights.Lines.Add('Copyright (c) 1995 - 2008 by Anders Melander (DitherUnit.pas)');
+  MemoCopyRights.Lines.Add('Copyright (c) 1995 - 2008 by Ron Collins (HtmlGif1.pas)');
+  MemoCopyRights.Lines.Add('Copyright (c) 2008 - 2009 by Sebastian Zierer (Delphi 2009 Port)');
+  MemoCopyRights.Lines.Add('Copyright (c) 2008 - 2010 by Arvid Winkelsdorf (Fixes)');
+  MemoCopyRights.Lines.Add('Copyright (c) 2009 - 2019 by HtmlViewer Team');
   MemoCopyRights.Lines.Add('');
 end;
 

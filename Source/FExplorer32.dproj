@@ -148,6 +148,7 @@
         <DCCReference Include="FExplorer.About.pas">
             <Form>FrmAbout</Form>
         </DCCReference>
+        <DCCReference Include="..\Ext\HTMLViewer\Source\BegaHtmlPrintPreviewForm.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

@@ -41,8 +41,8 @@ uses
 
 const
   MENU_ITEM_PREVIEW_INVOICE = 0;
-  MENU_ITEM_PRINT_INVOICE = 1;
-  MENU_ITEM_COUNT = 2;
+  //MENU_ITEM_PRINT_INVOICE = 1;
+  MENU_ITEM_COUNT = 1;
 
 type
   TFEContextMenu = class(TComObject, IUnknown,
@@ -158,24 +158,23 @@ begin
   LMenuIndex := indexMenu;
   InsertMenu(Menu, LMenuIndex, MF_STRING or MF_BYPOSITION, idCmdFirst+MENU_ITEM_PREVIEW_INVOICE,
     'Apri con Anteprima Fattura Elettronica...');
+  (*
   Inc(LMenuIndex);
   InsertMenu(Menu, LMenuIndex, MF_STRING or MF_BYPOSITION, idCmdFirst+MENU_ITEM_PRINT_INVOICE,
-    'Stampa Fattura Elettronica...');
+    'Genera PDF della Fattura Elettronica...');
+  *)
   // Return number of menu items added
   Result := MENU_ITEM_COUNT;
 end;
 
 function TFEContextMenu.InvokeCommand(var lpici: TCMInvokeCommandInfo): HResult;
 var
-  LStringStream: TStringStream;
-  LSettings: TPreviewSettings;
-  LXMLText: string;
   Reg: TRegistry;
   LCommand: string;
 
   procedure EditorNotInstalled;
   begin
-    MessageBox(0, 'Editor not installed', 'Fattura Elettronica Explorer', MB_OK);
+    MessageBox(0, 'Editor not installed', 'Visualizzatore Fattura Elettronica', MB_OK);
   end;
 
 begin
@@ -200,7 +199,7 @@ begin
     try
       Reg.RootKey := HKEY_CLASSES_ROOT;
       TLogPreview.Add('TFEContextMenuHandler: Open Registry');
-      if Reg.OpenKey('Open\Shell\Open\Command', False) then
+      if Reg.OpenKey('OpenFEViewer\Shell\Open\Command', False) then
       begin
         LCommand := Reg.ReadString('');
         LCommand := StringReplace(LCommand,' "%1"','', []);
@@ -216,6 +215,7 @@ begin
     finally
       Reg.Free;
     end;
+  (*
   end
   else if LoWord(lpici.lpVerb) = MENU_ITEM_PRINT_INVOICE then
   begin
@@ -235,7 +235,7 @@ begin
     finally
       LStringStream.Free;
     end;
-
+  *)
   end;
 end;
 
@@ -319,12 +319,12 @@ begin
   try
     if Register then
     begin
-      //New registration only for .svg files
+      //New registration only for .xml files
       {$IFDEF WIN64}
-      if Reg.OpenKey('\*\ShellEx\ContextMenuHandlers\SVGContextMenu', True) then
+      if Reg.OpenKey('\*\ShellEx\ContextMenuHandlers\FEContextMenu', True) then
         Reg.WriteString('', GUIDToString(MyClass_FEContextMenu_64))
       {$ELSE}
-      if Reg.OpenKey('\*\ShellEx\ContextMenuHandlers\SVGContextMenu32', True) then
+      if Reg.OpenKey('\*\ShellEx\ContextMenuHandlers\FEContextMenu32', True) then
         Reg.WriteString('', GUIDToString(MyClass_FEContextMenu_32))
       {$ENDIF}
     end
@@ -333,7 +333,7 @@ begin
       //Old registration
       if Reg.OpenKey('\*\ShellEx\ContextMenuHandlers\FEContextMenu', False) then
         Reg.DeleteKey('\*\ShellEx\ContextMenuHandlers\FEContextMenu');
-      //New registration only for .svg files
+      //New registration only for .xml files
       {$IFDEF WIN64}
       if Reg.OpenKey('\*\ShellEx\ContextMenuHandlers\FEContextMenu', True) then
         Reg.DeleteKey('\*\ShellEx\ContextMenuHandlers\FEContextMenu');

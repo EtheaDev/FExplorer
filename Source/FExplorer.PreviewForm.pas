@@ -254,15 +254,15 @@ begin
   begin
     Splitter.Top := PanelEditor.Top + PanelEditor.Height;
     Splitter.Visible := True;
-    ToolButtonShowText.Caption := 'Hide Text';
-    ToolButtonShowText.Hint := 'Hide content of SVG file';
+    ToolButtonShowText.Caption := 'Nascondi XML';
+    ToolButtonShowText.Hint := 'Nascondi il contenuto XML del file';
     ToolButtonShowText.ImageName := 'hide-text';
   end
   else
   begin
     Splitter.Visible := False;
-    ToolButtonShowText.Caption := 'Show Text';
-    ToolButtonShowText.Hint := 'Show content of SVG file';
+    ToolButtonShowText.Caption := 'Mostra XML';
+    ToolButtonShowText.Hint := 'Mostra il contenuto XML del file';
     ToolButtonShowText.ImageName := 'show-text';
   end;
   ToolButtonShowText.Visible := True;
@@ -321,7 +321,7 @@ procedure TFrmPreview.FormResize(Sender: TObject);
 begin
   PanelEditor.Height := Round(Self.Height * (FPreviewSettings.SplitterPos / 100));
   Splitter.Top := PanelEditor.Height;
-  if Self.Width < (550 * Self.ScaleFactor) then
+  if Self.Width < (250 * Self.ScaleFactor) then
     ToolBar.ShowCaptions := False
   else
     Toolbar.ShowCaptions := True;
@@ -469,6 +469,7 @@ begin
   //BackgroundTrackBar.Position := FPreviewSettings.LightBackground;
   UpdateHighlighter;
   UpdateGUI;
+  MostraFatturaXML;
 end;
 
 procedure TFrmPreview.ToolButtonSettingsClick(Sender: TObject);

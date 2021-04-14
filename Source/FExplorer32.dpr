@@ -51,7 +51,8 @@ uses
   FExplorer.Resources in 'FExplorer.Resources.pas' {dmResources: TDataModule},
   FExplorer.ThumbnailResources in 'FExplorer.ThumbnailResources.pas' {dmThumbnailResources: TDataModule},
   dlgSearchText in 'dlgSearchText.pas' {TextSearchDialog},
-  FExplorer.About in 'FExplorer.About.pas' {FrmAbout};
+  FExplorer.About in 'FExplorer.About.pas' {FrmAbout},
+  BegaHtmlPrintPreviewForm in '..\Ext\HTMLViewer\Source\BegaHtmlPrintPreviewForm.pas';
 
 exports
   DllGetClassObject,

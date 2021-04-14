@@ -37,7 +37,7 @@ object SVGSettingsForm: TSVGSettingsForm
     Images = SettingsImageList
     TabOrder = 0
     object stGeneral: TTabSheet
-      Caption = 'Preview settings'
+      Caption = 'Anteprima'
       ImageIndex = 4
       ImageName = 'eye-settings'
       object RenderingGroupBox: TGroupBox
@@ -45,14 +45,14 @@ object SVGSettingsForm: TSVGSettingsForm
         Top = 0
         Width = 238
         Height = 62
-        Caption = 'Rendering options'
+        Caption = 'Opzioni rendering SVG'
         TabOrder = 0
         object PreferD2DCheckBox: TCheckBox
           Left = 13
           Top = 21
           Width = 156
           Height = 17
-          Caption = 'Prefer Direct 2D Engine'
+          Caption = 'Utilizza Engine Direct 2D'
           TabOrder = 0
         end
       end
@@ -61,7 +61,7 @@ object SVGSettingsForm: TSVGSettingsForm
         Top = 68
         Width = 238
         Height = 62
-        Caption = 'Stylesheet options'
+        Caption = 'Opzioni Stile'
         TabOrder = 1
         DesignSize = (
           238
@@ -81,7 +81,7 @@ object SVGSettingsForm: TSVGSettingsForm
       end
     end
     object stTheme: TTabSheet
-      Caption = 'Theme'
+      Caption = 'Tema'
       ImageIndex = 2
       ImageName = 'theme-light-dark'
       object ThemeLeftPanel: TPanel
@@ -98,12 +98,12 @@ object SVGSettingsForm: TSVGSettingsForm
           Width = 185
           Height = 118
           Align = alTop
-          Caption = 'Theme'
+          Caption = 'Temi'
           ItemIndex = 0
           Items.Strings = (
-            'Same as Windows'
-            'Force Dark'
-            'Force Light')
+            'Come in Windows'
+            'Forza tema scuro'
+            'Forza tema chiaro')
           TabOrder = 0
           OnClick = ThemesRadioGroupClick
         end
@@ -113,7 +113,7 @@ object SVGSettingsForm: TSVGSettingsForm
           Width = 185
           Height = 284
           Align = alClient
-          Caption = 'Selected Theme'
+          Caption = 'Seleziona il tema'
           TabOrder = 1
           OnClick = SelectThemeRadioGroupClick
         end
@@ -130,7 +130,7 @@ object SVGSettingsForm: TSVGSettingsForm
       end
     end
     object tsFont: TTabSheet
-      Caption = 'Font'
+      Caption = 'Carattere'
       ImageIndex = 1
       ImageName = 'alphabetical-variant'
       object FontLabel: TLabel
@@ -143,9 +143,9 @@ object SVGSettingsForm: TSVGSettingsForm
       object SizeLabel: TLabel
         Left = 8
         Top = 54
-        Width = 20
+        Width = 63
         Height = 15
-        Caption = 'Size'
+        Caption = 'Dimensione'
       end
       object CbFont: TComboBox
         Left = 8
@@ -180,7 +180,7 @@ object SVGSettingsForm: TSVGSettingsForm
       end
     end
     object tsColors: TTabSheet
-      Caption = 'Text color'
+      Caption = 'Colore testo XML'
       ImageName = 'palette'
       object VertSplitter: TSplitter
         Left = 193
@@ -225,7 +225,7 @@ object SVGSettingsForm: TSVGSettingsForm
             Height = 16
             Align = alTop
             BevelOuter = bvNone
-            Caption = 'Elements'
+            Caption = 'Elementi'
             TabOrder = 1
           end
         end
@@ -235,7 +235,7 @@ object SVGSettingsForm: TSVGSettingsForm
           Width = 193
           Height = 116
           Align = alBottom
-          Caption = 'Element colors'
+          Caption = 'Colore elementi'
           TabOrder = 1
           DesignSize = (
             193
@@ -243,16 +243,16 @@ object SVGSettingsForm: TSVGSettingsForm
           object ForegroundColorLabel: TLabel
             Left = 9
             Top = 20
-            Width = 94
+            Width = 107
             Height = 15
-            Caption = 'Foreground Color'
+            Caption = 'Colore del'#39'elemento'
           end
           object BackgroundColorLabel: TLabel
             Left = 9
             Top = 65
-            Width = 96
+            Width = 88
             Height = 15
-            Caption = 'Background Color'
+            Caption = 'Colore di sfondo'
           end
           object ForegroundColorBox: TColorBox
             Left = 9
@@ -295,7 +295,7 @@ object SVGSettingsForm: TSVGSettingsForm
             Width = 174
             Height = 25
             Anchors = [akLeft, akTop, akRight]
-            Caption = 'Reset to default colors'
+            Caption = 'Ripristina colori standard'
             TabOrder = 0
             OnClick = ResetButtonClick
           end
@@ -326,60 +326,60 @@ object SVGSettingsForm: TSVGSettingsForm
           object cbTextAttrib: TGroupBox
             Left = 5
             Top = 4
-            Width = 150
+            Width = 180
             Height = 58
-            Caption = 'Text Attributes'
+            Caption = 'Attributi del testo XML'
             TabOrder = 0
             object cbBold: TCheckBox
               Left = 5
               Top = 16
-              Width = 59
+              Width = 78
               Height = 17
-              Caption = '&Bold'
+              Caption = '&Grassetto'
               TabOrder = 0
               OnClick = cbFontStyleClick
             end
             object cbItalic: TCheckBox
               Left = 5
               Top = 36
-              Width = 59
+              Width = 78
               Height = 17
-              Caption = '&Italic'
+              Caption = '&Italico'
               TabOrder = 1
               OnClick = cbFontStyleClick
             end
             object cbUnderline: TCheckBox
-              Left = 67
+              Left = 88
               Top = 16
               Width = 79
               Height = 17
-              Caption = '&Underline'
+              Caption = '&Sottolineato'
               TabOrder = 2
               OnClick = cbFontStyleClick
             end
             object cbStrikeOut: TCheckBox
-              Left = 67
+              Left = 88
               Top = 36
               Width = 79
               Height = 17
-              Caption = 'Stri&keOut'
+              Caption = 'Barra&to'
               TabOrder = 3
               OnClick = cbFontStyleClick
             end
           end
           object gbWhiteSpace: TGroupBox
-            Left = 160
+            Left = 191
             Top = 4
-            Width = 158
+            Width = 169
             Height = 58
-            Caption = 'Use WhiteSpace color for'
+            Caption = 'Usa Colore spezi per'
             TabOrder = 1
             object cbForeground: TCheckBox
               Left = 8
               Top = 16
               Width = 128
               Height = 17
-              Caption = '&Foreground color'
+              Caption = 'Colore &elemento'
               TabOrder = 0
               OnClick = cbForegroundClick
             end
@@ -388,7 +388,7 @@ object SVGSettingsForm: TSVGSettingsForm
               Top = 36
               Width = 128
               Height = 17
-              Caption = '&Background color'
+              Caption = 'Colore di &sfondo'
               TabOrder = 1
               OnClick = cbBackgroundClick
             end
@@ -449,27 +449,27 @@ object SVGSettingsForm: TSVGSettingsForm
     Images = SettingsImageList
     Items = <
       item
-        Caption = '  Back'
+        Caption = '  Indietro'
         ImageIndex = 3
         ImageName = 'arrow-left'
       end
       item
-        Caption = '  Preview'
+        Caption = '  Anteprima'
         ImageIndex = 4
         ImageName = 'eye-settings'
       end
       item
-        Caption = '  Theme'
+        Caption = '  Tema'
         ImageIndex = 2
         ImageName = 'theme-light-dark'
       end
       item
-        Caption = '  Font'
+        Caption = '  Carattere'
         ImageIndex = 1
         ImageName = 'alphabetical-variant'
       end
       item
-        Caption = '  Text colors'
+        Caption = '  Colori testo'
         ImageIndex = 0
         ImageName = 'palette'
       end>
@@ -484,7 +484,7 @@ object SVGSettingsForm: TSVGSettingsForm
     Align = alTop
     Alignment = taLeftJustify
     BevelOuter = bvNone
-    Caption = 'Settings'
+    Caption = 'Impostazioni'
     TabOrder = 3
   end
   object OpenDialog: TOpenDialog

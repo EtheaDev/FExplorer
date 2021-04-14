@@ -102,6 +102,7 @@ type
     HTMLViewer: THTMLViewer;
     ToolbarAllegati: TToolBar;
     TabSheet: TTabSheet;
+    Splitter: TSplitter;
     Constructor Create(const EditFileName : string);
     Destructor Destroy; override;
     procedure MostraFatturaXML(const AStylesheetName: string);
@@ -973,6 +974,7 @@ var
   Editor : TSynEdit;
   FEViewer: THtmlViewer;
   ToolBarAllegati: TToolbar;
+  Splitter: TSplitter;
 begin
   //lo aggiungo alla lista dei file aperti
   Result := EditFileList.Add(EditingFile);
@@ -1020,6 +1022,15 @@ begin
     ToolBarAllegati.Parent := ts;
     ToolBarAllegati.Images := VirtualImageList;
 
+    Splitter := TSplitter.Create(ts);
+    Splitter.Align := alRight;
+    Splitter.Left := FEViewer.Left-1;
+    Splitter.AutoSnap := False;
+    Splitter.Width := 6;
+    Splitter.Parent := ts;
+    Splitter.Beveled := True;
+
+    EditingFile.Splitter := Splitter;
     EditingFile.ToolbarAllegati := ToolBarAllegati;
     EditingFile.HTMLViewer := FEViewer;
 
