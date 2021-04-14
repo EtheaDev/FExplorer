@@ -105,7 +105,7 @@ type
     Splitter: TSplitter;
     Constructor Create(const EditFileName : string);
     Destructor Destroy; override;
-    procedure MostraFatturaXML(const AStylesheetName: string);
+    procedure MostraFatturaXML(const ASettings: TEditorSettings);
     property FileName: string read GetFileName write SetFileName; //with full path
     property Name: string read GetName; //only name of file
     property Extension : string read FExtension;
@@ -291,7 +291,8 @@ type
     gsReplaceText: string;
     gsReplaceTextHistory: string;
     FEditorOptions: TSynEditorOptionsContainer;
-    FFontSize: Integer;
+    FXMLFontSize: Integer;
+    FHTMLFontSize: Integer;
     procedure CloseSplitViewMenu;
     procedure UpdateHighlighters;
     procedure UpdateFromSettings(AEditor: TSynEdit);
@@ -315,9 +316,11 @@ type
     procedure SynEditChange(Sender: TObject);
     procedure SynEditEnter(Sender: TObject);
     procedure UpdateHighlighter(ASynEditor: TSynEdit);
-    procedure SetEditorFontSize(const Value: Integer);
+    procedure SetXMLFontSize(const Value: Integer);
     procedure LoadOpenedFiles;
-    property EditorFontSize: Integer read FFontSize write SetEditorFontSize;
+    procedure SetHTMLFontSize(const Value: Integer);
+    property XMLFontSize: Integer read FXMLFontSize write SetXMLFontSize;
+    property HTMLFontSize: Integer read FHTMLFontSize write SetHTMLFontSize;
   end;
 
 var
@@ -370,16 +373,18 @@ end;
 
 { TEditingFile }
 
-procedure TEditingFile.MostraFatturaXML(const AStylesheetName: string);
+procedure TEditingFile.MostraFatturaXML(const ASettings: TEditorSettings);
 var
   LStream: TStringStream;
 begin
   try
     FInvoice := TLegalInvoice.Create(SynEditor.Lines.Text, False);
-    FInvoice.StylesheetName := AStylesheetName;
+    FInvoice.StylesheetName := ASettings.StylesheetName;
     FInvoice.Parse;
 
     //Carica il contenuto HTML trasformato dentro l'HTML-Viewer
+    HtmlViewer.DefFontSize := ASettings.HTMLFontSize;
+    HtmlViewer.DefFontName := ASettings.HTMLFontName;
     LStream := TStringStream.Create(FInvoice.HTML);
     try
       HtmlViewer.LoadFromStream(LStream);
@@ -1068,7 +1073,7 @@ begin
   try
     if CurrentEditor <> nil then
     begin
-      CurrentEditFile.MostraFatturaXML(FEditorSettings.StylesheetName);
+      CurrentEditFile.MostraFatturaXML(FEditorSettings);
       //Assegna l'immagine dell'Icona SVG
       LSVGText := FThumbnailResource.GetSVGText(CurrentEditor.Lines);
       SVGIconImage.SVGText := LSVGText;
@@ -1317,20 +1322,36 @@ begin
     PageSetupDlg.GetValues(SynEditPrint);
 end;
 
-procedure TfrmMain.SetEditorFontSize(const Value: Integer);
+procedure TfrmMain.SetXMLFontSize(const Value: Integer);
 var
   LScaleFactor: Single;
 begin
   if (CurrentEditor <> nil) and (Value >= MinfontSize) and (Value <= MaxfontSize) then
   begin
-    if FFontSize <> 0 then
-      LScaleFactor := CurrentEditor.Font.Size / FFontSize
+    if FXMLFontSize <> 0 then
+      LScaleFactor := CurrentEditor.Font.Size / FXMLFontSize
     else
       LScaleFactor := 1;
     CurrentEditor.Font.Size := Round(Value * LScaleFactor);
     FEditorSettings.XMLFontSize := Value;
   end;
-  FFontSize := Value;
+  FXMLFontSize := Value;
+end;
+
+procedure TfrmMain.SetHTMLFontSize(const Value: Integer);
+var
+  LScaleFactor: Single;
+begin
+  if (CurrentEditor <> nil) and (Value >= MinfontSize) and (Value <= MaxfontSize) then
+  begin
+    if FHTMLFontSize <> 0 then
+      LScaleFactor := CurrentEditFile.HTMLViewer.DefFontSize / FXMLFontSize
+    else
+      LScaleFactor := 1;
+    CurrentEditFile.HTMLViewer.DefFontSize := Round(Value * LScaleFactor);
+    FEditorSettings.HTMLFontSize := Value;
+  end;
+  FHTMLFontSize := Value;
 end;
 
 procedure TfrmMain.SetSynEditPrintProperties(SynEditPrint : TSynEditPrint);
@@ -1363,7 +1384,7 @@ var
   EditingFile : TEditingFile;
 begin
   FEditorSettings.XMLFontName := FEditorOptions.Font.Name;
-  EditorFontSize := FEditorOptions.Font.Size;
+  XMLFontSize := FEditorOptions.Font.Size;
 
   for i := 0 to EditFileList.Count -1 do
   begin
@@ -1383,9 +1404,13 @@ begin
   else
     FEditorSettings.ReadSettings(nil, self.FEditorOptions);
   if FEditorSettings.XMLFontSize >= MinfontSize then
-    EditorFontSize := FEditorSettings.XMLFontSize
+    XMLFontSize := FEditorSettings.XMLFontSize
   else
-    EditorFontSize := MinfontSize;
+    XMLFontSize := MinfontSize;
+  if FEditorSettings.HTMLFontSize >= MinfontSize then
+    HTMLFontSize := FEditorSettings.HTMLFontSize
+  else
+    HTMLFontSize := MinfontSize;
   InitEditorOptions;
   UpdateEditorsOptions;
   UpdateApplicationStyle(FEditorSettings.StyleName);
@@ -1426,12 +1451,12 @@ end;
 procedure TfrmMain.actnFontExecute(Sender: TObject);
 begin
   if Sender = actnEnlargeFont then
-    EditorFontSize := FEditorOptions.Font.Size+1
+    XMLFontSize := FEditorOptions.Font.Size+1
   else if Sender = actnReduceFont then
-    EditorFontSize := FEditorOptions.Font.Size-1
+    XMLFontSize := FEditorOptions.Font.Size-1
   else
     Exit;
-  FEditorOptions.Font.Size := EditorFontSize;
+  FEditorOptions.Font.Size := XMLFontSize;
   UpdateEditorsOptions;
 end;
 
@@ -1440,7 +1465,7 @@ begin
   with FEditorOptions do
   begin
     Font.Name := FEditorSettings.XMLFontName;
-    Font.Size := EditorFontSize;
+    Font.Size := XMLFontSize;
     TabWidth := 2;
     WantTabs := False;
     Options := Options - [eoSmartTabs];
@@ -1473,8 +1498,8 @@ begin
     LValue := 1
   else
     LValue := -1;
-  CurrentEditFile.HTMLViewer.DefFontSize :=
-    CurrentEditFile.HTMLViewer.DefFontSize + LValue;
+  FEditorSettings.HTMLFontSize := FEditorSettings.HTMLFontSize + LValue;
+  CurrentEditFile.MostraFatturaXML(FEditorSettings);
 end;
 
 procedure TfrmMain.RecentPopupMenuPopup(Sender: TObject);
