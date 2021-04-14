@@ -175,6 +175,9 @@ begin
     LStream := TStringStream.Create(FInvoice.HTML);
     try
       HtmlViewer.LoadFromStream(LStream);
+
+
+
     finally
       LStream.Free;
     end;

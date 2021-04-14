@@ -168,6 +168,9 @@ begin
       LRegKey := RootPrefix + '.xml' + '\shellex\' + ThumbnailProviderGUID;
       CreateRegKey(LRegKey, '', sClassID, RootKey);
 
+      LRegKey := RootPrefix + '.p7m' + '\shellex\' + ThumbnailProviderGUID;
+      CreateRegKey(LRegKey, '', sClassID, RootKey);
+
       LRegKey := RootPrefix + '.xml.p7m' + '\shellex\' + ThumbnailProviderGUID;
       CreateRegKey(LRegKey, '', sClassID, RootKey);
 
@@ -187,6 +190,7 @@ begin
       DeleteRegValue(LRegKey, 'DisableLowILProcessIsolation', RootKey);
       //Delete extension for xml
       DeleteRegKey(RootPrefix + '.xml.p7m' + '\shellex\' + ThumbnailProviderGUID, RootKey);
+      DeleteRegKey(RootPrefix + '.p7m' + '\shellex\' + ThumbnailProviderGUID, RootKey);
       DeleteRegKey(RootPrefix + '.xml' + '\shellex\' + ThumbnailProviderGUID, RootKey);
     end;
     inherited UpdateRegistry(False);

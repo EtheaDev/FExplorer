@@ -134,7 +134,7 @@ begin
         fFileName := PChar(fFileName);
         LFileExt := ExtractFileExt(fFileName);
         // only for .xml and .xml.p7m files di Fatture Elettroniche
-        if IndexText(LFileExt, ['.xml', '.xml.p7m']) <> -1 then
+        if IndexText(LFileExt, ['.xml', '.xml.p7m', '.p7m']) <> -1 then
           Result := NOERROR
         else
           Result := E_FAIL;
