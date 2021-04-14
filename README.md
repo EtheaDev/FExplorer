@@ -24,19 +24,15 @@ ATTENZIONE: attualmente il setup non è firmato, quindi Windows avvisa che potre
 
 ### Pannello Preview e Anteprima Icone in azione ###
 
-Con Windows 10 e tema chiaro:
-
-![Preview Thumbnails Light](./Images/PreviewThumbnailsLight.png)
-
 Con Windows 10 e tema scuro:
 
-![Preview Thumbnails Dark](./Images/PreviewThumbnailsDark.png)
+![Preview Thumbnails Dark](./Images/FExplorer.png)
 
 ### Visualizzatore della Fattura Elettronica
 
 Un comodo visualizzatore della fattura elettronica per poterla anche stampare.
 
-![FEViewer](./Images/FEViewerDark.png)
+![FEViewer](./Images/FEViewer.png)
 
 ### Build e Installazione manuale (per sviluppatori Delphi) ###
 
@@ -65,6 +61,8 @@ Per installare manualmente FExplorer.dll seguire questi step:
 Grazie a ** Rodrigo Ruz V. ** (autore di [theroadtodelphi.com][7] Blog) per il suo ottimolavoro su [delphi-preview-handler][8] da cui questo progetto ha usato codice e ispirazione.
 
 Grazie a ** Carlo Barazzetta ** per il suo ottimo lavoro su [SvgShellExtensions][13] da cui questo progetto ha usato molto codice e ispirazione.
+
+Grazie ad ** Andrea Magni ** che ha collaborato alla realizzazione di questo progetto.
 
 ## Licenza
 
