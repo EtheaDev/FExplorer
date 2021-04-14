@@ -36,6 +36,7 @@ uses
   Windows,
   Winapi.PropSys,
   System.Generics.Collections,
+  FExplorer.ThumbnailResources,
   SVGInterfaces,
   SVGCommon,
   ActiveX;
@@ -64,7 +65,7 @@ const
   MyFE_ThumbNailProviderGUID: TGUID = '{9522cb3f-efcb-4c99-ae56-7845adc154e1}';
 
 type
-  TComSVGThumbnailProvider = class(TComObject, IInitializeWithStream, IThumbnailProvider)
+  TComFEThumbnailProvider = class(TComObject, IInitializeWithStream, IThumbnailProvider)
     function IInitializeWithStream.Initialize = IInitializeWithStream_Initialize;
     function IInitializeWithStream_Initialize(const pstream: IStream; grfMode: Cardinal): HRESULT; stdcall;
     function GetThumbnail(cx : uint; out hBitmap : HBITMAP; out bitmapType : dword): HRESULT; stdcall;
@@ -72,6 +73,7 @@ type
   private
     FThumbnailHandlerClass: TThumbnailHandlerClass;
     FIStream: IStream;
+    FThumbnailResources: TdmThumbnailResources;
     FMode: Cardinal;
     FSVG: ISVG;
     FLightTheme: Boolean;
@@ -99,9 +101,9 @@ uses
   FExplorer.ThumbnailHandlerRegister,
   SVGIconUtils;
 
-{ TComSVGThumbnailProvider }
+{ TComFEThumbnailProvider }
 
-function TComSVGThumbnailProvider.GetThumbnail(cx: uint; out hBitmap: HBITMAP;
+function TComFEThumbnailProvider.GetThumbnail(cx: uint; out hBitmap: HBITMAP;
   out bitmapType: dword): HRESULT;
 const
   WTSAT_ARGB = 2;
@@ -111,7 +113,7 @@ var
   LAntiAliasColor: TColor;
 begin
   try
-    TLogPreview.Add('TComSVGThumbnailProvider.GetThumbnail start');
+    TLogPreview.Add('TComFEThumbnailProvider.GetThumbnail start');
     hBitmap := 0;
     if (cx = 0) then
     begin
@@ -121,9 +123,9 @@ begin
     bitmapType := WTSAT_ARGB;
     AStream := TIStreamAdapter.Create(FIStream);
     try
-      TLogPreview.Add('TComSVGThumbnailProvider.GetThumbnail LoadFromStream');
-      FSVG.LoadFromStream(AStream);
-      TLogPreview.Add('TComSVGThumbnailProvider.FSVG.Source '+FSVG.Source);
+      TLogPreview.Add('TComFEThumbnailProvider.GetThumbnail LoadFromStream');
+      FSVG.Source := FThumbnailResources.GetSVGText(AStream);
+      TLogPreview.Add('TComFEThumbnailProvider.FSVG.Source '+FSVG.Source);
       LBitmap := TBitmap.Create;
       LBitmap.PixelFormat := pf32bit;
       if FLightTheme then
@@ -132,9 +134,9 @@ begin
         LAntiAliasColor := clWebDarkSlategray;
       LBitmap.Canvas.Brush.Color := ColorToRGB(LAntiAliasColor);
       LBitmap.SetSize(cx, cx);
-      TLogPreview.Add('TComSVGThumbnailProvider.PaintTo start');
+      TLogPreview.Add('TComFEThumbnailProvider.PaintTo start');
       FSVG.PaintTo(LBitmap.Canvas.Handle, TRectF.Create(0, 0, cx, cx));
-      TLogPreview.Add('TComSVGThumbnailProvider.PaintTo end');
+      TLogPreview.Add('TComFEThumbnailProvider.PaintTo end');
       hBitmap := LBitmap.Handle;
     finally
       AStream.Free;
@@ -144,18 +146,19 @@ begin
     on E: Exception do
     begin
       Result := E_FAIL;
-      TLogPreview.Add(Format('Error in TComSVGThumbnailProvider.GetThumbnail - Message: %s: Trace %s',
+      TLogPreview.Add(Format('Error in TComFEThumbnailProvider.GetThumbnail - Message: %s: Trace %s',
         [E.Message, E.StackTrace]));
     end;
   end;
 end;
 
-function TComSVGThumbnailProvider.IInitializeWithStream_Initialize(
+function TComFEThumbnailProvider.IInitializeWithStream_Initialize(
   const pstream: IStream; grfMode: Cardinal): HRESULT;
 begin
-  TLogPreview.Add('TComSVGThumbnailProvider.IInitializeWithStream_Initialize Init');
+  TLogPreview.Add('TComFEThumbnailProvider.IInitializeWithStream_Initialize Init');
   Initialize_GDI;
   FIStream := pstream;
+  FThumbnailResources := TdmThumbnailResources.Create(nil);
   //FMode := grfMode;
   Result := S_OK;
   //Result := E_NOTIMPL;
@@ -164,22 +167,23 @@ begin
     FSVG := GlobalSVGFactory.NewSvg;
     FLightTheme := IsWindowsAppThemeLight;
   end;
-  TLogPreview.Add('TComSVGThumbnailProvider.IInitializeWithStream_Initialize done');
+  TLogPreview.Add('TComFEThumbnailProvider.IInitializeWithStream_Initialize done');
 end;
 
-function TComSVGThumbnailProvider.Unload: HRESULT;
+function TComFEThumbnailProvider.Unload: HRESULT;
 begin
-  TLogPreview.Add('TComSVGThumbnailProvider.Unload Init');
+  TLogPreview.Add('TComFEThumbnailProvider.Unload Init');
+  FThumbnailResources.free;
   Finalize_GDI;
   result := S_OK;
-  TLogPreview.Add('TComSVGThumbnailProvider.Unload Done');
+  TLogPreview.Add('TComFEThumbnailProvider.Unload Done');
 end;
 
 { TFEThumbnailProvider }
 
 class function TFEThumbnailProvider.GetComClass: TComClass;
 begin
-  Result := TComSVGThumbnailProvider;
+  Result := TComFEThumbnailProvider;
 end;
 
 class procedure TFEThumbnailProvider.RegisterThumbnailProvider(

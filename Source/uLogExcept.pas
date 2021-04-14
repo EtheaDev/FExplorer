@@ -76,7 +76,7 @@ class procedure TLogPreview.Add(const AMessage: string);
 begin
 {$IFDEF DEBUG}
   try
-    //if Copy(AMessage,1,27) = 'TPreviewContainer.SetBounds' then
+    if Copy(AMessage,1,23) = 'TComFEThumbnailProvider' then
     AppendAllText(sLogFile, FormatDateTime('hh:nn:ss.zzz', Now) + ' ' + AMessage + sLineBreak);
   except
     on e: EFOpenError do;

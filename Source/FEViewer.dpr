@@ -50,7 +50,8 @@ uses
   FExplorer.Settings in 'FExplorer.Settings.pas',
   FExplorer.SettingsForm in 'FExplorer.SettingsForm.pas' {SVGSettingsForm},
   FExplorer.Registry in 'FExplorer.Registry.pas',
-  FExplorer.InvoiceToImage in 'FExplorer.InvoiceToImage.pas';
+  FExplorer.InvoiceToImage in 'FExplorer.InvoiceToImage.pas',
+  FExplorer.ThumbnailResources in 'FExplorer.ThumbnailResources.pas' {dmThumbnailResources: TDataModule};
 
 {$R *.res}
 
@@ -63,7 +64,6 @@ begin
     Show;
     Update;
     Application.HelpFile := '';
-    TStyleManager.TrySetStyle('Windows10 SlateGray');
   Application.CreateForm(TdmResources, dmResources);
   Application.CreateForm(TfrmMain, frmMain);
   Application.CreateForm(TTestPrintPreviewDlg, TestPrintPreviewDlg);

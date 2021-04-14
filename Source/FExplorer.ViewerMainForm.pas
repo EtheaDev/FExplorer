@@ -37,6 +37,8 @@ uses
   SynEditSearch, XPStyleActnCtrls, System.Actions, SVGIconImage, Vcl.Buttons,
   Vcl.CategoryButtons, Vcl.WinXCtrls, System.ImageList, Vcl.VirtualImageList,
   FExplorer.Settings
+  , System.Generics.Collections
+  , FExplorer.ThumbnailResources
   , Vcl.PlatformVclStylesActnCtrls
   , Vcl.Styles.Fixes
   , Vcl.Styles.FormStyleHooks
@@ -54,6 +56,8 @@ uses
   , Vcl.Styles.Utils.StdCtrls
 //  {$ENDIF}
   , Vcl.Styles.Ext
+  , HTMLUn2
+  , HtmlView
   ;
 
 const
@@ -81,18 +85,26 @@ type
     FFileName : string;
     FName : string;
     FExtension: string;
+    FShowXMLText: Boolean;
+    FInvoice: TLegalInvoice;
+    FAllegatiButtons: TObjectList<TToolButton>;
     procedure ReadFromFile;
     procedure SaveToFile;
     function GetFileName: string;
     function GetName: string;
     procedure SetFileName(const Value: string);
     procedure LoadFromFile(const AFileName: string);
+    procedure RenderAllegati;
+    procedure AllegatoButtonClick(Sender: TObject);
   public
     EditFileType: TEditFileType;
     SynEditor: TSynEdit;
+    HTMLViewer: THTMLViewer;
+    ToolbarAllegati: TToolBar;
     TabSheet: TTabSheet;
     Constructor Create(const EditFileName : string);
     Destructor Destroy; override;
+    procedure MostraFatturaXML(const AStylesheetName: string);
     property FileName: string read GetFileName write SetFileName; //with full path
     property Name: string read GetName; //only name of file
     property Extension : string read FExtension;
@@ -140,7 +152,6 @@ type
     actnColorSettings: TAction;
     actnFormatXML: TAction;
     SynEditSearch: TSynEditSearch;
-    PageControl: TPageControl;
     ImagePanel: TPanel;
     SVGIconImage: TSVGIconImage;
     RightSplitter: TSplitter;
@@ -182,6 +193,8 @@ type
     StatusStaticText: TStaticText;
     StatusSplitter: TSplitter;
     CloseAll1: TMenuItem;
+    ClientPanel: TPanel;
+    PageControl: TPageControl;
     procedure acOpenFileExecute(Sender: TObject);
     procedure acSaveExecute(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -254,6 +267,7 @@ type
       MousePos: TPoint; var Handled: Boolean);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
+    FThumbnailResource: TdmThumbnailResources;
     FProcessingFiles: Boolean;
     FEditorSettings: TEditorSettings;
     currentDir: string;
@@ -290,7 +304,7 @@ type
     function CurrentEditorState : string;
     procedure UpdateStatusBarPanels;
     procedure AddOpenedFile(const AFileName: string);
-    procedure AssignInvoiceToImage;
+    procedure UpdateInvoiceViewer;
     procedure SynEditChange(Sender: TObject);
     procedure SynEditEnter(Sender: TObject);
     procedure UpdateHighlighter(ASynEditor: TSynEdit);
@@ -347,9 +361,77 @@ end;
 
 { TEditingFile }
 
+procedure TEditingFile.MostraFatturaXML(const AStylesheetName: string);
+var
+  LStream: TStringStream;
+begin
+  try
+    FInvoice := TLegalInvoice.Create(SynEditor.Lines.Text, False);
+    FInvoice.StylesheetName := AStylesheetName;
+    FInvoice.Parse;
+
+    //Carica il contenuto HTML trasformato dentro l'HTML-Viewer
+    LStream := TStringStream.Create(FInvoice.HTML);
+    try
+      HtmlViewer.LoadFromStream(LStream);
+    finally
+      LStream.Free;
+    end;
+
+    RenderAllegati;
+  except
+    on E: Exception do
+    begin
+      Raise
+    end;
+  end;
+end;
+
+procedure TEditingFile.RenderAllegati;
+var
+  LIndex: Integer;
+  LAllegato: TAllegato;
+  LButton: TToolButton;
+begin
+  FAllegatiButtons.Clear;
+
+  for LIndex := 0 to Length(FInvoice.Allegati) -1 do
+  begin
+    LAllegato := FInvoice.Allegati[LIndex];
+
+    LButton := TToolButton.Create(nil);
+    try
+      LButton.Cursor := crHandPoint;
+      LButton.AutoSize := True;
+      LButton.Caption := LAllegato.FileName;
+      LButton.ImageIndex := 41;
+      LButton.ImageName := 'attachment';
+      LButton.Tag := LIndex;
+      LButton.OnClick := AllegatoButtonClick;
+      ToolbarAllegati.InsertControl(LButton);
+      FAllegatiButtons.Add(LButton);
+    except
+      LButton.Free;
+      raise;
+    end
+  end;
+
+  ToolbarAllegati.Visible := Length(FInvoice.Allegati) > 0;
+end;
+
 procedure TEditingFile.ReadFromFile;
 begin
   LoadFromFile(FileName);
+end;
+
+procedure TEditingFile.AllegatoButtonClick(Sender: TObject);
+var
+  LButton: TToolButton;
+  LAllegato: TAllegato;
+begin
+  LButton := Sender as TToolButton;
+  LAllegato := FInvoice.Allegati[LButton.Tag];
+  LAllegato.DumpAndOpen;
 end;
 
 constructor TEditingFile.Create(const EditFileName: string);
@@ -357,6 +439,8 @@ var
   Filter : Word;
 begin
   inherited Create;
+  FShowXMLText := False;
+  FAllegatiButtons := TObjectList<TToolButton>.Create(True);
 
   if not IsStyleHookRegistered(TCustomSynEdit, TScrollingStyleHook) then
     TStyleManager.Engine.RegisterStyleHook(TCustomSynEdit, TScrollingStyleHook);
@@ -393,6 +477,7 @@ end;
 
 destructor TEditingFile.Destroy;
 begin
+  FreeAndNil(FAllegatiButtons);
   FreeAndNil(FIcon);
   inherited;
 end;
@@ -423,7 +508,7 @@ begin
     for i := 0 to OpenDialog.Files.Count -1 do
       OpenFile(OpenDialog.Files[i], False);
   end;
-  AssignInvoiceToImage;
+  UpdateInvoiceViewer;
 end;
 
 function TfrmMain.OpenFile(const FileName : string;
@@ -503,10 +588,11 @@ end;
 
 procedure TfrmMain.FormDestroy(Sender: TObject);
 begin
-  EditFileList.Free;
-  SynEditPrint.Free;
-  FEditorSettings.Free;
-  FEditorOptions.Free;
+  FreeAndNil(FThumbnailResource);
+  FreeAndNil(EditFileList);
+  FreeAndNil(SynEditPrint);
+  FreeAndNil(FEditorSettings);
+  FreeAndNil(FEditorOptions);
   inherited;
 end;
 
@@ -533,6 +619,7 @@ end;
 procedure TfrmMain.FormResize(Sender: TObject);
 begin
   AdjustCompactWidth;
+
 end;
 
 procedure TfrmMain.ShowSRDialog(aReplace: boolean);
@@ -727,7 +814,7 @@ begin
   end;
   if LIndex <> -1 then
     PageControl.ActivePageIndex := LIndex;
-  AssignInvoiceToImage;
+  UpdateInvoiceViewer;
 end;
 
 procedure TfrmMain.FormCreate(Sender: TObject);
@@ -735,6 +822,7 @@ var
   InitialDir : string;
   FileVersionStr: string;
 begin
+  FThumbnailResource := TdmThumbnailResources.Create(nil);
   //creo la lista dei files aperti
   EditFileList := TObjectList.Create(True);
   FEditorOptions := TSynEditorOptionsContainer.create(self);
@@ -781,7 +869,7 @@ begin
     //Carico l'eventuale file esterno
     InitialDir := ParamStr(1);
     OpenFile(ParamStr(1));
-    AssignInvoiceToImage;
+    UpdateInvoiceViewer;
   end
   else
     InitialDir := '.';
@@ -867,10 +955,10 @@ begin
   if Sender = CurrentEditor then
   begin
     if CurrentEditor.Modified then
-      pageControl.ActivePage.Imagename := 'svg-logo'
+      pageControl.ActivePage.Imagename := 'fattura-elettronica'
     else
-      pageControl.ActivePage.Imagename := 'svg-logo-gray';
-    AssignInvoiceToImage;
+      pageControl.ActivePage.Imagename := 'fattura-elettronica-gray';
+    UpdateInvoiceViewer;
   end;
 end;
 
@@ -883,6 +971,8 @@ function TfrmMain.AddEditingFile(EditingFile: TEditingFile): Integer;
 var
   ts : TTabSheet;
   Editor : TSynEdit;
+  FEViewer: THtmlViewer;
+  ToolBarAllegati: TToolbar;
 begin
   //lo aggiungo alla lista dei file aperti
   Result := EditFileList.Add(EditingFile);
@@ -895,7 +985,7 @@ begin
     //Attacco al TAG del tabsheet l'oggetto del file da editare
     ts.Tag := Integer(EditingFile);
     ts.Caption := EditingFile.Name;
-    ts.Imagename := 'svg-logo-gray';
+    ts.Imagename := 'fattura-elettronica-gray';
     ts.Parent := PageControl;
     ts.TabVisible := True;
     EditingFile.TabSheet := ts;
@@ -917,6 +1007,22 @@ begin
     UpdateHighlighter(Editor);
     Editor.Visible := True;
 
+    FEViewer := THtmlViewer.Create(ts);
+    FEViewer.Align := alRight;
+    FEViewer.Width := ts.Width div 2;
+    FEViewer.Parent := ts;
+
+    ToolBarAllegati := TToolbar.Create(ts);
+    ToolBarAllegati.Align := alTop;
+    ToolBarAllegati.List := True;
+    ToolBarAllegati.ShowCaptions := True;
+    ToolBarAllegati.Height := 30;
+    ToolBarAllegati.Parent := ts;
+    ToolBarAllegati.Images := VirtualImageList;
+
+    EditingFile.ToolbarAllegati := ToolBarAllegati;
+    EditingFile.HTMLViewer := FEViewer;
+
     //Visualizzo il tabsheet
     ts.Visible := True;
   Except
@@ -932,23 +1038,26 @@ begin
   PageControl.OnChange(PageControl);
 end;
 
-procedure TfrmMain.AssignInvoiceToImage;
+procedure TfrmMain.UpdateInvoiceViewer;
 var
   LSVGText: string;
 begin
   if FProcessingFiles then
     Exit;
-(*
-  //Assegna l'immagine SVG
   try
     if CurrentEditor <> nil then
     begin
-      LSVGText := CurrentEditor.Lines.Text;
+      CurrentEditFile.MostraFatturaXML(FEditorSettings.StylesheetName);
+      //Assegna l'immagine dell'Icona SVG
+      LSVGText := FThumbnailResource.GetSVGText(CurrentEditor.Lines);
       SVGIconImage.SVGText := LSVGText;
       SVGIconImage16.SVGText := LSVGText;
       SVGIconImage32.SVGText := LSVGText;
       SVGIconImage48.SVGText := LSVGText;
       SVGIconImage96.SVGText := LSVGText;
+
+      //Mostra l'anteprima della fattura elettronica
+
       StatusBar.Panels[STATUSBAR_MESSAGE].Text := CurrentEditFile.FileName;
     end
     else
@@ -968,7 +1077,6 @@ begin
       StatusStaticText.Caption := E.Message;
     end;
   end;
-*)
 end;
 
 procedure TfrmMain.BackgroundTrackBarChange(Sender: TObject);
@@ -985,10 +1093,11 @@ end;
 
 procedure TfrmMain.PageControlChange(Sender: TObject);
 begin
+  CloseSplitViewMenu;
   //Imposto la caption dell'Editor
   if CurrentEditFile <> nil then
     Caption := Application.Title+' - '+CurrentEditFile.FileName;
-  AssignInvoiceToImage;
+  UpdateInvoiceViewer;
 end;
 
 procedure TfrmMain.acSaveUpdate(Sender: TObject);
@@ -1411,6 +1520,7 @@ begin
     begin
       FEditorSettings.WriteSettings(CurrentEditor.Highlighter, FEditorOptions);
       UpdateFromSettings(CurrentEditor);
+      UpdateInvoiceViewer;
       UpdateHighlighters;
     end;
   end;
@@ -1543,7 +1653,7 @@ begin
   LFilename := (Sender as TMenuItem).Hint;
   //Carico il file selezionato
   OpenFile(LFileName);
-  AssignInvoiceToImage;
+  UpdateInvoiceViewer;
   if (CurrentEditor <> nil) and (CurrentEditor.CanFocus) then
     (CurrentEditor.SetFocus);
   CloseSplitViewMenu;

@@ -22,45 +22,79 @@
 {  See the License for the specific language governing permissions and         }
 {  limitations under the License.                                              }
 {                                                                              }
-{  The Original Code is:                                                       }
-{  Delphi Preview Handler  https://github.com/RRUZ/delphi-preview-handler      }
-{                                                                              }
-{  The Initial Developer of the Original Code is Rodrigo Ruz V.                }
-{  Portions created by Rodrigo Ruz V. are Copyright 2011-2021 Rodrigo Ruz V.   }
-{  All Rights Reserved.                                                        }
 {******************************************************************************}
-library FExplorer;
+unit FExplorer.ThumbnailResources;
+
+interface
+
 uses
-  ComServ,
-  FExplorer.Main in 'FExplorer.Main.pas',
-  FExplorer.Misc in 'FExplorer.Misc.pas',
-  FExplorer.Registry in 'FExplorer.Registry.pas',
-  uLogExcept in 'uLogExcept.pas',
-  uStreamPreviewHandler in 'uStreamPreviewHandler.pas',
-  uCommonPreviewHandler in 'uCommonPreviewHandler.pas',
-  uPreviewHandler in 'uPreviewHandler.pas',
-  uPreviewContainer in 'uPreviewContainer.pas' {PreviewContainer},
-  FExplorer.PreviewHandler in 'FExplorer.PreviewHandler.pas',
-  FExplorer.PreviewHandlerRegister in 'FExplorer.PreviewHandlerRegister.pas',
-  FExplorer.ThumbnailHandler in 'FExplorer.ThumbnailHandler.pas',
-  FExplorer.ThumbnailHandlerRegister in 'FExplorer.ThumbnailHandlerRegister.pas',
-  FExplorer.ContextMenuHandler in 'FExplorer.ContextMenuHandler.pas',
-  FExplorer.PreviewForm in 'FExplorer.PreviewForm.pas' {FrmPreview},
-  FExplorer.SettingsForm in 'FExplorer.SettingsForm.pas' {SVGSettingsForm},
-  FExplorer.Settings in 'FExplorer.Settings.pas',
-  FExplorer.Resources in 'FExplorer.Resources.pas' {dmResources: TDataModule},
-  FExplorer.ThumbnailResources in 'FExplorer.ThumbnailResources.pas' {dmThumbnailResources: TDataModule},
-  dlgSearchText in 'dlgSearchText.pas' {TextSearchDialog},
-  FExplorer.About in 'FExplorer.About.pas' {FrmAbout};
+  SysUtils
+  , Classes
+  , Xml.xmldom
+  , Xml.XMLIntf
+  , Xml.Win.msxmldom
+  , Xml.XMLDoc
+  ;
+const
+  SVG_TEMPLATE_XSLT = 'ThumbTemplate';
 
-exports
-  DllGetClassObject,
-  DllCanUnloadNow,
-  DllRegisterServer,
-  DllUnregisterServer,
-  DllInstall;
+type
+  TdmThumbnailResources = class(TDataModule)
+    ThumbTemplate: TXMLDocument;
+    SourceXML: TXMLDocument;
+  private
+    function Parse: string;
+  public
+    function GetSVGText(const AXMLLines: TStrings): string; overload;
+    function GetSVGText(const AStream: TStream): string; overload;
+  end;
 
-  {$R *.res}
+implementation
 
+{$R *.dfm}
+
+uses
+  Windows, StrUtils, IOUtils, NetEncoding, ShellAPI;
+
+{ TThumbnail }
+
+function TdmThumbnailResources.Parse: string;
+var
+  LXSLTOutput: WideString;
 begin
+  Result := '';
+  ThumbTemplate.Active := True;
+  SourceXML.Active := True;
+  try
+    SourceXML.Node.TransformNode(ThumbTemplate.DocumentElement, LXSLTOutput);
+  finally
+    SourceXML.Active := False;
+    ThumbTemplate.Active := True;
+  end;
+  Result := LXSLTOutput;
+end;
+
+function TdmThumbnailResources.GetSVGText(const AStream: TStream): string;
+var
+  LStyleSheetName: string;
+begin
+  LStyleSheetName := SVG_TEMPLATE_XSLT;
+
+  //Inizializza il Documento XML
+  SourceXML.LoadFromStream(AStream, xetUTF_8);
+  Result := Parse;
+end;
+
+function TdmThumbnailResources.GetSVGText(const AXMLLines: TStrings): string;
+var
+  LStyleSheetName: string;
+begin
+  LStyleSheetName := SVG_TEMPLATE_XSLT;
+
+  //Inizializza il Documento XML
+  SourceXML.XML.Assign(AXMLLines);
+
+  Result := Parse;
+end;
+
 end.

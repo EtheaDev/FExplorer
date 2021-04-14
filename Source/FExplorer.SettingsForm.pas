@@ -42,6 +42,9 @@ type
   TSVGSettingsForm = class(TForm)
     pc: TPageControl;
     tsColors: TTabSheet;
+    stGeneral: TTabSheet;
+    tsFont: TTabSheet;
+    stTheme: TTabSheet;
     paLeft: TPanel;
     paElements: TPanel;
     BoxElements: TListBox;
@@ -60,9 +63,7 @@ type
     cbForeground: TCheckBox;
     cbBackground: TCheckBox;
     OpenDialog: TOpenDialog;
-    tsFont: TTabSheet;
     SettingsImageList: TSVGIconImageList;
-    stTheme: TTabSheet;
     FontLabel: TLabel;
     CbFont: TComboBox;
     SizeLabel: TLabel;
@@ -81,7 +82,6 @@ type
     ThemeClientPanel: TPanel;
     ResetPanel: TPanel;
     ResetButton: TButton;
-    stGeneral: TTabSheet;
     RenderingGroupBox: TGroupBox;
     PreferD2DCheckBox: TCheckBox;
     GroupBox1: TGroupBox;
@@ -481,6 +481,11 @@ end;
 procedure TSVGSettingsForm.FormCreate(Sender: TObject);
 begin
   CbFont.Items.Assign(Screen.Fonts);
+  tsColors.TabVisible := false;
+  stGeneral.TabVisible := false;
+  tsFont.TabVisible := false;
+  stTheme.TabVisible := false;
+
   TitlePanel.Font.Height := Round(TitlePanel.Font.Height * 1.5);
   MenuButtonGroup.Font.Height := Round(MenuButtonGroup.Font.Height * 1.2);
 end;

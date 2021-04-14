@@ -73,6 +73,8 @@ end;
 
 procedure Finalize_GDI;
 begin
+  //Finalize GDI+
+  TLogPreview.Add('Finalize GDI+');
   GdiplusShutdown(gdiplusToken);
 end;
 

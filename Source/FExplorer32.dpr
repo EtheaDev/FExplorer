@@ -49,6 +49,7 @@ uses
   FExplorer.SettingsForm in 'FExplorer.SettingsForm.pas' {SVGSettingsForm},
   FExplorer.Settings in 'FExplorer.Settings.pas',
   FExplorer.Resources in 'FExplorer.Resources.pas' {dmResources: TDataModule},
+  FExplorer.ThumbnailResources in 'FExplorer.ThumbnailResources.pas' {dmThumbnailResources: TDataModule},
   dlgSearchText in 'dlgSearchText.pas' {TextSearchDialog},
   FExplorer.About in 'FExplorer.About.pas' {FrmAbout};
 

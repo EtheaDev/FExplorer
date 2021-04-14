@@ -75,6 +75,7 @@ object SVGSettingsForm: TSVGSettingsForm
           TabOrder = 0
           Items.Strings = (
             'AssoSoftware'
+            'AgenziaEntrate'
             'Custom')
         end
       end
@@ -474,8 +475,6 @@ object SVGSettingsForm: TSVGSettingsForm
       end>
     TabOrder = 2
     OnButtonClicked = MenuButtonGroupButtonClicked
-    ExplicitLeft = -2
-    ExplicitTop = 35
   end
   object TitlePanel: TPanel
     Left = 0

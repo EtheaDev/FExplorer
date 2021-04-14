@@ -133,8 +133,8 @@
             <Form>SVGSettingsForm</Form>
         </DCCReference>
         <DCCReference Include="FExplorer.Settings.pas"/>
-        <DCCReference Include="FExplorer.Resources.pas">
-            <Form>dmResources</Form>
+        <DCCReference Include="FExplorer.ThumbnailResources.pas">
+            <Form>dmThumbnailResources</Form>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="dlgSearchText.pas">

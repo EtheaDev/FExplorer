@@ -3,7 +3,7 @@ object frmMain: TfrmMain
   Top = 217
   Caption = 'Visualizzatore Fattura Elettronica'
   ClientHeight = 590
-  ClientWidth = 907
+  ClientWidth = 944
   Color = clWindow
   Constraints.MinHeight = 400
   Constraints.MinWidth = 600
@@ -26,12 +26,12 @@ object frmMain: TfrmMain
   OnResize = FormResize
   OnShow = FormShow
   DesignSize = (
-    907
+    944
     590)
   PixelsPerInch = 96
   TextHeight = 15
   object RightSplitter: TSplitter
-    Left = 651
+    Left = 688
     Top = 36
     Width = 6
     Height = 535
@@ -42,10 +42,28 @@ object frmMain: TfrmMain
     ExplicitTop = 61
     ExplicitHeight = 500
   end
+  object ClientPanel: TPanel
+    Left = 44
+    Top = 36
+    Width = 644
+    Height = 535
+    Align = alClient
+    TabOrder = 5
+    object PageControl: TPageControl
+      Left = 1
+      Top = 1
+      Width = 642
+      Height = 533
+      Align = alClient
+      Images = VirtualImageList
+      TabOrder = 0
+      OnChange = PageControlChange
+    end
+  end
   object StatusBar: TStatusBar
     Left = 0
     Top = 571
-    Width = 907
+    Width = 944
     Height = 19
     Panels = <
       item
@@ -70,18 +88,8 @@ object frmMain: TfrmMain
         Width = 80
       end>
   end
-  object PageControl: TPageControl
-    Left = 44
-    Top = 36
-    Width = 607
-    Height = 535
-    Align = alClient
-    Images = VirtualImageList
-    TabOrder = 1
-    OnChange = PageControlChange
-  end
   object ImagePanel: TPanel
-    Left = 657
+    Left = 694
     Top = 36
     Width = 250
     Height = 535
@@ -89,7 +97,7 @@ object frmMain: TfrmMain
     BevelOuter = bvNone
     Color = clWhite
     ParentBackground = False
-    TabOrder = 2
+    TabOrder = 0
     StyleElements = []
     object StatusSplitter: TSplitter
       Left = 0
@@ -238,8 +246,8 @@ object frmMain: TfrmMain
         AlignWithMargins = True
         Left = 36
         Top = 4
-        Width = 4
-        Height = 4
+        Width = 210
+        Height = 26
         Align = alClient
         Alignment = taCenter
         TabOrder = 1
@@ -258,7 +266,7 @@ object frmMain: TfrmMain
     OpenedWidth = 160
     ParentDoubleBuffered = True
     Placement = svpLeft
-    TabOrder = 3
+    TabOrder = 1
     OnClosed = SVClosed
     OnClosing = SVClosing
     OnOpened = SVOpened
@@ -370,25 +378,26 @@ object frmMain: TfrmMain
   object panlTop: TPanel
     Left = 0
     Top = 0
-    Width = 907
+    Width = 944
     Height = 36
     Align = alTop
     BevelOuter = bvNone
     ParentBackground = False
-    TabOrder = 4
+    TabOrder = 2
     object lblTitle: TLabel
       AlignWithMargins = True
       Left = 40
       Top = 3
       Width = 170
-      Height = 15
+      Height = 30
       Align = alLeft
       Caption = 'Visualizzatore Fattura Elettronica'
       Layout = tlCenter
+      ExplicitHeight = 15
     end
     object SettingsToolBar: TToolBar
       AlignWithMargins = True
-      Left = 704
+      Left = 741
       Top = 3
       Width = 200
       Height = 30
@@ -1085,6 +1094,24 @@ object frmMain: TfrmMain
         CollectionName = 'info'
         Disabled = False
         Name = 'info'
+      end
+      item
+        CollectionIndex = 48
+        CollectionName = 'attachment'
+        Disabled = False
+        Name = 'attachment'
+      end
+      item
+        CollectionIndex = 49
+        CollectionName = 'fattura-elettronica'
+        Disabled = False
+        Name = 'fattura-elettronica'
+      end
+      item
+        CollectionIndex = 50
+        CollectionName = 'fattura-elettronica-gray'
+        Disabled = False
+        Name = 'fattura-elettronica-gray'
       end>
     ImageCollection = dmResources.SVGIconImageCollection
     Width = 24

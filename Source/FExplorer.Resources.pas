@@ -84,6 +84,7 @@ type
     property Allegati: TArray<TAllegato> read FAllegati;
     property HasAllegati: Boolean read GetHasAllegati;
   public
+    const ADE_TEMPLATE_XSLT = 'AgenziaEntrate';
     const ASSOSOFTWARE_XSLT = 'AssoSoftware';
     const CUSTOM_XSLT = 'Custom';
   end;
@@ -94,6 +95,8 @@ type
     SVGIconImageCollection: TSVGIconImageCollection;
     AssoSoftwareTemplate: TXMLDocument;
     CustomTemplate: TXMLDocument;
+    SVGTemplates: TSVGIconImageCollection;
+    AgenziaEntrateTemplate: TXMLDocument;
     procedure DataModuleCreate(Sender: TObject);
   private
   public
@@ -289,7 +292,12 @@ begin
 
   LXSLTOutput := '';
 
-  if (StylesheetName = ASSOSOFTWARE_XSLT) or (StylesheetName = '') then
+  if (StylesheetName = ADE_TEMPLATE_XSLT) then
+  begin
+    dmResources.AgenziaEntrateTemplate.Active := True;
+    LXMLDoc.Node.TransformNode(dmResources.AgenziaEntrateTemplate.DocumentElement, LXSLTOutput);
+  end
+  else if (StylesheetName = ASSOSOFTWARE_XSLT) or (StylesheetName = '') then
   begin
     dmResources.AssoSoftwareTemplate.Active := True;
     LXMLDoc.Node.TransformNode(dmResources.AssoSoftwareTemplate.DocumentElement, LXSLTOutput);
@@ -397,6 +405,5 @@ begin
     LBytesStream.Free;
   end;
 end;
-
 
 end.

@@ -70,7 +70,7 @@ end;
 function TThumbnailHandlerRegister.CreateComObject(const Controller: IUnknown): TComObject;
 begin
   result := inherited CreateComObject(Controller);
-  TComSVGThumbnailProvider(result).ThumbnailHandlerClass := TThumbnailHandlerClass;
+  TComFEThumbnailProvider(result).ThumbnailHandlerClass := TThumbnailHandlerClass;
 end;
 
 class procedure TThumbnailHandlerRegister.DeleteRegValue(const Key, ValueName: string; RootKey: DWord);
