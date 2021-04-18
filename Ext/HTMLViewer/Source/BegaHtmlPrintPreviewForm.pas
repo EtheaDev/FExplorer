@@ -31,7 +31,7 @@ uses
 {$else}
   Windows,
 {$endif}
-  Controls, Forms, Types, Printers, //Math,
+  Graphics, Controls, Forms, Types, Printers, //Math,
   // shared units
   HtmlView,
   FramView,
@@ -79,6 +79,8 @@ end;
 
 //- BG ----------------------------------------------------------- 26.03.2007 --
 procedure TBegaHtmlPrintPreviewForm.PreviewCreatePages(Sender: TObject; MFPrinter: TBegaMetaFilePrinter; var Done: Boolean);
+const
+  PrintMarginFactor = 10.0;
 var
   OldCursor: TCursor;
   Viewer: THtmlViewer;
@@ -90,10 +92,10 @@ begin
     Screen.Cursor := crHourGlass;
     try
       MFPrinter.PrintMargins := Rect(
-        round(Viewer.PrintMarginLeft   * 10.0),
-        round(Viewer.PrintMarginTop    * 10.0),
-        round(Viewer.PrintMarginRight  * 10.0),
-        round(Viewer.PrintMarginBottom * 10.0));
+        round(Viewer.PrintMarginLeft   * PrintMarginFactor),
+        round(Viewer.PrintMarginTop    * PrintMarginFactor),
+        round(Viewer.PrintMarginRight  * PrintMarginFactor),
+        round(Viewer.PrintMarginBottom * PrintMarginFactor));
       Viewer.PrintScale := 1.0 / MFPrinter.PrintScale;
       Viewer.PrintPreview(MFPrinter);
       Done := True;
@@ -105,6 +107,8 @@ end;
 
 //- BG ----------------------------------------------------------- 14.03.2006 --
 function TBegaHtmlPrintPreviewForm.PreviewGetSize(Sender: TObject; MFPrinter: TBegaMetaFilePrinter; out Width, Height: Integer): Boolean;
+const
+  MarginFactor = 10.0;
 var
   OldCursor: TCursor;
   Viewer: THtmlViewer;
@@ -117,10 +121,10 @@ begin
     Screen.Cursor := crHourGlass;
     try
       MFPrinter.PrintMargins := Rect(
-        round(Viewer.PrintMarginLeft   * 10.0),
-        round(Viewer.PrintMarginTop    * 10.0),
-        round(Viewer.PrintMarginRight  * 10.0),
-        round(Viewer.PrintMarginBottom * 10.0));
+        round(Viewer.PrintMarginLeft   * MarginFactor),
+        round(Viewer.PrintMarginTop    * MarginFactor),
+        round(Viewer.PrintMarginRight  * MarginFactor),
+        round(Viewer.PrintMarginBottom * MarginFactor));
       Viewer.PrintScale := 1.0 / MFPrinter.PrintScale;
       Viewer.NumPrinterPages(MFPrinter, Width, Height);
     finally

@@ -494,7 +494,6 @@ object BegaCustomPreviewFrame: TBegaCustomPreviewFrame
     Align = alClient
     BevelInner = bvNone
     BevelOuter = bvNone
-    BevelWidth = 2
     TabOrder = 2
     OnResize = PreviewBoxResize
     object PreviewPanel: TBegaMetafilePreviewPanel

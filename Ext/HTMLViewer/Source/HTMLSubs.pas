@@ -13189,6 +13189,8 @@ var
       if BackColor <> clNone then
          BackColor := ThemedColor(BackColor{$ifdef has_StyleElements},seFont in Document.StyleElements{$endif});
       Canvas.Font.Color := ForeColor;
+      if Document.Printing and (Canvas.Font.Color = ForeColor) then
+        Canvas.Font.Color := clBlack;
       if J2 = -1 then
       begin {it's an image or panel}
         if FlObj is TImageObj then

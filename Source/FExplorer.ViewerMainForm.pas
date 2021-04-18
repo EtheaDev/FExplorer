@@ -1282,26 +1282,20 @@ begin
 end;
 
 procedure TfrmMain.actnPrinterSetupExecute(Sender: TObject);
+begin
+  PrinterSetupDialog.Execute;
+end;
+
+procedure TfrmMain.actnPrintPreviewExecute(Sender: TObject);
 var
   PreviewForm: TBegaHtmlPrintPreviewForm;
 begin
-  //PrinterSetupDialog.Execute;
   PreviewForm := TBegaHtmlPrintPreviewForm.Create(nil);
   try
     PreviewForm.HtmlViewer := CurrentEditFile.HTMLViewer;
     PreviewForm.ShowModal;
   finally
     PreviewForm.free;
-  end;
-end;
-
-procedure TfrmMain.actnPrintPreviewExecute(Sender: TObject);
-begin
-  SetSynEditPrintProperties(SynEditPrint);
-  with TestPrintPreviewDlg do
-  begin
-    SynEditPrintPreview.SynEditPrint := SynEditPrint;
-    ShowModal;
   end;
 end;
 
