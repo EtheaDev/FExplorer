@@ -32,7 +32,7 @@ object SVGSettingsForm: TSVGSettingsForm
     Top = 41
     Width = 662
     Height = 451
-    ActivePage = tsFont
+    ActivePage = stGeneral
     Align = alClient
     Images = SettingsImageList
     TabOrder = 0
@@ -40,22 +40,6 @@ object SVGSettingsForm: TSVGSettingsForm
       Caption = 'Anteprima'
       ImageIndex = 4
       ImageName = 'eye-settings'
-      object RenderingGroupBox: TGroupBox
-        Left = 3
-        Top = 0
-        Width = 238
-        Height = 62
-        Caption = 'Opzioni rendering SVG'
-        TabOrder = 0
-        object PreferD2DCheckBox: TCheckBox
-          Left = 13
-          Top = 21
-          Width = 156
-          Height = 17
-          Caption = 'Utilizza Engine Direct 2D'
-          TabOrder = 0
-        end
-      end
       object PreviewStyleGroupBox: TGroupBox
         Left = 3
         Top = 68
@@ -100,6 +84,22 @@ object SVGSettingsForm: TSVGSettingsForm
           Text = 'Default'
           Items.Strings = (
             'Default')
+        end
+      end
+      object RenderingGroupBox: TGroupBox
+        Left = 2
+        Top = 0
+        Width = 238
+        Height = 62
+        Caption = 'Opzioni rendering SVG'
+        TabOrder = 0
+        object PreferD2DCheckBox: TCheckBox
+          Left = 15
+          Top = 29
+          Width = 156
+          Height = 17
+          Caption = 'Utilizza Engine Direct 2D'
+          TabOrder = 0
         end
       end
     end
@@ -517,6 +517,19 @@ object SVGSettingsForm: TSVGSettingsForm
         end
       end
     end
+    object tsAdvanced: TTabSheet
+      Caption = 'Avanzate'
+      ImageIndex = 5
+      ImageName = 'developer-board'
+      object DeveloperCheckBox: TCheckBox
+        Left = 16
+        Top = 13
+        Width = 156
+        Height = 17
+        Caption = 'Modalit'#224' sviluppatore'
+        TabOrder = 0
+      end
+    end
   end
   object StatusBar: TStatusBar
     Left = 0
@@ -564,6 +577,10 @@ object SVGSettingsForm: TSVGSettingsForm
         Caption = '  Colori testo'
         ImageIndex = 0
         ImageName = 'palette'
+      end
+      item
+        Caption = 'Avanzate'
+        ImageIndex = 5
       end>
     TabOrder = 2
     OnButtonClicked = MenuButtonGroupButtonClicked
@@ -580,8 +597,8 @@ object SVGSettingsForm: TSVGSettingsForm
     TabOrder = 3
   end
   object OpenDialog: TOpenDialog
-    Left = 152
-    Top = 120
+    Left = 576
+    Top = 304
   end
   object SettingsImageList: TSVGIconImageList
     Size = 36
@@ -650,6 +667,18 @@ object SVGSettingsForm: TSVGSettingsForm
           '5C7.14,4.5 2.78,7.5 1,12C3.39,18.08 10.25,21.06 16.33,18.67C19.3' +
           '8,17.47 21.8,15.06 23,12C21.22,7.5 16.86,4.5 12,4.5M7,22H9V24H7V' +
           '22M11,22H13V24H11V22M15,22H17V24H15V22Z" /></svg>'
+      end
+      item
+        IconName = 'developer-board'
+        SVGText = 
+          '<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE svg PUBLIC "-//W' +
+          '3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg' +
+          '11.dtd"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="htt' +
+          'p://www.w3.org/1999/xlink" version="1.1" id="mdi-developer-board' +
+          '" width="24" height="24" viewBox="0 0 24 24"><path d="M22,9V7H20' +
+          'V5A2,2 0 0,0 18,3H4A2,2 0 0,0 2,5V19A2,2 0 0,0 4,21H18A2,2 0 0,0' +
+          ' 20,19V17H22V15H20V13H22V11H20V9H22M18,19H4V5H18V19M6,13H11V17H6' +
+          'V13M12,7H16V10H12V7M6,7H11V12H6V7M12,11H16V17H12V11Z" /></svg>'
       end>
     Scaled = True
     Left = 500

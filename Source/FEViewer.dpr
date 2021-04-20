@@ -33,6 +33,8 @@ program FEViewer;
 
 uses
   Vcl.Forms,
+  Vcl.Themes,
+  Vcl.Styles,
   System.SysUtils,
   dlgSearchText in 'dlgSearchText.pas' {TextSearchDialog},
   dlgReplaceText in 'dlgReplaceText.pas' {TextReplaceDialog},
@@ -44,15 +46,12 @@ uses
   dlgConfirmReplace in 'dlgConfirmReplace.pas' {ConfirmReplaceDialog},
   FExplorer.About in 'FExplorer.About.pas' {FrmAbout},
   FExplorer.Misc in 'FExplorer.Misc.pas',
-  Vcl.Themes,
-  Vcl.Styles,
   SynEditOptionsDialog in 'SynEditOptionsDialog.pas' {fmEditorOptionsDialog},
   FExplorer.Settings in 'FExplorer.Settings.pas',
   FExplorer.SettingsForm in 'FExplorer.SettingsForm.pas' {SVGSettingsForm},
   FExplorer.Registry in 'FExplorer.Registry.pas',
   FExplorer.InvoiceToImage in 'FExplorer.InvoiceToImage.pas',
-  FExplorer.ThumbnailResources in 'FExplorer.ThumbnailResources.pas' {dmThumbnailResources: TDataModule},
-  BegaHtmlPrintPreviewForm in '..\Ext\HTMLViewer\Source\BegaHtmlPrintPreviewForm.pas';
+  FExplorer.ThumbnailResources in 'FExplorer.ThumbnailResources.pas' {dmThumbnailResources: TDataModule};
 
 {$R *.res}
 

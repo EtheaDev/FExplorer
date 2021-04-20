@@ -88,6 +88,7 @@ type
     FShowXMLText: Boolean;
     FInvoice: TLegalInvoice;
     FAllegatiButtons: TObjectList<TToolButton>;
+    FFileContentType: TFileContentType;
     procedure ReadFromFile;
     procedure SaveToFile;
     function GetFileName: string;
@@ -96,6 +97,8 @@ type
     procedure LoadFromFile(const AFileName: string);
     procedure RenderAllegati;
     procedure AllegatoButtonClick(Sender: TObject);
+    procedure UpdateContentType;
+    function GetImageName: string;
   public
     EditFileType: TEditFileType;
     SynEditor: TSynEdit;
@@ -108,7 +111,9 @@ type
     procedure MostraFatturaXML(const ASettings: TEditorSettings);
     property FileName: string read GetFileName write SetFileName; //with full path
     property Name: string read GetName; //only name of file
-    property Extension : string read FExtension;
+    property ImageName: string read GetImageName;
+    property Extension: string read FExtension;
+    property ContentType: TFileContentType read FFileContentType;
   end;
 
   TfrmMain = class(TForm)
@@ -319,6 +324,7 @@ type
     procedure SetXMLFontSize(const Value: Integer);
     procedure LoadOpenedFiles;
     procedure SetHTMLFontSize(const Value: Integer);
+    procedure UpdateContentType;
     property XMLFontSize: Integer read FXMLFontSize write SetXMLFontSize;
     property HTMLFontSize: Integer read FHTMLFontSize write SetHTMLFontSize;
   end;
@@ -461,7 +467,6 @@ begin
 
   FileName := EditFileName;
   Fextension := ExtractFileExt(FileName);
-
   FIcon := TIcon.Create;
   if FileExists(FileName) then
     FIcon.Handle := ExtractAssociatedIcon(hInstance, PChar(DoubleQuote(FileName)),Filter);
@@ -470,6 +475,11 @@ end;
 function TEditingFile.GetFileName: string;
 begin
   Result := FFileName;
+end;
+
+function TEditingFile.GetImageName: string;
+begin
+  Result := AImageNames[FFileContentType];
 end;
 
 function TEditingFile.GetName: string;
@@ -494,6 +504,33 @@ begin
   FreeAndNil(FAllegatiButtons);
   FreeAndNil(FIcon);
   inherited;
+end;
+
+procedure TEditingFile.UpdateContentType;
+var
+  LContent: string;
+begin
+  FFileContentType := fcGenericFile;
+  LContent := SynEditor.Lines.Text;
+  if SameText(Fextension,'.xml') then
+  begin
+    if pos(':FatturaElettronica', LContent) > 0 then
+      FFileContentType := fcLegalInvoice
+    else
+      FFileContentType := fcGenericXML;
+  end
+  else if SameText(Fextension,'.xsl') then
+  begin
+    if pos(':FatturaElettronica', LContent) > 0 then
+    begin
+      if pos('<svg', LContent) > 0 then
+        FFileContentType := fcStyleSheetSVGIcon
+      else
+        FFileContentType := fcStyleSheetLegalInvoice;
+    end
+    else
+      FFileContentType := fcGenericXSL;
+  end;
 end;
 
 procedure TEditingFile.LoadFromFile(const AFileName: string);
@@ -560,6 +597,7 @@ begin
 
         //Apro il file
         EditingFile.ReadFromFile;
+        UpdateContentType;
 
         Result := True;
       Except
@@ -964,14 +1002,20 @@ begin
   acEditUndo.Enabled := (CurrentEditor <> nil) and CurrentEditor.Modified;
 end;
 
+procedure TfrmMain.UpdateContentType;
+begin
+  CurrentEditFile.UpdateContentType;
+  if CurrentEditor.Modified then
+    pageControl.ActivePage.Imagename := CurrentEditFile.ImageName
+  else
+    pageControl.ActivePage.Imagename := CurrentEditFile.ImageName+'-gray';
+end;
+
 procedure TfrmMain.SynEditChange(Sender: TObject);
 begin
   if Sender = CurrentEditor then
   begin
-    if CurrentEditor.Modified then
-      pageControl.ActivePage.Imagename := 'fattura-elettronica'
-    else
-      pageControl.ActivePage.Imagename := 'fattura-elettronica-gray';
+    UpdateContentType;
     UpdateInvoiceViewer;
   end;
 end;
@@ -1000,7 +1044,7 @@ begin
     //Attacco al TAG del tabsheet l'oggetto del file da editare
     ts.Tag := Integer(EditingFile);
     ts.Caption := EditingFile.Name;
-    ts.Imagename := 'fattura-elettronica-gray';
+    ts.Imagename := EditingFile.ImageName+'-gray';
     ts.Parent := PageControl;
     ts.TabVisible := True;
     EditingFile.TabSheet := ts;
@@ -1071,23 +1115,30 @@ begin
   if FProcessingFiles then
     Exit;
   try
-    if CurrentEditor <> nil then
+    if (CurrentEditor <> nil) then
     begin
-      CurrentEditFile.MostraFatturaXML(FEditorSettings);
-      //Assegna l'immagine dell'Icona SVG
-      LSVGText := FThumbnailResource.GetSVGText(CurrentEditor.Lines);
-      SVGIconImage.SVGText := LSVGText;
-      SVGIconImage16.SVGText := LSVGText;
-      SVGIconImage32.SVGText := LSVGText;
-      SVGIconImage48.SVGText := LSVGText;
-      SVGIconImage96.SVGText := LSVGText;
-
-      //Mostra l'anteprima della fattura elettronica
-
       StatusBar.Panels[STATUSBAR_MESSAGE].Text := CurrentEditFile.FileName;
+
+      if CurrentEditFile.ContentType = fcLegalInvoice then
+      begin
+        //Mostra l'anteprima della fattura elettronica
+        CurrentEditFile.MostraFatturaXML(FEditorSettings);
+        //Mostra l'anteprima dell'Icona SVG
+        LSVGText := FThumbnailResource.GetSVGText(CurrentEditor.Lines);
+        SVGIconImage.SVGText := LSVGText;
+        SVGIconImage16.SVGText := LSVGText;
+        SVGIconImage32.SVGText := LSVGText;
+        SVGIconImage48.SVGText := LSVGText;
+        SVGIconImage96.SVGText := LSVGText;
+      end
+      else
+      begin
+        CurrentEditFile.HTMLViewer.Visible := False;
+      end;
     end
     else
     begin
+      //Nasconde l'anteprina dell'immagine SVG
       SVGIconImage.SVGText := '';
       SVGIconImage16.SVGText := '';
       SVGIconImage32.SVGText := '';

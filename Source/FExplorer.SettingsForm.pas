@@ -77,8 +77,6 @@ type
     ThemeClientPanel: TPanel;
     ResetPanel: TPanel;
     ResetButton: TButton;
-    RenderingGroupBox: TGroupBox;
-    PreferD2DCheckBox: TCheckBox;
     PreviewStyleGroupBox: TGroupBox;
     StylesheetComboBox: TComboBox;
     XMLGroupBox: TGroupBox;
@@ -96,6 +94,10 @@ type
     IconStyleGroupBox: TGroupBox;
     IconStyleSheetComboBox: TComboBox;
     ShowXMLCheckBox: TCheckBox;
+    tsAdvanced: TTabSheet;
+    RenderingGroupBox: TGroupBox;
+    PreferD2DCheckBox: TCheckBox;
+    DeveloperCheckBox: TCheckBox;
     procedure BoxElementsClick(Sender: TObject);
     procedure cbForegroundClick(Sender: TObject);
     procedure cbBackgroundClick(Sender: TObject);
@@ -496,6 +498,7 @@ begin
   stGeneral.TabVisible := false;
   tsFont.TabVisible := false;
   stTheme.TabVisible := false;
+  tsAdvanced.TabVisible := false;
 
   TitlePanel.Font.Height := Round(TitlePanel.Font.Height * 1.5);
   MenuButtonGroup.Font.Height := Round(MenuButtonGroup.Font.Height * 1.2);
@@ -542,6 +545,8 @@ begin
   HTMLUpDown.Position := ASettings.HTMLFontSize;
 
   PreferD2DCheckBox.Checked := ASettings.PreferD2D;
+  DeveloperCheckBox.Checked := ASettings.DeveloperMode;
+
   StylesheetComboBox.ItemIndex := StylesheetComboBox.Items.IndexOf(ASettings.StylesheetName);
   IconStyleSheetComboBox.ItemIndex := IconStyleSheetComboBox.Items.IndexOf(ASettings.IconStylesheetName);
   PopulateAvailThemes;
@@ -580,6 +585,7 @@ begin
 
   ASettings.StyleName := SelectedStyleName;
   ASettings.PreferD2D := PreferD2DCheckBox.Checked;
+  ASettings.DeveloperMode := DeveloperCheckBox.Checked;
 
   ASettings.StylesheetName := StylesheetComboBox.Text;
   ASettings.IconStylesheetName := IconStyleSheetComboBox.Text;
@@ -592,7 +598,7 @@ begin
   begin
     case Index of
       0: ExitFromSettings(nil);
-      1,2,3,4: ChangePage(Index -1);
+      1,2,3,4,5: ChangePage(Index -1);
     else
       Beep;
     end;

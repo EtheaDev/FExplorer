@@ -64,6 +64,7 @@ type
 
   TSettings = class
   private
+    FDeveloperMode: Boolean;
     FSplitterPos: Integer;
     FXMLFontSize: Integer;
     FStyleName: string;
@@ -104,6 +105,7 @@ type
 
     property UseDarkStyle: Boolean read GetUseDarkStyle;
     property ButtonTextColor: TColor read GetButtonTextColor;
+    property DeveloperMode: Boolean read FDeveloperMode write FDeveloperMode;
     property XMLFontSize: Integer read FXMLFontSize write FXMLFontSize;
     property XMLFontName: string read FXMLFontName write FXMLFontName;
     property HTMLFontSize: Integer read FHTMLFontSize write FHTMLFontSize;
@@ -314,6 +316,7 @@ var
   LAttribute: TSynHighlighterAttributes;
 begin
   TLogPreview.Add('ReadSettings '+SettingsFileName);
+  FDeveloperMode := FIniFile.ReadBool('Global', 'DeveloperMode', False);
   FXMLFontSize := FIniFile.ReadInteger('Global', 'XMLFontSize', 10);
   FHTMLFontSize := FIniFile.ReadInteger('Global', 'HTMLFontSize', 12);
   FXMLFontName := FIniFile.ReadString('Global', 'XMLFontName', 'Consolas');
@@ -382,6 +385,7 @@ var
   LAttribute: TSynHighlighterAttributes;
   LThemeSection: string;
 begin
+  FIniFile.WriteBool('Global', 'DeveloperMode', FDeveloperMode);
   FIniFile.WriteInteger('Global', 'XMLFontSize', FXMLFontSize);
   FIniFile.WriteInteger('Global', 'HTMLFontSize', FHTMLFontSize);
 

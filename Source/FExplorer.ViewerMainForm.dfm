@@ -480,7 +480,9 @@ object frmMain: TfrmMain
     end
   end
   object OpenDialog: TOpenDialog
-    Filter = 'File Fattura Elettronica (*.xml)|*.xml'
+    Filter = 
+      'File Fattura Elettronica (*.xml)|*.xml|Fogli di Stile (*.xsl)|*.' +
+      'xsl'
     Options = [ofHideReadOnly, ofAllowMultiSelect, ofEnableSizing]
     Left = 300
     Top = 196
@@ -714,7 +716,7 @@ object frmMain: TfrmMain
     end
     object actnColorSettings: TAction
       Category = 'Settings'
-      Caption = 'Impostazione stile'
+      Caption = 'Impostazione visualizzatore'
       Hint = 'Impostazioni del visualizzatore (colori, font, temi)'
       ImageIndex = 28
       ImageName = 'preferences-desktop'
@@ -1132,6 +1134,42 @@ object frmMain: TfrmMain
         CollectionName = 'Support'
         Disabled = False
         Name = 'Support'
+      end
+      item
+        CollectionIndex = 51
+        CollectionName = 'xml'
+        Disabled = False
+        Name = 'xml'
+      end
+      item
+        CollectionIndex = 52
+        CollectionName = 'xsl'
+        Disabled = False
+        Name = 'xsl'
+      end
+      item
+        CollectionIndex = 53
+        CollectionName = 'xml-gray'
+        Disabled = False
+        Name = 'xml-gray'
+      end
+      item
+        CollectionIndex = 54
+        CollectionName = 'xsl-gray'
+        Disabled = False
+        Name = 'xsl-gray'
+      end
+      item
+        CollectionIndex = 55
+        CollectionName = 'file'
+        Disabled = False
+        Name = 'file'
+      end
+      item
+        CollectionIndex = 56
+        CollectionName = 'file-gray'
+        Disabled = False
+        Name = 'file-gray'
       end>
     ImageCollection = dmResources.SVGIconImageCollection
     Width = 24
