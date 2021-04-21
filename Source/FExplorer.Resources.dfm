@@ -1,7 +1,7 @@
 object dmResources: TdmResources
   OldCreateOrder = False
   OnCreate = DataModuleCreate
-  Height = 260
+  Height = 339
   Width = 341
   object SynXMLSyn: TSynXMLSyn
     DefaultFilter = 'File Fattura Elettronica (*.xml)|*.xml'
@@ -10910,5 +10910,14 @@ object dmResources: TdmResources
     WantBracesParsed = False
     Left = 265
     Top = 16
+  end
+  object EditingTemplate: TXMLDocument
+    NodeIndentStr = #9
+    Options = [doNodeAutoIndent]
+    XML.Strings = (
+      '')
+    Left = 75
+    Top = 262
+    DOMVendorDesc = 'MSXML'
   end
 end

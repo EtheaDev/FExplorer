@@ -109,6 +109,8 @@ type
     Constructor Create(const EditFileName : string);
     Destructor Destroy; override;
     procedure MostraFatturaXML(const ASettings: TEditorSettings);
+    procedure MostraFatturaForStyleSheet(const ASettings: TEditorSettings;
+      const ASourceXMLInvoice: string; const AStyleSheet: string = '');
     property FileName: string read GetFileName write SetFileName; //with full path
     property Name: string read GetName; //only name of file
     property ImageName: string read GetImageName;
@@ -298,6 +300,9 @@ type
     FEditorOptions: TSynEditorOptionsContainer;
     FXMLFontSize: Integer;
     FHTMLFontSize: Integer;
+    FXMLInvoice: TEditingFile;
+    FXSLForInvoice: TEditingFile;
+    FXSLForIconFile: TEditingFile;
     procedure CloseSplitViewMenu;
     procedure UpdateHighlighters;
     procedure UpdateFromSettings(AEditor: TSynEdit);
@@ -379,13 +384,23 @@ end;
 
 { TEditingFile }
 
-procedure TEditingFile.MostraFatturaXML(const ASettings: TEditorSettings);
+procedure TEditingFile.MostraFatturaForStyleSheet(const ASettings: TEditorSettings;
+  const ASourceXMLInvoice: string; const AStyleSheet: string = '');
 var
   LStream: TStringStream;
 begin
   try
-    FInvoice := TLegalInvoice.Create(SynEditor.Lines.Text, False);
-    FInvoice.StylesheetName := ASettings.StylesheetName;
+    FInvoice := TLegalInvoice.Create(ASourceXMLInvoice, False);
+    if AStyleSheet <> '' then
+    begin
+      dmResources.EditingTemplate.XML.Text := AStyleSheet;
+      FInvoice.StylesheetName := TLegalInvoice.EDITING_XSLT;
+    end
+    else
+    begin
+      FInvoice.StylesheetName := ASettings.StylesheetName;
+    end;
+
     FInvoice.Parse;
 
     //Carica il contenuto HTML trasformato dentro l'HTML-Viewer
@@ -394,6 +409,37 @@ begin
     LStream := TStringStream.Create(FInvoice.HTML);
     try
       HtmlViewer.LoadFromStream(LStream);
+      HtmlViewer.Visible := True;
+    finally
+      LStream.Free;
+    end;
+
+    RenderAllegati;
+  except
+    on E: Exception do
+    begin
+      Raise
+    end;
+  end;
+end;
+
+procedure TEditingFile.MostraFatturaXML(const ASettings: TEditorSettings);
+var
+  LStream: TStringStream;
+begin
+  try
+    FInvoice := TLegalInvoice.Create(SynEditor.Lines.Text, False);
+    FInvoice.StylesheetName := ASettings.StylesheetName;
+
+    FInvoice.Parse;
+
+    //Carica il contenuto HTML trasformato dentro l'HTML-Viewer
+    HtmlViewer.DefFontSize := ASettings.HTMLFontSize;
+    HtmlViewer.DefFontName := ASettings.HTMLFontName;
+    LStream := TStringStream.Create(FInvoice.HTML);
+    try
+      HtmlViewer.LoadFromStream(LStream);
+      HtmlViewer.Visible := True;
     finally
       LStream.Free;
     end;
@@ -1009,6 +1055,12 @@ begin
     pageControl.ActivePage.Imagename := CurrentEditFile.ImageName
   else
     pageControl.ActivePage.Imagename := CurrentEditFile.ImageName+'-gray';
+
+  case CurrentEditFile.ContentType of
+    fcLegalInvoice: FXMLInvoice := CurrentEditFile;
+    fcStyleSheetLegalInvoice: FXSLForInvoice := CurrentEditFile;
+    fcStyleSheetSVGIcon: FXSLForIconFile := CurrentEditFile;
+  end;
 end;
 
 procedure TfrmMain.SynEditChange(Sender: TObject);
@@ -1111,6 +1163,16 @@ end;
 procedure TfrmMain.UpdateInvoiceViewer;
 var
   LSVGText: string;
+
+  procedure UpdateIconViewer(const ASVGText: string);
+  begin
+    SVGIconImage.SVGText := ASVGText;
+    SVGIconImage16.SVGText := ASVGText;
+    SVGIconImage32.SVGText := ASVGText;
+    SVGIconImage48.SVGText := ASVGText;
+    SVGIconImage96.SVGText := ASVGText;
+  end;
+
 begin
   if FProcessingFiles then
     Exit;
@@ -1123,27 +1185,38 @@ begin
       begin
         //Mostra l'anteprima della fattura elettronica
         CurrentEditFile.MostraFatturaXML(FEditorSettings);
+
         //Mostra l'anteprima dell'Icona SVG
-        LSVGText := FThumbnailResource.GetSVGText(CurrentEditor.Lines);
-        SVGIconImage.SVGText := LSVGText;
-        SVGIconImage16.SVGText := LSVGText;
-        SVGIconImage32.SVGText := LSVGText;
-        SVGIconImage48.SVGText := LSVGText;
-        SVGIconImage96.SVGText := LSVGText;
+        FThumbnailResource.StylesheetName := FThumbnailResource.SVG_DEFAULT_XSLT;
+        UpdateIconViewer(FThumbnailResource.GetSVGText(CurrentEditor.Lines));
+      end
+      else if (CurrentEditFile = FXSLForInvoice) and Assigned(FXMLInvoice) then
+      begin
+        //Mostra l'anteprima della fattura elettronica utilizzando
+        //il foglio di stile corrente e l'ultimo file della fattura caricato
+        CurrentEditFile.MostraFatturaForStyleSheet(FEditorSettings,
+          FXMLInvoice.SynEditor.lines.Text, CurrentEditor.Lines.Text);
+      end
+      else if (CurrentEditFile = FXSLForIconFile) and Assigned(FXMLInvoice) then
+      begin
+        //Mostra l'anteprima della fattura elettronica
+        CurrentEditFile.MostraFatturaForStyleSheet(FEditorSettings,
+          FXMLInvoice.SynEditor.lines.Text);
+        //Assegno il template con il contenuto del file corrente
+        FThumbnailResource.EditingTemplate.XML.Text := CurrentEditFile.SynEditor.lines.Text;
+        FThumbnailResource.StylesheetName := FThumbnailResource.SVG_EDITING_XSLT;
+        UpdateIconViewer(FThumbnailResource.GetSVGText(FXMLInvoice.SynEditor.Lines));
       end
       else
       begin
         CurrentEditFile.HTMLViewer.Visible := False;
+        CurrentEditFile.ToolbarAllegati.Visible := False;
       end;
     end
     else
     begin
       //Nasconde l'anteprina dell'immagine SVG
-      SVGIconImage.SVGText := '';
-      SVGIconImage16.SVGText := '';
-      SVGIconImage32.SVGText := '';
-      SVGIconImage48.SVGText := '';
-      SVGIconImage96.SVGText := '';
+      UpdateIconViewer('');
     end;
     StatusImage.ImageIndex := 40;
     StatusStaticText.Caption := SVG_PARSING_OK;
@@ -1173,7 +1246,11 @@ begin
   CloseSplitViewMenu;
   //Imposto la caption dell'Editor
   if CurrentEditFile <> nil then
+  begin
     Caption := Application.Title+' - '+CurrentEditFile.FileName;
+    if (CurrentEditFile.ContentType = fcLegalInvoice) then
+      FXMLInvoice := CurrentEditFile;
+  end;
   UpdateInvoiceViewer;
 end;
 
@@ -1227,6 +1304,14 @@ begin
       mtWarning, [mbYes, mbNo], 0) = mrNo then
       Abort;
   end;
+
+  //Rimuovo il riferimento
+  if FXMLInvoice = EditingFile then
+    FXMLInvoice := nil
+  else if FXSLForInvoice = EditingFile then
+    FXSLForInvoice := nil
+  else if FXSLForIconFile = EditingFile then
+    FXSLForIconFile := nil;
 
   //Elimino il file dalla lista
   EditFileList.Delete(pos);

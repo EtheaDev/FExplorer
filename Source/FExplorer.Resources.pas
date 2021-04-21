@@ -90,6 +90,11 @@ type
   public
     StylesheetName: string;
 
+    const ADE_TEMPLATE_XSLT = 'AgenziaEntrate';
+    const ASSOSOFTWARE_XSLT = 'AssoSoftware';
+    const CUSTOM_XSLT = 'Custom';
+    const EDITING_XSLT = 'Editing';
+
     constructor Create(const AXML: string; const AParseImmediately: Boolean = True);
 
     procedure Clear;
@@ -100,10 +105,6 @@ type
     property HTML: string read FHTML;
     property Allegati: TArray<TAllegato> read FAllegati;
     property HasAllegati: Boolean read GetHasAllegati;
-  public
-    const ADE_TEMPLATE_XSLT = 'AgenziaEntrate';
-    const ASSOSOFTWARE_XSLT = 'AssoSoftware';
-    const CUSTOM_XSLT = 'Custom';
   end;
 
   TdmResources = class(TDataModule)
@@ -116,6 +117,7 @@ type
     AgenziaEntrateTemplate: TXMLDocument;
     SynXSLSyn: TSynXMLSyn;
     SynXSLSynDark: TSynXMLSyn;
+    EditingTemplate: TXMLDocument;
     procedure DataModuleCreate(Sender: TObject);
   private
   public
@@ -265,6 +267,13 @@ procedure TLegalInvoice.Parse;
 var
   LXMLDoc: IXMLDocument;
   LXSLTOutput: WideString;
+
+  procedure Transform(const AXMLDoc: TXMLDocument);
+  begin
+    AXMLDoc.Active := True;
+    LXMLDoc.Node.TransformNode(AXMLDoc.DocumentElement, LXSLTOutput);
+  end;
+
 begin
   //Inizializza il Documento XML
   LXMLDoc := LoadXMLData(XML);
@@ -272,20 +281,13 @@ begin
   LXSLTOutput := '';
 
   if (StylesheetName = ADE_TEMPLATE_XSLT) then
-  begin
-    dmResources.AgenziaEntrateTemplate.Active := True;
-    LXMLDoc.Node.TransformNode(dmResources.AgenziaEntrateTemplate.DocumentElement, LXSLTOutput);
-  end
+    Transform(dmResources.AgenziaEntrateTemplate)
   else if (StylesheetName = ASSOSOFTWARE_XSLT) or (StylesheetName = '') then
-  begin
-    dmResources.AssoSoftwareTemplate.Active := True;
-    LXMLDoc.Node.TransformNode(dmResources.AssoSoftwareTemplate.DocumentElement, LXSLTOutput);
-  end
+    Transform(dmResources.AssoSoftwareTemplate)
   else if (StylesheetName = CUSTOM_XSLT) then
-  begin
-    dmResources.CustomTemplate.Active := True;
-    LXMLDoc.Node.TransformNode(dmResources.CustomTemplate.DocumentElement, LXSLTOutput);
-  end;
+    Transform(dmResources.CustomTemplate)
+  else if (StylesheetName = EDITING_XSLT) then
+    Transform(dmResources.EditingTemplate);
 
   FHTML := LXSLTOutput;
 

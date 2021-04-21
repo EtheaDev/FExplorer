@@ -154,12 +154,19 @@ object dmThumbnailResources: TdmThumbnailResources
       #9#9#9#9'</xsl:if>'
       #9'</xsl:template>'
       '</xsl:stylesheet>')
-    Left = 35
-    Top = 22
+    Left = 43
+    Top = 78
     DOMVendorDesc = 'MSXML'
   end
   object SourceXML: TXMLDocument
-    Left = 40
-    Top = 80
+    Left = 48
+    Top = 16
+  end
+  object EditingTemplate: TXMLDocument
+    NodeIndentStr = #9
+    Options = [doNodeAutoIndent]
+    Left = 43
+    Top = 142
+    DOMVendorDesc = 'MSXML'
   end
 end

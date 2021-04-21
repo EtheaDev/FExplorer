@@ -96,7 +96,9 @@ object frmMain: TfrmMain
     Align = alRight
     BevelOuter = bvNone
     Color = clWhite
+    DoubleBuffered = False
     ParentBackground = False
+    ParentDoubleBuffered = False
     TabOrder = 0
     StyleElements = []
     object StatusSplitter: TSplitter

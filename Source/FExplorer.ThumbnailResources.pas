@@ -35,18 +35,21 @@ uses
   , Xml.Win.msxmldom
   , Xml.XMLDoc
   ;
-const
-  SVG_TEMPLATE_XSLT = 'ThumbTemplate';
 
 type
   TdmThumbnailResources = class(TDataModule)
     DefaultTemplate: TXMLDocument;
     SourceXML: TXMLDocument;
+    EditingTemplate: TXMLDocument;
   private
     function Parse: string;
   public
+    StylesheetName: string;
     function GetSVGText(const AXMLLines: TStrings): string; overload;
     function GetSVGText(const AStream: TStream): string; overload;
+  public
+    const SVG_DEFAULT_XSLT = 'Default';
+    const SVG_EDITING_XSLT = 'Editing';
   end;
 
 implementation
@@ -61,39 +64,39 @@ uses
 function TdmThumbnailResources.Parse: string;
 var
   LXSLTOutput: WideString;
+
+  procedure Transform(AXMLDoc: TXMLDocument);
+  begin
+    AXMLDoc.Active := True;
+    SourceXML.Node.TransformNode(AXMLDoc.DocumentElement, LXSLTOutput);
+  end;
+
 begin
   Result := '';
-  DefaultTemplate.Active := True;
+  LXSLTOutput := '';
   SourceXML.Active := True;
   try
-    SourceXML.Node.TransformNode(DefaultTemplate.DocumentElement, LXSLTOutput);
+    if StylesheetName = SVG_EDITING_XSLT then
+      Transform(EditingTemplate)
+    else
+      Transform(DefaultTemplate);
   finally
     SourceXML.Active := False;
-    DefaultTemplate.Active := True;
   end;
   Result := LXSLTOutput;
 end;
 
 function TdmThumbnailResources.GetSVGText(const AStream: TStream): string;
-var
-  LStyleSheetName: string;
 begin
-  LStyleSheetName := SVG_TEMPLATE_XSLT;
-
   //Inizializza il Documento XML
   SourceXML.LoadFromStream(AStream, xetUTF_8);
   Result := Parse;
 end;
 
 function TdmThumbnailResources.GetSVGText(const AXMLLines: TStrings): string;
-var
-  LStyleSheetName: string;
 begin
-  LStyleSheetName := SVG_TEMPLATE_XSLT;
-
   //Inizializza il Documento XML
   SourceXML.XML.Assign(AXMLLines);
-
   Result := Parse;
 end;
 
