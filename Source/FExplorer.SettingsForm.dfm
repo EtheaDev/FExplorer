@@ -521,13 +521,45 @@ object SVGSettingsForm: TSVGSettingsForm
       Caption = 'Avanzate'
       ImageIndex = 5
       ImageName = 'developer-board'
-      object DeveloperCheckBox: TCheckBox
+      object AllowEditCheckBox: TCheckBox
         Left = 16
         Top = 13
-        Width = 156
+        Width = 260
         Height = 17
-        Caption = 'Modalit'#224' sviluppatore'
+        Caption = 'Consenti la modifica dei file'
         TabOrder = 0
+      end
+      object DeveloperGroupBox: TGroupBox
+        Left = 16
+        Top = 48
+        Width = 273
+        Height = 97
+        Caption = 'Opzioni Sviluppatore'
+        TabOrder = 1
+        object AllowXSLCheckBox: TCheckBox
+          Left = 9
+          Top = 18
+          Width = 260
+          Height = 17
+          Caption = 'Consenti anche il caricamento di file xsl'
+          TabOrder = 0
+        end
+        object AllowXSLToInvoiceCheckBox: TCheckBox
+          Left = 9
+          Top = 41
+          Width = 260
+          Height = 17
+          Caption = 'Abilita trasformazione xsl di preview fatture'
+          TabOrder = 1
+        end
+        object AllowXSLtoSVGCheckBox: TCheckBox
+          Left = 9
+          Top = 64
+          Width = 260
+          Height = 17
+          Caption = 'Abilita trasformazione xsl di preview icone'
+          TabOrder = 2
+        end
       end
     end
   end
@@ -581,6 +613,7 @@ object SVGSettingsForm: TSVGSettingsForm
       item
         Caption = 'Avanzate'
         ImageIndex = 5
+        ImageName = 'developer-board'
       end>
     TabOrder = 2
     OnButtonClicked = MenuButtonGroupButtonClicked

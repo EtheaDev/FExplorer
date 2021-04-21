@@ -65,18 +65,18 @@ const
 
 resourcestring
   PAGE_HEADER_FIRST_LINE_LEFT = '$TITLE$';
-  PAGE_HEADER_FIRST_LINE_RIGHT = 'Tot. Pages: $PAGECOUNT$';
-  PAGE_FOOTER_FIRST_LINE_LEFT = 'Print Date: $DATE$. Time: $TIME$';
-  PAGE_FOOTER_FIRST_LINE_RIGHT = 'Page $PAGENUM$ of $PAGECOUNT$';
-  FILE_NOT_FOUND = 'File "%s" not found!';
-  SMODIFIED = 'Modified';
-  SUNMODIFIED = 'Unmodified';
-  STATE_READONLY = 'ReadOnly';
-  STATE_INSERT = 'Insert';
-  STATE_OVERWRITE = 'OverWrite';
-  CLOSING_PROBLEMS = 'Closing problems!';
-  CONFIRM_ABANDON = '%s not saved! Abandon Changes?';
-  SVG_PARSING_OK = 'SVG Parsing is correct.';
+  PAGE_HEADER_FIRST_LINE_RIGHT = 'Tot. Pagine: $PAGECOUNT$';
+  PAGE_FOOTER_FIRST_LINE_LEFT = 'Data di stampa: $DATE$. Ora: $TIME$';
+  PAGE_FOOTER_FIRST_LINE_RIGHT = 'Pagina $PAGENUM$ di $PAGECOUNT$';
+  FILE_NOT_FOUND = 'File "%s" non trovato!';
+  SMODIFIED = 'Modificato';
+  SUNMODIFIED = 'Non modificato';
+  STATE_READONLY = 'Sola lettura';
+  STATE_INSERT = 'Inserimento';
+  STATE_OVERWRITE = 'Sovrascrittura';
+  CLOSING_PROBLEMS = 'Problemi in chiusura!';
+  CONFIRM_ABANDON = '%s non salvato! Si voglionoi abbandonare le modifiche fatte?';
+  SVG_PARSING_OK = 'Il parsing SVG è corretto.';
 
 type
   TEditingFile = class
@@ -280,6 +280,7 @@ type
       MousePos: TPoint; var Handled: Boolean);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure acZoomExecute(Sender: TObject);
+    procedure acEditCopyUpdate(Sender: TObject);
   private
     FThumbnailResource: TdmThumbnailResources;
     FProcessingFiles: Boolean;
@@ -581,9 +582,9 @@ end;
 
 procedure TEditingFile.LoadFromFile(const AFileName: string);
 var
-  Extension: string;
+  LExtension: string;
 begin
-  Extension := ExtractFileExt(AFileName);
+  LExtension := ExtractFileExt(AFileName);
   SynEditor.Lines.LoadFromFile(AFileName, TEncoding.UTF8);
 end;
 
@@ -613,12 +614,22 @@ function TfrmMain.OpenFile(const FileName : string;
 var
   EditingFile: TEditingFile;
   I, J: Integer;
+  LExtensions: string;
 begin
   Screen.Cursor := crHourGlass;
   Try
     FProcessingFiles := True;
     if FileExists(FileName) then
     begin
+      //Verifico l'estensione del file
+      LExtensions := '.xml;.p7m';
+      if FEditorSettings.AllowXSL then
+        LExtensions := LExtensions + ';.xsl';
+
+      if pos(ExtractFileExt(FileName), LExtensions) = 0 then
+        raise Exception.CreateFmt('Impossibile caricare un file che non abbia estensione "%s"',
+      [LExtensions]);
+
       //ciclo per cercare se il file è già aperto
       EditingFile := nil;
       I := -1;
@@ -643,6 +654,7 @@ begin
 
         //Apro il file
         EditingFile.ReadFromFile;
+
         UpdateContentType;
 
         Result := True;
@@ -1008,7 +1020,8 @@ end;
 
 procedure TfrmMain.acReplaceUpdate(Sender: TObject);
 begin
-  acReplace.Enabled := (CurrentEditor <> nil) and (CurrentEditor.Text <> '');
+  acReplace.Enabled := (CurrentEditor <> nil) and (CurrentEditor.Text <> '')
+    and not CurrentEditor.ReadOnly;
 end;
 
 procedure TfrmMain.acCloseExecute(Sender: TObject);
@@ -1020,6 +1033,12 @@ end;
 procedure TfrmMain.acEditCopyExecute(Sender: TObject);
 begin
  CurrentEditor.CopyToClipboard;
+end;
+
+procedure TfrmMain.acEditCopyUpdate(Sender: TObject);
+begin
+  acEditCopy.Enabled := (CurrentEditFile <> nil) and
+    (CurrentEditFile.SynEditor.SelEnd - CurrentEditFile.SynEditor.SelStart > 0);
 end;
 
 procedure TfrmMain.acEditCutExecute(Sender: TObject);
@@ -1116,6 +1135,7 @@ begin
     EditingFile.SynEditor := Editor;
 
     FEViewer := THtmlViewer.Create(ts);
+    FEViewer.ScrollBars := ssNone;
     FEViewer.Align := alRight;
     FEViewer.Width := ts.Width div 2;
     FEViewer.Parent := ts;
@@ -1173,6 +1193,12 @@ var
     SVGIconImage96.SVGText := ASVGText;
   end;
 
+  procedure ShowHTMLViewerPreview(AShow: Boolean);
+  begin
+    CurrentEditFile.HTMLViewer.Visible := AShow;
+    CurrentEditFile.ToolbarAllegati.Visible := AShow;
+  end;
+
 begin
   if FProcessingFiles then
     Exit;
@@ -1192,25 +1218,39 @@ begin
       end
       else if (CurrentEditFile = FXSLForInvoice) and Assigned(FXMLInvoice) then
       begin
-        //Mostra l'anteprima della fattura elettronica utilizzando
-        //il foglio di stile corrente e l'ultimo file della fattura caricato
-        CurrentEditFile.MostraFatturaForStyleSheet(FEditorSettings,
-          FXMLInvoice.SynEditor.lines.Text, CurrentEditor.Lines.Text);
+        if FEditorSettings.AllowXSLToInvoice then
+        begin
+          //Mostra l'anteprima della fattura elettronica utilizzando
+          //il foglio di stile corrente e l'ultimo file della fattura caricato
+          CurrentEditFile.MostraFatturaForStyleSheet(FEditorSettings,
+            FXMLInvoice.SynEditor.lines.Text, CurrentEditor.Lines.Text);
+        end
+        else
+        begin
+          ShowHTMLViewerPreview(False);
+        end;
       end
       else if (CurrentEditFile = FXSLForIconFile) and Assigned(FXMLInvoice) then
       begin
-        //Mostra l'anteprima della fattura elettronica
-        CurrentEditFile.MostraFatturaForStyleSheet(FEditorSettings,
-          FXMLInvoice.SynEditor.lines.Text);
-        //Assegno il template con il contenuto del file corrente
-        FThumbnailResource.EditingTemplate.XML.Text := CurrentEditFile.SynEditor.lines.Text;
-        FThumbnailResource.StylesheetName := FThumbnailResource.SVG_EDITING_XSLT;
-        UpdateIconViewer(FThumbnailResource.GetSVGText(FXMLInvoice.SynEditor.Lines));
+        if FEditorSettings.AllowXSLToSVG then
+        begin
+          //Mostra l'anteprima dell'icona della fattura elettronica
+          CurrentEditFile.MostraFatturaForStyleSheet(FEditorSettings,
+            FXMLInvoice.SynEditor.lines.Text);
+          //Assegno il template con il contenuto del file corrente
+          FThumbnailResource.EditingTemplate.XML.Text := CurrentEditFile.SynEditor.lines.Text;
+          FThumbnailResource.StylesheetName := FThumbnailResource.SVG_EDITING_XSLT;
+          UpdateIconViewer(FThumbnailResource.GetSVGText(FXMLInvoice.SynEditor.Lines));
+        end
+        else
+        begin
+          ShowHTMLViewerPreview(False);
+          UpdateIconViewer('');
+        end;
       end
       else
       begin
-        CurrentEditFile.HTMLViewer.Visible := False;
-        CurrentEditFile.ToolbarAllegati.Visible := False;
+        ShowHTMLViewerPreview(False);
       end;
     end
     else
@@ -1220,11 +1260,14 @@ begin
     end;
     StatusImage.ImageIndex := 40;
     StatusStaticText.Caption := SVG_PARSING_OK;
+    StatusStaticText.Hint := SVG_PARSING_OK;
   except
     on E: Exception do
     begin
       StatusImage.ImageIndex := 39;
       StatusStaticText.Caption := E.Message;
+      StatusStaticText.Hint := E.Message;
+      UpdateIconViewer('');
     end;
   end;
 end;
@@ -1530,7 +1573,10 @@ end;
 procedure TfrmMain.UpdateFromSettings(AEditor: TSynEdit);
 begin
   if AEditor <> nil then
-    FEditorSettings.ReadSettings(AEditor.Highlighter, self.FEditorOptions)
+  begin
+    FEditorSettings.ReadSettings(AEditor.Highlighter, self.FEditorOptions);
+    AEditor.ReadOnly := not FEditorSettings.AllowEdit;
+  end
   else
     FEditorSettings.ReadSettings(nil, self.FEditorOptions);
   if FEditorSettings.XMLFontSize >= MinfontSize then
@@ -1711,13 +1757,16 @@ end;
 
 procedure TfrmMain.actnColorSettingsExecute(Sender: TObject);
 begin
-  if CurrentEditor <> nil then
+  //if CurrentEditor <> nil then
   begin
     if ShowSettings(DialogPosRect,
       Title_FEViewer,
       CurrentEditor, FEditorSettings, True) then
     begin
-      FEditorSettings.WriteSettings(CurrentEditor.Highlighter, FEditorOptions);
+      if CurrentEditor <> nil then
+        FEditorSettings.WriteSettings(CurrentEditor.Highlighter, FEditorOptions)
+      else
+        FEditorSettings.WriteSettings(nil, FEditorOptions);
       UpdateFromSettings(CurrentEditor);
       UpdateInvoiceViewer;
       UpdateHighlighters;
@@ -1727,7 +1776,8 @@ end;
 
 procedure TfrmMain.actnColorSettingsUpdate(Sender: TObject);
 begin
-  actnColorSettings.Enabled := (CurrentEditor <> nil) and (CurrentEditor.Highlighter <> nil);
+  actnColorSettings.Enabled := True;
+  //(CurrentEditor <> nil) and (CurrentEditor.Highlighter <> nil);
 end;
 
 procedure TfrmMain.actnFormatXMLExecute(Sender: TObject);
@@ -1747,7 +1797,8 @@ end;
 
 procedure TfrmMain.actionForFileUpdate(Sender: TObject);
 begin
-  (Sender as TAction).Enabled := CurrentEditFile <> nil;
+  (Sender As TAction).Enabled := (CurrentEditor <> nil)
+    and not CurrentEditor.ReadOnly;
 end;
 
 procedure TfrmMain.AddOpenedFile(const AFileName: string);

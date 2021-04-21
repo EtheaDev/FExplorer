@@ -103,7 +103,7 @@ object frmMain: TfrmMain
     StyleElements = []
     object StatusSplitter: TSplitter
       Left = 0
-      Top = 497
+      Top = 489
       Width = 250
       Height = 4
       Cursor = crVSplit
@@ -117,7 +117,7 @@ object frmMain: TfrmMain
       Left = 0
       Top = 172
       Width = 250
-      Height = 325
+      Height = 317
       AutoSize = False
       ParentDoubleBuffered = False
       DoubleBuffered = True
@@ -227,9 +227,9 @@ object frmMain: TfrmMain
     end
     object StatusPanel: TPanel
       Left = 0
-      Top = 501
+      Top = 493
       Width = 250
-      Height = 34
+      Height = 42
       Align = alBottom
       ParentBackground = False
       TabOrder = 4
@@ -237,7 +237,7 @@ object frmMain: TfrmMain
         Left = 1
         Top = 1
         Width = 32
-        Height = 32
+        Height = 40
         AutoSize = False
         Proportional = True
         ImageList = VirtualImageList
@@ -249,7 +249,7 @@ object frmMain: TfrmMain
         Left = 36
         Top = 4
         Width = 210
-        Height = 26
+        Height = 34
         Align = alClient
         Alignment = taCenter
         TabOrder = 1
@@ -483,8 +483,8 @@ object frmMain: TfrmMain
   end
   object OpenDialog: TOpenDialog
     Filter = 
-      'File Fattura Elettronica (*.xml)|*.xml|Fogli di Stile (*.xsl)|*.' +
-      'xsl'
+      'File Fattura Elettronica (*.xml;*.p7m)|*.xml;*.p7m|Fogli di Stil' +
+      'e (*.xsl)|*.xsl'
     Options = [ofHideReadOnly, ofAllowMultiSelect, ofEnableSizing]
     Left = 300
     Top = 196
@@ -520,6 +520,7 @@ object frmMain: TfrmMain
       ImageName = 'Cut'
       ShortCut = 16472
       OnExecute = acEditCutExecute
+      OnUpdate = actionForFileUpdate
     end
     object acSearch: TAction
       Category = 'Edit'
@@ -560,7 +561,7 @@ object frmMain: TfrmMain
       ImageName = 'Copy'
       ShortCut = 16451
       OnExecute = acEditCopyExecute
-      OnUpdate = actionForFileUpdate
+      OnUpdate = acEditCopyUpdate
     end
     object acEditPaste: TEditPaste
       Category = 'Edit'
@@ -766,7 +767,9 @@ object frmMain: TfrmMain
     end
   end
   object SaveDialog: TSaveDialog
-    Filter = 'File Fattura Elettronica (*.xml)|*.xml'
+    Filter = 
+      'File Fattura Elettronica (*.xml;*.p7m)|*.xml;*.p7m|Fogli di Stil' +
+      'e (*.xsl)|*.xsl'
     Left = 300
     Top = 264
   end

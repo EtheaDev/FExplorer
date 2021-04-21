@@ -64,7 +64,6 @@ type
 
   TSettings = class
   private
-    FDeveloperMode: Boolean;
     FSplitterPos: Integer;
     FXMLFontSize: Integer;
     FStyleName: string;
@@ -105,7 +104,7 @@ type
 
     property UseDarkStyle: Boolean read GetUseDarkStyle;
     property ButtonTextColor: TColor read GetButtonTextColor;
-    property DeveloperMode: Boolean read FDeveloperMode write FDeveloperMode;
+
     property XMLFontSize: Integer read FXMLFontSize write FXMLFontSize;
     property XMLFontName: string read FXMLFontName write FXMLFontName;
     property HTMLFontSize: Integer read FHTMLFontSize write FHTMLFontSize;
@@ -127,6 +126,11 @@ type
 
   TEditorSettings = class(TSettings)
   private
+    FAllowEdit: Boolean;
+    FAllowXSL: Boolean;
+    FAllowXSLToInvoice: Boolean;
+    FAllowXSLToSVG: Boolean;
+
     procedure WriteSynEditorOptions(
       const ASynEditorOptions: TSynEditorOptionsContainer);
     procedure ReadSynEditorOptions(
@@ -143,6 +147,11 @@ type
       const ASynEditorOptions: TSynEditorOptionsContainer);
     destructor Destroy; override;
     procedure UpdateOpenedFiles(AFileList: TStrings; const ACurrentFileName: string);
+
+    property AllowEdit: Boolean read FAllowEdit write FAllowEdit;
+    property AllowXSL: Boolean read FAllowXSL write FAllowXSL;
+    property AllowXSLToInvoice: Boolean read FAllowXSLToInvoice write FAllowXSLToInvoice;
+    property AllowXSLToSVG: Boolean read FAllowXSLToSVG write FAllowXSLToSVG;
   end;
 
 implementation
@@ -316,7 +325,6 @@ var
   LAttribute: TSynHighlighterAttributes;
 begin
   TLogPreview.Add('ReadSettings '+SettingsFileName);
-  FDeveloperMode := FIniFile.ReadBool('Global', 'DeveloperMode', False);
   FXMLFontSize := FIniFile.ReadInteger('Global', 'XMLFontSize', 10);
   FHTMLFontSize := FIniFile.ReadInteger('Global', 'HTMLFontSize', 12);
   FXMLFontName := FIniFile.ReadString('Global', 'XMLFontName', 'Consolas');
@@ -385,7 +393,6 @@ var
   LAttribute: TSynHighlighterAttributes;
   LThemeSection: string;
 begin
-  FIniFile.WriteBool('Global', 'DeveloperMode', FDeveloperMode);
   FIniFile.WriteInteger('Global', 'XMLFontSize', FXMLFontSize);
   FIniFile.WriteInteger('Global', 'HTMLFontSize', FHTMLFontSize);
 
@@ -481,6 +488,11 @@ begin
       OpenedFileList.strings[i] := LFileName;
   end;
   CurrentFileName := FIniFile.ReadString('Global', 'CurrentFileName', '');
+
+  FAllowEdit := FIniFile.ReadBool('Editor', 'AllowEdit', False);
+  FAllowXSL := FIniFile.ReadBool('Editor', 'AllowXSL', False);
+  FAllowXSLToInvoice := FIniFile.ReadBool('Editor', 'AllowXSLToInvoice', False);
+  FAllowXSLToSVG := FIniFile.ReadBool('Editor', 'AllowXSLToSVG', False);
 end;
 
 procedure TeditorSettings.ReadSynEditorOptions(
@@ -589,6 +601,12 @@ begin
       OpenedFileList.strings[i]);
   end;
   FIniFile.WriteString('Global', 'CurrentFileName', CurrentFileName);
+
+  FIniFile.WriteBool('Editor', 'AllowEdit', FAllowEdit);
+  FIniFile.WriteBool('Editor', 'AllowXSL', FAllowXSL);
+  FIniFile.WriteBool('Editor', 'AllowXSLToInvoice', FAllowXSLToInvoice);
+  FIniFile.WriteBool('Editor', 'AllowXSLToSVG', FAllowXSLToSVG);
+
   WriteSynEditorOptions(ASynEditorOptions);
 end;
 

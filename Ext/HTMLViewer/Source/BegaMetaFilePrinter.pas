@@ -268,7 +268,7 @@ end;
 //- BG ----------------------------------------------------------- 10.03.2006 --
 constructor TBegaMetaFilePrinter.create(AOwner: TComponent);
 const
-  defaultPrintMargin = 20; //20;
+  defaultPrintMargin = 5; //20;
 begin
   inherited create(AOwner);
   FPrintScale := 1.0;

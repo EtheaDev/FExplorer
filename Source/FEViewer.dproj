@@ -67,7 +67,7 @@
         <Icon_MainIcon>..\Icons\logo.ico</Icon_MainIcon>
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
         <VerInfo_Locale>1040</VerInfo_Locale>
-        <VerInfo_Keys>CompanyName=Ethea S.r.l.;FileDescription=Visualizzatore Fattura Elettronica;FileVersion=1.0.1.0;InternalName=;LegalCopyright=Copyright © 2021 - Ethea S.r.l. &amp; Andrea Magni;LegalTrademarks=;OriginalFilename=;ProductName=FExplorer Viewer;ProductVersion=1.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=Ethea S.r.l.;FileDescription=Visualizzatore Fattura Elettronica;FileVersion=1.1.0.0;InternalName=;LegalCopyright=Copyright © 2021 - Ethea S.r.l. &amp; Andrea Magni;LegalTrademarks=;OriginalFilename=;ProductName=FExplorer Viewer;ProductVersion=1.1;Comments=</VerInfo_Keys>
         <Custom_Styles>Glow|VCLSTYLE|$(BDSCOMMONDIR)\Styles\Glow.vsf;Sky|VCLSTYLE|$(BDSCOMMONDIR)\Styles\Sky.vsf;Windows10|VCLSTYLE|$(BDSCOMMONDIR)\Styles\Windows10.vsf;&quot;Windows10 Dark|VCLSTYLE|$(BDSCOMMONDIR)\Styles\Windows10Dark.vsf&quot;;&quot;Windows10 SlateGray|VCLSTYLE|$(BDSCOMMONDIR)\Styles\Windows10SlateGray.vsf&quot;</Custom_Styles>
         <DCC_DebugInformation>0</DCC_DebugInformation>
         <DCC_ImportedDataReferences>false</DCC_ImportedDataReferences>
@@ -76,7 +76,7 @@
         <DCC_DcuOutput>..\Dcu\D10_4</DCC_DcuOutput>
         <DCC_DependencyCheckOutputName>..\..\exe\InstantXMLEditor.exe</DCC_DependencyCheckOutputName>
         <DCC_Define>NO_VCLSTYLEUTILS;$(DCC_Define)</DCC_Define>
-        <VerInfo_Release>1</VerInfo_Release>
+        <VerInfo_MinorVer>1</VerInfo_MinorVer>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
         <DCC_Namespace>System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Bde;$(DCC_Namespace)</DCC_Namespace>

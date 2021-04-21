@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:b="http://www.fatturapa.gov.it/sdi/fatturapa/v1.1" xmlns:c="http://www.fatturapa.gov.it/sdi/fatturapa/v1.0" xmlns:a="http://ivaservizi.agenziaentrate.gov.it/docs/xsd/fatture/v1.2" xmlns:d="http://ivaservizi.agenziaentrate.gov.it/docs/xsd/fatture/v1.0">
 	<xsl:output method="html"/>
 	<xsl:decimal-format name="euro" decimal-separator="," grouping-separator="."/>
@@ -1973,7 +1973,7 @@
           font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
           margin-left: auto;
           margin-right: auto;
-          min-width: 800px;
+          min-width: 400px;
           padding: 0;  }
 
           #fattura-elettronica
@@ -1983,7 +1983,7 @@
           .tbHeader
           {
           width: 100%;
-          border: 2px solid black;
+          border: 2px solid;
           }
 
 
@@ -1992,7 +1992,7 @@
           .tdHead {
           width: 50%;
           height: 91px;
-          border: 1px solid black;
+          border: 1px solid;
           }
 
           .tableHead
@@ -2012,7 +2012,6 @@
 
           .headerLabel
           {
-          color:#282828;
           font-weight:bold;
 
 
@@ -2053,9 +2052,9 @@
           table.tbTitolo th {
           padding-left: 5px;
           padding-right: 5px;
-          border: solid 1px #000000;
+          border: solid 1px;
           border-bottom: none;
-          background-color: #e0ffffde;
+          background-color: Gray;
           font-size:x-small;
 
           }
@@ -2072,8 +2071,8 @@
           table.tbFoglio th {
           padding-left: 5px;
           padding-right: 5px;
-          border: solid 1px #000000;
-          background-color: #8d7d7d75;
+          border: solid 1px;
+          background-color: DarkGray;
 
           <!-- text-transform: uppercase; -->
           font-size:x-small;
@@ -2083,7 +2082,7 @@
 
           table.tbFoglio tbody
           {
-          border: solid 1px #000000;
+          border: solid 1px red;
           }
 
           table.tbFoglio th .perc

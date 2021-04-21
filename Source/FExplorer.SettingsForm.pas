@@ -97,7 +97,11 @@ type
     tsAdvanced: TTabSheet;
     RenderingGroupBox: TGroupBox;
     PreferD2DCheckBox: TCheckBox;
-    DeveloperCheckBox: TCheckBox;
+    AllowEditCheckBox: TCheckBox;
+    DeveloperGroupBox: TGroupBox;
+    AllowXSLCheckBox: TCheckBox;
+    AllowXSLToInvoiceCheckBox: TCheckBox;
+    AllowXSLtoSVGCheckBox: TCheckBox;
     procedure BoxElementsClick(Sender: TObject);
     procedure cbForegroundClick(Sender: TObject);
     procedure cbBackgroundClick(Sender: TObject);
@@ -197,26 +201,30 @@ begin
       LSettingsForm.Left := (AParentRect.Left + AParentRect.Right - LSettingsForm.Width) div 2;
       LSettingsForm.Top := (AParentRect.Top + AParentRect.Bottom - LSettingsForm.Height) div 2;
     end;
+    StatusBar.SimpleText := FFileName;
 
     FSourceSynEdit := ASourceSynEdit;
-    SynEdit.Color := FSourceSynEdit.Color;
-    SynEdit.Font.Assign(FSourceSynEdit.Font);
-    SynEdit.Gutter.Assign(FSourceSynEdit.Gutter);
-    SynEdit.ActiveLineColor := FSourceSynEdit.ActiveLineColor;
-    StatusBar.SimpleText := FFileName;
-    HighLightSettingsClass := TSynCustomHighlighterClass(
-      ASourceSynEdit.Highlighter.ClassType);
-    FHighlighter := HighLightSettingsClass.Create(nil);
-    Try
+    if Assigned(FSourceSynEdit) then
+    begin
+      SynEdit.Color := FSourceSynEdit.Color;
+      SynEdit.Font.Assign(FSourceSynEdit.Font);
+      SynEdit.Gutter.Assign(FSourceSynEdit.Gutter);
+      SynEdit.ActiveLineColor := FSourceSynEdit.ActiveLineColor;
+      HighLightSettingsClass := TSynCustomHighlighterClass(
+        FSourceSynEdit.Highlighter.ClassType);
+      FHighlighter := HighLightSettingsClass.Create(nil);
       SynEdit.Highlighter := FHighlighter;
       CloneSynEdit(ASourceSynEdit,SynEdit);
       SynEdit.Text := ASourceSynEdit.Text;
       AddElements;
+    end;
+    try
       Result := ShowModal = mrOk;
       if Result then
         UpdateSettings(ASettings);
     Finally
-      FHighlighter.Free;
+      if Assigned(FHighlighter) then
+        FHighlighter.Free;
     End;
 
   Finally
@@ -531,6 +539,8 @@ end;
 
 procedure TSVGSettingsForm.AssignSettings(ASettings: TSettings);
 begin
+  if not (ASettings is TEditorSettings) and (MenuButtonGroup.items.Count > 5) then
+    MenuButtonGroup.items.Delete(5);
   ChangePage(ASettings.ActivePageIndex);
   MenuButtonGroup.ItemIndex := pc.ActivePageIndex +1;
   SettingsImageList.FixedColor := ASettings.ButtonTextColor;
@@ -545,10 +555,18 @@ begin
   HTMLUpDown.Position := ASettings.HTMLFontSize;
 
   PreferD2DCheckBox.Checked := ASettings.PreferD2D;
-  DeveloperCheckBox.Checked := ASettings.DeveloperMode;
 
   StylesheetComboBox.ItemIndex := StylesheetComboBox.Items.IndexOf(ASettings.StylesheetName);
   IconStyleSheetComboBox.ItemIndex := IconStyleSheetComboBox.Items.IndexOf(ASettings.IconStylesheetName);
+
+  if ASettings is TEditorSettings then
+  begin
+    AllowEditCheckBox.Checked := TEditorSettings(ASettings).AllowEdit;
+    AllowXSLCheckBox.Checked := TEditorSettings(ASettings).AllowXSL;
+    AllowXSLToInvoiceCheckBox.Checked := TEditorSettings(ASettings).AllowXSLToInvoice;
+    AllowXSLtoSVGCheckBox.Checked := TEditorSettings(ASettings).AllowXSLToSVG;
+  end;
+
   PopulateAvailThemes;
 end;
 
@@ -585,7 +603,14 @@ begin
 
   ASettings.StyleName := SelectedStyleName;
   ASettings.PreferD2D := PreferD2DCheckBox.Checked;
-  ASettings.DeveloperMode := DeveloperCheckBox.Checked;
+
+  if ASettings is TEditorSettings then
+  begin
+    TEditorSettings(ASettings).AllowEdit := AllowEditCheckBox.Checked;
+    TEditorSettings(ASettings).AllowXSL := AllowXSLCheckBox.Checked;
+    TEditorSettings(ASettings).AllowXSLToInvoice := AllowXSLToInvoiceCheckBox.Checked;
+    TEditorSettings(ASettings).AllowXSLToSVG := AllowXSLtoSVGCheckBox.Checked;
+  end;
 
   ASettings.StylesheetName := StylesheetComboBox.Text;
   ASettings.IconStylesheetName := IconStyleSheetComboBox.Text;
@@ -666,7 +691,8 @@ end;
 procedure TSVGSettingsForm.ExitFromSettings(Sender: TObject);
 begin
   //Salva i parametri su file
-  CloneSynEdit(SynEdit, FSourceSynEdit);
+  if Assigned(FSourceSynEdit) and Assigned(SynEdit) then
+    CloneSynEdit(SynEdit, FSourceSynEdit);
   ModalResult := mrOk;
 end;
 

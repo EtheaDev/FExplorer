@@ -98,6 +98,8 @@ begin
   //Inizializza il Documento XML
   SourceXML.XML.Assign(AXMLLines);
   Result := Parse;
+  if Result = '' then
+    raise Exception.Create('Errore nella trasformazione in SVG dell''anteprima dell''icona');
 end;
 
 end.
