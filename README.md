@@ -20,6 +20,8 @@
 
 Clicca per scaricare il Setup: [FExplorerSetup.exe][3] (che si trova anche nella "release area").
 
+![Preview Thumbnails Dark](./Images/Setup.png)
+
 ATTENZIONE: attualmente il setup non è firmato, quindi Windows avvisa che potrebbe essere malevolo.
 
 ### Pannello Preview e Anteprima Icone in azione ###
