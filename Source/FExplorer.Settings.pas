@@ -329,7 +329,7 @@ begin
   FHTMLFontSize := FIniFile.ReadInteger('Global', 'HTMLFontSize', 12);
   FXMLFontName := FIniFile.ReadString('Global', 'XMLFontName', 'Consolas');
   FHTMLFontName := FIniFile.ReadString('Global', 'HTMLFontName', 'Arial');
-  FShowXML := FIniFile.ReadInteger('Global', 'ShowXML', 1) = 1;
+  FShowXML := FIniFile.ReadInteger('Global', 'ShowXML', 0) = 1;
   FSplitterPos := FIniFile.ReadInteger('Global', 'SplitterPos', 33);
   PreferD2D := Boolean(FIniFile.ReadInteger('Global', 'PreferD2D', -1));
   FActivePageIndex := FIniFile.ReadInteger('Global', 'ActivePageIndex', 0);

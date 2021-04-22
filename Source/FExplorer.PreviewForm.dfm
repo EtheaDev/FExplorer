@@ -235,6 +235,7 @@ object FrmPreview: TFrmPreview
     PrintMarginRight = 2.000000000000000000
     PrintMarginTop = 2.000000000000000000
     PrintScale = 1.000000000000000000
+    ScrollBars = ssVertical
     Align = alClient
     TabOrder = 4
     Touch.InteractiveGestures = [igPan]

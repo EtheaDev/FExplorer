@@ -94,7 +94,7 @@ type
     function DialogPosRect: TRect;
     procedure AppException(Sender: TObject; E: Exception);
     procedure UpdateGUI;
-    procedure UpdateFromSettings;
+    procedure UpdateFromSettings(const Preview: Boolean);
     procedure SaveSettings;
     procedure SetXMLFontSize(const Value: Integer);
     procedure SetHTMLFontSize(const Value: Integer);
@@ -171,27 +171,40 @@ begin
     FInvoice.StylesheetName := FPreviewSettings.StylesheetName;
     FInvoice.Parse;
 
-    if not FInvoice.Parsed then
-      raise Exception.Create('Impossibile caricare la fattura');
+    //Se la trasformazione ha prodotto un "div" vuoto significa che il file
+    //di orgine non è una fattura elettronica o non è riuscito a trasformarla:
+    //Nascondo il viewer e nostro solo il testo XML
+    if pos('<div id="fattura-container"></div>', FInvoice.HTML) > 0 then
+    begin
+      PanelXML.Visible := True;
+      HtmlViewer.Visible := False;
+      PanelXML.Align := alClient;
+      UpdateGUI;
+    end
+    else
+    begin
+      PanelXML.Visible := FPreviewSettings.ShowXML;
+      PanelXML.Align := alTop;
+      HtmlViewer.Visible := True;
 
-    //Carica il contenuto HTML trasformato dentro l'HTML-Viewer
-    LStream := TStringStream.Create(FInvoice.HTML);
-    try
-      HtmlViewer.LoadFromStream(LStream);
-    finally
-      LStream.Free;
+      //Carica il contenuto HTML trasformato dentro l'HTML-Viewer
+      LStream := TStringStream.Create(FInvoice.HTML);
+      try
+        HtmlViewer.LoadFromStream(LStream);
+      finally
+        LStream.Free;
+      end;
+
+      RenderAllegati;
+
     end;
-
-    RenderAllegati;
 
     // dump HTML to temp folder (DEBUG ONLY!)
     //TFile.WriteAllText('c:\temp\' +  ChangeFileExt(FFileName, '.html'), FInvoice.HTML, TEncoding.UTF8);
 
   except
     on E: Exception do
-    begin
-      Raise
-    end;
+      ; //non solleva eccezioni
   end;
 end;
 
@@ -309,7 +322,7 @@ begin
   TLogPreview.Add('TFrmEditor.FormCreate');
   Application.OnException := AppException;
   FSimpleText := StatusBar.SimpleText;
-  UpdateFromSettings;
+  UpdateFromSettings(False);
 end;
 
 procedure TFrmPreview.FormDestroy(Sender: TObject);
@@ -364,7 +377,7 @@ begin
     FPreviewSettings.UpdateSettings(SynEdit.Font.Name,
       HtmlViewer.DefFontName,
       XMLFontSize, HTMLFontSize,
-      PanelXML.Visible);
+      (PanelXML.Visible and HtmlViewer.Visible));
     FPreviewSettings.WriteSettings(SynEdit.Highlighter, nil);
   end;
 end;
@@ -457,7 +470,7 @@ begin
   SynEdit.Lines.Text := Xml.XMLDoc.FormatXMLData(SynEdit.Lines.Text);
 end;
 
-procedure TFrmPreview.UpdateFromSettings;
+procedure TFrmPreview.UpdateFromSettings(const Preview: Boolean);
 begin
   FPreviewSettings.ReadSettings(SynEdit.Highlighter, nil);
   if FPreviewSettings.XMLFontSize >= MinfontSize then
@@ -479,7 +492,8 @@ begin
   //BackgroundTrackBar.Position := FPreviewSettings.LightBackground;
   UpdateHighlighter;
   UpdateGUI;
-  MostraFatturaXML;
+  if Preview then
+    MostraFatturaXML;
 end;
 
 procedure TFrmPreview.ToolButtonSettingsClick(Sender: TObject);
@@ -487,7 +501,7 @@ begin
   if ShowSettings(DialogPosRect, Title_SVGPreview, SynEdit, FPreviewSettings, True) then
   begin
     FPreviewSettings.WriteSettings(SynEdit.Highlighter, nil);
-    UpdateFromSettings;
+    UpdateFromSettings(True);
   end;
 end;
 

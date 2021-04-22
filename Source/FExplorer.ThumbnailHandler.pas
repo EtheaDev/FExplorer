@@ -111,6 +111,7 @@ var
   AStream: TIStreamAdapter;
   LBitmap: TBitmap;
   LAntiAliasColor: TColor;
+  LSVGText: string;
 begin
   try
     TLogPreview.Add('TComFEThumbnailProvider.GetThumbnail start');
@@ -124,7 +125,10 @@ begin
     AStream := TIStreamAdapter.Create(FIStream);
     try
       TLogPreview.Add('TComFEThumbnailProvider.GetThumbnail LoadFromStream');
-      FSVG.Source := FThumbnailResources.GetSVGText(AStream);
+      LSVGText := FThumbnailResources.GetSVGText(AStream);
+      if Pos('*Error*', LSVGText) > 0 then
+        LSVGText := FThumbnailResources.GetDefaultXMLThumbnail;
+      FSVG.Source := LSVGText;
       TLogPreview.Add('TComFEThumbnailProvider.FSVG.Source '+FSVG.Source);
       LBitmap := TBitmap.Create;
       LBitmap.PixelFormat := pf32bit;

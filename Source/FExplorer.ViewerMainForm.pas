@@ -208,6 +208,7 @@ type
     acZoomOut: TAction;
     Zoom1: TMenuItem;
     Zoom2: TMenuItem;
+    procedure WMGetMinMaxInfo(var Message: TWMGetMinMaxInfo); message WM_GETMINMAXINFO;
     procedure acOpenFileExecute(Sender: TObject);
     procedure acSaveExecute(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -282,6 +283,7 @@ type
     procedure acZoomExecute(Sender: TObject);
     procedure acEditCopyUpdate(Sender: TObject);
   private
+    MinFormWidth, MinFormHeight, MaxFormWidth, MaxFormHeight: Integer;
     FThumbnailResource: TdmThumbnailResources;
     FProcessingFiles: Boolean;
     FEditorSettings: TEditorSettings;
@@ -1731,6 +1733,32 @@ begin
     StatusBar.Panels[STATUSBAR_PANEL_MODIFIED].Text := '';
     StatusBar.Panels[STATUSBAR_PANEL_STATE].Text := '';
   end;
+end;
+
+procedure TfrmMain.WMGetMinMaxInfo(var Message: TWMGetMinMaxInfo);
+var
+  LMinMaxInfo: PMinMaxInfo;
+begin
+  if not (csReading in ComponentState) then
+  begin
+    LMinMaxInfo := Message.MinMaxInfo;
+    with LMinMaxInfo^ do
+    begin
+      with ptMinTrackSize do
+      begin
+        if MinFormWidth > 0 then X := MinFormWidth;
+        if MinFormHeight > 0 then Y := MinFormHeight;
+      end;
+      with ptMaxTrackSize do
+      begin
+        if MaxFormWidth > 0 then X := MaxFormWidth;
+        if MaxFormHeight > 0 then Y := MaxFormHeight;
+      end;
+      ConstrainedResize(ptMinTrackSize.X, ptMinTrackSize.Y, ptMaxTrackSize.X,
+        ptMaxTrackSize.Y);
+    end;
+  end;
+  inherited;
 end;
 
 procedure TfrmMain.ActionListExecute(Action: TBasicAction;

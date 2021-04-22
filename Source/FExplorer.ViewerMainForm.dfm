@@ -5,8 +5,6 @@ object frmMain: TfrmMain
   ClientHeight = 590
   ClientWidth = 944
   Color = clWindow
-  Constraints.MinHeight = 400
-  Constraints.MinWidth = 600
   Ctl3D = False
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
