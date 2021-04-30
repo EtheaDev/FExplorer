@@ -20,6 +20,8 @@
 
 Clicca per scaricare il Setup: [FExplorerSetup.exe][3] (che si trova anche nella "release area").
 
+![Preview Thumbnails Dark](./Images/Setup.png)
+
 ATTENZIONE: attualmente il setup non è firmato, quindi Windows avvisa che potrebbe essere malevolo.
 
 ### Pannello Preview e Anteprima Icone in azione ###
@@ -51,6 +53,28 @@ Per installare manualmente FExplorer.dll seguire questi step:
 5. Una volta registrato, puoi continuare a modificare il codice e ricompilare la dll (attenzione a chiudere tutte le istanze di Explorer).
 
 ## Release Notes ##
+
+23 Apr 2021
+- Versione 1.1.0
+
+Thumbnails:
+- preview anche delle fatture elettroniche semplificate
+- preview di una generica icona XML per i file che non sono fatture
+
+FExplorer:
+- default apertura file "read-only"
+- Settings: 
+  - possibilità di abilitare l'editing dei file
+  - possibilità di caricare anche file xsl
+  - auto-riconoscimento xsl di trasformazione fatture*
+  - auto-riconoscimento xsl di trasformazioni icone svg*
+
+*queste due funzioni permettono di utilizzare l'editor per testare nuovi stili di trasformazione di fatture e di icone
+
+Bug-fixing:
+- impostazione stampante (AV in apertura)
+- preview di stampa corretta
+- alcuni messaggi in inglese
 
 14 Apr 2021
 - Versione 1.0.0
