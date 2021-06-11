@@ -47,13 +47,13 @@ Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:Ad
 [Files]
 Source: "..\Bin32\FEViewer.exe"; DestDir: "{app}"; Flags: ignoreversion 32bit; Components: Viewer
 Source: "..\Bin32\FExplorer32.dll"; DestDir: {app}; Flags : regserver sharedfile noregerror; Components: ShellExtensions
-Source: "..\Bin32\libeay32.dll"; DestDir: {app}; Components: ShellExtensions
-Source: "..\Bin32\ssleay32.dll"; DestDir: {app}; Components: ShellExtensions
+Source: "..\Bin32\libeay32.dll"; DestDir: {app}; Components: ShellExtensions; Flags: ignoreversion 32bit
+Source: "..\Bin32\ssleay32.dll"; DestDir: {app}; Components: ShellExtensions; Flags: ignoreversion 32bit
 
 Source: "..\Bin64\FEViewer.exe"; DestDir: "{app}"; Flags: ignoreversion 64bit; Components: Viewer
 Source: "..\Bin64\FExplorer.dll"; DestDir: {app}; Flags : 64bit regserver sharedfile noregerror; Components: ShellExtensions
-Source: "..\Bin64\libeay32.dll"; DestDir: {app}; Components: ShellExtensions
-Source: "..\Bin64\ssleay32.dll"; DestDir: {app}; Components: ShellExtensions
+Source: "..\Bin64\libeay32.dll"; DestDir: {app}; Components: ShellExtensions; Flags: ignoreversion 64bit
+Source: "..\Bin64\ssleay32.dll"; DestDir: {app}; Components: ShellExtensions; Flags: ignoreversion 64bit
 
 [Icons]
 Name: "{group}\FEViewer"; Filename: "{app}\FEViewer.exe"; WorkingDir: "{app}"; IconFilename: "{app}\FEViewer.exe"; Components: Viewer

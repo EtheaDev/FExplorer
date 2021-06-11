@@ -312,10 +312,10 @@ object FrmAbout: TFrmAbout
   end
   object panelLibrary: TGroupBox
     Left = 11
-    Top = 208
+    Top = 204
     Width = 427
     Height = 55
-    Anchors = [akLeft, akTop, akRight]
+    Anchors = [akLeft, akRight, akBottom]
     Caption = 'OpenSSL Library Info'
     TabOrder = 5
     object OpenSSLlabelLocation: TLabel
