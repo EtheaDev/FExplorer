@@ -15,6 +15,7 @@
 - Possibilità di associare colori diversi alle icone in base ai tipi di F.E. o ad altre regole
 - Supporta Windows Vista, 7, 8 and 10 (sia 32 bit che 64 bit).
 - Supporto dei temi (Scuro o Chiaro) in accordo con le preferenze dell'utente in Windows
+- Supporto ai file firmati digitalmente (p7m) grazie alla libreria PKCS7Extractor
 
 ### Installazione semplice
 
@@ -60,8 +61,13 @@ Per installare manualmente FExplorer.dll seguire questi step:
 
 ## Release Notes ##
 
-23 Apr 2021
-- Versione 1.1.0
+11 Giu 2021 - Versione 1.3.0
+- Aggiunto supporto ai file firmati (p7m) con la libreria [PKCS7Extractor][12]
+
+30 Apr 2021 - Versione 1.2.0
+- Aggiunto supporto FExplorer a 32 Bit
+
+23 Apr 2021 - Versione 1.1.0
 
 Thumbnails:
 - preview anche delle fatture elettroniche semplificate
@@ -82,11 +88,9 @@ Bug-fixing:
 - preview di stampa corretta
 - alcuni messaggi in inglese
 
-14 Apr 2021
-- Versione 1.0.0
+14 Apr 2021 - Versione 1.0.0
 
-26 Mar 2021
-- Creazione Repo
+26 Mar 2021 - Creazione Repo
 
 ## Credits
 
@@ -120,4 +124,4 @@ Related links: [embarcadero.com][11] - [learndelphi.org][12]
 [11]: https://www.embarcadero.com/
 [12]: https://learndelphi.org/
 [13]: https://github.com/EtheaDev/SVGShellExtensions/
-
+[14]: https://github.com/DelphiClubItalia/PKCS7Extractor
