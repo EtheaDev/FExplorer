@@ -40,6 +40,12 @@ Un comodo visualizzatore della fattura elettronica per poterla anche stampare.
 
 Se hai Delphi 10.4 Sydney, puoi compilare manualmente il progetto.
 
+## Compilazione/Installazione packages di componenti di terze parti ##
+
+Utilizzare il file {FExplorer}\Ext\AllPackagesGroup.groupproj per caricare nell'IDE tutti i package da compilare e installare
+
+Utilizzare il file {FExplorer}\Source\FExplorerGroup.groupproj per caricare nell'IDE i 2 progetti da compilare
+
 Per installare manualmente FExplorer.dll seguire questi step:
 
 1. Chiudere tutte le istanze di Windows Explorer in cui è attivo il gestore di anteprima o è stato utilizzato il gestore di anteprima (ricorda che la dll rimane in memoria fino alla chiusura di Windows Explorer).
@@ -50,7 +56,7 @@ Per installare manualmente FExplorer.dll seguire questi step:
 
 4. Se si desidera disinstallare la dll, modificare opportunamente il file Setup \ UnRegister64Bit.bat` ed eseguirlo.
 
-5. Una volta registrato, puoi continuare a modificare il codice e ricompilare la dll (attenzione a chiudere tutte le istanze di Explorer).
+5. Una volta registrato, puoi continuare a modificare il codice e ricompilare la dll (attenzione a chiudere tutte le istanze di Explorer ogni volta che si ricompila).
 
 ## Release Notes ##
 
