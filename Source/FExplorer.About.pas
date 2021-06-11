@@ -55,6 +55,11 @@ type
     LinkLabel1: TLinkLabel;
     SVGIconImage1: TSVGIconImage;
     SVGIconImage2: TSVGIconImage;
+    panelLibrary: TGroupBox;
+    OpenSSLlabelLocation: TLabel;
+    OpenSSLlabelVersion: TLabel;
+    labelLocationL: TLabel;
+    labelVersionL: TLabel;
     procedure btnOKClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btnIssuesClick(Sender: TObject);
@@ -64,6 +69,7 @@ type
   private
     FTitle: string;
     procedure SetTitle(const Value: string);
+    procedure RefreshSSLInfo;
     { Private declarations }
   public
     procedure DisableButtons;
@@ -77,7 +83,7 @@ procedure HideAboutForm;
 implementation
 
 uses
-  ShellApi, uMisc;
+  ShellApi, uMisc, PKCS7Extractor;
 
 {$R *.dfm}
 
@@ -173,32 +179,8 @@ begin
   {$ELSE}
   LabelVersion.Caption := Format('Versione %s (64bit)', [FileVersionStr]);
   {$ENDIF}
-  MemoCopyRights.Lines.Add('Autori:');
-  MemoCopyRights.Lines.Add('Carlo Barazzetta & Andrea Magni');
-  MemoCopyRights.Lines.Add('https://github.com/EtheaDev/FExplorer');
-  MemoCopyRights.Lines.Add('Copyright © 2021 all rights reserved.');
-  MemoCopyRights.Lines.Add('');
-  MemoCopyRights.Lines.Add('Librerie di terze parti di Ethea:');
-  MemoCopyRights.Lines.Add('SVGIconImageList https://github.com/EtheaDev/SVGIconImageList/');
-  MemoCopyRights.Lines.Add('');
-  MemoCopyRights.Lines.Add('The Initial Developer of the Original Code is Rodrigo Ruz V.');
-  MemoCopyRights.Lines.Add('Portions created by Rodrigo Ruz V. are Copyright © 2011-2021 Rodrigo Ruz V.');
-  MemoCopyRights.Lines.Add('https://github.com/RRUZ/delphi-preview-handler');
-  MemoCopyRights.Lines.Add('');
-  MemoCopyRights.Lines.Add('Librerie di terze parti utilizzate');
-  MemoCopyRights.Lines.Add('SynEdit http://synedit.svn.sourceforge.net/viewvc/synedit/ all rights reserved.');
-  MemoCopyRights.Lines.Add('');
-  MemoCopyRights.Lines.Add('TSVG Library - http://www.mwcs.de');
-  MemoCopyRights.Lines.Add('Original version © 2005, 2008 Martin Walter.');
-  MemoCopyRights.Lines.Add('');
-  MemoCopyRights.Lines.Add('HTMLViewer - https://github.com/BerndGabriel/HtmlViewer');
-  MemoCopyRights.Lines.Add('Copyright (c) 1995 - 2008 by L. David Baldwin');
-  MemoCopyRights.Lines.Add('Copyright (c) 1995 - 2008 by Anders Melander (DitherUnit.pas)');
-  MemoCopyRights.Lines.Add('Copyright (c) 1995 - 2008 by Ron Collins (HtmlGif1.pas)');
-  MemoCopyRights.Lines.Add('Copyright (c) 2008 - 2009 by Sebastian Zierer (Delphi 2009 Port)');
-  MemoCopyRights.Lines.Add('Copyright (c) 2008 - 2010 by Arvid Winkelsdorf (Fixes)');
-  MemoCopyRights.Lines.Add('Copyright (c) 2009 - 2019 by HtmlViewer Team');
-  MemoCopyRights.Lines.Add('');
+
+  RefreshSSLInfo;
 end;
 
 procedure TFrmAbout.LinkLabel1Click(Sender: TObject);
@@ -212,6 +194,20 @@ begin
   FTitle := Value;
   Caption := FTitle;
   TitleLabel.Caption := Value + FReeware_Caption;
+end;
+
+procedure TFrmAbout.RefreshSSLInfo;
+var
+  S: String;
+begin
+  S := PKCS7Extractor.GetFolder;
+  if Length(S) = 0 then
+    S := '(unknown)';
+  OpenSSLlabelLocation.Caption := S;
+  S := PKCS7Extractor.GetVersion;
+  if Length(S) = 0 then
+    S := '(unknown)';
+  OpenSSLlabelVersion.Caption := S
 end;
 
 end.

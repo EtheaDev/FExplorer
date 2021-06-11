@@ -459,7 +459,7 @@ end;
 procedure TEditingFile.RenderAllegati;
 var
   LIndex: Integer;
-  LAllegato: TAllegato;
+  LAllegato: TLinkedDoc;
   LButton: TToolButton;
 begin
   FAllegatiButtons.Clear;
@@ -496,7 +496,7 @@ end;
 procedure TEditingFile.AllegatoButtonClick(Sender: TObject);
 var
   LButton: TToolButton;
-  LAllegato: TAllegato;
+  LAllegato: TLinkedDoc;
 begin
   LButton := Sender as TToolButton;
   LAllegato := FInvoice.Allegati[LButton.Tag];
@@ -561,7 +561,7 @@ var
 begin
   FFileContentType := fcGenericFile;
   LContent := SynEditor.Lines.Text;
-  if SameText(Fextension,'.xml') then
+  if SameText(Fextension,'.xml') or SameText(Fextension,'.p7m') then
   begin
     if pos(':FatturaElettronica', LContent) > 0 then
       FFileContentType := fcLegalInvoice
@@ -587,7 +587,7 @@ var
   LExtension: string;
 begin
   LExtension := ExtractFileExt(AFileName);
-  SynEditor.Lines.LoadFromFile(AFileName, TEncoding.UTF8);
+  SynEditor.Lines.Text := TLegalInvoiceLoader.LoadFromFile(AFileName);
 end;
 
 procedure TEditingFile.SaveToFile;

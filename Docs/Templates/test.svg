@@ -1,0 +1,13 @@
+﻿<svg width="210mm" height="210mm" version="1.1" viewBox="0 0 210 210" xmlns:b="http://www.fatturapa.gov.it/sdi/fatturapa/v1.1" xmlns:c="http://www.fatturapa.gov.it/sdi/fatturapa/v1.0" xmlns:a="http://ivaservizi.agenziaentrate.gov.it/docs/xsd/fatture/v1.2" xmlns:d="http://ivaservizi.agenziaentrate.gov.it/docs/xsd/fatture/v1.0" xmlns="http://www.w3.org/2000/svg">
+  <path d="m15 5 145 1.9e-6 45 45v145c0 5.54-4.46 10-10 10h-180c-5.54 0-10-4.46-10-10v-180c0-5.54 4.46-10 10-10z" fill="#607d8b"/>
+  <path d="m205 50c-12.913-0.0125-22.087 0.03402-35 0-8.1511-0.06177-10.038-5.8522-10-10v-35z" fill="#b1d1e0"/>
+  <text font-family="Segoe UI" font-size="22" style="fill:white">
+    <tspan x="13" y="130">Simecom S.r.l.</tspan>
+    <tspan x="13" y="160">MILLENNIUM DATAWARE SRL</tspan>
+    <tspan x="13" y="40" font-size="32" font-weight="bold">Fattura</tspan>
+    <tspan x="13" y="70">2021R00030286</tspan>
+    <tspan x="13" font-size="32" y="110">22/01/2021</tspan>
+    <tspan x="13" y="195" font-size="32" font-weight="bold">596,00</tspan>
+  </text>
+  <path style="opacity:0.2;fill:#ffffff" d="0 -2.5,1.115 -2.5,2.5 V 10.5 C 12,9.1149999 13.115,7.9999999 14.5,7.9999999 H 37 c 0,-1 0,0 0,-1 z"/>
+</svg>

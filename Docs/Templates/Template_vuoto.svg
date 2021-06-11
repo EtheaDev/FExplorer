@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<svg width="210mm" height="210mm" version="1.1" viewBox="0 0 210 210" xmlns="http://www.w3.org/2000/svg">
+<g fill="darkred">
+   <path d="m15 5 145 1.9e-6 45 45v145c0 5.54-4.46 10-10 10h-180c-5.54 0-10-4.46-10-10v-180c0-5.54 4.46-10 10-10z"/>
+</g>
+   <path fill="darkblue" d="m15 5 145 1.9e-6 45 45v145c0 5.54-4.46 10-10 10h-180c-5.54 0-10-4.46-10-10v-180c0-5.54 4.46-10 10-10z"/>
+   <text font-family="Segoe UI" font-size="22" style="fill:white">
+   <tspan x="13" y="40" font-size="32"  font-weight="bold">Fattura</tspan>
+   <tspan x="13" y="70">2021R00030286</tspan>
+   <tspan x="13" y="105" font-size="32" font-weight="bold">22/01/2021</tspan>
+   <tspan x="13" y="130">Fornitore</tspan>
+   <tspan x="13" y="160">Cliente</tspan>
+   <tspan x="13" y="195" font-size="32"  font-weight="bold">€ 596,00</tspan>
+   </text>
+</svg>

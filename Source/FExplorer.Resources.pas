@@ -69,7 +69,7 @@ type
     SynHighlighter : TSynCustomHighlighter;
   end;
 
-  TAllegato = record
+  TLinkedDoc = record
     FileName: string;
     FileType: string;
     Compressione: string;
@@ -78,12 +78,19 @@ type
     procedure Clear;
   end;
 
+  TLegalInvoiceLoader = class
+  public
+    class function LoadFromFile(const AFileName: string): string;
+    class procedure LoadFromStream(const AInputStream: TStream;
+      const AOutStream: TStringStream);
+  end;
+
   TLegalInvoice = record
   private
     FParsed: Boolean;
     FXML: string;
     FHTML: string;
-    FAllegati: TArray<TAllegato>;
+    FAllegati: TArray<TLinkedDoc>;
     procedure SetXML(const Value: string);
     procedure ParseAllegati(const AXMLDoc: IXMLDocument);
     function GetHasAllegati: Boolean;
@@ -103,7 +110,7 @@ type
     property Parsed: Boolean read FParsed;
     property XML: string read FXML write SetXML;
     property HTML: string read FHTML;
-    property Allegati: TArray<TAllegato> read FAllegati;
+    property Allegati: TArray<TLinkedDoc> read FAllegati;
     property HasAllegati: Boolean read GetHasAllegati;
   end;
 
@@ -137,7 +144,12 @@ implementation
 {$R *.dfm}
 
 uses
-  Windows, StrUtils, IOUtils, NetEncoding, ShellAPI;
+  Windows
+  , System.StrUtils
+  , System.IOUtils
+  , System.NetEncoding
+  , Winapi.ShellAPI
+  , PKCS7Extractor;
 
 
 procedure TdmResources.DataModuleCreate(Sender: TObject);
@@ -299,7 +311,7 @@ end;
 procedure TLegalInvoice.ParseAllegati(const AXMLDoc: IXMLDocument);
 var
   LAllegati: IDOMNodeList;
-  LAllegato: TAllegato;
+  LAllegato: TLinkedDoc;
   LAllegatoNode: IDOMNode;
   LAllegatoElement: IDOMElement;
   LList: IDOMNodeList;
@@ -357,7 +369,7 @@ end;
 
 { TAllegato }
 
-procedure TAllegato.Clear;
+procedure TLinkedDoc.Clear;
 begin
   FileName := '';
   FileType := '';
@@ -365,7 +377,7 @@ begin
   Data := '';
 end;
 
-procedure TAllegato.DumpAndOpen;
+procedure TLinkedDoc.DumpAndOpen;
 var
   LTempFileName: string;
   LBytes: TBytes;
@@ -386,5 +398,53 @@ begin
     LBytesStream.Free;
   end;
 end;
+
+{ TLegalInvoiceLoader }
+
+class procedure TLegalInvoiceLoader.LoadFromStream(const AInputStream: TStream;
+  const AOutStream: TStringStream);
+begin
+  //Load library for PKCS7 Extractor
+  PKCS7Extractor.Load;
+  //Extract content from encrypted with signature file
+  if PKCS7Extractor.Verify(AInputStream) <> vsUnknown then
+    PKCS7Extractor.Extract(AInputStream, AOutStream)
+  else
+    AOutStream.LoadFromStream(AInputStream);
+end;
+
+class function TLegalInvoiceLoader.LoadFromFile(const AFileName: string): string;
+var
+  LInvoiceStream: TFileStream;
+  LOutStream: TStringStream;
+begin
+  LOutStream := TStringStream.Create('', TEncoding.UTF8);
+  try
+    if SameText(ExtractFileExt(AFileName), '.p7m') then
+    begin
+      LInvoiceStream := TFileStream.Create(AFileName, fmOpenRead);
+      try
+        //Extract content from encrypted with signature file
+        PKCS7Extractor.Extract(LInvoiceStream, LOutStream);
+      finally
+        LInvoiceStream.Free;
+      end;
+    end
+    else
+    begin
+      LOutStream.LoadFromFile(AFileName);
+    end;
+    Result := LOutStream.DataString;
+  finally
+    LOutStream.Free;
+  end;
+end;
+
+initialization
+  PKCS7Extractor.Unload;
+  FreeLibrary(GetModuleHandle(LIBEAY32_LIBRARY));
+  PKCS7Extractor.SetFolder(
+    ExtractFilePath(GetModuleName(HInstance)));
+  PKCS7Extractor.Load
 
 end.

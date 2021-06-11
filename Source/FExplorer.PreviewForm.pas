@@ -148,7 +148,7 @@ uses
 procedure TFrmPreview.AllegatoButtonClick(Sender: TObject);
 var
   LButton: TToolButton;
-  LAllegato: TAllegato;
+  LAllegato: TLinkedDoc;
 begin
   LButton := Sender as TToolButton;
   LAllegato := FInvoice.Allegati[LButton.Tag];
@@ -211,7 +211,7 @@ end;
 procedure TFrmPreview.RenderAllegati;
 var
   LIndex: Integer;
-  LAllegato: TAllegato;
+  LAllegato: TLinkedDoc;
   LButton: TToolButton;
 begin
   FAllegatiButtons.Clear;
@@ -348,7 +348,7 @@ procedure TFrmPreview.LoadFromFile(const AFileName: string);
 begin
   TLogPreview.Add('TFrmEditor.LoadFromFile Init');
   FFileName := AFileName;
-  SynEdit.Lines.LoadFromFile(FFileName);
+  SynEdit.Lines.Text := TLegalInvoiceLoader.LoadFromFile(AFileName);
   MostraFatturaXML;
   TLogPreview.Add('TFrmEditor.LoadFromFile Done');
 end;
@@ -361,7 +361,7 @@ begin
   AStream.Position := 0;
   LStringStream := TStringStream.Create('',TEncoding.UTF8);
   try
-    LStringStream.LoadFromStream(AStream);
+    TLegalInvoiceLoader.LoadFromStream(AStream, LStringStream);
     SynEdit.Lines.Text := LStringStream.DataString;
     MostraFatturaXML;
   finally
