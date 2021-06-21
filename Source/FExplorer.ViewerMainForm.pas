@@ -75,7 +75,7 @@ resourcestring
   STATE_INSERT = 'Inserimento';
   STATE_OVERWRITE = 'Sovrascrittura';
   CLOSING_PROBLEMS = 'Problemi in chiusura!';
-  CONFIRM_ABANDON = '%s non salvato! Si voglionoi abbandonare le modifiche fatte?';
+  CONFIRM_ABANDON = 'File "%s" non salvato! Si vogliono abbandonare le modifiche fatte?';
   SVG_PARSING_OK = 'Il parsing SVG è corretto.';
 
 type
@@ -94,7 +94,6 @@ type
     function GetFileName: string;
     function GetName: string;
     procedure SetFileName(const Value: string);
-    procedure LoadFromFile(const AFileName: string);
     procedure RenderAllegati;
     procedure AllegatoButtonClick(Sender: TObject);
     procedure UpdateContentType;
@@ -208,6 +207,10 @@ type
     acZoomOut: TAction;
     Zoom1: TMenuItem;
     Zoom2: TMenuItem;
+    acSaveHTMLFile: TAction;
+    SaveHTMLfile1: TMenuItem;
+    acSavePDFFile: TAction;
+    SavePDFfile1: TMenuItem;
     procedure WMGetMinMaxInfo(var Message: TWMGetMinMaxInfo); message WM_GETMINMAXINFO;
     procedure acOpenFileExecute(Sender: TObject);
     procedure acSaveExecute(Sender: TObject);
@@ -282,6 +285,8 @@ type
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure acZoomExecute(Sender: TObject);
     procedure acEditCopyUpdate(Sender: TObject);
+    procedure acSaveHTMLFileExecute(Sender: TObject);
+    procedure acSavePDFFileExecute(Sender: TObject);
   private
     MinFormWidth, MinFormHeight, MaxFormWidth, MaxFormHeight: Integer;
     FThumbnailResource: TdmThumbnailResources;
@@ -354,7 +359,6 @@ uses
   , dlgSearchText
   , dlgConfirmReplace
   , FExplorer.About
-  , FTestPrintPreview
   , DPageSetup
   , FSynHighlightProp
   , Math
@@ -362,6 +366,9 @@ uses
   , FExplorer.SettingsForm
   , BegaHtmlPrintPreviewForm
   , BegaPreview
+  , SynPDF
+  , vmHtmlToPdf
+  , PKCS7Extractor
   ;
 
 {$R *.dfm}
@@ -396,7 +403,7 @@ begin
     FInvoice := TLegalInvoice.Create(ASourceXMLInvoice, False);
     if AStyleSheet <> '' then
     begin
-      dmResources.EditingTemplate.XML.Text := AStyleSheet;
+      dmResources.EditingTemplate.LoadFromXML(AStyleSheet);
       FInvoice.StylesheetName := TLegalInvoice.EDITING_XSLT;
     end
     else
@@ -490,7 +497,8 @@ end;
 
 procedure TEditingFile.ReadFromFile;
 begin
-  LoadFromFile(FileName);
+  TLegalInvoiceLoader.LoadFromFile(FFileName,
+    SynEditor);
 end;
 
 procedure TEditingFile.AllegatoButtonClick(Sender: TObject);
@@ -580,14 +588,6 @@ begin
     else
       FFileContentType := fcGenericXSL;
   end;
-end;
-
-procedure TEditingFile.LoadFromFile(const AFileName: string);
-var
-  LExtension: string;
-begin
-  LExtension := ExtractFileExt(AFileName);
-  SynEditor.Lines.Text := TLegalInvoiceLoader.LoadFromFile(AFileName);
 end;
 
 procedure TEditingFile.SaveToFile;
@@ -731,7 +731,6 @@ end;
 procedure TfrmMain.FormResize(Sender: TObject);
 begin
   AdjustCompactWidth;
-
 end;
 
 procedure TfrmMain.ShowSRDialog(aReplace: boolean);
@@ -798,7 +797,7 @@ procedure TfrmMain.SVClosed(Sender: TObject);
 begin
   // When TSplitView is closed, adjust ButtonOptions and Width
   catMenuItems.ButtonOptions := catMenuItems.ButtonOptions - [boShowCaptions];
-  actMenu.Hint := 'Expand';
+  actMenu.Hint := 'Espandi';
 end;
 
 procedure TfrmMain.SVClosing(Sender: TObject);
@@ -820,7 +819,7 @@ procedure TfrmMain.SVOpened(Sender: TObject);
 begin
   // When not animating, change size of catMenuItems when TSplitView is opened
   catMenuItems.ButtonOptions := catMenuItems.ButtonOptions + [boShowCaptions];
-  actMenu.Hint := 'Collapse';
+  actMenu.Hint := 'Collassa';
 end;
 
 procedure TfrmMain.SVOpening(Sender: TObject);
@@ -965,9 +964,6 @@ begin
 
   //directory di partenza
   CurrentDir := IncludeTrailingPathDelimiter(TPath.GetDocumentsPath);
-
-//  PageControl.Images := dmResources.Images;
-//  PageControl.Images := IconList;
 
   //Inizializza output di stampa
   InitSynEditPrint;
@@ -1183,8 +1179,6 @@ begin
 end;
 
 procedure TfrmMain.UpdateInvoiceViewer;
-var
-  LSVGText: string;
 
   procedure UpdateIconViewer(const ASVGText: string);
   begin
@@ -1240,7 +1234,7 @@ begin
           CurrentEditFile.MostraFatturaForStyleSheet(FEditorSettings,
             FXMLInvoice.SynEditor.lines.Text);
           //Assegno il template con il contenuto del file corrente
-          FThumbnailResource.EditingTemplate.XML.Text := CurrentEditFile.SynEditor.lines.Text;
+          FThumbnailResource.EditingTemplate.LoadFromXML(CurrentEditFile.SynEditor.lines.Text);
           FThumbnailResource.StylesheetName := FThumbnailResource.SVG_EDITING_XSLT;
           UpdateIconViewer(FThumbnailResource.GetSVGText(FXMLInvoice.SynEditor.Lines));
         end
@@ -1513,6 +1507,18 @@ begin
   FXMLFontSize := Value;
 end;
 
+procedure TfrmMain.acSaveHTMLFileExecute(Sender: TObject);
+begin
+  dmResources.SaveHTMLToFile(CurrentEditFile.FileName,
+    CurrentEditFile.HTMLViewer);
+end;
+
+procedure TfrmMain.acSavePDFFileExecute(Sender: TObject);
+begin
+  dmResources.SaveHTMLToPDFFile(CurrentEditFile.FileName,
+    CurrentEditFile.HTMLViewer, FEditorSettings);
+end;
+
 procedure TfrmMain.SetHTMLFontSize(const Value: Integer);
 var
   LScaleFactor: Single;
@@ -1594,6 +1600,11 @@ begin
   UpdateApplicationStyle(FEditorSettings.StyleName);
   UpdateHighlighter(AEditor);
   BackgroundTrackBar.Position := FEditorSettings.LightBackground;
+  SVGIconImage.UpdateSVGFactory;
+  SVGIconImage16.UpdateSVGFactory;
+  SVGIconImage32.UpdateSVGFactory;
+  SVGIconImage48.UpdateSVGFactory;
+  SVGIconImage96.UpdateSVGFactory;
 end;
 
 procedure TfrmMain.UpdateHighlighter(ASynEditor: TSynEdit);
@@ -1654,6 +1665,9 @@ end;
 
 procedure TfrmMain.actnSaveAsExecute(Sender: TObject);
 begin
+  SaveDialog.FileName := ChangeFileExt(CurrentEditFile.FileName, '.xml');
+  SaveDialog.Filter := 'File Fattura Elettronica (*.xml;*.p7m)|*.xml;*.p7m|Fogli di Stile (*.xsl)|*.xsl';
+
   SaveDialog.FileName := CurrentEditFile.FileName;
   if SaveDialog.Execute then
   begin
@@ -1785,27 +1799,23 @@ end;
 
 procedure TfrmMain.actnColorSettingsExecute(Sender: TObject);
 begin
-  //if CurrentEditor <> nil then
+  if ShowSettings(DialogPosRect,
+    Title_FEViewer,
+    CurrentEditor, FEditorSettings, True) then
   begin
-    if ShowSettings(DialogPosRect,
-      Title_FEViewer,
-      CurrentEditor, FEditorSettings, True) then
-    begin
-      if CurrentEditor <> nil then
-        FEditorSettings.WriteSettings(CurrentEditor.Highlighter, FEditorOptions)
-      else
-        FEditorSettings.WriteSettings(nil, FEditorOptions);
-      UpdateFromSettings(CurrentEditor);
-      UpdateInvoiceViewer;
-      UpdateHighlighters;
-    end;
+    if CurrentEditor <> nil then
+      FEditorSettings.WriteSettings(CurrentEditor.Highlighter, FEditorOptions)
+    else
+      FEditorSettings.WriteSettings(nil, FEditorOptions);
+    UpdateFromSettings(CurrentEditor);
+    UpdateInvoiceViewer;
+    UpdateHighlighters;
   end;
 end;
 
 procedure TfrmMain.actnColorSettingsUpdate(Sender: TObject);
 begin
   actnColorSettings.Enabled := True;
-  //(CurrentEditor <> nil) and (CurrentEditor.Highlighter <> nil);
 end;
 
 procedure TfrmMain.actnFormatXMLExecute(Sender: TObject);

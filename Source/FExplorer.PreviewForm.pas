@@ -64,6 +64,9 @@ type
     Splitter: TSplitter;
     ToolBarAllegati: TToolBar;
     HtmlViewer: THtmlViewer;
+    ToolButtonHtml: TToolButton;
+    ToolButtonPDF: TToolButton;
+    SaveDialog: TSaveDialog;
     procedure FormCreate(Sender: TObject);
     procedure ToolButtonZoomInClick(Sender: TObject);
     procedure ToolButtonZoomOutClick(Sender: TObject);
@@ -79,6 +82,8 @@ type
     procedure SplitterMoved(Sender: TObject);
     procedure FormAfterMonitorDpiChanged(Sender: TObject; OldDPI,
       NewDPI: Integer);
+    procedure ToolButtonHtmlClick(Sender: TObject);
+    procedure ToolButtonPDFClick(Sender: TObject);
   private
     FXMLFontSize: Integer;
     FHTMLFontSize: Integer;
@@ -337,7 +342,7 @@ procedure TFrmPreview.FormResize(Sender: TObject);
 begin
   PanelXML.Height := Round(Self.Height * (FPreviewSettings.SplitterPos / 100));
   Splitter.Top := PanelXML.Height;
-  if Self.Width < (550 * Self.ScaleFactor) then
+  if Self.Width < (600 * Self.ScaleFactor) then
     ToolBar.ShowCaptions := False
   else
     Toolbar.ShowCaptions := True;
@@ -348,7 +353,7 @@ procedure TFrmPreview.LoadFromFile(const AFileName: string);
 begin
   TLogPreview.Add('TFrmEditor.LoadFromFile Init');
   FFileName := AFileName;
-  SynEdit.Lines.Text := TLegalInvoiceLoader.LoadFromFile(AFileName);
+  TLegalInvoiceLoader.LoadFromFile(AFileName, SynEdit);
   MostraFatturaXML;
   TLogPreview.Add('TFrmEditor.LoadFromFile Done');
 end;
@@ -362,7 +367,6 @@ begin
   LStringStream := TStringStream.Create('',TEncoding.UTF8);
   try
     TLegalInvoiceLoader.LoadFromStream(AStream, LStringStream);
-    SynEdit.Lines.Text := LStringStream.DataString;
     MostraFatturaXML;
   finally
     LStringStream.Free;
@@ -450,9 +454,20 @@ begin
   SaveSettings;
 end;
 
+procedure TFrmPreview.ToolButtonPDFClick(Sender: TObject);
+begin
+  dmResources.SaveHTMLToPDFFile(FFileName,
+    HtmlViewer, FPreviewSettings);
+end;
+
 procedure TFrmPreview.ToolButtonAboutClick(Sender: TObject);
 begin
   ShowAboutForm(DialogPosRect, Title_SVGPreview);
+end;
+
+procedure TFrmPreview.ToolButtonHtmlClick(Sender: TObject);
+begin
+  dmResources.SaveHTMLToFile(self.FFileName, HtmlViewer)
 end;
 
 procedure TFrmPreview.ToolButtonMouseEnter(Sender: TObject);

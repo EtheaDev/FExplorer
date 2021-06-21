@@ -32,13 +32,15 @@ unit FExplorer.Settings;
 interface
 
 uses
-  System.SysUtils,
-  System.Classes,
-  VCL.Graphics,
-  SynEditHighlighter,
-  System.Generics.Collections,
-  SynEditOptionsDialog,
-  IniFiles;
+  System.SysUtils
+  , System.Classes
+  , VCL.Graphics
+  , SynEditHighlighter
+  , System.Generics.Collections
+  , SynEditOptionsDialog
+  , System.UITypes
+//  , SynPDF
+  , IniFiles;
 
 const
   MaxfontSize = 30;
@@ -60,6 +62,15 @@ type
   class function GetStyleAttributes(const AStyleName: string;
     out AThemeAttribute: TThemeAttribute): Boolean;
   private
+  end;
+
+  TPDFPageSettings = record
+    PrintOrientation: TPrinterOrientation;
+    PaperSize: Integer;
+    MarginTop: Double;
+    MarginBottom: Double;
+    MarginLeft: Double;
+    MarginRight: Double;
   end;
 
   TSettings = class
@@ -86,6 +97,7 @@ type
     FIniFile: TIniFile;
   public
     LightBackground: Integer;
+    PDFPageSettings: TPDFPageSettings;
     constructor CreateSettings(const ASettingFileName: string;
       const ASynEditHighilighter: TSynCustomHighlighter;
       const ASynEditorOptions: TSynEditorOptionsContainer);
@@ -157,24 +169,25 @@ type
 implementation
 
 uses
-  Vcl.Controls,
-  SVGInterfaces,
-  PasSVGFactory,
-  D2DSVGFactory,
-  System.Types,
-  System.TypInfo,
-  System.Rtti,
-  System.StrUtils,
-  System.IOUtils,
-  Winapi.ShlObj,
-  Winapi.Windows,
+  Vcl.Controls
+  , SVGInterfaces
+  , PasSVGFactory
+  , D2DSVGFactory
+  , System.Types
+  , System.TypInfo
+  , System.Rtti
+  , System.StrUtils
+  , System.IOUtils
+  , Winapi.ShlObj
+  , Winapi.Windows
 {$IFNDEF DISABLE_STYLES}
-  Vcl.Themes,
+  , Vcl.Themes
 {$ENDIF}
-  uLogExcept,
-  uRegistry,
-  uMisc,
-  SynEdit
+  , uLogExcept
+  , uRegistry
+  , uMisc
+  , SynEdit
+  , Winapi.Messages
   ;
 
 const
@@ -331,7 +344,7 @@ begin
   FHTMLFontName := FIniFile.ReadString('Global', 'HTMLFontName', 'Arial');
   FShowXML := FIniFile.ReadInteger('Global', 'ShowXML', 0) = 1;
   FSplitterPos := FIniFile.ReadInteger('Global', 'SplitterPos', 33);
-  PreferD2D := Boolean(FIniFile.ReadInteger('Global', 'PreferD2D', -1));
+  PreferD2D := Boolean(FIniFile.ReadInteger('Global', 'PreferD2D', 0));
   FActivePageIndex := FIniFile.ReadInteger('Global', 'ActivePageIndex', 0);
   FStyleName := FIniFile.ReadString('Global', 'StyleName', DefaultStyleName);
   FStylesheetName := FIniFile.ReadString('Global', 'StylesheetName', 'Custom');
@@ -365,6 +378,12 @@ begin
         LAttribute.IntegerStyle);
     end;
   end;
+  PDFPageSettings.PrintOrientation := TPrinterOrientation(FIniFile.ReadInteger('PDFPageSettins', 'PrintOrientation', Ord(TPrinterOrientation.poPortrait)));
+  PDFPageSettings.PaperSize := FIniFile.ReadInteger('PDFPageSettins', 'PaperSize', 0);
+  PDFPageSettings.MarginTop := FIniFile.ReadFloat('PDFPageSettins', 'MarginTop', 1);
+  PDFPageSettings.MarginBottom := FIniFile.ReadFloat('PDFPageSettins', 'MarginBottom', 1);
+  PDFPageSettings.MarginLeft := FIniFile.ReadFloat('PDFPageSettins', 'MarginLeft', 1);
+  PDFPageSettings.MarginRight := FIniFile.ReadFloat('PDFPageSettins', 'MarginRight', 1);
 end;
 
 procedure TSettings.SetPreferD2D(const Value: Boolean);
@@ -424,6 +443,13 @@ begin
       FIniFile.WriteInteger(LThemeSection+LAttribute.Name, 'Style', LAttribute.IntegerStyle);
     end;
   end;
+
+  FIniFile.WriteInteger('PDFPageSettins', 'Orientation', Ord(PDFPageSettings.PrintOrientation));
+  FIniFile.WriteInteger('PDFPageSettins', 'PaperSize', Ord(PDFPageSettings.PaperSize));
+  FIniFile.WriteFloat('PDFPageSettins', 'MarginTop', PDFPageSettings.MarginTop);
+  FIniFile.WriteFloat('PDFPageSettins', 'MarginBottom', PDFPageSettings.MarginBottom);
+  FIniFile.WriteFloat('PDFPageSettins', 'MarginLeft', PDFPageSettings.MarginLeft);
+  FIniFile.WriteFloat('PDFPageSettins', 'MarginRight', PDFPageSettings.MarginRight);
 end;
 
 { TPreviewSettings }

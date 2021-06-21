@@ -174,7 +174,8 @@ var
 
   procedure EditorNotInstalled;
   begin
-    MessageBox(0, 'Editor not installed', 'Visualizzatore Fattura Elettronica', MB_OK);
+    MessageBox(0, 'Editor non installato',
+      'Visualizzatore Fattura Elettronica', MB_OK);
   end;
 
 begin

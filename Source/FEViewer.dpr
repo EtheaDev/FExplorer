@@ -41,7 +41,6 @@ uses
   FExplorer.ViewerMainForm in 'FExplorer.ViewerMainForm.pas' {frmMain},
   FExplorer.Resources in 'FExplorer.Resources.pas' {dmResources: TDataModule},
   DPageSetup in 'DPageSetup.pas' {PageSetupDlg},
-  FTestPrintPreview in 'FTestPrintPreview.pas' {TestPrintPreviewDlg},
   FExplorer.Splash in 'FExplorer.Splash.pas' {SplashForm},
   dlgConfirmReplace in 'dlgConfirmReplace.pas' {ConfirmReplaceDialog},
   FExplorer.About in 'FExplorer.About.pas' {FrmAbout},
@@ -51,7 +50,8 @@ uses
   FExplorer.SettingsForm in 'FExplorer.SettingsForm.pas' {SVGSettingsForm},
   FExplorer.Registry in 'FExplorer.Registry.pas',
   FExplorer.InvoiceToImage in 'FExplorer.InvoiceToImage.pas',
-  FExplorer.ThumbnailResources in 'FExplorer.ThumbnailResources.pas' {dmThumbnailResources: TDataModule};
+  FExplorer.ThumbnailResources in 'FExplorer.ThumbnailResources.pas' {dmThumbnailResources: TDataModule},
+  vmHtmlToPdf in 'vmHtmlToPdf.pas';
 
 {$R *.res}
 
@@ -66,7 +66,6 @@ begin
     Application.HelpFile := '';
   Application.CreateForm(TdmResources, dmResources);
   Application.CreateForm(TfrmMain, frmMain);
-  Application.CreateForm(TTestPrintPreviewDlg, TestPrintPreviewDlg);
   Application.CreateForm(TPageSetupDlg, PageSetupDlg);
   Hide;
   Finally

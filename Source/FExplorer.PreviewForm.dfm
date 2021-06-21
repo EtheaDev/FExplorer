@@ -2,7 +2,7 @@ object FrmPreview: TFrmPreview
   Left = 522
   Top = 286
   ClientHeight = 651
-  ClientWidth = 672
+  ClientWidth = 645
   Color = clBtnFace
   DoubleBuffered = True
   Font.Charset = DEFAULT_CHARSET
@@ -20,7 +20,7 @@ object FrmPreview: TFrmPreview
   object Splitter: TSplitter
     Left = 0
     Top = 145
-    Width = 672
+    Width = 645
     Height = 6
     Cursor = crVSplit
     Align = alTop
@@ -33,7 +33,7 @@ object FrmPreview: TFrmPreview
   object PanelTop: TPanel
     Left = 0
     Top = 0
-    Width = 672
+    Width = 645
     Height = 35
     Align = alTop
     BevelOuter = bvNone
@@ -41,7 +41,7 @@ object FrmPreview: TFrmPreview
     object ToolBar: TToolBar
       Left = 0
       Top = 0
-      Width = 672
+      Width = 645
       Height = 35
       Align = alClient
       AutoSize = True
@@ -92,8 +92,34 @@ object FrmPreview: TFrmPreview
         OnMouseEnter = ToolButtonMouseEnter
         OnMouseLeave = ToolButtonMouseLeave
       end
-      object ToolButtonSettings: TToolButton
+      object ToolButtonHtml: TToolButton
         Left = 265
+        Top = 0
+        Cursor = crHandPoint
+        Hint = 'Salva in formato HTML...'
+        AutoSize = True
+        Caption = 'In HTML...'
+        ImageIndex = 14
+        ImageName = 'save_html'
+        OnClick = ToolButtonHtmlClick
+        OnMouseEnter = ToolButtonMouseEnter
+        OnMouseLeave = ToolButtonMouseLeave
+      end
+      object ToolButtonPDF: TToolButton
+        Left = 355
+        Top = 0
+        Cursor = crHandPoint
+        Hint = 'Salva in formato PDF...'
+        AutoSize = True
+        Caption = 'In PDF...'
+        ImageIndex = 15
+        ImageName = 'save_pdf'
+        OnClick = ToolButtonPDFClick
+        OnMouseEnter = ToolButtonMouseEnter
+        OnMouseLeave = ToolButtonMouseLeave
+      end
+      object ToolButtonSettings: TToolButton
+        Left = 436
         Top = 0
         Cursor = crHandPoint
         Hint = 'Modifica impostazioni...'
@@ -107,7 +133,7 @@ object FrmPreview: TFrmPreview
         OnMouseLeave = ToolButtonMouseLeave
       end
       object ToolButtonAbout: TToolButton
-        Left = 379
+        Left = 550
         Top = 0
         Cursor = crHandPoint
         Hint = 'Mostra info...'
@@ -121,14 +147,14 @@ object FrmPreview: TFrmPreview
         OnMouseLeave = ToolButtonMouseLeave
       end
       object SeparatorEditor: TToolButton
-        Left = 448
+        Left = 619
         Top = 0
         Width = 8
         ImageName = 'settings'
         Style = tbsSeparator
       end
       object ToolButtonReformat: TToolButton
-        Left = 456
+        Left = 627
         Top = 0
         Hint = 'Riformatta testo XML'
         AutoSize = True
@@ -144,7 +170,7 @@ object FrmPreview: TFrmPreview
   object PanelXML: TPanel
     Left = 0
     Top = 35
-    Width = 672
+    Width = 645
     Height = 110
     Align = alTop
     BevelOuter = bvNone
@@ -153,7 +179,7 @@ object FrmPreview: TFrmPreview
     object SynEdit: TSynEdit
       Left = 0
       Top = 0
-      Width = 672
+      Width = 645
       Height = 110
       Align = alClient
       Font.Charset = DEFAULT_CHARSET
@@ -185,7 +211,7 @@ object FrmPreview: TFrmPreview
   object StatusBar: TStatusBar
     Left = 0
     Top = 630
-    Width = 672
+    Width = 645
     Height = 21
     Panels = <>
     ParentFont = True
@@ -199,7 +225,7 @@ object FrmPreview: TFrmPreview
   object PanelBottom: TPanel
     Left = 0
     Top = 600
-    Width = 672
+    Width = 645
     Height = 30
     Align = alBottom
     BevelOuter = bvNone
@@ -207,7 +233,7 @@ object FrmPreview: TFrmPreview
     object ToolBarAllegati: TToolBar
       Left = 0
       Top = 0
-      Width = 672
+      Width = 645
       Height = 30
       Align = alClient
       AutoSize = True
@@ -225,7 +251,7 @@ object FrmPreview: TFrmPreview
   object HtmlViewer: THtmlViewer
     Left = 0
     Top = 151
-    Width = 672
+    Width = 645
     Height = 449
     BorderStyle = htFocused
     HistoryMaxCount = 0
@@ -329,11 +355,37 @@ object FrmPreview: TFrmPreview
         CollectionName = 'Print-preview'
         Disabled = False
         Name = 'Print-preview'
+      end
+      item
+        CollectionIndex = 57
+        CollectionName = 'save_html'
+        Disabled = False
+        Name = 'save_html'
+      end
+      item
+        CollectionIndex = 58
+        CollectionName = 'save_pdf'
+        Disabled = False
+        Name = 'save_pdf'
+      end
+      item
+        CollectionIndex = 59
+        CollectionName = 'save_xml'
+        Disabled = False
+        Name = 'save_xml'
       end>
     ImageCollection = dmResources.SVGIconImageCollection
     Width = 24
     Height = 24
     Left = 384
     Top = 208
+  end
+  object SaveDialog: TSaveDialog
+    Filter = 
+      'File Fattura Elettronica (*.xml;*.p7m)|*.xml;*.p7m|Fogli di Stil' +
+      'e (*.xsl)|*.xsl'
+    Options = [ofOverwritePrompt, ofHideReadOnly, ofEnableSizing]
+    Left = 284
+    Top = 248
   end
 end

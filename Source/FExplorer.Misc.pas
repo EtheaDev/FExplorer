@@ -37,10 +37,6 @@ interface
   function GetSpecialFolder(const CSIDL: integer): string;
   function GetFileVersion(const FileName: string): string;
   function  GetModuleLocation: string;
-  procedure Initialize_GDI;
-  procedure Finalize_GDI;
-  procedure Initialize; stdcall;
-  procedure Finalize; stdcall;
 
 resourcestring
   STextNotFound = 'Text not found';
@@ -59,24 +55,6 @@ uses
   Vcl.GraphUtil,
   uRegistry,
   uLogExcept;
-
-procedure Initialize_GDI;
-begin
-  //Initialize GDI+
-  TLogPreview.Add('Initialize GDI+');
-  StartupInput.DebugEventCallback := nil;
-  StartupInput.SuppressBackgroundThread := False;
-  StartupInput.SuppressExternalCodecs := False;
-  StartupInput.GdiplusVersion := 1;
-  GdiplusStartup(gdiplusToken, @StartupInput, nil);
-end;
-
-procedure Finalize_GDI;
-begin
-  //Finalize GDI+
-  TLogPreview.Add('Finalize GDI+');
-  GdiplusShutdown(gdiplusToken);
-end;
 
 function GetDllPath: String;
 var
@@ -132,16 +110,6 @@ begin
   SetLength(Result, MAX_PATH);
   GetModuleFileName(HInstance, PChar(Result), MAX_PATH);
   Result:=PChar(Result);
-end;
-
-procedure Initialize; stdcall;
-begin
-  Initialize_GDI;
-end;
-
-procedure Finalize; stdcall;
-begin
-  Finalize_GDI;
 end;
 
 initialization

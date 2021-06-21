@@ -32,7 +32,7 @@ object SVGSettingsForm: TSVGSettingsForm
     Top = 41
     Width = 662
     Height = 451
-    ActivePage = stGeneral
+    ActivePage = tsPDFLayout
     Align = alClient
     Images = SettingsImageList
     TabOrder = 0
@@ -517,6 +517,126 @@ object SVGSettingsForm: TSVGSettingsForm
         end
       end
     end
+    object tsPDFLayout: TTabSheet
+      Caption = 'PDF layout'
+      ImageIndex = 6
+      ImageName = 'pdf-box'
+      object MarginTopLabel: TLabel
+        Left = 362
+        Top = 3
+        Width = 90
+        Height = 15
+        Alignment = taCenter
+        AutoSize = False
+        Caption = 'Margine alto'
+      end
+      object MarginLeftLabel: TLabel
+        Left = 218
+        Top = 94
+        Width = 90
+        Height = 15
+        Alignment = taCenter
+        AutoSize = False
+        Caption = 'Margine sinistro'
+      end
+      object MarginRightLabel: TLabel
+        Left = 505
+        Top = 94
+        Width = 90
+        Height = 15
+        Alignment = taCenter
+        AutoSize = False
+        Caption = 'Margine destro'
+      end
+      object MarginBottomLabel: TLabel
+        Left = 362
+        Top = 238
+        Width = 90
+        Height = 15
+        Alignment = taCenter
+        AutoSize = False
+        Caption = 'Margine basso'
+      end
+      object OrientationRadioGroup: TRadioGroup
+        Left = 16
+        Top = 16
+        Width = 193
+        Height = 81
+        Caption = 'Orientamento'
+        Items.Strings = (
+          'Verticale (portrait)'
+          'Orizzontale (landscape)')
+        TabOrder = 0
+        OnClick = OrientationRadioGroupClick
+      end
+      object SVGIconPosition: TSVGIconImage
+        Left = 313
+        Top = 51
+        Width = 186
+        Height = 154
+        AutoSize = False
+        Proportional = True
+        ImageList = OrientationImageList
+        ImageIndex = 0
+      end
+      object MarginLeftEdit: TNumberBox
+        Left = 218
+        Top = 115
+        Width = 90
+        Height = 23
+        Alignment = taRightJustify
+        Mode = nbmFloat
+        TabOrder = 3
+        SpinButtonOptions.Placement = nbspInline
+      end
+      object MarginRightEdit: TNumberBox
+        Left = 505
+        Top = 115
+        Width = 90
+        Height = 23
+        Alignment = taRightJustify
+        Mode = nbmFloat
+        TabOrder = 4
+        SpinButtonOptions.Placement = nbspInline
+      end
+      object MarginTopEdit: TNumberBox
+        Left = 362
+        Top = 22
+        Width = 90
+        Height = 23
+        Alignment = taRightJustify
+        Mode = nbmFloat
+        TabOrder = 2
+        SpinButtonOptions.Placement = nbspInline
+      end
+      object MarginBottomEdit: TNumberBox
+        Left = 362
+        Top = 211
+        Width = 90
+        Height = 23
+        Alignment = taRightJustify
+        Mode = nbmFloat
+        TabOrder = 5
+        SpinButtonOptions.Placement = nbspInline
+      end
+      object PaperSizeRadioGroup: TRadioGroup
+        Left = 16
+        Top = 103
+        Width = 193
+        Height = 266
+        Caption = 'Dimensione pagina'
+        Items.Strings = (
+          'A4'
+          'A5'
+          'A3'
+          'A2'
+          'A1'
+          'A0'
+          'Letter'
+          'Legal')
+        TabOrder = 1
+      end
+    end
     object tsAdvanced: TTabSheet
       Caption = 'Avanzate'
       ImageIndex = 5
@@ -611,6 +731,11 @@ object SVGSettingsForm: TSVGSettingsForm
         ImageName = 'palette'
       end
       item
+        Caption = 'PDF Layout'
+        ImageIndex = 6
+        ImageName = 'pdf-box'
+      end
+      item
         Caption = 'Avanzate'
         ImageIndex = 5
         ImageName = 'developer-board'
@@ -630,8 +755,8 @@ object SVGSettingsForm: TSVGSettingsForm
     TabOrder = 3
   end
   object OpenDialog: TOpenDialog
-    Left = 576
-    Top = 304
+    Left = 592
+    Top = 352
   end
   object SettingsImageList: TSVGIconImageList
     Size = 36
@@ -712,9 +837,52 @@ object SVGSettingsForm: TSVGSettingsForm
           'V5A2,2 0 0,0 18,3H4A2,2 0 0,0 2,5V19A2,2 0 0,0 4,21H18A2,2 0 0,0' +
           ' 20,19V17H22V15H20V13H22V11H20V9H22M18,19H4V5H18V19M6,13H11V17H6' +
           'V13M12,7H16V10H12V7M6,7H11V12H6V7M12,11H16V17H12V11Z" /></svg>'
+      end
+      item
+        IconName = 'pdf-box'
+        SVGText = 
+          '<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE svg PUBLIC "-//W' +
+          '3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg' +
+          '11.dtd"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="htt' +
+          'p://www.w3.org/1999/xlink" version="1.1" id="mdi-pdf-box" width=' +
+          '"24" height="24" viewBox="0 0 24 24"><path d="M12,10.5H13V13.5H1' +
+          '2V10.5M7,11.5H8V10.5H7V11.5M20,6V18A2,2 0 0,1 18,20H6A2,2 0 0,1 ' +
+          '4,18V6A2,2 0 0,1 6,4H18A2,2 0 0,1 20,6M9.5,10.5A1.5,1.5 0 0,0 8,' +
+          '9H5.5V15H7V13H8A1.5,1.5 0 0,0 9.5,11.5V10.5M14.5,10.5A1.5,1.5 0 ' +
+          '0,0 13,9H10.5V15H13A1.5,1.5 0 0,0 14.5,13.5V10.5M18.5,9H15.5V15H' +
+          '17V13H18.5V11.5H17V10.5H18.5V9Z" /></svg>'
       end>
     Scaled = True
-    Left = 500
-    Top = 192
+    Left = 492
+    Top = 368
+  end
+  object OrientationImageList: TSVGIconImageList
+    Size = 128
+    SVGIconItems = <
+      item
+        IconName = 'portrait'
+        SVGText = 
+          #65279'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www' +
+          '.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 1' +
+          '00 125" enable-background="new 0 0 100 100" xml:space="preserve"' +
+          '>'#13#10'  <path d="M85,92.5V20c0-0.7-0.3-1.3-0.7-1.8L71.8,5.7C71.3,5.' +
+          '3,70.7,5,70,5H17.5C16.1,5,15,6.1,15,7.5v85c0,1.4,1.1,2.5,2.5,2.5' +
+          'h65  C83.9,95,85,93.9,85,92.5z M70,11l9,9h-9V11z M80,90H20V10h45' +
+          'v12.5c0,1.4,1.1,2.5,2.5,2.5H80V90z"/>'#13#10'</svg>'#13#10
+      end
+      item
+        IconName = 'landscape'
+        SVGText = 
+          #65279'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www' +
+          '.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 1' +
+          '00 125" enable-background="new 0 0 100 100" xml:space="preserve"' +
+          '>'#13#10'  <path d="M81.8,15.7C81.3,15.3,80.7,15,80,15H7.5C6.1,15,5,16' +
+          '.1,5,17.5v65C5,83.9,6.1,85,7.5,85h85c1.4,0,2.5-1.1,2.5-2.5V30  c' +
+          '0-0.7-0.3-1.3-0.7-1.8L81.8,15.7z M80,21l9,9h-9V21z M90,80H10V20h' +
+          '65v12.5c0,1.4,1.1,2.5,2.5,2.5H90V80z"/>'#13#10'</svg>'#13#10
+      end>
+    Scaled = True
+    Left = 356
+    Top = 336
   end
 end

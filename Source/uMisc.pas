@@ -37,8 +37,8 @@ interface
   function GetSpecialFolder(const CSIDL: integer): string;
   function GetFileVersion(const FileName: string): string;
   function  GetModuleLocation: string;
-  procedure Initialize_GDI;
-  procedure Finalize_GDI;
+  procedure Initialize_GDI; stdcall;
+  procedure Finalize_GDI; stdcall;
   procedure Initialize; stdcall;
   procedure Finalize; stdcall;
 
@@ -60,7 +60,7 @@ uses
   uRegistry,
   uLogExcept;
 
-procedure Initialize_GDI;
+procedure Initialize_GDI; stdcall;
 begin
   //Initialize GDI+
   TLogPreview.Add('Initialize GDI+');
@@ -71,7 +71,7 @@ begin
   GdiplusStartup(gdiplusToken, @StartupInput, nil);
 end;
 
-procedure Finalize_GDI;
+procedure Finalize_GDI; stdcall;
 begin
   GdiplusShutdown(gdiplusToken);
 end;

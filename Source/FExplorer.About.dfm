@@ -113,12 +113,19 @@ object FrmAbout: TFrmAbout
         'rigo Ruz V.'
       ''
       'Librerie di terze parti utilizzate'
-      
-        'SynEdit http://synedit.svn.sourceforge.net/viewvc/synedit/ all r' +
-        'ights reserved.'
+      'SynEdit http://synedit.svn.sourceforge.net/viewvc/synedit/'
+      'all rights reserved.'
       ''
-      'TSVG Library - http://www.mwcs.de'
-      'Original version '#169' 2005, 2008 Martin Walter.'
+      'Synopse/SynPDF https://github.com/synopse/SynPDF'
+      'Copyright '#169' Synopse: all right reserved.'
+      ''
+      'HtmlToPdf https://github.com/MuzioValerio/HtmlToPdf'
+      'Copyright '#169' Muzio Valerio.'
+      ''
+      
+        '- TSVG Library - http://www.mwcs.de Original version '#169' 2005, 200' +
+        '8 Martin '
+      'Walter.'
       ''
       'HTMLViewer - https://github.com/BerndGabriel/HtmlViewer'
       'Copyright (c) 1995 - 2008 by L. David Baldwin'

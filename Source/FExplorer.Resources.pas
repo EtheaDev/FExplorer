@@ -35,6 +35,7 @@ uses
   , Vcl.ImgList
   , Vcl.Controls
   , System.ImageList
+  , SynEdit
   , SynEditOptionsDialog
   , SynEditPrint
   , SynEditCodeFolding
@@ -47,7 +48,13 @@ uses
   , Xml.XMLIntf
   , Xml.Win.msxmldom
   , Xml.XMLDoc
+  , vmHtmlToPdf
+  , HtmlView
+  , FExplorer.Settings, Vcl.Dialogs
   ;
+
+resourcestring
+  FILE_SAVED = 'File "%s" salvato correttamente';
 
 type
   TFileContentType = (fcGenericFile, fcLegalInvoice,
@@ -80,9 +87,10 @@ type
 
   TLegalInvoiceLoader = class
   public
-    class function LoadFromFile(const AFileName: string): string;
-    class procedure LoadFromStream(const AInputStream: TStream;
-      const AOutStream: TStringStream);
+    class procedure LoadFromFile(const AFileName: string;
+      const ASynEditor: TSynEdit);
+    class function LoadFromStream(const AInputStream: TStream;
+      const AOutStream: TStringStream): Boolean;
   end;
 
   TLegalInvoice = record
@@ -125,9 +133,14 @@ type
     SynXSLSyn: TSynXMLSyn;
     SynXSLSynDark: TSynXMLSyn;
     EditingTemplate: TXMLDocument;
+    SaveDialog: TSaveDialog;
     procedure DataModuleCreate(Sender: TObject);
   private
   public
+    procedure SaveHTMLToFile(const AFileName: string;
+      const AHTMLViewer: THTMLViewer);
+    procedure SaveHTMLToPDFFile(const AFileName: TFileName;
+      const AHTMLViewer: THTMLViewer; ASettings: TSettings);
     function GetEditFileType(const Extension : string) : TEditFileType;
     function GetFilter(const Language : string = '') : string;
     function GetSynHighlighter(const ADarkStyle: boolean;
@@ -148,8 +161,13 @@ uses
   , System.StrUtils
   , System.IOUtils
   , System.NetEncoding
+  , System.UITypes
   , Winapi.ShellAPI
-  , PKCS7Extractor;
+  , PKCS7Extractor
+  , SynPDF
+  , Winapi.Messages
+  , Vcl.Forms
+  ;
 
 
 procedure TdmResources.DataModuleCreate(Sender: TObject);
@@ -245,6 +263,78 @@ begin
     SynXMLSyn.DocTypeAttri.Background := ABackgroundColor;
     SynXMLSyn.SpaceAttri.Background := ABackgroundColor;
     SynXMLSyn.SymbolAttri.Background := ABackgroundColor;
+  end;
+end;
+
+procedure TdmResources.SaveHTMLToPDFFile(const AFileName: TFileName;
+  const AHTMLViewer: THTMLViewer; ASettings: TSettings);
+var
+  lHtmlToPdf: TvmHtmlToPdfGDI;
+  LOldColor: TColor;
+begin
+  SaveDialog.FileName := ChangeFileExt(AFileName, '.pdf');
+  SaveDialog.Filter := 'Fattura Elettronica in PDF (*.pdf)|*.pdf';
+  if SaveDialog.Execute then
+  begin
+    Screen.Cursor := crHourGlass;
+    try
+      lHtmlToPdf := TvmHtmlToPdfGDI.Create;
+      try
+        lHtmlToPdf.PDFMarginLeft := ASettings.PDFPageSettings.MarginLeft;
+        lHtmlToPdf.PDFMarginTop := ASettings.PDFPageSettings.MarginTop;
+        lHtmlToPdf.PDFMarginRight := ASettings.PDFPageSettings.MarginRight;
+        lHtmlToPdf.PDFMarginBottom := ASettings.PDFPageSettings.MarginBottom;
+        lHtmlToPdf.PDFScaleToFit := True;
+        lHtmlToPdf.PrintOrientation := ASettings.PDFPageSettings.PrintOrientation;
+        lHtmlToPdf.DefaultPaperSize := TPDFPaperSize(ASettings.PDFPageSettings.PaperSize);
+
+        //Cambio il background dell'HTML Viewer per creare un PDF con sfondo bianco
+        //anche quando sto usando un tema scuro
+        LOldColor := AHTMLViewer.DefBackground;
+        try
+          SendMessage(AHTMLViewer.Handle, WM_SETREDRAW, WPARAM(False), 0);
+          AHTMLViewer.DefBackground := clWhite;
+          lHtmlToPdf.SrcViewer := AHTMLViewer;
+
+          lHtmlToPdf.PrintPageNumber := False;
+          lHtmlToPdf.PageNumberPositionPrint := ppBottom;
+
+          lHtmlToPdf.Execute;
+          lHtmlToPdf.SaveToFile(SaveDialog.FileName);
+        finally
+          AHTMLViewer.DefBackground := LOldColor;
+        end;
+      finally
+        SendMessage(AHTMLViewer.Handle, WM_SETREDRAW, WPARAM(True), 0);
+        lHtmlToPdf.Free;
+      end;
+
+      MessageDlg(Format(FILE_SAVED,[SaveDialog.FileName]),
+        TMsgDlgType.mtInformation, [mbOK], 0);
+    finally
+      Screen.Cursor := crDefault;
+    end;
+  end;
+end;
+
+procedure TdmResources.SaveHTMLToFile(const AFileName: string;
+  const AHTMLViewer: THTMLViewer);
+var
+  LStream: TStringStream;
+begin
+  SaveDialog.FileName := ChangeFileExt(AFileName, '.htm');
+  SaveDialog.Filter := 'Fattura Elettronica in HTML (*.htm)|*.htm';
+  if SaveDialog.Execute then
+  begin
+    LStream := TStringStream.Create(AHTMLViewer.Text,
+      TEncoding.UTF8);
+    try
+      LStream.SaveToFile(SaveDialog.FileName);
+      MessageDlg(Format(FILE_SAVED,[SaveDialog.FileName]),
+        TMsgDlgType.mtInformation, [mbOK], 0);
+    finally
+      LStream.Free;
+    end;
   end;
 end;
 
@@ -401,42 +491,45 @@ end;
 
 { TLegalInvoiceLoader }
 
-class procedure TLegalInvoiceLoader.LoadFromStream(const AInputStream: TStream;
-  const AOutStream: TStringStream);
+class function TLegalInvoiceLoader.LoadFromStream(
+  const AInputStream: TStream;
+  const AOutStream: TStringStream): Boolean;
 begin
-  //Load library for PKCS7 Extractor
-  PKCS7Extractor.Load;
-  //Extract content from encrypted with signature file
   if PKCS7Extractor.Verify(AInputStream) <> vsUnknown then
-    PKCS7Extractor.Extract(AInputStream, AOutStream)
+    Result := PKCS7Extractor.Extract(AInputStream, AOutStream)
   else
+  begin
     AOutStream.LoadFromStream(AInputStream);
+    Result := True;
+  end;
 end;
 
-class function TLegalInvoiceLoader.LoadFromFile(const AFileName: string): string;
+class procedure TLegalInvoiceLoader.LoadFromFile(
+  const AFileName: string;
+  const ASynEditor: TSynEdit);
 var
-  LInvoiceStream: TFileStream;
-  LOutStream: TStringStream;
+  LFileStream: TFileStream;
+  LOutStream: TMemoryStream;
 begin
-  LOutStream := TStringStream.Create('', TEncoding.UTF8);
+  LOutStream := nil;
+  LFileStream := TFileStream.Create(AFileName, fmOpenRead);
   try
     if SameText(ExtractFileExt(AFileName), '.p7m') then
     begin
-      LInvoiceStream := TFileStream.Create(AFileName, fmOpenRead);
-      try
-        //Extract content from encrypted with signature file
-        PKCS7Extractor.Extract(LInvoiceStream, LOutStream);
-      finally
-        LInvoiceStream.Free;
+      LOutStream := TMemoryStream.Create;
+      if PKCS7Extractor.Extract(LFileStream, LOutStream) then
+      begin
+        LOutStream.Position := 0;
+        ASynEditor.Lines.LoadFromStream(LOutStream, TEncoding.UTF8);
       end;
     end
     else
     begin
-      LOutStream.LoadFromFile(AFileName);
+      ASynEditor.Lines.LoadFromStream(LFileStream, TEncoding.UTF8);
     end;
-    Result := LOutStream.DataString;
   finally
     LOutStream.Free;
+    LFileStream.Free;
   end;
 end;
 

@@ -1642,6 +1642,84 @@ object dmResources: TdmResources
           '<path style="opacity:0.2;fill:#ffffff" d="M 14.5,7 C 13.115,7 12' +
           ',8.115 12,9.5 V 10.5 C 12,9.115 13.115,8 14.5,8 H 37 C 37,7 37,8' +
           ' 37,7 Z"/>'#13#10'</svg>'#13#10
+      end
+      item
+        IconName = 'save_html'
+        SVGText = 
+          #65279'<?xml version="1.0" encoding="UTF-8"?>'#10'<svg width="64" height="' +
+          '64" version="1.1">'#10' <g>'#10'  <g transform="matrix(0,-1,-1,0,0,0)">'#10 +
+          '   <rect x="-59" y="-58" width="52" height="52" rx="2.5" opacity' +
+          '=".2"/>'#10'   <rect x="-58" y="-58" width="52" height="52" rx="2.5"' +
+          ' fill="#4f4f4f"/>'#10'  </g>'#10'  <rect x="12" y="31" width="40" height' +
+          '="24" rx="2.5" opacity=".2"/>'#10'  <rect x="12" y="30" width="40" h' +
+          'eight="24" rx="2.5" fill="#90caf9"/>'#10'  <path d="m12 48v3.5c0 1.3' +
+          '84 1.115 2.5 2.5 2.5h35c1.384 0 2.5-1.116 2.5-2.5v-3.5z" fill="#' +
+          '42a5f5"/>'#10'  <path d="m20 7v17.5c0 1.386 1.114 2.5 2.5 2.5h27c1.3' +
+          '84 0 2.5-1.114 2.5-2.5v-17.5zm20 4h6c1.108 0 2 0.892 2 2v8c0 1.1' +
+          '08-0.892 2-2 2h-6c-1.108 0-2-0.892-2-2v-8c0-1.108 0.892-2 2-2z" ' +
+          'opacity=".2"/>'#10'  <path d="m20 6v17.5c0 1.386 1.114 2.5 2.5 2.5h2' +
+          '7c1.384 0 2.5-1.114 2.5-2.5v-17.5zm20 4h6c1.108 0 2 0.892 2 2v8c' +
+          '0 1.108-0.892 2-2 2h-6c-1.108 0-2-0.892-2-2v-8c0-1.108 0.892-2 2' +
+          '-2z" fill="#b7b7b7"/>'#10'  <path d="m8.5 6c-1.385 0-2.5 1.115-2.5 2' +
+          '.5v1c0-1.385 1.115-2.5 2.5-2.5h47c1.385 0 2.5 1.115 2.5 2.5v-1c0' +
+          '-1.385-1.115-2.5-2.5-2.5z" fill="#fff" opacity=".1"/>'#10'  <text x=' +
+          '"12.705078" y="43.53503" fill="#003771" font-family="sans-serif"' +
+          ' font-size="12px" opacity=".999" style="line-height:1.25" xml:sp' +
+          'ace="preserve"><tspan x="12.705078" y="43.53503" fill="#003771" ' +
+          'font-family="sans-serif" font-size="12px" font-weight="bold">HTM' +
+          'L</tspan></text>'#10' </g>'#10'</svg>'#10
+      end
+      item
+        IconName = 'save_pdf'
+        SVGText = 
+          '<?xml version="1.0" encoding="UTF-8"?>'#10'<svg width="64" height="6' +
+          '4" version="1.1">'#10' <g>'#10'  <g transform="matrix(0,-1,-1,0,0,0)">'#10' ' +
+          '  <rect x="-59" y="-58" width="52" height="52" rx="2.5" opacity=' +
+          '".2"/>'#10'   <rect x="-58" y="-58" width="52" height="52" rx="2.5" ' +
+          'fill="#4f4f4f"/>'#10'  </g>'#10'  <rect x="12" y="31" width="40" height=' +
+          '"24" rx="2.5" opacity=".2"/>'#10'  <rect x="12" y="30" width="40" he' +
+          'ight="24" rx="2.5" fill="#f88585"/>'#10'  <path d="m12 48v3.5c0 1.38' +
+          '4 1.115 2.5 2.5 2.5h35c1.384 0 2.5-1.116 2.5-2.5v-3.5z" fill="#f' +
+          '54242"/>'#10'  <path d="m20 7v17.5c0 1.386 1.114 2.5 2.5 2.5h27c1.38' +
+          '4 0 2.5-1.114 2.5-2.5v-17.5zm20 4h6c1.108 0 2 0.892 2 2v8c0 1.10' +
+          '8-0.892 2-2 2h-6c-1.108 0-2-0.892-2-2v-8c0-1.108 0.892-2 2-2z" o' +
+          'pacity=".2"/>'#10'  <path d="m20 6v17.5c0 1.386 1.114 2.5 2.5 2.5h27' +
+          'c1.384 0 2.5-1.114 2.5-2.5v-17.5zm20 4h6c1.108 0 2 0.892 2 2v8c0' +
+          ' 1.108-0.892 2-2 2h-6c-1.108 0-2-0.892-2-2v-8c0-1.108 0.892-2 2-' +
+          '2z" fill="#b7b7b7"/>'#10'  <path d="m8.5 6c-1.385 0-2.5 1.115-2.5 2.' +
+          '5v1c0-1.385 1.115-2.5 2.5-2.5h47c1.385 0 2.5 1.115 2.5 2.5v-1c0-' +
+          '1.385-1.115-2.5-2.5-2.5z" fill="#fff" opacity=".1"/>'#10'  <text x="' +
+          '18.476562" y="43.53503" fill="#860c0d" filter="url(#filter892)" ' +
+          'font-family="sans-serif" font-size="12px" opacity=".998" style="' +
+          'line-height:1.25" xml:space="preserve"><tspan x="18.476562" y="4' +
+          '3.53503" fill="#860c0d" font-family="sans-serif" font-size="12px' +
+          '" font-weight="bold">PDF</tspan></text>'#10' </g>'#10'</svg>'#10
+      end
+      item
+        IconName = 'save_xml'
+        SVGText = 
+          '<?xml version="1.0" encoding="UTF-8"?>'#10'<svg width="64" height="6' +
+          '4" version="1.1">'#10' <g>'#10'  <g transform="matrix(0,-1,-1,0,0,0)">'#10' ' +
+          '  <rect x="-59" y="-58" width="52" height="52" rx="2.5" opacity=' +
+          '".2"/>'#10'   <rect x="-58" y="-58" width="52" height="52" rx="2.5" ' +
+          'fill="#4f4f4f"/>'#10'  </g>'#10'  <rect x="12" y="31" width="40" height=' +
+          '"24" rx="2.5" opacity=".2"/>'#10'  <rect x="12" y="30" width="40" he' +
+          'ight="24" rx="2.5" fill="#9bfd8c" filter="url(#filter932)"/>'#10'  <' +
+          'path d="m12 48v3.5c0 1.384 1.115 2.5 2.5 2.5h35c1.384 0 2.5-1.11' +
+          '6 2.5-2.5v-3.5z" fill="#4bf542"/>'#10'  <path d="m20 7v17.5c0 1.386 ' +
+          '1.114 2.5 2.5 2.5h27c1.384 0 2.5-1.114 2.5-2.5v-17.5zm20 4h6c1.1' +
+          '08 0 2 0.892 2 2v8c0 1.108-0.892 2-2 2h-6c-1.108 0-2-0.892-2-2v-' +
+          '8c0-1.108 0.892-2 2-2z" opacity=".2"/>'#10'  <path d="m20 6v17.5c0 1' +
+          '.386 1.114 2.5 2.5 2.5h27c1.384 0 2.5-1.114 2.5-2.5v-17.5zm20 4h' +
+          '6c1.108 0 2 0.892 2 2v8c0 1.108-0.892 2-2 2h-6c-1.108 0-2-0.892-' +
+          '2-2v-8c0-1.108 0.892-2 2-2z" fill="#b7b7b7"/>'#10'  <path d="m8.5 6c' +
+          '-1.385 0-2.5 1.115-2.5 2.5v1c0-1.385 1.115-2.5 2.5-2.5h47c1.385 ' +
+          '0 2.5 1.115 2.5 2.5v-1c0-1.385-1.115-2.5-2.5-2.5z" fill="#fff" o' +
+          'pacity=".1"/>'#10'  <text x="17.629883" y="43.53503" fill="#007106" ' +
+          'font-family="sans-serif" font-size="12px" opacity=".999" style="' +
+          'line-height:1.25" xml:space="preserve"><tspan x="17.629883" y="4' +
+          '3.53503" fill="#007106" font-family="sans-serif" font-size="12px' +
+          '" font-weight="bold">XML</tspan></text>'#10' </g>'#10'</svg>'#10
       end>
     Left = 248
     Top = 152
@@ -6044,8 +6122,8 @@ object dmResources: TdmResources
       #9#9#9#9#9#9#9'<table class="tbFoglio">'
       #9#9#9#9#9#9#9#9'<thead>'
       #9#9#9#9#9#9#9#9#9'<tr>'
-      #9#9#9#9#9#9#9#9#9#9'<th class="art">Cod. articolo</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th class="desc">Descrizione</th>'
+      #9#9#9#9#9#9#9#9#9#9'<th class="cod-articolo">Cod. articolo</th>'
+      #9#9#9#9#9#9#9#9#9#9'<th>Descrizione</th>'
       #9#9#9#9#9#9#9#9#9#9'<th class="import2">Quantit'#224'</th>'
       #9#9#9#9#9#9#9#9#9#9'<th class="import2">Prezzo unitario</th>'
       #9#9#9#9#9#9#9#9#9#9'<th class="perc2">UM</th>'
@@ -6814,7 +6892,7 @@ object dmResources: TdmResources
       '          .tbHeader'
       '          {'
       '          width: 100%;'
-      '          border: 2px solid black;'
+      '          border: 2px solid;'
       '          }'
       ''
       ''
@@ -6823,7 +6901,7 @@ object dmResources: TdmResources
       '          .tdHead {'
       '          width: 50%;'
       '          height: 91px;'
-      '          border: 1px solid black;'
+      '          border: 1px solid;'
       '          }'
       ''
       '          .tableHead'
@@ -6913,7 +6991,7 @@ object dmResources: TdmResources
       ''
       '          table.tbFoglio tbody'
       '          {'
-      '          border: solid 1px;'
+      '          border: solid 1px red;'
       '          }'
       ''
       '          table.tbFoglio th .perc'
@@ -6959,18 +7037,16 @@ object dmResources: TdmResources
       '          width:48%'
       '          }'
       ''
-      '          th.art {'
-      '          width:50px;'
+      '          th.cod-articolo {'
+      '            min-width: 80px;'
       '          }'
-      '          th.desc {'
-      '          width:50px;'
-      '          }'
+      ''
       '          th.perc {'
       '          width:50px;'
       '          }'
       ''
       '          th.perc2 {'
-      '          width:40px;'
+      '          width:26px;'
       '          }'
       ''
       '          th.data {'
@@ -6989,7 +7065,7 @@ object dmResources: TdmResources
       ''
       '          th.import2'
       '          {'
-      '          width:80px;'
+      '          width:40px;'
       '          }'
       ''
       '          td.import2'
@@ -6999,7 +7075,7 @@ object dmResources: TdmResources
       ''
       '          th.ximport'
       '          {'
-      '          width:100px;'
+      '          width:40px;'
       '          }'
       ''
       '          td.ximport'
@@ -7082,8 +7158,7 @@ object dmResources: TdmResources
       #9#9#9'</body>'
       #9#9'</html>'
       #9'</xsl:template>'
-      '</xsl:stylesheet>'
-      '')
+      '</xsl:stylesheet>')
     Left = 75
     Top = 150
     DOMVendorDesc = 'MSXML'
@@ -10913,10 +10988,16 @@ object dmResources: TdmResources
   object EditingTemplate: TXMLDocument
     NodeIndentStr = #9
     Options = [doNodeAutoIndent]
-    XML.Strings = (
-      '')
     Left = 75
     Top = 262
     DOMVendorDesc = 'MSXML'
+  end
+  object SaveDialog: TSaveDialog
+    Filter = 
+      'File Fattura Elettronica (*.xml;*.p7m)|*.xml;*.p7m|Fogli di Stil' +
+      'e (*.xsl)|*.xsl'
+    Options = [ofOverwritePrompt, ofHideReadOnly, ofEnableSizing]
+    Left = 228
+    Top = 224
   end
 end
