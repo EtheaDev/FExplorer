@@ -2,6 +2,8 @@
 
 ## **Anteprima Fattura Elettronica (Viewer e Icone) integrato in Windows Explorer e Visualizzatore**
 
+### Versione attuale 1.4 ###
+
 **Una serie di strumenti per gestire i file xml contenenti Fatture Elettroniche in Windows:**
 
 - Un [Preview handler][1]  che permette di vedere una anteprima della Fattura Elettronica nel "Pannello Anteprima" di Windows Explorer.
@@ -60,6 +62,13 @@ Per installare manualmente FExplorer.dll seguire questi step:
 5. Una volta registrato, puoi continuare a modificare il codice e ricompilare la dll (attenzione a chiudere tutte le istanze di Explorer ogni volta che si ricompila).
 
 ## Release Notes ##
+
+22 Giu 2021 - Versione 1.4.0
+- Aggiunto supporto ai file encodati BASE64 con la libreria [PKCS7Extractor][12]
+- Aggiunta la stampa in PDF della fattura basata sul template HTML
+- Migliorato il template Assosoftware Custom per la visualizzazione
+- Fixati problemi con caricamento XML con BOM
+- Aggiunta pagina layout PDF in Settings
 
 11 Giu 2021 - Versione 1.3.0
 - Aggiunto supporto ai file firmati (p7m) con la libreria [PKCS7Extractor][12]
