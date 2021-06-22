@@ -32,7 +32,7 @@ object SVGSettingsForm: TSVGSettingsForm
     Top = 41
     Width = 662
     Height = 451
-    ActivePage = tsPDFLayout
+    ActivePage = stGeneral
     Align = alClient
     Images = SettingsImageList
     TabOrder = 0

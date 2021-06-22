@@ -75,7 +75,8 @@ resourcestring
   STATE_INSERT = 'Inserimento';
   STATE_OVERWRITE = 'Sovrascrittura';
   CLOSING_PROBLEMS = 'Problemi in chiusura!';
-  CONFIRM_ABANDON = 'File "%s" non salvato! Si vogliono abbandonare le modifiche fatte?';
+  CONFIRM_ABANDON = 'File "%s" non salvato! Si voglionoi abbandonare le modifiche fatte?';
+  FILE_SAVED = 'File "%s" salvato correttamente: vuoi aprirlo subito?';
   SVG_PARSING_OK = 'Il parsing SVG è corretto.';
 
 type
@@ -338,6 +339,8 @@ type
     procedure LoadOpenedFiles;
     procedure SetHTMLFontSize(const Value: Integer);
     procedure UpdateContentType;
+    procedure HTMLToPDF(const APDFFileName: TFileName);
+    procedure FileSavedAskToOpen(const AFileName: string);
     property XMLFontSize: Integer read FXMLFontSize write SetXMLFontSize;
     property HTMLFontSize: Integer read FHTMLFontSize write SetHTMLFontSize;
   end;
@@ -1507,16 +1510,48 @@ begin
   FXMLFontSize := Value;
 end;
 
-procedure TfrmMain.acSaveHTMLFileExecute(Sender: TObject);
+procedure TfrmMain.FileSavedAskToOpen(const AFileName: string);
 begin
-  dmResources.SaveHTMLToFile(CurrentEditFile.FileName,
-    CurrentEditFile.HTMLViewer);
+  if MessageDlg(Format(FILE_SAVED,[AFileName]),
+    TMsgDlgType.mtInformation, [mbYes, MbNo], 0) = mrYes then
+  begin
+    ShellExecute(handle, 'open', PChar(AFilename), nil, nil, SW_SHOWNORMAL);
+  end;
+end;
+
+procedure TfrmMain.acSaveHTMLFileExecute(Sender: TObject);
+var
+  LStream: TStringStream;
+begin
+  SaveDialog.FileName := ChangeFileExt(CurrentEditFile.FileName, '.htm');
+  SaveDialog.Filter := 'Fattura Elettronica in HTML (*.htm)|*.htm';
+  if SaveDialog.Execute then
+  begin
+    LStream := TStringStream.Create(CurrentEditFile.HTMLViewer.Text,
+      TEncoding.UTF8);
+    try
+      LStream.SaveToFile(SaveDialog.FileName);
+      FileSavedAskToOpen(SaveDialog.FileName);
+    finally
+      LStream.Free;
+    end;
+  end;
 end;
 
 procedure TfrmMain.acSavePDFFileExecute(Sender: TObject);
 begin
-  dmResources.SaveHTMLToPDFFile(CurrentEditFile.FileName,
-    CurrentEditFile.HTMLViewer, FEditorSettings);
+  SaveDialog.FileName := ChangeFileExt(CurrentEditFile.FileName, '.pdf');
+  SaveDialog.Filter := 'Fattura Elettronica in PDF (*.pdf)|*.pdf';
+  if SaveDialog.Execute then
+  begin
+    Screen.Cursor := crHourGlass;
+    try
+      HTMLToPDF(SaveDialog.FileName);
+      FileSavedAskToOpen(SaveDialog.FileName);
+    finally
+      Screen.Cursor := crDefault;
+    end;
+  end;
 end;
 
 procedure TfrmMain.SetHTMLFontSize(const Value: Integer);
@@ -1950,6 +1985,44 @@ end;
 procedure TfrmMain.FormShow(Sender: TObject);
 begin
   BackgroundTrackBarChange(nil);
+end;
+
+procedure TfrmMain.HTMLToPDF(const APDFFileName: TFileName);
+var
+  lHtmlToPdf: TvmHtmlToPdfGDI;
+  LOldColor: TColor;
+begin
+  lHtmlToPdf := TvmHtmlToPdfGDI.Create();
+  try
+    lHtmlToPdf.PDFMarginLeft := FEditorSettings.PDFPageSettings.MarginLeft;
+    lHtmlToPdf.PDFMarginTop := FEditorSettings.PDFPageSettings.MarginTop;
+    lHtmlToPdf.PDFMarginRight := FEditorSettings.PDFPageSettings.MarginRight;
+    lHtmlToPdf.PDFMarginBottom := FEditorSettings.PDFPageSettings.MarginBottom;
+    lHtmlToPdf.PDFScaleToFit := True;
+    lHtmlToPdf.PrintOrientation := FEditorSettings.PDFPageSettings.PrintOrientation;
+    lHtmlToPdf.DefaultPaperSize := TPDFPaperSize(FEditorSettings.PDFPageSettings.PaperSize);
+
+    //Cambio il background dell'HTML Viewer per creare un PDF con sfondo bianco
+    //anche quando sto usando un tema scuro
+    LOldColor := CurrentEditFile.HTMLViewer.DefBackground;
+    try
+      SendMessage(CurrentEditFile.HTMLViewer.Handle, WM_SETREDRAW, WPARAM(False), 0);
+      CurrentEditFile.HTMLViewer.DefBackground := clWhite;
+      lHtmlToPdf.SrcViewer := CurrentEditFile.HTMLViewer;
+
+      lHtmlToPdf.PrintPageNumber := False;
+      lHtmlToPdf.TextPageNumber := 'Page %d/%d';
+      lHtmlToPdf.PageNumberPositionPrint := ppBottom;
+
+      lHtmlToPdf.Execute;
+      lHtmlToPdf.SaveToFile(APDFFileName);
+    finally
+      CurrentEditFile.HTMLViewer.DefBackground := LOldColor;
+    end;
+  finally
+    SendMessage(CurrentEditFile.HTMLViewer.Handle, WM_SETREDRAW, WPARAM(True), 0);
+    lHtmlToPdf.Free;
+  end;
 end;
 
 initialization

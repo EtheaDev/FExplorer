@@ -39,7 +39,6 @@ uses
   , System.Generics.Collections
   , SynEditOptionsDialog
   , System.UITypes
-//  , SynPDF
   , IniFiles;
 
 const

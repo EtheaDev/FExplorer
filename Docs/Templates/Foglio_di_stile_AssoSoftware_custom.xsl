@@ -1,4 +1,4 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:b="http://www.fatturapa.gov.it/sdi/fatturapa/v1.1" xmlns:c="http://www.fatturapa.gov.it/sdi/fatturapa/v1.0" xmlns:a="http://ivaservizi.agenziaentrate.gov.it/docs/xsd/fatture/v1.2" xmlns:d="http://ivaservizi.agenziaentrate.gov.it/docs/xsd/fatture/v1.0">
 	<xsl:output method="html"/>
 	<xsl:decimal-format name="euro" decimal-separator="," grouping-separator="."/>
@@ -2137,7 +2137,7 @@
           }
 
           th.perc2 {
-          width:40px;
+          width:26px;
           }
 
           th.data {
@@ -2156,7 +2156,7 @@
 
           th.import2
           {
-          width:80px;
+          width:40px;
           }
 
           td.import2
@@ -2166,7 +2166,7 @@
 
           th.ximport
           {
-          width:100px;
+          width:40px;
           }
 
           td.ximport

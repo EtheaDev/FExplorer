@@ -144,7 +144,6 @@ function TdmThumbnailResources.GetSVGText(const AXMLLines: TStrings): string;
 begin
   //Inizializza il Documento XML
   SourceXML.LoadFromXML(AXMLLines.Text);
-  //SourceXML.XML.Assign(AXMLLines);
   Result := Parse;
   if Result = '' then
     raise Exception.Create('Errore nella trasformazione in SVG dell''anteprima dell''icona');

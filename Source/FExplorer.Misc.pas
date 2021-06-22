@@ -39,7 +39,7 @@ interface
   function  GetModuleLocation: string;
 
 resourcestring
-  STextNotFound = 'Text not found';
+  STextNotFound = 'Testo non trovato';
 
 implementation
 

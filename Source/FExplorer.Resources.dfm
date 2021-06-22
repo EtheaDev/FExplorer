@@ -10992,12 +10992,4 @@ object dmResources: TdmResources
     Top = 262
     DOMVendorDesc = 'MSXML'
   end
-  object SaveDialog: TSaveDialog
-    Filter = 
-      'File Fattura Elettronica (*.xml;*.p7m)|*.xml;*.p7m|Fogli di Stil' +
-      'e (*.xsl)|*.xsl'
-    Options = [ofOverwritePrompt, ofHideReadOnly, ofEnableSizing]
-    Left = 228
-    Top = 224
-  end
 end
