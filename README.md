@@ -2,7 +2,7 @@
 
 ## **Anteprima Fattura Elettronica (Viewer e Icone) integrato in Windows Explorer e Visualizzatore**
 
-### Versione attuale 1.4 ###
+### Versione attuale 1.5 ###
 
 **Una serie di strumenti per gestire i file xml contenenti Fatture Elettroniche in Windows:**
 
@@ -25,7 +25,7 @@ Clicca per scaricare il Setup: [FExplorerSetup.exe][3] (che si trova anche nella
 
 ![Preview Thumbnails Dark](./Images/Setup.png)
 
-ATTENZIONE: attualmente il setup non è firmato, quindi Windows avvisa che potrebbe essere malevolo.
+INFO: il setup è firmato con certificato!
 
 ### Pannello Preview e Anteprima Icone in azione ###
 
@@ -62,6 +62,10 @@ Per installare manualmente FExplorer.dll seguire questi step:
 5. Una volta registrato, puoi continuare a modificare il codice e ricompilare la dll (attenzione a chiudere tutte le istanze di Explorer ogni volta che si ricompila).
 
 ## Release Notes ##
+
+05 Lug 2021 - Versione 1.5.0
+- Aggiunto supporto drag/drop files da Exporer al viewer/editor
+- Setup firmato con certificato
 
 22 Giu 2021 - Versione 1.4.0
 - Aggiunto supporto ai file encodati BASE64 con la libreria [PKCS7Extractor][12]
