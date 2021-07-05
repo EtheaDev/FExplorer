@@ -51,7 +51,8 @@ uses
   FExplorer.Registry in 'FExplorer.Registry.pas',
   FExplorer.InvoiceToImage in 'FExplorer.InvoiceToImage.pas',
   FExplorer.ThumbnailResources in 'FExplorer.ThumbnailResources.pas' {dmThumbnailResources: TDataModule},
-  vmHtmlToPdf in 'vmHtmlToPdf.pas';
+  vmHtmlToPdf in 'vmHtmlToPdf.pas',
+  uDragDropUtils in 'uDragDropUtils.pas';
 
 {$R *.res}
 

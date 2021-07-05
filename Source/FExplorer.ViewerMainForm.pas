@@ -58,6 +58,7 @@ uses
   , Vcl.Styles.Ext
   , HTMLUn2
   , HtmlView
+  , uDragDropUtils
   ;
 
 const
@@ -118,7 +119,7 @@ type
     property ContentType: TFileContentType read FFileContentType;
   end;
 
-  TfrmMain = class(TForm)
+  TfrmMain = class(TForm, IDragDrop)
     OpenDialog: TOpenDialog;
     ActionList: TActionList;
     acOpenFile: TAction;
@@ -212,6 +213,9 @@ type
     SaveHTMLfile1: TMenuItem;
     acSavePDFFile: TAction;
     SavePDFfile1: TMenuItem;
+    Chiudi1: TMenuItem;
+    Chiuditutto1: TMenuItem;
+    PopHTMLSep: TMenuItem;
     procedure WMGetMinMaxInfo(var Message: TWMGetMinMaxInfo); message WM_GETMINMAXINFO;
     procedure acOpenFileExecute(Sender: TObject);
     procedure acSaveExecute(Sender: TObject);
@@ -312,6 +316,10 @@ type
     FXMLInvoice: TEditingFile;
     FXSLForInvoice: TEditingFile;
     FXSLForIconFile: TEditingFile;
+    FDropTarget: TDropTarget;
+    // implement IDragDrop
+    function DropAllowed(const FileNames: array of string): Boolean;
+    procedure Drop(const FileNames: array of string);
     procedure CloseSplitViewMenu;
     procedure UpdateHighlighters;
     procedure UpdateFromSettings(AEditor: TSynEdit);
@@ -341,8 +349,13 @@ type
     procedure UpdateContentType;
     procedure HTMLToPDF(const APDFFileName: TFileName);
     procedure FileSavedAskToOpen(const AFileName: string);
+    function CanAcceptFileName(const AFileName: string): Boolean;
+    function AcceptedExtensions: string;
     property XMLFontSize: Integer read FXMLFontSize write SetXMLFontSize;
     property HTMLFontSize: Integer read FHTMLFontSize write SetHTMLFontSize;
+  protected
+    procedure CreateWindowHandle(const Params: TCreateParams); override;
+    procedure DestroyWindowHandle; override;
   end;
 
 var
@@ -563,6 +576,8 @@ destructor TEditingFile.Destroy;
 begin
   FreeAndNil(FAllegatiButtons);
   FreeAndNil(FIcon);
+  FreeAndNil(HTMLViewer);
+  FreeAndNil(SynEditor);
   inherited;
 end;
 
@@ -614,26 +629,33 @@ begin
   UpdateInvoiceViewer;
 end;
 
+function TfrmMain.CanAcceptFileName(const AFileName: string): Boolean;
+begin
+  Result := pos(ExtractFileExt(AFileName), AcceptedExtensions) <> 0;
+end;
+
+function TfrmMain.AcceptedExtensions: string;
+begin
+  //Verifico l'estensione del file
+  Result := '.xml;.p7m';
+  if FEditorSettings.AllowXSL then
+    Result := Result + ';.xsl';
+end;
+
 function TfrmMain.OpenFile(const FileName : string;
   const ARaiseError: Boolean = True): Boolean;
 var
   EditingFile: TEditingFile;
   I, J: Integer;
-  LExtensions: string;
 begin
   Screen.Cursor := crHourGlass;
   Try
     FProcessingFiles := True;
     if FileExists(FileName) then
     begin
-      //Verifico l'estensione del file
-      LExtensions := '.xml;.p7m';
-      if FEditorSettings.AllowXSL then
-        LExtensions := LExtensions + ';.xsl';
-
-      if pos(ExtractFileExt(FileName), LExtensions) = 0 then
+      if not CanAcceptFileName(FileName) then
         raise Exception.CreateFmt('Impossibile caricare un file che non abbia estensione "%s"',
-      [LExtensions]);
+        [AcceptedExtensions]);
 
       //ciclo per cercare se il file è già aperto
       EditingFile := nil;
@@ -831,6 +853,12 @@ begin
   catMenuItems.ButtonOptions := catMenuItems.ButtonOptions + [boShowCaptions];
 end;
 
+procedure TfrmMain.DestroyWindowHandle;
+begin
+  FreeAndNil(FDropTarget);
+  inherited;
+end;
+
 function TfrmMain.DialogPosRect: TRect;
 begin
   GetWindowRect(Self.Handle, Result);
@@ -867,6 +895,32 @@ begin
 
   if ConfirmReplaceDialog <> nil then
     ConfirmReplaceDialog.Free;
+end;
+
+procedure TfrmMain.Drop(const FileNames: array of string);
+var
+  LFileName: string;
+  i: Integer;
+begin
+  for i := 0 to Length(FileNames)-1 do
+  begin
+    if CanAcceptFileName(FileNames[i]) then
+      OpenFile(FileNames[i], False);
+  end;
+  UpdateInvoiceViewer;
+end;
+
+function TfrmMain.DropAllowed(const FileNames: array of string): Boolean;
+var
+  i: Integer;
+begin
+  Result := False;
+  for i := 0 to Length(FileNames)-1 do
+  begin
+    Result := CanAcceptFileName(FileNames[i]);
+    if Result then
+      Break;
+  end;
 end;
 
 procedure TfrmMain.acSearchExecute(Sender: TObject);
@@ -1099,83 +1153,85 @@ end;
 
 function TfrmMain.AddEditingFile(EditingFile: TEditingFile): Integer;
 var
-  ts : TTabSheet;
-  Editor : TSynEdit;
-  FEViewer: THtmlViewer;
-  ToolBarAllegati: TToolbar;
-  Splitter: TSplitter;
+  LTabSheet: TTabSheet;
+  LEditor: TSynEdit;
+  LFEViewer: THtmlViewer;
+  LToolBarAllegati: TToolbar;
+  LSplitter: TSplitter;
 begin
   //lo aggiungo alla lista dei file aperti
   Result := EditFileList.Add(EditingFile);
   //Appena aggiungo un'oggetto alla lista creo la pagina Associata
-  ts := nil;
-  Editor := nil;
+  LTabSheet := nil;
+  LEditor := nil;
+  LFEViewer := nil;
   Try
-    ts := TTabSheet.Create(self);
-    ts.PageControl := PageControl;
+    LTabSheet := TTabSheet.Create(self);
+    LTabSheet.PageControl := PageControl;
     //Attacco al TAG del tabsheet l'oggetto del file da editare
-    ts.Tag := Integer(EditingFile);
-    ts.Caption := EditingFile.Name;
-    ts.Imagename := EditingFile.ImageName+'-gray';
-    ts.Parent := PageControl;
-    ts.TabVisible := True;
-    EditingFile.TabSheet := ts;
+    LTabSheet.Tag := Integer(EditingFile);
+    LTabSheet.Caption := EditingFile.Name;
+    LTabSheet.Imagename := EditingFile.ImageName+'-gray';
+    LTabSheet.Parent := PageControl;
+    LTabSheet.TabVisible := True;
+    EditingFile.TabSheet := LTabSheet;
 
     //Creo l'oggetto dell'editor all'interno della pagina con l'owner la pagina
-    Editor := TSynEdit.Create(ts);
-    Editor.OnChange := SynEditChange;
-    Editor.OnEnter := SynEditEnter;
-    Editor.MaxUndo := 5000;
-    Editor.Align := alClient;
-    Editor.Parent := ts;
-    Editor.SearchEngine := SynEditSearch;
-    Editor.PopupMenu := popEditor;
+    LEditor := TSynEdit.Create(nil);
+    LEditor.OnChange := SynEditChange;
+    LEditor.OnEnter := SynEditEnter;
+    LEditor.MaxUndo := 5000;
+    LEditor.Align := alClient;
+    LEditor.Parent := LTabSheet;
+    LEditor.SearchEngine := SynEditSearch;
+    LEditor.PopupMenu := popEditor;
     //Assegna le preferenze dell'utente
-    FEditorOptions.AssignTo(Editor);
-    Editor.MaxScrollWidth := 3000;
-    EditingFile.SynEditor := Editor;
+    FEditorOptions.AssignTo(LEditor);
+    LEditor.MaxScrollWidth := 3000;
+    EditingFile.SynEditor := LEditor;
 
-    FEViewer := THtmlViewer.Create(ts);
-    FEViewer.ScrollBars := ssNone;
-    FEViewer.Align := alRight;
-    FEViewer.Width := ts.Width div 2;
-    FEViewer.Parent := ts;
-    FEViewer.PopupMenu := PopHTMLViewer;
+    LFEViewer := THtmlViewer.Create(nil);
+    LFEViewer.ScrollBars := ssNone;
+    LFEViewer.Align := alRight;
+    LFEViewer.Width := LTabSheet.Width div 2;
+    LFEViewer.Parent := LTabSheet;
+    LFEViewer.PopupMenu := PopHTMLViewer;
 
-    ToolBarAllegati := TToolbar.Create(ts);
-    ToolBarAllegati.Align := alTop;
-    ToolBarAllegati.List := True;
-    ToolBarAllegati.ShowCaptions := True;
-    ToolBarAllegati.Height := 30;
-    ToolBarAllegati.Parent := ts;
-    ToolBarAllegati.Images := VirtualImageList;
+    LToolBarAllegati := TToolbar.Create(LTabSheet);
+    LToolBarAllegati.Align := alTop;
+    LToolBarAllegati.List := True;
+    LToolBarAllegati.ShowCaptions := True;
+    LToolBarAllegati.Height := 30;
+    LToolBarAllegati.Parent := LTabSheet;
+    LToolBarAllegati.Images := VirtualImageList;
 
-    Splitter := TSplitter.Create(ts);
-    Splitter.Align := alRight;
-    Splitter.Left := FEViewer.Left-1;
-    Splitter.AutoSnap := False;
-    Splitter.Width := 6;
-    Splitter.Parent := ts;
-    Splitter.Beveled := True;
+    LSplitter := TSplitter.Create(LTabSheet);
+    LSplitter.Align := alRight;
+    LSplitter.Left := LFEViewer.Left-1;
+    LSplitter.AutoSnap := False;
+    LSplitter.Width := 6;
+    LSplitter.Parent := LTabSheet;
+    LSplitter.Beveled := True;
 
-    EditingFile.Splitter := Splitter;
-    EditingFile.ToolbarAllegati := ToolBarAllegati;
-    EditingFile.HTMLViewer := FEViewer;
+    EditingFile.Splitter := LSplitter;
+    EditingFile.ToolbarAllegati := LToolBarAllegati;
+    EditingFile.HTMLViewer := LFEViewer;
 
-    UpdateFromSettings(Editor);
-    UpdateHighlighter(Editor);
-    Editor.Visible := True;
+    UpdateFromSettings(LEditor);
+    UpdateHighlighter(LEditor);
+    LEditor.Visible := True;
 
     //Visualizzo il tabsheet
-    ts.Visible := True;
+    LTabSheet.Visible := True;
   Except
-    ts.Free;
-    Editor.Free;
+    LTabSheet.Free;
+    LEditor.Free;
+    LFEViewer.Free;
     raise;
   End;
 
   //Attivo la pagina appena creata
-  PageControl.ActivePage := ts;
+  PageControl.ActivePage := LTabSheet;
 
   //Forzo "change" della pagina
   PageControl.OnChange(PageControl);
@@ -1305,6 +1361,12 @@ procedure TfrmMain.CloseSplitViewMenu;
 begin
   SV.Close;
   Screen.Cursor := crDefault;
+end;
+
+procedure TfrmMain.CreateWindowHandle(const Params: TCreateParams);
+begin
+  inherited;
+  FDropTarget := TDropTarget.Create(WindowHandle, Self);
 end;
 
 function TfrmMain.CurrentEditFile: TEditingFile;

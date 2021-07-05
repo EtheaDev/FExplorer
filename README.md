@@ -119,18 +119,30 @@ A meno che non sia richiesto dalla legge applicabile o concordato per iscritto, 
 
 Related links: [embarcadero.com][11] - [learndelphi.org][12]
 
-
 [1]: https://docs.microsoft.com/en-us/windows/win32/shell/preview-handlers
+
 [2]: https://docs.microsoft.com/en-us/windows/win32/shell/thumbnail-providers
+
 [3]: https://github.com/EtheaDev/FExplorer/releases/latest/download/FExplorerSetup.exe
+
 [4]: https://github.com/EtheaDev/SVGIconImageList
+
 [5]: https://github.com/SynEdit/SynEdit
+
 [6]: https://github.com/RRUZ/vcl-styles-utils
+
 [7]: https://theroadtodelphi.com/
+
 [8]: https://github.com/RRUZ/delphi-preview-handler
+
 [9]: https://opensource.org/licenses/Apache-2.0
+
 [10]: https://github.com/EtheaDev/FExplorer/wiki/Using-The-SVG-Text-Editor
+
 [11]: https://www.embarcadero.com/
+
 [12]: https://learndelphi.org/
+
 [13]: https://github.com/EtheaDev/SVGShellExtensions/
+
 [14]: https://github.com/DelphiClubItalia/PKCS7Extractor

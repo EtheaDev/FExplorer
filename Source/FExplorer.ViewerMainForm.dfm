@@ -1239,5 +1239,14 @@ object frmMain: TfrmMain
     object SavePDFfile1: TMenuItem
       Action = acSavePDFFile
     end
+    object PopHTMLSep: TMenuItem
+      Caption = '-'
+    end
+    object Chiudi1: TMenuItem
+      Action = acClose
+    end
+    object Chiuditutto1: TMenuItem
+      Action = acCloseAll
+    end
   end
 end
