@@ -2,7 +2,7 @@
 
 ## **Anteprima Fattura Elettronica (Viewer e Icone) integrato in Windows Explorer e Visualizzatore**
 
-### Versione attuale 1.5 ###
+### Versione attuale 1.7 ###
 
 **Una serie di strumenti per gestire i file xml contenenti Fatture Elettroniche in Windows:**
 
@@ -62,6 +62,13 @@ Per installare manualmente FExplorer.dll seguire questi step:
 5. Una volta registrato, puoi continuare a modificare il codice e ricompilare la dll (attenzione a chiudere tutte le istanze di Explorer ogni volta che si ricompila).
 
 ## Release Notes ##
+
+03 Set 2021 - Versione 1.7.0
+- Aggiunto supporto Delphi 11
+- Build con Delphi 11
+
+23 Lug 2021 - Versione 1.6.0
+- Aggiunto supporto SVG con engine Image32
 
 05 Lug 2021 - Versione 1.5.0
 - Aggiunto supporto drag/drop files da Exporer al viewer/editor
