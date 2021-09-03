@@ -42,18 +42,18 @@ object SVGSettingsForm: TSVGSettingsForm
       ImageName = 'eye-settings'
       object PreviewStyleGroupBox: TGroupBox
         Left = 3
-        Top = 68
-        Width = 238
+        Top = 168
+        Width = 310
         Height = 62
         Caption = 'Stile anteprima fattura'
         TabOrder = 1
         DesignSize = (
-          238
+          310
           62)
         object StylesheetComboBox: TComboBox
           Left = 16
           Top = 24
-          Width = 209
+          Width = 281
           Height = 23
           Anchors = [akLeft, akTop, akRight]
           TabOrder = 0
@@ -62,44 +62,57 @@ object SVGSettingsForm: TSVGSettingsForm
             'AssoSoftware'
             'AgenziaEntrate'
             'Custom')
+          ExplicitWidth = 209
         end
       end
       object IconStyleGroupBox: TGroupBox
-        Left = 2
-        Top = 136
-        Width = 238
+        Left = 3
+        Top = 236
+        Width = 310
         Height = 62
         Caption = 'Stile anteprima Icone'
         TabOrder = 2
         DesignSize = (
-          238
+          310
           62)
         object IconStyleSheetComboBox: TComboBox
           Left = 16
           Top = 24
-          Width = 209
+          Width = 281
           Height = 23
           Anchors = [akLeft, akTop, akRight]
           TabOrder = 0
           Text = 'Default'
           Items.Strings = (
             'Default')
+          ExplicitWidth = 209
         end
       end
       object RenderingGroupBox: TGroupBox
-        Left = 2
-        Top = 0
-        Width = 238
-        Height = 62
-        Caption = 'Opzioni rendering SVG'
+        Left = 3
+        Top = 3
+        Width = 310
+        Height = 158
+        Caption = 'Opzioni di rendering SVG'
         TabOrder = 0
         object PreferD2DCheckBox: TCheckBox
-          Left = 15
-          Top = 29
-          Width = 156
-          Height = 17
-          Caption = 'Utilizza Engine Direct 2D'
+          Left = 13
+          Top = 127
+          Width = 284
+          Height = 18
+          Caption = 'Precedenza a Direct 2D (if disponibile in Windows)'
           TabOrder = 0
+        end
+        object EngineRadioGroup: TRadioGroup
+          Left = 13
+          Top = 19
+          Width = 284
+          Height = 102
+          Caption = 'Motore'
+          Items.Strings = (
+            'Delphi Image32'
+            'Delphi TSVG')
+          TabOrder = 1
         end
       end
     end
@@ -557,6 +570,15 @@ object SVGSettingsForm: TSVGSettingsForm
         AutoSize = False
         Caption = 'Margine basso'
       end
+      object SVGIconPosition: TSVGIconImage
+        Left = 313
+        Top = 51
+        Width = 186
+        Height = 154
+        AutoSize = False
+        ImageList = OrientationImageList
+        ImageIndex = 0
+      end
       object OrientationRadioGroup: TRadioGroup
         Left = 16
         Top = 16
@@ -568,16 +590,6 @@ object SVGSettingsForm: TSVGSettingsForm
           'Orizzontale (landscape)')
         TabOrder = 0
         OnClick = OrientationRadioGroupClick
-      end
-      object SVGIconPosition: TSVGIconImage
-        Left = 313
-        Top = 51
-        Width = 186
-        Height = 154
-        AutoSize = False
-        Proportional = True
-        ImageList = OrientationImageList
-        ImageIndex = 0
       end
       object MarginLeftEdit: TNumberBox
         Left = 218

@@ -3,25 +3,25 @@
         <ProjectGuid>{04978CC3-C0C6-4510-AEFF-E6BA772FB972}</ProjectGuid>
     </PropertyGroup>
     <ItemGroup>
-        <Projects Include="HTMLViewer\package\FrameViewer10_4.dproj">
+        <Projects Include="HTMLViewer\package\FrameViewer11_0.dproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="HTMLViewer\package\dclFrameViewer10_4.dproj">
+        <Projects Include="HTMLViewer\package\dclFrameViewer11_0.dproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="SVGIconImageList\Packages\D10_4\SVGIconImageList.dproj">
+        <Projects Include="SVGIconImageList\Packages\D11_0\SVGIconImageList.dproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="SVGIconImageList\Packages\D10_4\SVGIconPackage.dproj">
+        <Projects Include="SVGIconImageList\Packages\D11_0\SVGIconPackage.dproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="SVGIconImageList\Packages\D10_4\dclSVGIconImageList.dproj">
+        <Projects Include="SVGIconImageList\Packages\D11_0\dclSVGIconImageList.dproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="SynEdit\Packages\SynEdit_R10_4.dproj">
+        <Projects Include="SynEdit\Packages\SynEdit_R11_0.dproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="SynEdit\Packages\SynEdit_D10_4.dproj">
+        <Projects Include="SynEdit\Packages\SynEdit_D11_0.dproj">
             <Dependencies/>
         </Projects>
     </ItemGroup>
@@ -32,77 +32,77 @@
             <Default.Personality/>
         </BorlandProject>
     </ProjectExtensions>
-    <Target Name="FrameViewer10_4">
-        <MSBuild Projects="HTMLViewer\package\FrameViewer10_4.dproj"/>
+    <Target Name="FrameViewer11_0">
+        <MSBuild Projects="HTMLViewer\package\FrameViewer11_0.dproj"/>
     </Target>
-    <Target Name="FrameViewer10_4:Clean">
-        <MSBuild Projects="HTMLViewer\package\FrameViewer10_4.dproj" Targets="Clean"/>
+    <Target Name="FrameViewer11_0:Clean">
+        <MSBuild Projects="HTMLViewer\package\FrameViewer11_0.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="FrameViewer10_4:Make">
-        <MSBuild Projects="HTMLViewer\package\FrameViewer10_4.dproj" Targets="Make"/>
+    <Target Name="FrameViewer11_0:Make">
+        <MSBuild Projects="HTMLViewer\package\FrameViewer11_0.dproj" Targets="Make"/>
     </Target>
-    <Target Name="dclFrameViewer10_4">
-        <MSBuild Projects="HTMLViewer\package\dclFrameViewer10_4.dproj"/>
+    <Target Name="dclFrameViewer11_0">
+        <MSBuild Projects="HTMLViewer\package\dclFrameViewer11_0.dproj"/>
     </Target>
-    <Target Name="dclFrameViewer10_4:Clean">
-        <MSBuild Projects="HTMLViewer\package\dclFrameViewer10_4.dproj" Targets="Clean"/>
+    <Target Name="dclFrameViewer11_0:Clean">
+        <MSBuild Projects="HTMLViewer\package\dclFrameViewer11_0.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="dclFrameViewer10_4:Make">
-        <MSBuild Projects="HTMLViewer\package\dclFrameViewer10_4.dproj" Targets="Make"/>
+    <Target Name="dclFrameViewer11_0:Make">
+        <MSBuild Projects="HTMLViewer\package\dclFrameViewer11_0.dproj" Targets="Make"/>
     </Target>
     <Target Name="SVGIconImageList">
-        <MSBuild Projects="SVGIconImageList\Packages\D10_4\SVGIconImageList.dproj"/>
+        <MSBuild Projects="SVGIconImageList\Packages\D11_0\SVGIconImageList.dproj"/>
     </Target>
     <Target Name="SVGIconImageList:Clean">
-        <MSBuild Projects="SVGIconImageList\Packages\D10_4\SVGIconImageList.dproj" Targets="Clean"/>
+        <MSBuild Projects="SVGIconImageList\Packages\D11_0\SVGIconImageList.dproj" Targets="Clean"/>
     </Target>
     <Target Name="SVGIconImageList:Make">
-        <MSBuild Projects="SVGIconImageList\Packages\D10_4\SVGIconImageList.dproj" Targets="Make"/>
+        <MSBuild Projects="SVGIconImageList\Packages\D11_0\SVGIconImageList.dproj" Targets="Make"/>
     </Target>
     <Target Name="SVGIconPackage">
-        <MSBuild Projects="SVGIconImageList\Packages\D10_4\SVGIconPackage.dproj"/>
+        <MSBuild Projects="SVGIconImageList\Packages\D11_0\SVGIconPackage.dproj"/>
     </Target>
     <Target Name="SVGIconPackage:Clean">
-        <MSBuild Projects="SVGIconImageList\Packages\D10_4\SVGIconPackage.dproj" Targets="Clean"/>
+        <MSBuild Projects="SVGIconImageList\Packages\D11_0\SVGIconPackage.dproj" Targets="Clean"/>
     </Target>
     <Target Name="SVGIconPackage:Make">
-        <MSBuild Projects="SVGIconImageList\Packages\D10_4\SVGIconPackage.dproj" Targets="Make"/>
+        <MSBuild Projects="SVGIconImageList\Packages\D11_0\SVGIconPackage.dproj" Targets="Make"/>
     </Target>
     <Target Name="dclSVGIconImageList">
-        <MSBuild Projects="SVGIconImageList\Packages\D10_4\dclSVGIconImageList.dproj"/>
+        <MSBuild Projects="SVGIconImageList\Packages\D11_0\dclSVGIconImageList.dproj"/>
     </Target>
     <Target Name="dclSVGIconImageList:Clean">
-        <MSBuild Projects="SVGIconImageList\Packages\D10_4\dclSVGIconImageList.dproj" Targets="Clean"/>
+        <MSBuild Projects="SVGIconImageList\Packages\D11_0\dclSVGIconImageList.dproj" Targets="Clean"/>
     </Target>
     <Target Name="dclSVGIconImageList:Make">
-        <MSBuild Projects="SVGIconImageList\Packages\D10_4\dclSVGIconImageList.dproj" Targets="Make"/>
+        <MSBuild Projects="SVGIconImageList\Packages\D11_0\dclSVGIconImageList.dproj" Targets="Make"/>
     </Target>
-    <Target Name="SynEdit_R10_4">
-        <MSBuild Projects="SynEdit\Packages\SynEdit_R10_4.dproj"/>
+    <Target Name="SynEdit_R11_0">
+        <MSBuild Projects="SynEdit\Packages\SynEdit_R11_0.dproj"/>
     </Target>
-    <Target Name="SynEdit_R10_4:Clean">
-        <MSBuild Projects="SynEdit\Packages\SynEdit_R10_4.dproj" Targets="Clean"/>
+    <Target Name="SynEdit_R11_0:Clean">
+        <MSBuild Projects="SynEdit\Packages\SynEdit_R11_0.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="SynEdit_R10_4:Make">
-        <MSBuild Projects="SynEdit\Packages\SynEdit_R10_4.dproj" Targets="Make"/>
+    <Target Name="SynEdit_R11_0:Make">
+        <MSBuild Projects="SynEdit\Packages\SynEdit_R11_0.dproj" Targets="Make"/>
     </Target>
-    <Target Name="SynEdit_D10_4">
-        <MSBuild Projects="SynEdit\Packages\SynEdit_D10_4.dproj"/>
+    <Target Name="SynEdit_D11_0">
+        <MSBuild Projects="SynEdit\Packages\SynEdit_D11_0.dproj"/>
     </Target>
-    <Target Name="SynEdit_D10_4:Clean">
-        <MSBuild Projects="SynEdit\Packages\SynEdit_D10_4.dproj" Targets="Clean"/>
+    <Target Name="SynEdit_D11_0:Clean">
+        <MSBuild Projects="SynEdit\Packages\SynEdit_D11_0.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="SynEdit_D10_4:Make">
-        <MSBuild Projects="SynEdit\Packages\SynEdit_D10_4.dproj" Targets="Make"/>
+    <Target Name="SynEdit_D11_0:Make">
+        <MSBuild Projects="SynEdit\Packages\SynEdit_D11_0.dproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
-        <CallTarget Targets="FrameViewer10_4;dclFrameViewer10_4;SVGIconImageList;SVGIconPackage;dclSVGIconImageList;SynEdit_R10_4;SynEdit_D10_4"/>
+        <CallTarget Targets="FrameViewer11_0;dclFrameViewer11_0;SVGIconImageList;SVGIconPackage;dclSVGIconImageList;SynEdit_R11_0;SynEdit_D11_0"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="FrameViewer10_4:Clean;dclFrameViewer10_4:Clean;SVGIconImageList:Clean;SVGIconPackage:Clean;dclSVGIconImageList:Clean;SynEdit_R10_4:Clean;SynEdit_D10_4:Clean"/>
+        <CallTarget Targets="FrameViewer11_0:Clean;dclFrameViewer11_0:Clean;SVGIconImageList:Clean;SVGIconPackage:Clean;dclSVGIconImageList:Clean;SynEdit_R11_0:Clean;SynEdit_D11_0:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="FrameViewer10_4:Make;dclFrameViewer10_4:Make;SVGIconImageList:Make;SVGIconPackage:Make;dclSVGIconImageList:Make;SynEdit_R10_4:Make;SynEdit_D10_4:Make"/>
+        <CallTarget Targets="FrameViewer11_0:Make;dclFrameViewer11_0:Make;SVGIconImageList:Make;SVGIconPackage:Make;dclSVGIconImageList:Make;SynEdit_R11_0:Make;SynEdit_D11_0:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

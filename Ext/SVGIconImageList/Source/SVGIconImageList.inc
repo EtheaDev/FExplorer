@@ -1,3 +1,14 @@
+// Delphi XE3
+{$IFDEF VER240}
+  {$DEFINE D2010+}
+  {$DEFINE DXE+}
+  {$DEFINE DXE2+}
+  {$DEFINE DXE3+}
+  {$DEFINE DXE4+}
+  {$DEFINE DXE5+}
+  {$DEFINE DXE6+}
+{$ENDIF}
+
 // Delphi XE6
 {$IFDEF VER270}
   {$DEFINE D2010+}
@@ -114,6 +125,25 @@
   {$DEFINE D10_4+}
 {$ENDIF}
 
+// Delphi 11.0 Olympus
+{$IFDEF VER350}
+  {$DEFINE D2010+}
+  {$DEFINE DXE+}
+  {$DEFINE DXE2+}
+  {$DEFINE DXE3+}
+  {$DEFINE DXE4+}
+  {$DEFINE DXE5+}
+  {$DEFINE DXE6+}
+  {$DEFINE DXE7+}
+  {$DEFINE DXE8+}
+  {$DEFINE D10_0+}
+  {$DEFINE D10_1+}
+  {$DEFINE D10_2+}
+  {$DEFINE D10_3+}
+  {$DEFINE D10_4+}
+  {$DEFINE D11_0+}
+{$ENDIF}
+
 {$IFDEF D10_3+}
   {$Define HiDPISupport}
 {$ENDIF}
@@ -131,7 +161,9 @@
 
 //if PreferNativeSvgSupport not active or not available:
 //use Delphi Engine TSVG by Martin Walter (included into SVG folder)
-{$DEFINE Delphi_SVGEngine}
+{.$DEFINE Delphi_SVGEngine}
+//or use Delphi Engine from Image32 library by Angus Johnson (included into Image32 folder)
+{$DEFINE Image32_SVGEngine}
 //or use Engine Cairo wrapper (included by Lübbe Onken in Cairo folder)
 {.$DEFINE Cairo_SVGEngine}
 

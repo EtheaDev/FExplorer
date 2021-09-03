@@ -7177,15 +7177,15 @@ object dmResources: TdmResources
           '2.5v-32.5l-13.75-1.25-1.25-13.75z"/>'#13#10'  <path style="opacity:0.2' +
           '" d="M 37,7.9999999 V 20.5 c 0,1.3808 1.1193,2.5 2.5,2.5 H 52 Z"' +
           '/>'#13#10'  <path fill="#fafafa" d="m37 7v12.5c0 1.3808 1.1193 2.5 2.5' +
-          ' 2.5h12.5l-15-15z"/>'#13#10'  <text font-family="Segoe UI" font-size="' +
-          '6" style="fill:red;font-weight: bold;">'#13#10'    <tspan x="13" y="15' +
-          '">Fattura</tspan>'#13#10'    <tspan x="13" y="25">12345</tspan>'#13#10'    <' +
-          'tspan x="13" y="35">01/02/2021</tspan>'#13#10'    <tspan x="13" y="45"' +
-          '>Ethea S.r.l.</tspan>'#13#10'    <tspan x="13" y="55">'#8364' 12.456,43</tsp' +
-          'an>'#13#10'  </text>'#13#10'  <path style="opacity:0.2;fill:#ffffff" d="m 14' +
-          '.5,6.9999999 c -1.385,0 -2.5,1.115 -2.5,2.5 V 10.5 C 12,9.114999' +
-          '9 13.115,7.9999999 14.5,7.9999999 H 37 c 0,-1 0,0 0,-1 z"/>'#13#10'</s' +
-          'vg>'#13#10
+          ' 2.5h12.5l-15-15z"/>'#13#10'  <text font-family="Arial" font-size="6" ' +
+          'style="fill:red;font-weight: bold;">'#13#10'    <tspan x="13" y="15">F' +
+          'attura</tspan>'#13#10'    <tspan x="13" y="25">12345</tspan>'#13#10'    <tsp' +
+          'an x="13" y="35">01/02/2021</tspan>'#13#10'    <tspan x="13" y="45">Et' +
+          'hea S.r.l.</tspan>'#13#10'    <tspan x="13" y="55">'#8364' 12.456,43</tspan>' +
+          #13#10'  </text>'#13#10'  <path style="opacity:0.2;fill:#ffffff" d="m 14.5,' +
+          '6.9999999 c -1.385,0 -2.5,1.115 -2.5,2.5 V 10.5 C 12,9.1149999 1' +
+          '3.115,7.9999999 14.5,7.9999999 H 37 c 0,-1 0,0 0,-1 z"/>'#13#10'</svg>' +
+          #13#10
       end>
     Left = 248
     Top = 80

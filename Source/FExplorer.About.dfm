@@ -36,120 +36,6 @@ object FrmAbout: TFrmAbout
     Height = 13
     Caption = 'Versione'
   end
-  object Panel1: TPanel
-    Left = 0
-    Top = 265
-    Width = 446
-    Height = 51
-    Align = alBottom
-    BevelOuter = bvNone
-    Color = clWindow
-    ParentBackground = False
-    TabOrder = 0
-    object btnOK: TButton
-      Left = 360
-      Top = 16
-      Width = 75
-      Height = 25
-      Caption = 'OK'
-      Default = True
-      TabOrder = 2
-      OnClick = btnOKClick
-    end
-    object btnIssues: TButton
-      Left = 8
-      Top = 16
-      Width = 125
-      Height = 25
-      Caption = 'Segnala problema...'
-      ImageIndex = 0
-      TabOrder = 0
-      OnClick = btnIssuesClick
-    end
-    object btnCheckUpdates: TButton
-      Left = 139
-      Top = 16
-      Width = 125
-      Height = 25
-      Caption = 'Verifica aggiornamenti'
-      ImageIndex = 3
-      TabOrder = 1
-      Visible = False
-      OnClick = btnCheckUpdatesClick
-    end
-  end
-  object MemoCopyRights: TMemo
-    Left = 11
-    Top = 87
-    Width = 427
-    Height = 115
-    Anchors = [akLeft, akTop, akBottom]
-    Color = clBtnFace
-    Lines.Strings = (
-      'Autori:'
-      'Carlo Barazzetta & Andrea Magni'
-      'https://github.com/EtheaDev/FExplorer'
-      'Copyright '#169' 2021 all rights reserved.'
-      ''
-      'Librerie di terze parti di Ethea:'
-      'SVGIconImageList'
-      'https://github.com/EtheaDev/SVGIconImageList/'
-      ''
-      'PKCS7Extractor'
-      'https://github.com/DelphiClubItalia/PKCS7Extractor'
-      'Copyright '#169' 2018 Delphi Club Italia - LGPL v3'
-      'Original authors:'
-      '  Christian Cristofori - github@christiancristofori.it'
-      '  Giancarlo Oneglio - giancarlo.oneglio@gmail.com'
-      ''
-      'OpenSLL Library: Cryptography and SSL/TLS Toolkit'
-      'Copyright '#169' 1998-2018 The OpenSSL Project.  All rights reserved.'
-      ''
-      'Delphi Preview Handler'
-      'https://github.com/RRUZ/delphi-preview-handler'
-      'The Initial Developer of the Original Code is Rodrigo Ruz V.'
-      
-        'Portions created by Rodrigo Ruz V. are Copyright '#169' 2011-2021 Rod' +
-        'rigo Ruz V.'
-      ''
-      'Librerie di terze parti utilizzate'
-      'SynEdit http://synedit.svn.sourceforge.net/viewvc/synedit/'
-      'all rights reserved.'
-      ''
-      'Synopse/SynPDF https://github.com/synopse/SynPDF'
-      'Copyright '#169' Synopse: all right reserved.'
-      ''
-      'HtmlToPdf https://github.com/MuzioValerio/HtmlToPdf'
-      'Copyright '#169' Muzio Valerio.'
-      ''
-      
-        '- TSVG Library - http://www.mwcs.de Original version '#169' 2005, 200' +
-        '8 Martin '
-      'Walter.'
-      ''
-      'HTMLViewer - https://github.com/BerndGabriel/HtmlViewer'
-      'Copyright (c) 1995 - 2008 by L. David Baldwin'
-      'Copyright (c) 1995 - 2008 by Anders Melander (DitherUnit.pas)'
-      'Copyright (c) 1995 - 2008 by Ron Collins (HtmlGif1.pas)'
-      'Copyright (c) 2008 - 2009 by Sebastian Zierer (Delphi 2009 Port)'
-      'Copyright (c) 2008 - 2010 by Arvid Winkelsdorf (Fixes)'
-      'Copyright (c) 2009 - 2019 by HtmlViewer Team')
-    ReadOnly = True
-    ScrollBars = ssVertical
-    TabOrder = 1
-  end
-  object LinkLabel1: TLinkLabel
-    Left = 8
-    Top = 62
-    Width = 214
-    Height = 19
-    Caption = 
-      '<a href="https://github.com/EtheaDev/FExplorer">https://github.c' +
-      'om/EtheaDev/FExplorer</a>'
-    TabOrder = 2
-    UseVisualStyle = True
-    OnClick = LinkLabel1Click
-  end
   object SVGIconImage1: TSVGIconImage
     Left = 383
     Top = 8
@@ -300,7 +186,6 @@ object FrmAbout: TFrmAbout
     Width = 175
     Height = 53
     AutoSize = False
-    Proportional = True
     SVGText = 
       '<svg xmlns="http://www.w3.org/2000/svg" width="755.906" height="' +
       '226.772" viewBox="0 0 200 60">'#13#10' <defs>'#13#10'  <filter id="A">'#13#10'   <' +
@@ -317,6 +202,125 @@ object FrmAbout: TFrmAbout
       '26.8zm-112.325 0H37.6v11.2H9.924zm5.368-13.2L24.4 0h13.2v11.2zM1' +
       '26.8 0h29.6v11.2h-29.6z"/>'#13#10'</svg>'
   end
+  object Panel1: TPanel
+    Left = 0
+    Top = 265
+    Width = 446
+    Height = 51
+    Align = alBottom
+    BevelOuter = bvNone
+    Color = clWindow
+    ParentBackground = False
+    TabOrder = 0
+    object btnOK: TButton
+      Left = 360
+      Top = 16
+      Width = 75
+      Height = 25
+      Caption = 'OK'
+      Default = True
+      TabOrder = 2
+      OnClick = btnOKClick
+    end
+    object btnIssues: TButton
+      Left = 8
+      Top = 16
+      Width = 125
+      Height = 25
+      Caption = 'Segnala problema...'
+      ImageIndex = 0
+      TabOrder = 0
+      OnClick = btnIssuesClick
+    end
+    object btnCheckUpdates: TButton
+      Left = 139
+      Top = 16
+      Width = 125
+      Height = 25
+      Caption = 'Verifica aggiornamenti'
+      ImageIndex = 3
+      TabOrder = 1
+      Visible = False
+      OnClick = btnCheckUpdatesClick
+    end
+  end
+  object MemoCopyRights: TMemo
+    Left = 11
+    Top = 87
+    Width = 427
+    Height = 115
+    Anchors = [akLeft, akTop, akBottom]
+    Color = clBtnFace
+    Lines.Strings = (
+      'Autori:'
+      'Carlo Barazzetta & Andrea Magni'
+      'https://github.com/EtheaDev/FExplorer'
+      'Copyright '#169' 2021 all rights reserved.'
+      ''
+      'Librerie di terze parti di Ethea:'
+      'SVGIconImageList'
+      'https://github.com/EtheaDev/SVGIconImageList/'
+      ''
+      'PKCS7Extractor'
+      'https://github.com/DelphiClubItalia/PKCS7Extractor'
+      'Copyright '#169' 2018 Delphi Club Italia - LGPL v3'
+      'Original authors:'
+      '  Christian Cristofori - github@christiancristofori.it'
+      '  Giancarlo Oneglio - giancarlo.oneglio@gmail.com'
+      ''
+      'OpenSLL Library: Cryptography and SSL/TLS Toolkit'
+      'Copyright '#169' 1998-2018 The OpenSSL Project.  All rights reserved.'
+      ''
+      'Delphi Preview Handler'
+      'https://github.com/RRUZ/delphi-preview-handler'
+      'The Initial Developer of the Original Code is Rodrigo Ruz V.'
+      
+        'Portions created by Rodrigo Ruz V. are Copyright '#169' 2011-2021 Rod' +
+        'rigo Ruz V.'
+      ''
+      'Librerie di terze parti utilizzate'
+      'SynEdit http://synedit.svn.sourceforge.net/viewvc/synedit/'
+      'all rights reserved.'
+      ''
+      'Synopse/SynPDF https://github.com/synopse/SynPDF'
+      'Copyright '#169' Synopse: all right reserved.'
+      ''
+      'HtmlToPdf https://github.com/MuzioValerio/HtmlToPdf'
+      'Copyright '#169' Muzio Valerio.'
+      ''
+      
+        '- TSVG Library - http://www.mwcs.de Original version '#169' 2005, 200' +
+        '8 Martin '
+      'Walter.'
+      ''
+      
+        '- Image32 Library - http://www.angusj.com/delphi/image32/Docs/_B' +
+        'ody.htm'
+      'Copyright '#169'2019-2021 Angus Johnson.'
+      ''
+      'HTMLViewer - https://github.com/BerndGabriel/HtmlViewer'
+      'Copyright (c) 1995 - 2008 by L. David Baldwin'
+      'Copyright (c) 1995 - 2008 by Anders Melander (DitherUnit.pas)'
+      'Copyright (c) 1995 - 2008 by Ron Collins (HtmlGif1.pas)'
+      'Copyright (c) 2008 - 2009 by Sebastian Zierer (Delphi 2009 Port)'
+      'Copyright (c) 2008 - 2010 by Arvid Winkelsdorf (Fixes)'
+      'Copyright (c) 2009 - 2019 by HtmlViewer Team')
+    ReadOnly = True
+    ScrollBars = ssVertical
+    TabOrder = 1
+  end
+  object LinkLabel1: TLinkLabel
+    Left = 8
+    Top = 62
+    Width = 214
+    Height = 19
+    Caption = 
+      '<a href="https://github.com/EtheaDev/FExplorer">https://github.c' +
+      'om/EtheaDev/FExplorer</a>'
+    TabOrder = 2
+    UseVisualStyle = True
+    OnClick = LinkLabel1Click
+  end
   object panelLibrary: TGroupBox
     Left = 11
     Top = 204
@@ -324,7 +328,7 @@ object FrmAbout: TFrmAbout
     Height = 55
     Anchors = [akLeft, akRight, akBottom]
     Caption = 'OpenSSL Library Info'
-    TabOrder = 5
+    TabOrder = 3
     object OpenSSLlabelLocation: TLabel
       Left = 96
       Top = 17

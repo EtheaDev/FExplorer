@@ -96,8 +96,6 @@ type
     IconStyleSheetComboBox: TComboBox;
     ShowXMLCheckBox: TCheckBox;
     tsAdvanced: TTabSheet;
-    RenderingGroupBox: TGroupBox;
-    PreferD2DCheckBox: TCheckBox;
     AllowEditCheckBox: TCheckBox;
     DeveloperGroupBox: TGroupBox;
     AllowXSLCheckBox: TCheckBox;
@@ -116,6 +114,9 @@ type
     MarginLeftLabel: TLabel;
     MarginRightLabel: TLabel;
     MarginBottomLabel: TLabel;
+    RenderingGroupBox: TGroupBox;
+    PreferD2DCheckBox: TCheckBox;
+    EngineRadioGroup: TRadioGroup;
     procedure BoxElementsClick(Sender: TObject);
     procedure cbForegroundClick(Sender: TObject);
     procedure cbBackgroundClick(Sender: TObject);
@@ -183,6 +184,7 @@ uses
 {$IFNDEF DISABLE_STYLES}
   Vcl.Themes,
 {$ENDIF}
+  D2DSVGFactory,
   uRegistry;
 
 {$R *.dfm}
@@ -571,8 +573,14 @@ begin
   HTMLFontComboBox.ItemIndex := HTMLFontComboBox.Items.IndexOf(ASettings.HTMLFontName);
   HTMLUpDown.Position := ASettings.HTMLFontSize;
 
-  PreferD2DCheckBox.Checked := ASettings.PreferD2D;
-
+  if not WinSvgSupported then
+  begin
+    PreferD2DCheckBox.Visible := False;
+    PreferD2DCheckBox.Checked := False;
+  end
+  else
+    PreferD2DCheckBox.Checked := ASettings.PreferD2D;
+  EngineRadioGroup.ItemIndex := Ord(ASettings.SVGEngine);
   StylesheetComboBox.ItemIndex := StylesheetComboBox.Items.IndexOf(ASettings.StylesheetName);
   IconStyleSheetComboBox.ItemIndex := IconStyleSheetComboBox.Items.IndexOf(ASettings.IconStylesheetName);
 
@@ -628,7 +636,7 @@ begin
 
   ASettings.StyleName := SelectedStyleName;
   ASettings.PreferD2D := PreferD2DCheckBox.Checked;
-
+  ASettings.SVGEngine := TSVGEngine(EngineRadioGroup.ItemIndex);
   if ASettings is TEditorSettings then
   begin
     TEditorSettings(ASettings).AllowEdit := AllowEditCheckBox.Checked;

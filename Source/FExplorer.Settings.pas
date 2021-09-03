@@ -51,6 +51,7 @@ resourcestring
 type
   TThemeSelection = (tsAsWindows, tsDarkTheme, tsLightTheme);
   TThemeType = (ttLight, ttDark);
+  TSVGEngine = (enImage32, enTSVG);
 
   //Class to register Theme attributes (like dark or light)
   TThemeAttribute = class
@@ -83,15 +84,18 @@ type
     FPreferD2D: Boolean;
     FActivePageIndex: Integer;
     FThemeSelection: TThemeSelection;
+    FSVGEngine: TSVGEngine;
     FStylesheetName: string;
     FHTMLFontSize: Integer;
     FHTMLFontName: string;
     FIconStylesheetName: string;
     function GetUseDarkStyle: Boolean;
+    procedure SetSVGEngine(const Value: TSVGEngine);
     procedure SetPreferD2D(const Value: Boolean);
     function GetThemeSectionName: string;
     function GetButtonTextColor: TColor;
     class function GetSettingsFileName: string; static;
+    procedure UpdateEngine;
   protected
     FIniFile: TIniFile;
   public
@@ -124,6 +128,7 @@ type
     property ShowXML: Boolean read FShowXML write FShowXML;
     property SplitterPos: Integer read FSplitterPos write FSplitterPos;
     property PreferD2D: Boolean read FPreferD2D write SetPreferD2D;
+    property SVGEngine: TSVGEngine read FSVGEngine write SetSVGEngine;
     property ActivePageIndex: Integer read FActivePageIndex write FActivePageIndex;
     property ThemeSelection: TThemeSelection read FThemeSelection write FThemeSelection;
     property StylesheetName: string read FStylesheetName write FStylesheetName;
@@ -172,6 +177,7 @@ uses
   , SVGInterfaces
   , PasSVGFactory
   , D2DSVGFactory
+  , Image32SVGFactory
   , System.Types
   , System.TypInfo
   , System.Rtti
@@ -179,6 +185,7 @@ uses
   , System.IOUtils
   , Winapi.ShlObj
   , Winapi.Windows
+  , Img32.Text
 {$IFNDEF DISABLE_STYLES}
   , Vcl.Themes
 {$ENDIF}
@@ -283,7 +290,11 @@ begin
   FSettingsFileName := ASettingFileName;
   FSettingsPath := ExtractFilePath(ASettingFileName);
   System.SysUtils.ForceDirectories(FSettingsPath);
-
+  {$IFDEF Image32_SVGEngine}
+  FSVGEngine := enImage32;
+  {$ELSE}
+  FSVGEngine := enTSVG;
+  {$ENDIF}
   ReadSettings(ASynEditHighilighter, ASynEditorOptions);
 end;
 
@@ -344,6 +355,7 @@ begin
   FShowXML := FIniFile.ReadInteger('Global', 'ShowXML', 0) = 1;
   FSplitterPos := FIniFile.ReadInteger('Global', 'SplitterPos', 33);
   PreferD2D := Boolean(FIniFile.ReadInteger('Global', 'PreferD2D', 0));
+  SVGEngine := TSVGEngine(FIniFile.ReadInteger('Global', 'SVGEngine', 1));
   FActivePageIndex := FIniFile.ReadInteger('Global', 'ActivePageIndex', 0);
   FStyleName := FIniFile.ReadString('Global', 'StyleName', DefaultStyleName);
   FStylesheetName := FIniFile.ReadString('Global', 'StylesheetName', 'Custom');
@@ -385,13 +397,32 @@ begin
   PDFPageSettings.MarginRight := FIniFile.ReadFloat('PDFPageSettins', 'MarginRight', 1);
 end;
 
-procedure TSettings.SetPreferD2D(const Value: Boolean);
+procedure TSettings.UpdateEngine;
 begin
-  FPreferD2D := Value;
-  if FPreferD2D then
+  if WinSvgSupported and FPreferD2D then
     SetGlobalSvgFactory(GetD2DSVGFactory)
+  else if FSVGEngine = enImage32 then
+    SetGlobalSvgFactory(GetImage32SVGFactory)
   else
     SetGlobalSvgFactory(GetPasSVGFactory);
+end;
+
+procedure TSettings.SetPreferD2D(const Value: Boolean);
+begin
+  if FPreferD2D <> Value then
+  begin
+    FPreferD2D := Value;
+    UpdateEngine;
+  end;
+end;
+
+procedure TSettings.SetSVGEngine(const Value: TSVGEngine);
+begin
+  if FSVGEngine <> Value then
+  begin
+    FSVGEngine := Value;
+    UpdateEngine;
+  end;
 end;
 
 procedure TSettings.UpdateSettings(const AXMLFontName, AHTMLFontName: string;
@@ -421,6 +452,7 @@ begin
   FIniFile.WriteInteger('Global', 'ShowXML', Ord(FShowXML));
   FIniFile.WriteInteger('Global', 'SplitterPos', FSplitterPos);
   FIniFile.WriteInteger('Global', 'PreferD2D', Ord(FPreferD2D));
+  FIniFile.WriteInteger('Global', 'SVGEngine', Ord(FSVGEngine));
   FIniFile.WriteInteger('Global', 'ActivePageIndex', FActivePageIndex);
   FIniFile.WriteString('Global', 'StylesheetName', FStylesheetName);
   FIniFile.WriteString('Global', 'IconStylesheetName', FIconStylesheetName);
@@ -722,6 +754,7 @@ end;
 
 initialization
   InitDefaultThemesAttributes;
+  FontManager.Load('Segoe UI');
 
 finalization
   FreeThemesAttributes;

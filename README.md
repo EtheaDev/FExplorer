@@ -68,14 +68,14 @@ Per installare manualmente FExplorer.dll seguire questi step:
 - Setup firmato con certificato
 
 22 Giu 2021 - Versione 1.4.0
-- Aggiunto supporto ai file encodati BASE64 con la libreria [PKCS7Extractor][12]
+- Aggiunto supporto ai file encodati BASE64 con la libreria [PKCS7Extractor][14]
 - Aggiunta la stampa in PDF della fattura basata sul template HTML
 - Migliorato il template Assosoftware Custom per la visualizzazione
 - Fixati problemi con caricamento XML con BOM
 - Aggiunta pagina layout PDF in Settings
 
 11 Giu 2021 - Versione 1.3.0
-- Aggiunto supporto ai file firmati (p7m) con la libreria [PKCS7Extractor][12]
+- Aggiunto supporto ai file firmati (p7m) con la libreria [PKCS7Extractor][14]
 
 30 Apr 2021 - Versione 1.2.0
 - Aggiunto supporto FExplorer a 32 Bit
@@ -150,3 +150,5 @@ Related links: [embarcadero.com][11] - [learndelphi.org][12]
 [13]: https://github.com/EtheaDev/SVGShellExtensions/
 
 [14]: https://github.com/DelphiClubItalia/PKCS7Extractor
+
+[15]: http://www.angusj.com/delphi/image32/Docs/_Body.htm

@@ -117,9 +117,6 @@ object frmMain: TfrmMain
       Width = 250
       Height = 317
       AutoSize = False
-      ParentDoubleBuffered = False
-      DoubleBuffered = True
-      Proportional = True
       Align = alClient
       OnMouseMove = SVGIconImageMouseMove
     end
@@ -131,7 +128,7 @@ object frmMain: TfrmMain
       Align = alTop
       ParentBackground = False
       ShowCaption = False
-      TabOrder = 1
+      TabOrder = 0
       object BackgroundGrayScaleLabel: TLabel
         Left = 10
         Top = 6
@@ -167,7 +164,7 @@ object frmMain: TfrmMain
       AutoSize = True
       BevelOuter = bvNone
       ParentColor = True
-      TabOrder = 2
+      TabOrder = 1
       object SVGIconImage16: TSVGIconImage
         AlignWithMargins = True
         Left = 3
@@ -176,8 +173,6 @@ object frmMain: TfrmMain
         Height = 24
         Hint = '16x16'
         AutoSize = False
-        ParentDoubleBuffered = False
-        DoubleBuffered = True
       end
       object SVGIconImage32: TSVGIconImage
         AlignWithMargins = True
@@ -187,8 +182,6 @@ object frmMain: TfrmMain
         Height = 36
         Hint = '32x32'
         AutoSize = False
-        ParentDoubleBuffered = False
-        DoubleBuffered = True
       end
       object SVGIconImage48: TSVGIconImage
         AlignWithMargins = True
@@ -198,8 +191,6 @@ object frmMain: TfrmMain
         Height = 48
         Hint = '48x48'
         AutoSize = False
-        ParentDoubleBuffered = False
-        DoubleBuffered = True
       end
       object SVGIconImage96: TSVGIconImage
         AlignWithMargins = True
@@ -209,8 +200,6 @@ object frmMain: TfrmMain
         Height = 96
         Hint = '96x96'
         AutoSize = False
-        ParentDoubleBuffered = False
-        DoubleBuffered = True
       end
     end
     object ImagePreviewPanel: TPanel
@@ -230,14 +219,13 @@ object frmMain: TfrmMain
       Height = 42
       Align = alBottom
       ParentBackground = False
-      TabOrder = 4
+      TabOrder = 2
       object StatusImage: TSVGIconImage
         Left = 1
         Top = 1
         Width = 32
         Height = 40
         AutoSize = False
-        Proportional = True
         ImageList = VirtualImageList
         ImageIndex = 39
         Align = alLeft
@@ -250,7 +238,7 @@ object frmMain: TfrmMain
         Height = 34
         Align = alClient
         Alignment = taCenter
-        TabOrder = 1
+        TabOrder = 0
       end
     end
   end
