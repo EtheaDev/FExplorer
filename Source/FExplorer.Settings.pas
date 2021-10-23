@@ -245,34 +245,36 @@ begin
 {$IFNDEF DISABLE_STYLES}
   if StyleServices.Enabled then
   begin
-    //High-DPI Themes (Delphi 10.4)
-    RegisterThemeAttributes('Windows'            ,ttLight );
-    RegisterThemeAttributes('Aqua Light Slate'   ,ttLight );
-    RegisterThemeAttributes('Copper'             ,ttLight );
-    RegisterThemeAttributes('CopperDark'         ,ttDark  );
-    RegisterThemeAttributes('Coral'              ,ttLight );
-    RegisterThemeAttributes('Diamond'            ,ttLight );
-    RegisterThemeAttributes('Emerald'            ,ttLight );
-    RegisterThemeAttributes('Flat UI Light'      ,ttLight );
-    RegisterThemeAttributes('Glow'               ,ttDark  );
-    RegisterThemeAttributes('Iceberg Classico'   ,ttLight );
-    RegisterThemeAttributes('Lavender Classico'  ,ttLight );
-    RegisterThemeAttributes('Sky'                ,ttLight );
-    RegisterThemeAttributes('Slate Classico'     ,ttLight );
-    RegisterThemeAttributes('Sterling'           ,ttLight );
-    RegisterThemeAttributes('Tablet Dark'        ,ttDark  );
-    RegisterThemeAttributes('Tablet Light'       ,ttLight );
-    RegisterThemeAttributes('Windows10'          ,ttLight );
-    RegisterThemeAttributes('Windows10 Blue'     ,ttDark  );
-    RegisterThemeAttributes('Windows10 Dark'     ,ttDark  );
-    RegisterThemeAttributes('Windows10 Green'    ,ttDark  );
-    RegisterThemeAttributes('Windows10 Purple'   ,ttDark  );
-    RegisterThemeAttributes('Windows10 SlateGray',ttDark  );
-    RegisterThemeAttributes('Glossy'             ,ttDark  );
-    RegisterThemeAttributes('Windows10 BlackPearl',ttDark );
-    RegisterThemeAttributes('Windows10 Blue Whale',ttDark );
-    RegisterThemeAttributes('Windows10 Clear Day',ttLight );
-    RegisterThemeAttributes('Windows10 Malibu'   ,ttLight );
+    //High-DPI Themes (Delphi 11.0)
+    RegisterThemeAttributes('Windows'               ,ttLight );
+    RegisterThemeAttributes('Aqua Light Slate'      ,ttLight );
+    RegisterThemeAttributes('Copper'                ,ttLight );
+    RegisterThemeAttributes('CopperDark'            ,ttDark  );
+    RegisterThemeAttributes('Coral'                 ,ttLight );
+    RegisterThemeAttributes('Diamond'               ,ttLight );
+    RegisterThemeAttributes('Emerald'               ,ttLight );
+    RegisterThemeAttributes('Flat UI Light'         ,ttLight );
+    RegisterThemeAttributes('Glow'                  ,ttDark  );
+    RegisterThemeAttributes('Iceberg Classico'      ,ttLight );
+    RegisterThemeAttributes('Lavender Classico'     ,ttLight );
+    RegisterThemeAttributes('Sky'                   ,ttLight );
+    RegisterThemeAttributes('Slate Classico'        ,ttLight );
+    RegisterThemeAttributes('Sterling'              ,ttLight );
+    RegisterThemeAttributes('Tablet Dark'           ,ttDark  );
+    RegisterThemeAttributes('Tablet Light'          ,ttLight );
+    RegisterThemeAttributes('Windows10'             ,ttLight );
+    RegisterThemeAttributes('Windows10 Blue'        ,ttDark  );
+    RegisterThemeAttributes('Windows10 Dark'        ,ttDark  );
+    RegisterThemeAttributes('Windows10 Green'       ,ttDark  );
+    RegisterThemeAttributes('Windows10 Purple'      ,ttDark  );
+    RegisterThemeAttributes('Windows10 SlateGray'   ,ttDark  );
+    RegisterThemeAttributes('Glossy'                ,ttDark  );
+    RegisterThemeAttributes('Windows10 BlackPearl'  ,ttDark  );
+    RegisterThemeAttributes('Windows10 Blue Whale'  ,ttDark  );
+    RegisterThemeAttributes('Windows10 Clear Day'   ,ttLight );
+    RegisterThemeAttributes('Windows10 Malibu'      ,ttLight );
+    RegisterThemeAttributes('Windows11 Modern Dark' ,ttDark  );
+    RegisterThemeAttributes('Windows11 Modern Light',ttLight );
   end;
 {$ELSE}
     RegisterThemeAttributes('Windows'            ,ttLight );
@@ -290,11 +292,6 @@ begin
   FSettingsFileName := ASettingFileName;
   FSettingsPath := ExtractFilePath(ASettingFileName);
   System.SysUtils.ForceDirectories(FSettingsPath);
-  {$IFDEF Image32_SVGEngine}
-  FSVGEngine := enImage32;
-  {$ELSE}
-  FSVGEngine := enTSVG;
-  {$ENDIF}
   ReadSettings(ASynEditHighilighter, ASynEditorOptions);
 end;
 
@@ -345,6 +342,7 @@ procedure TSettings.ReadSettings(const ASynEditHighilighter: TSynCustomHighlight
 var
   LThemeSection: string;
   I: Integer;
+  LPreferD2D: Integer;
   LAttribute: TSynHighlighterAttributes;
 begin
   TLogPreview.Add('ReadSettings '+SettingsFileName);
@@ -354,7 +352,8 @@ begin
   FHTMLFontName := FIniFile.ReadString('Global', 'HTMLFontName', 'Arial');
   FShowXML := FIniFile.ReadInteger('Global', 'ShowXML', 0) = 1;
   FSplitterPos := FIniFile.ReadInteger('Global', 'SplitterPos', 33);
-  PreferD2D := Boolean(FIniFile.ReadInteger('Global', 'PreferD2D', 0));
+  LPreferD2D := FIniFile.ReadInteger('Global', 'PreferD2D', 0);
+  PreferD2D := not ((LPreferD2D = 0) or (LPreferD2D = 255));
   SVGEngine := TSVGEngine(FIniFile.ReadInteger('Global', 'SVGEngine', 1));
   FActivePageIndex := FIniFile.ReadInteger('Global', 'ActivePageIndex', 0);
   FStyleName := FIniFile.ReadString('Global', 'StyleName', DefaultStyleName);
@@ -524,25 +523,28 @@ var
   LFileName: string;
 begin
   inherited;
-  //Leggo la lista dei files aperti di recente
-  FIniFile.ReadSectionValues(LAST_OPENED_SECTION, HistoryFileList);
-  for I := 0 to HistoryFileList.Count -1 do
+  if ASynEditHighilighter = nil then
   begin
-    LValue := HistoryFileList.strings[i];
-    //tolgo la chiave
-    LFileName := Copy(LValue, pos('=',LValue)+1,MaxInt);
-    if FileExists(LFileName) then
-      HistoryFileList.strings[i] := LFileName;
-  end;
-  //Leggo la lista dei files aperti l'ultima volta
-  FIniFile.ReadSectionValues(FILES_OPENED_SECTION, OpenedFileList);
-  for I := 0 to OpenedFileList.Count -1 do
-  begin
-    LValue := OpenedFileList.strings[i];
-    //tolgo la chiave
-    LFileName := Copy(LValue, pos('=',LValue)+1,MaxInt);
-    if FileExists(LFileName) then
-      OpenedFileList.strings[i] := LFileName;
+    //Leggo la lista dei files aperti di recente
+    FIniFile.ReadSectionValues(LAST_OPENED_SECTION, HistoryFileList);
+    for I := 0 to HistoryFileList.Count -1 do
+    begin
+      LValue := HistoryFileList.strings[i];
+      //tolgo la chiave
+      LFileName := Copy(LValue, pos('=',LValue)+1,MaxInt);
+      if FileExists(LFileName) then
+        HistoryFileList.strings[i] := LFileName;
+    end;
+    //Leggo la lista dei files aperti l'ultima volta
+    FIniFile.ReadSectionValues(FILES_OPENED_SECTION, OpenedFileList);
+    for I := 0 to OpenedFileList.Count -1 do
+    begin
+      LValue := OpenedFileList.strings[i];
+      //tolgo la chiave
+      LFileName := Copy(LValue, pos('=',LValue)+1,MaxInt);
+      if FileExists(LFileName) then
+        OpenedFileList.strings[i] := LFileName;
+    end;
   end;
   CurrentFileName := FIniFile.ReadString('Global', 'CurrentFileName', '');
 
@@ -554,9 +556,6 @@ end;
 
 procedure TeditorSettings.ReadSynEditorOptions(
   const ASynEditorOptions: TSynEditorOptionsContainer);
-//var
-  //I : Integer;
-  //Item : TListItem;
 
   procedure UpdateEditorOptions(const AName: string; const AValue: TSynEditorOption;
     const ADefault: Boolean = True);
@@ -754,7 +753,6 @@ end;
 
 initialization
   InitDefaultThemesAttributes;
-  FontManager.Load('Segoe UI');
 
 finalization
   FreeThemesAttributes;

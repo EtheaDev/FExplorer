@@ -1,8 +1,8 @@
 object dmResources: TdmResources
-  OldCreateOrder = False
   OnCreate = DataModuleCreate
-  Height = 339
-  Width = 341
+  Height = 491
+  Width = 516
+  PixelsPerInch = 192
   object SynXMLSyn: TSynXMLSyn
     DefaultFilter = 'File Fattura Elettronica (*.xml)|*.xml'
     Options.AutoDetectEnabled = False
