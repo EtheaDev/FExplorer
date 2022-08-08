@@ -3,7 +3,7 @@
 {       SVG Text Editor: Shell extensions for SVG files                        }
 {       (Preview Panel, Thumbnail Icon, F.E.Viewer)                            }
 {                                                                              }
-{       Copyright (c) 2021 (Ethea S.r.l.)                                      }
+{       Copyright (c) 2021-2022 (Ethea S.r.l.)                                 }
 {       Author: Carlo Barazzetta                                               }
 {                                                                              }
 {       https://github.com/EtheaDev/SVGShellExtensions                         }
@@ -59,7 +59,7 @@ uses
 begin
   Application.Initialize;
   Application.MainFormOnTaskBar := True;
-  Application.Title := Title_FEViewer+'- © 2021 Ethea S.r.l.';
+  Application.Title := Title_FEViewer+'- © 2021-2022 Ethea S.r.l.';
   with TSplashForm.Create(nil) do
   Try
     Show;

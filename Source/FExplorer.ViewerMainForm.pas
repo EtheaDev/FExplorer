@@ -3,7 +3,7 @@
 {       FExplorer: Shell extensions per Fattura Elettronica                    }
 {       (Preview Panel, Thumbnail Icon, F.E.Viewer)                            }
 {                                                                              }
-{       Copyright (c) 2021 (Ethea S.r.l.)                                      }
+{       Copyright (c) 2021-2022 (Ethea S.r.l.)                                 }
 {       Author: Carlo Barazzetta                                               }
 {                                                                              }
 {       https://github.com/EtheaDev/FExplorer                                  }
@@ -175,12 +175,12 @@ type
     VirtualImageList: TVirtualImageList;
     actMenu: TAction;
     MenuButtonToolbar: TToolBar;
-    ToolButton1: TToolButton;
+    MenuToolButton: TToolButton;
     PageSetupToolButton: TToolButton;
     PrinterSetupToolButton: TToolButton;
     AboutToolButton: TToolButton;
     QuitToolButton: TToolButton;
-    ToolButton9: TToolButton;
+    SepToolButton: TToolButton;
     FlowPanel: TFlowPanel;
     SVGIconImage16: TSVGIconImage;
     SVGIconImage32: TSVGIconImage;
@@ -631,7 +631,7 @@ end;
 
 function TfrmMain.CanAcceptFileName(const AFileName: string): Boolean;
 begin
-  Result := pos(ExtractFileExt(AFileName), AcceptedExtensions) <> 0;
+  Result := pos(UpperCase(ExtractFileExt(AFileName)), UpperCase(AcceptedExtensions)) <> 0;
 end;
 
 function TfrmMain.AcceptedExtensions: string;

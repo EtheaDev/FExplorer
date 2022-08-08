@@ -1,8 +1,8 @@
-# FExplorer (Fattura Elettronica in Windows Explorer) [![License](https://img.shields.io/badge/License-Apache%202.0-yellowgreen.svg)](https://opensource.org/licenses/Apache-2.0)
+﻿# FExplorer (Fattura Elettronica in Windows Explorer) [![License](https://img.shields.io/badge/License-Apache%202.0-yellowgreen.svg)](https://opensource.org/licenses/Apache-2.0)
 
 ## **Anteprima Fattura Elettronica (Viewer e Icone) integrato in Windows Explorer e Visualizzatore**
 
-### Versione attuale 1.8 ###
+### Versione attuale 1.9 ###
 
 **Una serie di strumenti per gestire i file xml contenenti Fatture Elettroniche in Windows:**
 
@@ -41,7 +41,7 @@ Un comodo visualizzatore della fattura elettronica per poterla anche stampare.
 
 ### Build e Installazione manuale (per sviluppatori Delphi) ###
 
-Se hai Delphi 10.4 Sydney, puoi compilare manualmente il progetto.
+Se hai Delphi 11.1 Alexandria, puoi compilare manualmente il progetto.
 
 ## Compilazione/Installazione packages di componenti di terze parti ##
 
@@ -62,6 +62,11 @@ Per installare manualmente FExplorer.dll seguire questi step:
 5. Una volta registrato, puoi continuare a modificare il codice e ricompilare la dll (attenzione a chiudere tutte le istanze di Explorer ogni volta che si ricompila).
 
 ## Release Notes ##
+
+08 Ago 2022 - Versione 1.9.0
+- Build con Delphi 11.1 Alexandria
+- Fix apertura file con estensioni in maiuscolo
+- Aggiornate librerie HTMLViewer, SynPDF, SVGIconImageList e Image32
 
 23 Ott 2021 - Versione 1.8.0
 - Aggiunti nuovi stili Windows 11

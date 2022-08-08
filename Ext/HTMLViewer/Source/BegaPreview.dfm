@@ -6,7 +6,7 @@ object BegaCustomPreviewFrame: TBegaCustomPreviewFrame
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
-  Font.Name = 'Segoe UI'
+  Font.Name = 'Tahoma'
   Font.Style = []
   ParentFont = False
   ParentShowHint = False
@@ -22,7 +22,7 @@ object BegaCustomPreviewFrame: TBegaCustomPreviewFrame
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -11
-    Font.Name = 'Segoe UI'
+    Font.Name = 'Arial'
     Font.Style = []
     ParentFont = False
     TabOrder = 1
@@ -61,7 +61,7 @@ object BegaCustomPreviewFrame: TBegaCustomPreviewFrame
         Left = 8
         Top = 5
         Width = 3
-        Height = 13
+        Height = 14
         Hint = 'Displays Help for the object beneath the mouse'
       end
     end
@@ -165,7 +165,7 @@ object BegaCustomPreviewFrame: TBegaCustomPreviewFrame
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -9
-      Font.Name = 'Segoe UI'
+      Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
       Layout = tlCenter
@@ -306,7 +306,7 @@ object BegaCustomPreviewFrame: TBegaCustomPreviewFrame
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -9
-      Font.Name = 'Segoe UI'
+      Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
       Layout = tlCenter
@@ -378,7 +378,7 @@ object BegaCustomPreviewFrame: TBegaCustomPreviewFrame
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -9
-      Font.Name = 'Segoe UI'
+      Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
       Layout = tlCenter
@@ -406,7 +406,7 @@ object BegaCustomPreviewFrame: TBegaCustomPreviewFrame
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -9
-      Font.Name = 'Segoe UI'
+      Font.Name = 'Tahoma'
       Font.Style = []
       ParentFont = False
       Layout = tlCenter
@@ -492,17 +492,19 @@ object BegaCustomPreviewFrame: TBegaCustomPreviewFrame
     HorzScrollBar.Tracking = True
     VertScrollBar.Tracking = True
     Align = alClient
-    BevelInner = bvNone
-    BevelOuter = bvNone
+    BevelInner = bvLowered
+    BevelOuter = bvRaised
+    BevelWidth = 2
     TabOrder = 2
     OnResize = PreviewBoxResize
     object PreviewPanel: TBegaMetafilePreviewPanel
-      Left = 13
-      Top = 23
-      Width = 313
-      Height = 403
+      Left = 0
+      Top = 0
+      Width = 348
+      Height = 448
       BevelOuter = bvNone
       BevelWidth = 0
+      Color = clBtnShadow
       CommonColumnWidth = 0
       CommonRowHeight = 0
       TabOrder = 0
@@ -517,7 +519,7 @@ object BegaCustomPreviewFrame: TBegaCustomPreviewFrame
     Left = 196
     Top = 112
     Bitmap = {
-      494C010113001800040010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101130018001C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000005000000001002000000000000050
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

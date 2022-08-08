@@ -1,9 +1,9 @@
 
 Image32 - 2D graphics library for Delphi Pascal
-Latest version: 3.3
-Released: 21 September 2021
+Latest version: 4.11
+Released: 17 February 2022
 
-Copyright © 2019-2021 Angus Johnson
+Copyright © 2019-2022 Angus Johnson
 Freeware released under Boost Software License
 https://www.boost.org/LICENSE_1_0.txt
 
@@ -11,6 +11,69 @@ Documentation : http://www.angusj.com/delphi/image32/Docs/
 Download      : https://sourceforge.net/projects/image32/files/
 
 Recent changes:
+
+Version 4.11
+  Fixed compatibility issues with older versions of Delphi.
+  Updated Img32.Clipper to latest version of Clipper 
+
+Version 4.1
+Img32.Vector
+  Fixed bug in Grow function (affecting line drawing)
+
+Version 4.0
+Img32.Layers
+  This unit has had another major overhaul primarily to add layer 
+    persistence (save layer objects in the file system).
+  Added TLayer32.MakeRelative and TLayer32.MakeAbsolute methods
+  Added TLayer32.OuterMargin property (accommodates shadow effects)
+  Added TLayer32.OuterBounds property
+  Added TLayer32.InnerRect property
+  Renamed TLayer32.Bounds property to InnerBounds
+Img32.Vector
+  Significantly improved Grow algorithm
+Img32.Text
+  Renamed GetTextGlyphs to GetTextOutline
+  Renamed TGlyphCache to TFontCache
+Img32.Extra
+  Added DrawShadowRect procedure
+  Added TileImage procedure
+Sample Applications
+  Experimental CtrlDemo 
+  Requires Delphi 2010 or newer
+
+
+Version 3.4.1
+  Img32.Extra
+    Bugfix HatchBackground function -
+      failed to redraw when the image wasn't clear
+    DrawEdgePath renamed to DrawEdge (now overloaded)
+  Img32.Layers
+    Bugfix TLayer32 - 
+      failed to hide layer when Visible set to false
+    TLayeredImage32 
+      default BackgroundColor changed to clBtnFace
+      
+Version 3.4 
+  Img32.SVG.Core 
+    Split into 2 units Img32.SVG.Core & Img32.SVG.Path
+    Major class redesign to facilitate SVG editing
+  Img32.SVG.PathDesign
+    New unit to aid GUI editing of SVG paths
+  Sample Applications
+    New SVGPathDesign application
+  Img32.Layers
+    Minor bugfix to TLayer32.Move method
+    
+Version 3.3.03
+  Img32.Panels
+    Added TImage32Panel.CopyToImage method that accommodates repainting
+      small rectangular regions (to significantly improve performance.)
+    TImage32Panel's published property AllowScroll has been split into
+      two published properties - AllowKeyScroll & AllowScrnScroll
+      **Because of this Image32's runtime and designtime packages
+      (Img32_Library.dpk & Img32_VCL_Dsgn.dpk) should be reinstalled.**
+  Img32
+    Minor bugfix in BlendToAlpha function.
 
 Version 3.3
   Img32.Layers

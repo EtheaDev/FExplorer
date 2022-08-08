@@ -2934,14 +2934,12 @@ end;
 
 //-- BG ---------------------------------------------------------- 24.11.2011 --
 constructor TViewerBase.Create(AOwner: TComponent);
-const
-  defaultPrintMargin = 0.8;//1.0;
 begin
   inherited;
-  PrintMarginLeft := defaultPrintMargin;
-  PrintMarginRight := defaultPrintMargin;
-  PrintMarginTop := defaultPrintMargin;
-  PrintMarginBottom := defaultPrintMargin;
+  PrintMarginLeft := 2.0;
+  PrintMarginRight := 2.0;
+  PrintMarginTop := 2.0;
+  PrintMarginBottom := 2.0;
   PrintMaxHPages := 2;
   PrintScale := 1.0;
   Charset := DEFAULT_CHARSET;

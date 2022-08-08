@@ -11,14 +11,12 @@ object FrmAbout: TFrmAbout
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = False
   Position = poDefault
   OnClose = FormClose
   OnCreate = FormCreate
   DesignSize = (
     446
     316)
-  PixelsPerInch = 96
   TextHeight = 13
   object TitleLabel: TLabel
     Left = 190
@@ -255,7 +253,7 @@ object FrmAbout: TFrmAbout
       'Autori:'
       'Carlo Barazzetta & Andrea Magni'
       'https://github.com/EtheaDev/FExplorer'
-      'Copyright '#169' 2021 all rights reserved.'
+      'Copyright '#169' 2021-2022 all rights reserved.'
       ''
       'Librerie di terze parti di Ethea:'
       'SVGIconImageList'
@@ -296,7 +294,7 @@ object FrmAbout: TFrmAbout
       
         '- Image32 Library - http://www.angusj.com/delphi/image32/Docs/_B' +
         'ody.htm'
-      'Copyright '#169'2019-2021 Angus Johnson.'
+      'Copyright '#169'2019-2022 Angus Johnson.'
       ''
       'HTMLViewer - https://github.com/BerndGabriel/HtmlViewer'
       'Copyright (c) 1995 - 2008 by L. David Baldwin'

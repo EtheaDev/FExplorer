@@ -269,7 +269,7 @@ are covered by separate copyright notices located in those modules.
 { Define Aspects Of HtmlViewer }
 
 {$ifdef MSWindows}
-{.$define NoGDIPlus} {The gdiplus.dll provides Alpha transparency support for
+{$define NoGDIPlus} {The gdiplus.dll provides Alpha transparency support for
         PNG images and provides support for TIFF images.
         If, for some reason the use of the gdiplus.dll is
         undesirable, define "NoGDIPlus" by removing the '.'.

@@ -1,16 +1,15 @@
 object dmResources: TdmResources
   OnCreate = DataModuleCreate
-  Height = 491
-  Width = 516
-  PixelsPerInch = 192
+  Height = 246
+  Width = 258
   object SynXMLSyn: TSynXMLSyn
     DefaultFilter = 'File Fattura Elettronica (*.xml)|*.xml'
     Options.AutoDetectEnabled = False
     Options.AutoDetectLineLimit = 0
     Options.Visible = False
     WantBracesParsed = False
-    Left = 32
-    Top = 16
+    Left = 16
+    Top = 8
   end
   object SynXMLSynDark: TSynXMLSyn
     DefaultFilter = 'File Fattura Elettronica (*.xml)|*.xml'
@@ -31,8 +30,8 @@ object dmResources: TdmResources
     DocTypeAttri.Foreground = 9750039
     SymbolAttri.Foreground = 6008319
     WantBracesParsed = False
-    Left = 105
-    Top = 16
+    Left = 53
+    Top = 8
   end
   object SVGIconImageCollection: TSVGIconImageCollection
     SVGIconItems = <
@@ -1721,8 +1720,8 @@ object dmResources: TdmResources
           '3.53503" fill="#007106" font-family="sans-serif" font-size="12px' +
           '" font-weight="bold">XML</tspan></text>'#10' </g>'#10'</svg>'#10
       end>
-    Left = 248
-    Top = 152
+    Left = 124
+    Top = 76
   end
   object AssoSoftwareTemplate: TXMLDocument
     NodeIndentStr = #9
@@ -4437,8 +4436,8 @@ object dmResources: TdmResources
       #9#9'</html>'
       #9'</xsl:template>'
       '</xsl:stylesheet>')
-    Left = 75
-    Top = 94
+    Left = 38
+    Top = 47
     DOMVendorDesc = 'MSXML'
   end
   object CustomTemplate: TXMLDocument
@@ -7159,8 +7158,8 @@ object dmResources: TdmResources
       #9#9'</html>'
       #9'</xsl:template>'
       '</xsl:stylesheet>')
-    Left = 75
-    Top = 150
+    Left = 38
+    Top = 75
     DOMVendorDesc = 'MSXML'
   end
   object SVGTemplates: TSVGIconImageCollection
@@ -7187,8 +7186,8 @@ object dmResources: TdmResources
           '3.115,7.9999999 14.5,7.9999999 H 37 c 0,-1 0,0 0,-1 z"/>'#13#10'</svg>' +
           #13#10
       end>
-    Left = 248
-    Top = 80
+    Left = 124
+    Top = 40
   end
   object AgenziaEntrateTemplate: TXMLDocument
     NodeIndentStr = #9
@@ -10950,8 +10949,8 @@ object dmResources: TdmResources
       #9#9'</html>'
       #9'</xsl:template>'
       '</xsl:stylesheet>')
-    Left = 75
-    Top = 206
+    Left = 38
+    Top = 103
     DOMVendorDesc = 'MSXML'
   end
   object SynXSLSyn: TSynXMLSyn
@@ -10960,8 +10959,8 @@ object dmResources: TdmResources
     Options.AutoDetectLineLimit = 0
     Options.Visible = False
     WantBracesParsed = False
-    Left = 192
-    Top = 16
+    Left = 96
+    Top = 8
   end
   object SynXSLSynDark: TSynXMLSyn
     DefaultFilter = 'Foglio di stile (*.xsl)|*.xsl'
@@ -10982,14 +10981,14 @@ object dmResources: TdmResources
     DocTypeAttri.Foreground = 9750039
     SymbolAttri.Foreground = 6008319
     WantBracesParsed = False
-    Left = 265
-    Top = 16
+    Left = 133
+    Top = 8
   end
   object EditingTemplate: TXMLDocument
     NodeIndentStr = #9
     Options = [doNodeAutoIndent]
-    Left = 75
-    Top = 262
+    Left = 38
+    Top = 131
     DOMVendorDesc = 'MSXML'
   end
 end

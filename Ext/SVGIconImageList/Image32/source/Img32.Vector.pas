@@ -1,11 +1,10 @@
 unit Img32.Vector;
-
 (*******************************************************************************
 * Author    :  Angus Johnson                                                   *
-* Version   :  3.3                                                             *
-* Date      :  21 September 2021                                               *
+* Version   :  4.2                                                             *
+* Date      :  30 May 2022                                                     *
 * Website   :  http://www.angusj.com                                           *
-* Copyright :  Angus Johnson 2019-2021                                         *
+* Copyright :  Angus Johnson 2019-2022                                         *
 *                                                                              *
 * Purpose   :  Vector drawing for TImage32                                     *
 *                                                                              *
@@ -13,22 +12,18 @@ unit Img32.Vector;
 *              Boost Software License Ver 1                                    *
 *              http://www.boost.org/LICENSE_1_0.txt                            *
 *******************************************************************************)
-
 interface
-
 {$I Img32.inc}
-
 uses
   SysUtils, Classes, Math, Types, Img32;
-
 type
   TArrowStyle = (asNone, asSimple, asFancy, asDiamond, asCircle, asTail);
   TJoinStyle  = (jsAuto, jsSquare, jsMiter, jsRound);
-  TEndStyle   = (esPolygon, esButt, esSquare, esRound);
+  TEndStyle   = (esPolygon, esClosed = 0, esButt, esSquare, esRound);
   TPathEnd    = (peStart, peEnd, peBothEnds);
   TSplineType = (stQuadratic, stCubic);
   TFillRule = (frEvenOdd, frNonZero, frPositive, frNegative);
-
+  TImg32FillRule = TFillRule; //useful whenever there's ambiguity with Clipper
   TSizeD = {$IFDEF RECORD_METHODS} record {$ELSE} object {$ENDIF}
     cx  : double;
     cy  : double;
@@ -36,85 +31,84 @@ type
     property Width: Double read cx write cx;
     property Height: Double read cy write cy;
   end;
-
   TRectWH = {$IFDEF RECORD_METHODS} record {$ELSE} object {$ENDIF}
   public
     Left, Top, Width, Height: double;
     function IsEmpty: Boolean;
+    function IsValid: Boolean;
     function Right: double;
     function Bottom: double;
     function Contains(const Pt: TPoint): Boolean; overload;
     function Contains(const Pt: TPointD): Boolean; overload;
     function MidPoint: TPointD;
     function RectD: TRectD;
+    function Rect: TRect;
   end;
-
   function RectWH(left, top, width, height: integer): TRectWH; overload;
   function RectWH(left, top, width, height: double ): TRectWH; overload;
   function RectWH(const rec: TRectD): TRectWH; overload;
-
   //InflateRect: missing in Delphi 7
   procedure InflateRect(var rec: TRect; dx, dy: integer); overload;
   procedure InflateRect(var rec: TRectD; dx, dy: double); overload;
   function NormalizeRect(var rect: TRect): Boolean;
-
+  function PrePendPoint(const pt: TPointD; const p: TPathD): TPathD;
+  function PrePendPoints(const pt1, pt2: TPointD; const p: TPathD): TPathD;
   function Rectangle(const rec: TRect): TPathD; overload;
   function Rectangle(const rec: TRectD): TPathD; overload;
   function Rectangle(l, t, r, b: double): TPathD; overload;
-
   function RoundRect(const rec: TRect; radius: integer): TPathD; overload;
   function RoundRect(const rec: TRectD; radius: double): TPathD; overload;
   function RoundRect(const rec: TRect; radius: TPoint): TPathD; overload;
   function RoundRect(const rec: TRectD; radius: TPointD): TPathD; overload;
-
   function Ellipse(const rec: TRect; steps: integer = 0): TPathD; overload;
   function Ellipse(const rec: TRectD; steps: integer = 0): TPathD; overload;
-  function Ellipse(const rec: TRectD; scale: double): TPathD; overload;
-
+  function Ellipse(const rec: TRectD; pendingScale: double): TPathD; overload;
+  function RotatedEllipse(const rec: TRectD; angle: double; steps: integer = 0): TPathD; overload;
+  function RotatedEllipse(const rec: TRectD; angle: double; pendingScale: double): TPathD; overload;
+  function AngleToEllipticalAngle(const ellRec: TRectD; angle: double): double;
+  function EllipticalAngleToAngle(const ellRec: TRectD; angle: double): double;
   function Circle(const pt: TPoint; radius: double): TPathD; overload;
   function Circle(const pt: TPointD; radius: double): TPathD; overload;
-
+  function Circle(const pt: TPointD; radius: double; pendingScale: double): TPathD; overload;
   function Star(const rec: TRectD; points: integer; indentFrac: double = 0.4): TPathD; overload;
   function Star(const focalPt: TPointD;
     innerRadius, outerRadius: double; points: integer): TPathD; overload;
-
   function Arc(const rec: TRectD;
     startAngle, endAngle: double; scale: double = 0): TPathD;
   function Pie(const rec: TRectD;
     StartAngle, EndAngle: double; scale: double = 0): TPathD;
-
   function FlattenQBezier(const pt1, pt2, pt3: TPointD;
     tolerance: double = 0.0): TPathD; overload;
   function FlattenQBezier(const pts: TPathD;
     tolerance: double = 0.0): TPathD; overload;
-  function FlattenQBezier(const pts: TPathsD;
-    tolerance: double = 0.0): TPathsD; overload;
+  function FlattenQBezier(const firstPt: TPointD; const pts: TPathD;
+    tolerance: double = 0.0): TPathD; overload;
   function GetPointInQuadBezier(const a,b,c: TPointD; t: double): TPointD;
-
   function FlattenCBezier(const pt1, pt2, pt3, pt4: TPointD;
     tolerance: double = 0.0): TPathD; overload;
   function FlattenCBezier(const pts: TPathD;
     tolerance: double = 0.0): TPathD; overload;
-  function FlattenCBezier(const pts: TPathsD;
-    tolerance: double = 0.0): TPathsD; overload;
+  function FlattenCBezier(const firstPt: TPointD; const pts: TPathD;
+    tolerance: double = 0.0): TPathD; overload;
   function GetPointInCubicBezier(const a,b,c,d: TPointD; t: double): TPointD;
-
   //FlattenCSpline: Approximates the 'S' command inside the 'd' property of an
   //SVG path. (See https://www.w3.org/TR/SVG/paths.html#DProperty)
   function FlattenCSpline(const pts: TPathD;
-    tolerance: double = 0.0): TPathD;
-
+    tolerance: double = 0.0): TPathD; overload;
+  function FlattenCSpline(const priorCtrlPt, startPt: TPointD;
+    const pts: TPathD; tolerance: double = 0.0): TPathD; overload;
   //FlattenQSpline: Approximates the 'T' command inside the 'd' property of an
   //SVG path. (See https://www.w3.org/TR/SVG/paths.html#DProperty)
   function FlattenQSpline(const pts: TPathD;
-    tolerance: double = 0.0): TPathD;
-
+    tolerance: double = 0.0): TPathD; overload;
+  function FlattenQSpline(const priorCtrlPt, startPt: TPointD;
+    const pts: TPathD; tolerance: double = 0.0): TPathD; overload;
   //ArrowHead: The ctrlPt's only function is to control the angle of the arrow.
   function ArrowHead(const arrowTip, ctrlPt: TPointD; size: double;
     arrowStyle: TArrowStyle): TPathD;
-
   function GetDefaultArrowHeadSize(lineWidth: double): double;
-
+  procedure AdjustPoint(var pt: TPointD;
+    const referencePt: TPointD; delta: double);
   function ShortenPath(const path: TPathD;
     pathEnd: TPathEnd; amount: double): TPathD;
 
@@ -122,34 +116,28 @@ type
   function GetDashedPath(const path: TPathD;
     closed: Boolean; const pattern: TArrayOfInteger;
     patternOffset: PDouble): TPathsD;
-
   function GetDashedOutLine(const path: TPathD;
     closed: Boolean; const pattern: TArrayOfInteger;
     patternOffset: PDouble; lineWidth: double;
     joinStyle: TJoinStyle; endStyle: TEndStyle): TPathsD;
-
   function OffsetPoint(const pt: TPoint; dx, dy: integer): TPoint; overload;
   function OffsetPoint(const pt: TPointD; dx, dy: double): TPointD; overload;
-
   function OffsetPath(const path: TPathD;
     dx, dy: double): TPathD; overload;
   function OffsetPath(const paths: TPathsD;
     dx, dy: double): TPathsD; overload;
   function OffsetPath(const ppp: TArrayOfPathsD;
     dx, dy: double): TArrayOfPathsD; overload;
-
   //CopyPath: note that only dynamic string arrays are copy-on-write
   function Paths(const path: TPathD): TPathsD;
   {$IFDEF INLINING} inline; {$ENDIF}
   function CopyPath(const path: TPathD): TPathD;
   {$IFDEF INLINING} inline; {$ENDIF}
   function CopyPaths(const paths: TPathsD): TPathsD;
-
   function ScalePoint(const pt: TPointD; scale: double): TPointD; overload;
   {$IFDEF INLINING} inline; {$ENDIF}
   function ScalePoint(const pt: TPointD; sx, sy: double): TPointD; overload;
   {$IFDEF INLINING} inline; {$ENDIF}
-
   function ScalePath(const path: TPathD;
     sx, sy: double): TPathD; overload;
   function ScalePath(const path: TPathD;
@@ -158,35 +146,31 @@ type
     sx, sy: double): TPathsD; overload;
   function ScalePath(const paths: TPathsD;
     scale: double): TPathsD; overload;
-
   function ScaleRect(const rec: TRect; scale: double): TRect; overload;
   function ScaleRect(const rec: TRectD; scale: double): TRectD; overload;
   function ScaleRect(const rec: TRect; sx, sy: double): TRect; overload;
   function ScaleRect(const rec: TRectD; sx, sy: double): TRectD; overload;
-
   function ReversePath(const path: TPathD): TPathD; overload;
   function ReversePath(const paths: TPathsD): TPathsD; overload;
-
   function OpenPathToFlatPolygon(const path: TPathD): TPathD;
   procedure AppendPoint(var path: TPathD; const extra: TPointD);
-
+  procedure AppendPath(var path: TPathD; const pt: TPointD); overload;
   procedure AppendPath(var path1: TPathD; const path2: TPathD); overload;
   procedure AppendPath(var paths: TPathsD; const extra: TPathD); overload;
   procedure AppendPath(var paths: TPathsD; const extra: TPathsD); overload;
   procedure AppendPath(var ppp: TArrayOfPathsD; const extra: TPathsD); overload;
-
   function GetAngle(const origin, pt: TPoint): double; overload;
   function GetAngle(const origin, pt: TPointD): double; overload;
   function GetAngle(const a, b, c: TPoint): double; overload;
   function GetAngle(const a, b, c: TPointD): double; overload;
-
   procedure GetSinCos(angle: double; out sinA, cosA: double);
   function GetPointAtAngleAndDist(const origin: TPointD;
     angle, distance: double): TPointD;
-
-  function IntersectPoint(const ln1a, ln1b, ln2a, ln2b: TPointD;
+  function IntersectPoint(const ln1a, ln1b, ln2a, ln2b: TPointD): TPointD; overload;
+  function IntersectPoint(const ln1a, ln1b, ln2a, ln2b: TPointD; out ip: TPointD): Boolean; overload;
+  function SegmentIntersectPt(const ln1a, ln1b, ln2a, ln2b: TPointD): TPointD;
+  function SegmentsIntersect(const ln1a, ln1b, ln2a, ln2b: TPointD;
     out ip: TPointD): Boolean;
-
   procedure RotatePoint(var pt: TPointD;
     const focalPoint: TPointD; sinA, cosA: double); overload;
   procedure RotatePoint(var pt: TPointD;
@@ -195,84 +179,83 @@ type
     const focalPoint: TPointD; angleRads: double): TPathD; overload;
   function RotatePath(const paths: TPathsD;
     const focalPoint: TPointD; angleRads: double): TPathsD; overload;
-
-  function MakePathI(const pts: array of integer): TPathD; overload;
-  function MakePathD(const pts: array of double): TPathD; overload;
-
+  //function MakePath(const pts: array of integer): TPathD; overload;
+  function MakePath(const pts: array of double): TPathD; overload;
   function GetBounds(const path: TPathD): TRect; overload;
   function GetBounds(const paths: TPathsD): TRect; overload;
   function GetBoundsD(const path: TPathD): TRectD; overload;
   function GetBoundsD(const paths: TPathsD): TRectD; overload;
-
   function GetRotatedRectBounds(const rec: TRect; angle: double): TRect; overload;
   function GetRotatedRectBounds(const rec: TRectD; angle: double): TRectD; overload;
-
   function Rect(const recD: TRectD): TRect; overload;
   function Rect(const left,top,right,bottom: integer): TRect; overload;
-
+  function PtInRect(const rec: TRectD; const pt: TPointD): Boolean; overload;
   function Size(cx, cy: integer): TSize;
   function SizeD(cx, cy: double): TSizeD;
-
   function IsClockwise(const path: TPathD): Boolean;
   function Area(const path: TPathD): Double;
   function RectsEqual(const rec1, rec2: TRect): Boolean;
   procedure OffsetRect(var rec: TRectD; dx, dy: double); overload;
-
-
+  function MakeSquare(rec: TRect): TRect;
   function IsValid(value: integer): Boolean; overload;
   function IsValid(value: double): Boolean; overload;
   function IsValid(const pt: TPoint): Boolean; overload;
   function IsValid(const pt: TPointD): Boolean; overload;
-
+  function IsValid(const rec: TRect): Boolean; overload;
   function Point(X,Y: Integer): TPoint; overload;
   function Point(const pt: TPointD): TPoint; overload;
-
   function PointsEqual(const pt1, pt2: TPointD): Boolean; overload;
   {$IFDEF INLINING} inline; {$ENDIF}
-  function PointsNearEqual(const pt1, pt2: TPointD; distSqrd: double): Boolean;
+  function PointsNearEqual(const pt1, pt2: TPoint;
+    dist: integer): Boolean; overload;
+  function PointsNearEqual(const pt1, pt2: TPointD;
+    distSqrd: double): Boolean; overload;
   {$IFDEF INLINING} inline; {$ENDIF}
   function StripNearDuplicates(const path: TPathD;
     minDist: double; isClosedPath: Boolean): TPathD; overload;
   function StripNearDuplicates(const paths: TPathsD;
     minLength: double; isClosedPaths: Boolean): TPathsD; overload;
-
   function MidPoint(const rec: TRect): TPoint; overload;
   function MidPoint(const rec: TRectD): TPointD; overload;
-
   function MidPoint(const pt1, pt2: TPoint): TPoint; overload;
   function MidPoint(const pt1, pt2: TPointD): TPointD; overload;
-
   function Average(val1, val2: integer): integer; overload;
   function Average(val1, val2: double): double; overload;
-
   function ReflectPoint(const pt, pivot: TPointD): TPointD;
   {$IFDEF INLINING} inline; {$ENDIF}
-
   function RectsOverlap(const rec1, rec2: TRect): Boolean;
   function IsSameRect(const rec1, rec2: TRect): Boolean;
-
+  function RectsIntersect(const rec1, rec2: TRect): Boolean; overload;
+  function RectsIntersect(const rec1, rec2: TRectD): Boolean; overload;
   function IntersectRect(const rec1, rec2: TRectD): TRectD; overload;
   //UnionRect: this behaves differently to types.UnionRect
   //in that if either parameter is empty the other parameter is returned
   function UnionRect(const rec1, rec2: TRect): TRect; overload;
   function UnionRect(const rec1, rec2: TRectD): TRectD; overload;
-
   //these 2 functions are only needed to support older versions of Delphi
   function MakeArrayOfInteger(const ints: array of integer): TArrayOfInteger;
   function MakeArrayOfDouble(const doubles: array of double): TArrayOfDouble;
-
-  function CrossProduct(const pt1, pt2, pt3: TPointD): double;
-  function DotProduct(const pt1, pt2, pt3: TPointD): double;
+  function CrossProduct(const vector1, vector2: TPointD): double; overload;
+  {$IFDEF INLINING} inline; {$ENDIF}
+  function CrossProduct(const pt1, pt2, pt3: TPointD): double; overload;
+  {$IFDEF INLINING} inline; {$ENDIF}
+  function CrossProduct(const pt1, pt2, pt3, pt4: TPointD): double; overload;
+  {$IFDEF INLINING} inline; {$ENDIF}
+  function DotProduct(const vector1, vector2: TPointD): double; overload;
+  {$IFDEF INLINING} inline; {$ENDIF}
+  function DotProduct(const pt1, pt2, pt3: TPointD): double; overload;
+  {$IFDEF INLINING} inline; {$ENDIF}
   function TurnsLeft(const pt1, pt2, pt3: TPointD): boolean;
   {$IFDEF INLINING} inline; {$ENDIF}
   function TurnsRight(const pt1, pt2, pt3: TPointD): boolean;
   {$IFDEF INLINING} inline; {$ENDIF}
   function IsPathConvex(const path: TPathD): Boolean;
-
   //GetUnitVector: Used internally
   function GetUnitVector(const pt1, pt2: TPointD): TPointD;
   //GetUnitNormal: Used internally
   function GetUnitNormal(const pt1, pt2: TPointD): TPointD;
+  function GetAvgUnitVector(const vec1, vec2: TPointD): TPointD;
+  {$IFDEF INLINING} inline; {$ENDIF}
   //GetVectors: Used internally
   function GetVectors(const path: TPathD): TPathD;
   //GetNormals: Used internally
@@ -287,47 +270,47 @@ type
   {$IFDEF INLINE} inline; {$ENDIF}
   function Distance(const pt1, pt2: TPointD): double; overload;
   {$IFDEF INLINE} inline; {$ENDIF}
-
   function Distance(const path: TPathD; stopAt: integer = 0): double; overload;
   function GetDistances(const path: TPathD): TArrayOfDouble;
   function GetCumulativeDistances(const path: TPathD): TArrayOfDouble;
-  function PerpendicularDistSqrd(const pt, line1, line2: TPointD): double;
-
+  function PerpendicularDistSqrd(const pt, l1, line2: TPointD): double;
   function PointInPolygon(const pt: TPointD;
     const polygon: TPathD; fillRule: TFillRule): Boolean;
   function PointInPolygons(const pt: TPointD;
     const polygons: TPathsD; fillRule: TFillRule): Boolean;
-
   function PerpendicularDist(const pt, line1, line2: TPointD): double;
   function ClosestPointOnLine(const pt, linePt1, linePt2: TPointD): TPointD;
   function ClosestPointOnSegment(const pt, segPt1, segPt2: TPointD): TPointD;
-
   function IsPointInEllipse(const ellipseRec: TRect; const pt: TPoint): Boolean;
-
   //GetIntersectsEllipseAndLine: Gets the intersection of an ellipse and
   //a line. The function result = true when the line either touches
   //tangentially or passes through the ellipse. If the line touches
   //tangentially, the coordintates returned in pt1 and pt2 will match.
-  function GetLineEllipseIntersects(const ellipseRect: TRect;
+  function GetLineEllipseIntersects(const ellipseRec: TRect;
     var linePt1, linePt2: TPointD): Boolean;
-
+  function GetPtOnEllipseFromAngle(const ellipseRect: TRectD; angle: double): TPointD;
+  function GetPtOnRotatedEllipseFromAngle(const ellipseRect: TRectD;
+    ellipseRotAngle, angle: double): TPointD;
+  function GetEllipticalAngleFromPoint(const ellipseRect: TRectD;
+    const pt: TPointD): double;
+  function GetRotatedEllipticalAngleFromPoint(const ellipseRect: TRectD;
+    ellipseRotAngle: double; pt: TPointD): double;
+  function GetClosestPtOnRotatedEllipse(const ellipseRect: TRectD;
+    ellipseRotation: double; const pt: TPointD): TPointD;
   function Outline(const line: TPathD; lineWidth: double;
     joinStyle: TJoinStyle; endStyle: TEndStyle;
     miterLimOrRndScale: double = 0): TPathsD; overload;
   function Outline(const lines: TPathsD; lineWidth: double;
     joinStyle: TJoinStyle; endStyle: TEndStyle;
     miterLimOrRndScale: double = 0): TPathsD; overload;
-
-   //Grow: Offsets a closed path by 'delta' amount toward the left of the path.
-   //Hence clockwise paths expand and counter-clockwise paths contract.<br>
-   //No consideration is given to overlapping joins as these only very rarely
-   //cause artifacts when paths are rendered.
-  function Grow(const path, normals: TPathD; delta: double;
-    joinStyle: TJoinStyle; miterLimOrRndScale: double): TPathD;
+  //Grow: Offsets path by 'delta' (positive is away from the left of the path).
+  //With a positive delta, clockwise paths will expand and counter-clockwise
+  //ones will contract. The reverse happens with negative deltas.
+  function Grow(const path, normals: TPathD; delta: double; joinStyle: TJoinStyle;
+    miterLimOrRndScale: double; isOpen: Boolean = false): TPathD;
 
   function ValueAlmostZero(val: double; epsilon: double = 0.001): Boolean;
   function ValueAlmostOne(val: double; epsilon: double = 0.001): Boolean;
-
 const
   Invalid       = -MaxInt;
   InvalidD      = -Infinity;
@@ -335,10 +318,9 @@ const
   NullPointD    : TPointD = (X: 0; Y: 0);
   InvalidPoint  : TPoint  = (X: -MaxInt; Y: -MaxInt);
   InvalidPointD : TPointD = (X: -Infinity; Y: -Infinity);
-
-  NullRect: TRect = (left: 0; top: 0; right: 0; Bottom: 0);
-  NullRectD: TRectD = (left: 0; top: 0; right: 0; Bottom: 0);
-
+  NullRect      : TRect = (left: 0; top: 0; right: 0; Bottom: 0);
+  NullRectD     : TRectD = (left: 0; top: 0; right: 0; Bottom: 0);
+  InvalidRect   : TRect = (left: MaxInt; top: MaxInt; right: 0; Bottom: 0);
   BezierTolerance: double  = 0.25;
 var
   //AutoWidthThreshold: When JoinStyle = jsAuto, this is the threshold at
@@ -346,10 +328,8 @@ var
   //rounded joins generally look better, but as rounding is more complex it
   //also requries more processing and hence is slower to execute.
   AutoWidthThreshold: double = 5.0;
-
   //When lines are too narrow, they become too faint to sensibly draw
   MinStrokeWidth: double = 0.5;
-
   //Miter limit avoids excessive spikes when line offsetting
   DefaultMiterLimit: double = 4.0;
 
@@ -381,6 +361,13 @@ end;
 function TRectWH.IsEmpty: Boolean;
 begin
   Result := (Width <= 0) or (Height <= 0);
+end;
+//------------------------------------------------------------------------------
+
+function TRectWH.IsValid: Boolean;
+begin
+  Result := (Left <> InvalidD) and (Top <> InvalidD)
+    and (Width >= 0) and (Height >= 0);
 end;
 //------------------------------------------------------------------------------
 
@@ -420,8 +407,12 @@ function TRectWH.RectD: TRectD;
 begin
   Result := Img32.RectD(left, top, left + Width, top + Height);
 end;
-
 //------------------------------------------------------------------------------
+
+function TRectWH.Rect: TRect;
+begin
+  Result := Img32.Vector.Rect(RectD);
+end;
 //------------------------------------------------------------------------------
 
 function RectWH(left, top, width, height: integer): TRectWH;
@@ -491,6 +482,12 @@ begin
 end;
 //------------------------------------------------------------------------------
 
+function IsValid(const rec: TRect): Boolean;
+begin
+  result := (rec.Left <> MaxInt) and (rec.Top <> MaxInt);
+end;
+//------------------------------------------------------------------------------
+
 function Point(X,Y: Integer): TPoint;
 begin
   result.X := X;
@@ -508,6 +505,12 @@ end;
 function PointsEqual(const pt1, pt2: TPointD): Boolean;
 begin
   result := (pt1.X = pt2.X) and (pt1.Y = pt2.Y);
+end;
+//------------------------------------------------------------------------------
+
+function PointsNearEqual(const pt1, pt2: TPoint; dist: integer): Boolean;
+begin
+  Result := (Abs(pt1.X - pt2.X) <= dist) and (Abs(pt1.Y - pt2.Y) < dist);
 end;
 //------------------------------------------------------------------------------
 
@@ -624,12 +627,20 @@ begin
 end;
 //------------------------------------------------------------------------------
 
+
 function Rect(const recD: TRectD): TRect;
 begin
   Result.Left := Floor(recD.Left);
   Result.Top := Floor(recD.Top);
   Result.Right := Ceil(recD.Right);
   Result.Bottom := Ceil(recD.Bottom);
+end;
+//------------------------------------------------------------------------------
+
+function PtInRect(const rec: TRectD; const pt: TPointD): Boolean;
+begin
+  Result := (pt.X >= rec.Left) and (pt.X < rec.Right) and
+    (pt.Y >= rec.Top) and (pt.Y < rec.Bottom);
 end;
 //------------------------------------------------------------------------------
 
@@ -678,6 +689,17 @@ begin
   rec.Top := rec.Top + dy;
   rec.Right := rec.Right + dx;
   rec.Bottom := rec.Bottom + dy;
+end;
+//------------------------------------------------------------------------------
+
+function MakeSquare(rec: TRect): TRect;
+var
+  i: integer;
+begin
+  Result := rec;
+  i := ((rec.Right - rec.Left) + (rec.Bottom - rec.Top)) div 2;
+  Result.Right := Result.Left + i;
+  Result.Bottom := Result.Top + i;
 end;
 //------------------------------------------------------------------------------
 
@@ -732,6 +754,20 @@ function IsSameRect(const rec1, rec2: TRect): Boolean;
 begin
   Result := (rec1.Left = rec2.Left) and (rec1.Top = rec2.Top) and
     (rec1.Right = rec2.Right) and (rec1.Bottom = rec2.Bottom);
+end;
+//------------------------------------------------------------------------------
+
+function RectsIntersect(const rec1, rec2: TRect): Boolean;
+var
+  dummy: TRect;
+begin
+  Result := Types.IntersectRect(dummy, rec1, rec2);
+end;
+//------------------------------------------------------------------------------
+
+function RectsIntersect(const rec1, rec2: TRectD): Boolean;
+begin
+  Result := not IntersectRect(rec1, rec2).IsEmpty;
 end;
 //------------------------------------------------------------------------------
 
@@ -796,6 +832,12 @@ begin
 end;
 //------------------------------------------------------------------------------
 
+function CrossProduct(const vector1, vector2: TPointD): double;
+begin
+  result := vector1.X * vector2.Y - vector2.X * vector1.Y;
+end;
+//------------------------------------------------------------------------------
+
 function CrossProduct(const pt1, pt2, pt3: TPointD): double;
 var
   x1,x2,y1,y2: double;
@@ -808,6 +850,24 @@ begin
 end;
 //---------------------------------------------------------------------------
 
+function CrossProduct(const pt1, pt2, pt3, pt4: TPointD): double;
+var
+  x1,x2,y1,y2: double;
+begin
+  x1 := pt2.X - pt1.X;
+  y1 := pt2.Y - pt1.Y;
+  x2 := pt4.X - pt3.X;
+  y2 := pt4.Y - pt3.Y;
+  result := (x1 * y2 - y1 * x2);
+end;
+//---------------------------------------------------------------------------
+
+function DotProduct(const vector1, vector2: TPointD): double;
+begin
+  result := vector1.X * vector2.X + vector1.Y * vector2.Y;
+end;
+//------------------------------------------------------------------------------
+
 function DotProduct(const pt1, pt2, pt3: TPointD): double;
 var
   x1,x2,y1,y2: double;
@@ -818,19 +878,19 @@ begin
   y2 := pt2.Y - pt3.Y;
   result := (x1 * x2 + y1 * y2);
 end;
-//---------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 function TurnsLeft(const pt1, pt2, pt3: TPointD): boolean;
 begin
   result := CrossProduct(pt1, pt2, pt3) < 0;
 end;
-//---------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 function TurnsRight(const pt1, pt2, pt3: TPointD): boolean;
 begin
   result := CrossProduct(pt1, pt2, pt3) > 0;
 end;
-//---------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 function IsPathConvex(const path: TPathD): Boolean;
 var
@@ -876,8 +936,7 @@ var
 begin
   if PointsNearEqual(pt1, pt2, 0.001) then
   begin
-    Result.X := 0;
-    Result.Y := 0;
+    Result := NullPointD;
     Exit;
   end;
   dx := (pt2.X - pt1.X);
@@ -887,6 +946,23 @@ begin
   dy := dy * inverseHypot;
   Result.X := dy;
   Result.Y := -dx
+end;
+//------------------------------------------------------------------------------
+
+function GetAvgUnitVector(const vec1, vec2: TPointD): TPointD;
+var
+  h, inverseHypot: Double;
+begin
+  Result := PointD((vec1.X + vec2.X) * 0.5, (vec1.Y + vec2.Y) * 0.5);
+  h := Hypot(Result.X, Result.Y);
+  if ValueAlmostZero(h, 0.001) then
+  begin
+    Result := NullPointD;
+    Exit;
+  end;
+  inverseHypot := 1 / h;
+  Result.X := Result.X * inverseHypot;
+  Result.Y := Result.Y * inverseHypot;
 end;
 //------------------------------------------------------------------------------
 
@@ -1144,34 +1220,35 @@ end;
 
 function GetNormals(const path: TPathD): TPathD;
 var
-  i,j, len: cardinal;
+  i,highI,j, len: cardinal;
   pt: TPointD;
 begin
   len := length(path);
   setLength(result, len);
   if len = 0 then Exit;
   pt := path[0];
-  //skip duplicates
-  i := len -1;
-  while (i > 0) and PointsNearEqual(path[i], pt, 0.001) do dec(i);
-  if (i = 0) then
+  //watch out for, and fix up duplicates at end of line
+  highI := len -1;
+  while (highI > 0) and PointsNearEqual(path[highI], pt, 0.001) do dec(highI);
+  if (highI = 0) then
   begin
     //all points are equal!
     for i := 0 to len -1 do result[i] := PointD(0,0);
     Exit;
   end;
-  result[i] := GetUnitNormal(path[i], pt);
-  //fix up any duplicates at the end of the path
-  for j := i +1 to len -1 do
-    result[j] := result[j-1];
+  result[highI] := GetUnitNormal(path[highI], pt);
+  //now fix up any duplicates at the end of the path
+  for j := highI +1 to len -1 do result[j] := result[j-1];
   //with at least one valid vector, we can now
   //safely get the remaining vectors
-  pt := path[i];
-  for i := i -1 downto 0 do
+  pt := path[highI];
+  for i := highI -1 downto 0 do
   begin
     if (path[i].X <> pt.X) or (path[i].Y <> pt.Y) then
     begin
       result[i] := GetUnitNormal(path[i], pt);
+      if (Result[i].X = 0) and (Result[i].Y = 0) then
+        Result[i] := Result[i+1];
       pt := path[i];
     end else
       result[i] := result[i+1]
@@ -1241,14 +1318,14 @@ begin
 end;
 //------------------------------------------------------------------------------
 
-function PerpendicularDistSqrd(const pt, line1, line2: TPointD): double;
+function PerpendicularDistSqrd(const pt, l1, line2: TPointD): double;
 var
   a,b,c,d: double;
 begin
-  a := pt.X - line1.X;
-  b := pt.Y - line1.Y;
-  c := line2.X - line1.X;
-  d := line2.Y - line1.Y;
+  a := pt.X - l1.X;
+  b := pt.Y - l1.Y;
+  c := line2.X - l1.X;
+  d := line2.Y - l1.Y;
   if (c = 0) and (d = 0) then
     result := 0 else
     result := Sqr(a * d - c * b) / (c * c + d * d);
@@ -1418,8 +1495,8 @@ begin
     begin
       if q < 0 then q := 0 else if q > 1 then q := 1;
     end;
-    Result.X := round((1-q)*linePt1.X + q*linePt2.X);
-    Result.Y := round((1-q)*linePt1.Y + q*linePt2.Y);
+    Result.X := (1-q)*linePt1.X + q*linePt2.X;
+    Result.Y := (1-q)*linePt1.Y + q*linePt2.Y;
   end;
 end;
 //------------------------------------------------------------------------------
@@ -1436,13 +1513,68 @@ begin
 end;
 //------------------------------------------------------------------------------
 
+function GetPtOnEllipseFromAngle(const ellipseRect: TRectD;
+  angle: double): TPointD;
+var
+  sn, co: double;
+begin
+  NormalizeAngle(angle);
+  GetSinCos(angle, sn, co);
+  Result.X := ellipseRect.MidPoint.X + ellipseRect.Width/2 * co;
+  Result.Y := ellipseRect.MidPoint.Y + ellipseRect.Height/2 * sn;
+end;
+//------------------------------------------------------------------------------
+
+function GetEllipticalAngleFromPoint(const ellipseRect: TRectD;
+  const pt: TPointD): double;
+begin
+  with ellipseRect do
+    Result := ArcTan2(Width/Height * (pt.Y - MidPoint.Y), (pt.X - MidPoint.X));
+end;
+//------------------------------------------------------------------------------
+
+function GetRotatedEllipticalAngleFromPoint(const ellipseRect: TRectD;
+  ellipseRotAngle: double; pt: TPointD): double;
+begin
+  Result := 0;
+  if ellipseRect.IsEmpty then Exit;
+  RotatePoint(pt, ellipseRect.MidPoint, -ellipseRotAngle);
+  Result := GetEllipticalAngleFromPoint(ellipseRect, pt);
+end;
+//------------------------------------------------------------------------------
+
+function GetPtOnRotatedEllipseFromAngle(const ellipseRect: TRectD;
+  ellipseRotAngle, angle: double): TPointD;
+begin
+  Result := GetPtOnEllipseFromAngle(ellipseRect, angle);
+  if ellipseRotAngle <> 0 then
+    img32.Vector.RotatePoint(Result, ellipseRect.MidPoint, ellipseRotAngle);
+end;
+//------------------------------------------------------------------------------
+
+function GetClosestPtOnRotatedEllipse(const ellipseRect: TRectD;
+  ellipseRotation: double; const pt: TPointD): TPointD;
+var
+  pt2: TPointD;
+  angle: double;
+begin
+  pt2 := pt;
+  Img32.Vector.RotatePoint(pt2, ellipseRect.MidPoint, -ellipseRotation);
+  angle := GetEllipticalAngleFromPoint(ellipseRect, pt2);
+  Result := GetPtOnEllipseFromAngle(ellipseRect, angle);
+  Img32.Vector.RotatePoint(Result, ellipseRect.MidPoint, ellipseRotation);
+end;
+//------------------------------------------------------------------------------
+
 function IsPointInEllipse(const ellipseRec: TRect; const pt: TPoint): Boolean;
 var
   rec: TRectD;
+  w,h: integer;
   x,y, y2, a,b, dx,dy: double;
 begin
-  a := RectWidth(ellipseRec) *0.5;
-  b := RectHeight(ellipseRec) *0.5;
+  RectWidthHeight(ellipseRec, w, h);
+  a := w * 0.5;
+  b := h * 0.5;
   dx := ellipseRec.Left + a;
   dy := ellipseRec.Top + b;
   rec := RectD(ellipseRec);
@@ -1460,7 +1592,7 @@ begin
 end;
 //------------------------------------------------------------------------------
 
-function GetLineEllipseIntersects(const ellipseRect: TRect;
+function GetLineEllipseIntersects(const ellipseRec: TRect;
   var linePt1, linePt2: TPointD): Boolean;
 var
   dx, dy, m,a,b,c,q: double;
@@ -1468,11 +1600,11 @@ var
   rec: TRectD;
   pt1, pt2: TPointD;
 begin
-  a := RectWidth(ellipseRect) *0.5;
-  b := RectHeight(ellipseRect) *0.5;
+  rec := RectD(ellipseRec);
+  a := rec.Width *0.5;
+  b := rec.Height *0.5;
   //offset ellipseRect so it's centered over the coordinate origin
-  dx := ellipseRect.Left + a; dy := ellipseRect.Top + b;
-  rec := RectD(ellipseRect);
+  dx := ellipseRec.Left + a; dy := ellipseRec.Top + b;
   offsetRect(rec, -dx, -dy);
   pt1 := OffsetPoint(linePt1, -dx, -dy);
   pt2 := OffsetPoint(linePt2, -dx, -dy);
@@ -1525,93 +1657,139 @@ begin
 end;
 //------------------------------------------------------------------------------
 
-function Grow(const path, normals: TPathD; delta: double;
-  joinStyle: TJoinStyle; miterLimOrRndScale: double): TPathD;
+function GetNormal(const pt, norm: TPointD; delta: double): TPointD;
+begin
+  result := PointD(pt.X + norm.X * delta, pt.Y + norm.Y * delta);
+end;
+//------------------------------------------------------------------------------
+
+function GetVector(const pt, norm: TPointD; delta: double): TPointD;
+begin
+  result := PointD(pt.X - norm.Y * delta, pt.Y + norm.X * delta);
+end;
+//------------------------------------------------------------------------------
+
+function GetParallelOffests(const path, norms: TPathD;
+  delta: double): TPathD;
 var
-  i,prevI, highI: cardinal;
-  buffLen, resultLen: cardinal;
-  steps360, stepsPerRad, pathArea, absPathArea, resultArea: double;
-  pathBounds: TRectD;
-  stepSin, stepCos, cosA: double;
-  isShrinking: Boolean;
-  P: TPointD;
-  norms: TPathD;
-  normalA, normalB: TPointD;
+  i, highI, len: integer;
+begin
+  len := Length(path);
+  highI := len -1;
+  SetLength(Result, len *2);
+  Result[0]  := GetNormal(path[0], norms[0], delta);
+  for i := 1 to highI do
+  begin
+    Result[i*2-1] := GetNormal(path[i], norms[i-1], delta);
+    Result[i*2]   := GetNormal(path[i], norms[i], delta);
+  end;
+  Result[highI*2+1] := GetNormal(path[0], norms[highI], delta);
+end;
+//------------------------------------------------------------------------------
+
+type
+  TGrowRec = record
+    StepsPerRad : double;
+    StepSin     : double;
+    StepCos     : double;
+    Radius      : double;
+    aSin        : double;
+    aCos        : double;
+  end;
+
+function DoRound(const pt, norm1, norm2: TPointD;
+  const growRec: TGrowRec): TPathD;
+var
+  i, steps: Integer;
+  a: Double;
+  pt2: TPointD;
+begin
+  a := ArcTan2(growRec.aSin, growRec.aCos);
+  steps := Round(growRec.StepsPerRad * Abs(a));
+  SetLength(Result, steps +1);
+
+  pt2 := PointD(norm1.x * growRec.Radius, norm1.y * growRec.Radius);
+  Result[0] := PointD(pt.x + pt2.x, pt.y + pt2.y);
+  with growRec do
+    for i := 1 to steps do
+    begin
+      pt2 := PointD(pt2.X * StepCos - StepSin * pt2.Y,
+        pt2.X * StepSin + pt2.Y * StepCos);
+      Result[i] := PointD(pt.X + pt2.X, pt.Y + pt2.Y);
+    end;
+end;
+//------------------------------------------------------------------------------
+
+function CalcRoundingSteps(radius: double): double;
+begin
+  //the results of this function have been derived empirically
+  //and may need further adjustment
+  if radius < 0.55 then result := 4
+  else result := Pi * Sqrt(radius);
+end;
+//------------------------------------------------------------------------------
+
+function Grow(const path, normals: TPathD; delta: double;
+  joinStyle: TJoinStyle; miterLimOrRndScale: double; isOpen: Boolean): TPathD;
+var
+  resCnt, resCap: integer;
 
   procedure AddPoint(const pt: TPointD);
   begin
-    if resultLen >= buffLen then
+    if resCnt >= resCap then
     begin
-      inc(buffLen, 128);
-      setLength(result, buffLen);
+      inc(resCap, 64);
+      setLength(result, resCap);
     end;
-    result[resultLen] := pt;
-    inc(resultLen);
+    result[resCnt] := pt;
+    inc(resCnt);
   end;
 
-  function GetNormal(const pt: TPointD; const norm: TPointD): TPointD;
-  begin
-    result := PointD(pt.x + norm.x * delta, pt.y + norm.y * delta);
-  end;
-
-  procedure AddMiter(const N1, N2: TPointD; cosAplus1: double);
+  procedure AppendPath(const path: TPathD);
   var
-    q: double;
+    len: integer;
   begin
-    q := delta / cosAplus1;
-    AddPoint(PointD(P.X + (N2.X + N1.X) * q,
-      P.Y + (N1.Y + N2.Y) * q));
-  end;
-
-  procedure AddBevel(const N1, N2: TPointD);
-  begin
-    AddPoint(GetNormal(P, N1));
-    AddPoint(GetNormal(P, N2));
-  end;
-
-  procedure AddRound(const N1, N2: TPointD; cosA: double);
-  var
-    i, steps: Integer;
-    a, sinA: Double;
-    P2: TPointD;
-  begin
-    sinA := normalA.x * normalB.y - normalA.y * normalB.x;
-    //nb: accommodate float imprecision with values >>> 180 degrees
-    if (delta * sinA < -0.01) then //concave
+    len := Length(path);
+    if resCnt + len > resCap then
     begin
-      AddBevel(N1, N2)
-    end else
-    begin
-      a := ArcTan2(sinA, cosA);
-      steps := Round(stepsPerRad * Abs(a));
-      P2 := PointD(N1.x * delta, N1.y * delta);
-      AddPoint(PointD(P.x + P2.x, P.y + P2.y));
-      for i := 1 to steps do
-      begin
-        P2 := PointD(P2.x * stepCos - stepSin * P2.y,
-          P2.x * stepSin + P2.y * stepCos);
-        AddPoint(PointD(P.x + P2.x, P.y + P2.y));
-      end;
+      inc(resCap, len);
+      setLength(result, resCap);
     end;
+    Move(path[0], result[resCnt], len * SizeOf(TPointD));
+    inc(resCnt, len);
   end;
 
+var
+  i       : cardinal;
+  prevI   : cardinal;
+  len     : cardinal;
+  highI   : cardinal;
+  iLo,iHi : cardinal;
+  norms   : TPathD;
+  ip      : TPointD;
+  p       : TPathD;
+  a       : double;
+  growRec   : TGrowRec;
+  absDelta  : double;
+  pt1, pt2, pt3, pt4: TPointD;
 begin
-  highI := high(path);
-  if (highI < 1) then exit;
-  if delta < MinStrokeWidth/2 then delta := MinStrokeWidth/2;
+  Result := nil;
+  if not Assigned(path) then exit;
+  len := Length(path);
+  if not isOpen then
+    while (len > 2) and
+      PointsNearEqual(path[len -1], path[0], 0.001) do
+        dec(len);
+  if len < 2 then Exit;
 
-  pathArea := Area(path);
-  absPathArea := Abs(pathArea);
-  isShrinking := (absPathArea > 0.001) and
-    (Sign(pathArea) <> Sign(delta));
-  if isShrinking then
+  absDelta := Abs(delta);
+  if absDelta < MinStrokeWidth/2 then
   begin
-    pathBounds := GetBoundsD(path);
-    if (pathBounds.Width < abs(delta) *2) or
-      (pathBounds.Height < abs(delta) *2) then Exit;
+    if delta < 0 then
+      delta := -MinStrokeWidth/2 else
+      delta := MinStrokeWidth/2;
   end;
-
-  if delta < 1 then        //ie linewidth < 2
+  if absDelta < 1 then
     joinStyle := jsSquare
   else if joinStyle = jsAuto then
   begin
@@ -1620,62 +1798,99 @@ begin
       joinStyle := jsRound;
   end;
 
-  //nb: miterLimOrRndScale performs a dual function depending on joinStyle.
-  //When joinStyle = jsRound, the miterLimOrRndScale parameter indicates any
-  //anticipated post Grow scaling. When polygons produced by Grow are later
-  //scaled up considerably (eg SVG polygons), then rounded joins can look very
-  //crude unless this is anticipated. So when polygons produced by Grow are
-  //expected to be scaled up by X amount, then set miterLimOrRndScale to X.
-  //When joinStyle = jsMiter, then the miterLimOrRndScale parameter indicates
-  //the distance (relative to 'delta') at which convex mitering will be
-  //truncated to avoid excessive spiking at narrow angled joins.
+  if assigned(normals) then
+    norms := normals else
+    norms := GetNormals(path);
+
+  highI := len -1;
+  p := GetParallelOffests(path, norms, delta);
 
   if joinStyle = jsRound then
   begin
-    if abs(delta) < 0.25 then Exit;
     if miterLimOrRndScale <= 0 then miterLimOrRndScale := 1;
-    steps360 := 4 * Max(1, Sqrt(delta * miterLimOrRndScale));
-    stepsPerRad := steps360 / (Pi *2);
-    GetSinCos(Pi*2/steps360, stepSin, stepCos);
+    growRec.Radius := delta;
+    growRec.StepsPerRad := CalcRoundingSteps(growRec.Radius)/(Pi *2);
+    if delta < 0 then
+      GetSinCos(-1/growRec.StepsPerRad, growRec.StepSin, growRec.StepCos) else
+      GetSinCos(1/growRec.StepsPerRad, growRec.StepSin, growRec.StepCos);
   end else
   begin
-    if miterLimOrRndScale < 1 then miterLimOrRndScale := DefaultMiterLimit;
+    if miterLimOrRndScale <= 0 then miterLimOrRndScale := DefaultMiterLimit
+    else if miterLimOrRndScale < 2 then miterLimOrRndScale := 2;
     miterLimOrRndScale := 2 /(sqr(miterLimOrRndScale));
+    growRec.StepsPerRad := 0; //stop compiler warning.
   end;
 
-  result := nil; resultLen := 0; buffLen := 0;
-  norms := normals;
-  if not assigned(norms) then
-    norms := GetNormals(path);
+  resCnt := 0; resCap := 0;
 
-  PrevI := HighI;
-  for i := 0 to HighI do
+  if isOpen then
   begin
-    P := path[i];
-    normalA := norms[PrevI];
-    normalB := norms[i];
-    cosA := normalB.x * normalA.x + normalB.y * normalA.y;
-
-    case
-      joinStyle of
-        jsRound: AddRound(normalA, normalB, cosA);
-      jsSquare:
-        if cosA > 0 then AddMiter(normalA, normalB, cosA +1)
-        else AddBevel(normalA, normalB);
-      jsMiter:
-        if (1 + cosA < miterLimOrRndScale) then AddBevel(normalA, normalB)
-        else AddMiter(normalA, normalB, cosA +1);
-    end;
-    PrevI := i;
+    iLo := 1; iHi := highI -1;
+    prevI := 0;
+    AddPoint(p[0]);
+  end else
+  begin
+    iLo := 0; iHi := highI;
+    prevI := highI;
   end;
 
-  setLength(result, resultLen);
+  for i := iLo to iHi do
+  begin
+    pt1 := p[prevI*2];
+    pt2 := p[prevI*2+1];
+    pt3 := p[i*2];
+    pt4 := p[i*2+1];
+    growRec.aSin := CrossProduct(norms[prevI], norms[i]);
+    growRec.aCos := DotProduct(norms[prevI], norms[i]);
 
-  if not isShrinking then Exit;
-  resultArea := area(Result);
-  if (Sign(resultArea) <> Sign(pathArea)) or
-    (abs(resultArea) > absPathArea) then
-      Result := nil;
+    if (growRec.aSin < 0) = (delta > 0) then
+    begin //is concave
+      if SegmentsIntersect(pt1, pt2, pt3, pt4, ip) then
+        AddPoint(ip) else
+      begin
+        AddPoint(pt2);
+        AddPoint(pt3);
+      end;
+    end
+    else if (joinStyle = jsRound) and
+      (Abs(growRec.aSin) > 0.08) then //only round if angle > ~5 deg
+    begin
+      AppendPath(DoRound(path[i], norms[prevI], norms[i], growRec));
+    end
+    else if (joinStyle = jsMiter) and
+      (1 + growRec.aCos > miterLimOrRndScale) then
+    begin
+      //within miter range
+      a := delta / (1 + growRec.aCos);
+      AddPoint(PointD(path[i].X + (norms[i].X + norms[prevI].X) * a,
+        path[i].Y + (norms[i].Y + norms[prevI].Y) * a));
+    end
+    else if (growRec.aCos < -0.001) and (growRec.aCos > -0.999) then
+    begin
+      //see offset_triginometry5.svg
+      a := tan( ArcTan2(growRec.aSin, growRec.aCos)/4 ) * delta;
+      AddPoint(GetVector(pt2, norms[prevI], a));
+      AddPoint(GetVector(pt3, norms[i], -a));
+    end else
+    begin
+      AddPoint(pt2);
+      AddPoint(pt3);
+    end;
+    prevI := i;
+  end;
+  if isOpen then AddPoint(p[highI*2-1]);
+  SetLength(Result, resCnt);
+end;
+//------------------------------------------------------------------------------
+
+procedure AppendPath(var path: TPathD; const pt: TPointD);
+var
+  len: integer;
+begin
+  len := length(path);
+  if (len > 0) and PointsEqual(pt, path[len -1]) then Exit;
+  setLength(path, len + 1);
+  path[len] := pt;
 end;
 //------------------------------------------------------------------------------
 
@@ -1758,6 +1973,7 @@ procedure RotatePoint(var pt: TPointD;
 var
   sinA, cosA: double;
 begin
+  if angleRad = 0 then Exit;
   if not ClockwiseRotationIsAnglePositive then angleRad := -angleRad;
   GetSinCos(angleRad, sinA, cosA);
   RotatePoint(pt, focalPoint, sinA, cosA);
@@ -1786,6 +2002,11 @@ function RotatePath(const path: TPathD;
 var
   sinA, cosA: double;
 begin
+  if angleRads = 0 then
+  begin
+    Result := path;
+    Exit;
+  end;
   if not ClockwiseRotationIsAnglePositive then angleRads := -angleRads;
   GetSinCos(angleRads, sinA, cosA);
   Result := RotatePathInternal(path, focalPoint, sinA, cosA);
@@ -1797,12 +2018,21 @@ function RotatePath(const paths: TPathsD;
 var
   i: integer;
   sinA, cosA: double;
+  fp: TPointD;
 begin
-  if not ClockwiseRotationIsAnglePositive then angleRads := -angleRads;
+  Result := paths;
+  if not IsValid(angleRads) then Exit;
+  NormalizeAngle(angleRads);
+  if angleRads = 0 then Exit;
+  if not ClockwiseRotationIsAnglePositive then
+    angleRads := -angleRads;
   GetSinCos(angleRads, sinA, cosA);
   SetLength(Result, length(paths));
+  if IsValid(focalPoint) then
+    fp := focalPoint else
+    fp := GetBoundsD(paths).MidPoint;
   for i := 0 to high(paths) do
-    Result[i] := RotatePathInternal(paths[i], focalPoint, sinA, cosA);
+    Result[i] := RotatePathInternal(paths[i], fp, sinA, cosA);
 end;
 //------------------------------------------------------------------------------
 
@@ -1887,27 +2117,26 @@ begin
 end;
 //------------------------------------------------------------------------------
 
-
-function IntersectPoint(const ln1a, ln1b, ln2a, ln2b: TPointD; out ip: TPointD): Boolean;
+function IntersectPoint(const ln1a, ln1b, ln2a, ln2b: TPointD): TPointD;
 var
   m1,b1,m2,b2: double;
 begin
-  result := false;
+  result := InvalidPointD;
   //see http://astronomy.swin.edu.au/~pbourke/geometry/lineline2d/
   if (ln1B.X = ln1A.X) then
   begin
     if (ln2B.X = ln2A.X) then exit; //parallel lines
     m2 := (ln2B.Y - ln2A.Y)/(ln2B.X - ln2A.X);
     b2 := ln2A.Y - m2 * ln2A.X;
-    ip.X := ln1A.X;
-    ip.Y := m2*ln1A.X + b2;
+    Result.X := ln1A.X;
+    Result.Y := m2*ln1A.X + b2;
   end
   else if (ln2B.X = ln2A.X) then
   begin
     m1 := (ln1B.Y - ln1A.Y)/(ln1B.X - ln1A.X);
     b1 := ln1A.Y - m1 * ln1A.X;
-    ip.X := ln2A.X;
-    ip.Y := m1*ln2A.X + b1;
+    Result.X := ln2A.X;
+    Result.Y := m1*ln2A.X + b1;
   end else
   begin
     m1 := (ln1B.Y - ln1A.Y)/(ln1B.X - ln1A.X);
@@ -1915,63 +2144,48 @@ begin
     m2 := (ln2B.Y - ln2A.Y)/(ln2B.X - ln2A.X);
     b2 := ln2A.Y - m2 * ln2A.X;
     if m1 = m2 then exit; //parallel lines
-    ip.X := (b2 - b1)/(m1 - m2);
-    ip.Y := m1 * ip.X + b1;
+    Result.X := (b2 - b1)/(m1 - m2);
+    Result.Y := m1 * Result.X + b1;
   end;
-  result := true;
 end;
 //------------------------------------------------------------------------------
 
-function GrowOpenLine(const line: TPathD; width: double;
-  joinStyle: TJoinStyle; endStyle: TEndStyle;
-  miterLimOrRndScale: double): TPathsD;
-var
-  len, x,y, wDiv2: integer;
-  wd2: double;
-  line1, line2: TPathD;
-  vec1, vec2: TPointD;
+function IntersectPoint(const ln1a, ln1b, ln2a, ln2b: TPointD;
+  out ip: TPointD): Boolean;
 begin
-  Result := nil;
-  len := length(line);
-  if len = 0 then Exit;
+  ip := IntersectPoint(ln1a, ln1b, ln2a, ln2b);
+  Result := IsValid(ip);
+end;
+//------------------------------------------------------------------------------
 
-  if width < MinStrokeWidth then
-    width := MinStrokeWidth;
+function SegmentIntersectPt(const ln1a, ln1b, ln2a, ln2b: TPointD): TPointD;
+var
+  pqd,r,s : TPointD; //scalar vectors;
+  rs, t   : double;
+begin
+  //https://stackoverflow.com/a/565282/359538
+  Result := InvalidPointD;
+  r := PointD(ln1b.X - ln1a.X, ln1b.Y - ln1a.Y);
+  s := PointD(ln2b.X - ln2a.X, ln2b.Y - ln2a.Y);
+  rs := CrossProduct(r,s);
+  if Abs(rs) < 1 then Exit;
+  pqd.X := ln2a.X - ln1a.X;
+  pqd.y := ln2a.Y - ln1a.Y;
+  t := CrossProduct(pqd, s) / rs;
+  if (t < -0.025) or (t > 1.025) then Exit;
+  Result.X := ln1a.X + t * r.X;
+  Result.Y := ln1a.Y + t * r.Y;
+//  pqd.X := -pqd.X; pqd.Y := -pqd.Y;
+//  u := CrossProduct(pqd, r) / rs;
+//  if (u < -0.05) or (u > 1.05) then Exit;
+end;
+//------------------------------------------------------------------------------
 
-  if len = 1 then
-  begin
-    wDiv2 := Round(width/2);
-    x := Round(line[0].X);
-    y := Round(line[0].Y);
-    SetLength(result, 1);
-    result[0] := Ellipse(RectD(x -wDiv2, y -wDiv2, x +wDiv2, y +wDiv2));
-    Exit;
-  end;
-
-  if joinStyle = jsAuto then
-  begin
-    if (endStyle = esRound) and (width >= AutoWidthThreshold) then
-      joinStyle := jsRound else
-      joinStyle := jsSquare;
-  end;
-
-  if endStyle = esSquare then
-  begin
-    line1 := Copy(line, 0, len);
-    //extend both ends of the line by 1/2 lineWidth
-    wd2 := width/2;
-    vec1 := GetUnitVector(line1[1], line1[0]);
-    vec2 := GetUnitVector(line1[len-2], line1[len-1]);
-    with line1[0] do
-      line1[0] := PointD(X + vec1.X * wd2, Y + vec1.y * wd2);
-    with line1[len-1] do
-      line1[len-1] := PointD(X + vec2.X * wd2, Y + vec2.y * wd2);
-    line2 := OpenPathToFlatPolygon(line1);
-  end else
-    line2 := OpenPathToFlatPolygon(line);
-
-  SetLength(result, 1);
-  Result[0] := Grow(line2, nil, width/2, joinStyle, miterLimOrRndScale);
+function SegmentsIntersect(const ln1a, ln1b, ln2a, ln2b: TPointD;
+  out ip: TPointD): Boolean;
+begin
+  ip := SegmentIntersectPt(ln1a, ln1b, ln2a, ln2b);
+  Result := IsValid(ip);
 end;
 //------------------------------------------------------------------------------
 
@@ -1991,44 +2205,130 @@ begin
 end;
 //------------------------------------------------------------------------------
 
+function GrowOpenLine(const line: TPathD; width: double;
+  joinStyle: TJoinStyle; endStyle: TEndStyle;
+  miterLimOrRndScale: double): TPathD;
+var
+  len, x,y: integer;
+  halfWidth: double;
+  normals, lineL, lineR, arc: TPathD;
+  invNorm: TPointD;
+  growRec: TGrowRec;
+begin
+  Result := nil;
+  len := length(line);
+  if len = 0 then Exit;
+  if width < MinStrokeWidth then
+    width := MinStrokeWidth;
+  halfWidth := width * 0.5;
+  if len = 1 then
+  begin
+    x := Round(line[0].X);
+    y := Round(line[0].Y);
+    SetLength(result, 1);
+    result := Ellipse(RectD(x -halfWidth, y -halfWidth,
+      x +halfWidth, y +halfWidth));
+    Exit;
+  end;
+
+  //with very narrow lines, don't get fancy with joins and line ends
+  if (width <= 2) then
+  begin
+    joinStyle := jsSquare;
+    if endStyle = esRound then endStyle := esSquare;
+  end
+  else if joinStyle = jsAuto then
+  begin
+    if (endStyle = esRound) and
+      (width >= AutoWidthThreshold) then
+      joinStyle := jsRound
+    else
+      joinStyle := jsSquare;
+  end;
+
+  normals := GetNormals(line);
+  if endStyle = esRound then
+  begin
+    //get the rounding parameters
+    growRec.StepsPerRad :=
+      CalcRoundingSteps(halfWidth * miterLimOrRndScale)/(Pi*2);
+    GetSinCos(1/growRec.StepsPerRad, growRec.StepSin, growRec.StepCos);
+    growRec.Radius := halfWidth;
+    growRec.aSin := invNorm.X * normals[0].Y - invNorm.Y * normals[0].X;
+    growRec.aCos := invNorm.X * normals[0].X + invNorm.Y * normals[0].Y;
+
+    //grow the line's left side of the line => line1
+    lineL := Grow(line, normals,
+      halfWidth, joinStyle, miterLimOrRndScale, true);
+    //build the rounding at the start => result
+    invNorm.X := -normals[0].X;
+    invNorm.Y := -normals[0].Y;
+    growRec.aSin := invNorm.X * normals[0].Y - invNorm.Y * normals[0].X;
+    growRec.aCos := invNorm.X * normals[0].X + invNorm.Y * normals[0].Y;
+    Result := DoRound(line[0], invNorm, normals[0], growRec);
+    //join line1 into result
+    AppendPath(Result, lineL);
+    //reverse the normals and build the end arc => arc
+    normals := ReverseNormals(normals);
+    invNorm.X := -normals[0].X; invNorm.Y := -normals[0].Y;
+    growRec.aSin := invNorm.X * normals[0].Y - invNorm.Y * normals[0].X;
+    growRec.aCos := invNorm.X * normals[0].X + invNorm.Y * normals[0].Y;
+    arc := DoRound(line[High(line)], invNorm, normals[0], growRec);
+    //grow the line's right side of the line
+    lineR := Grow(ReversePath(line), normals,
+      halfWidth, joinStyle, miterLimOrRndScale, true);
+    //join arc and line2 into result
+    AppendPath(Result, arc);
+    AppendPath(Result, lineR);
+  end else
+  begin
+
+    //esSquare => extends both line ends by 1/2 lineWidth
+    if endStyle = esSquare then
+    begin
+      lineL := Copy(line, 0, len);
+      AdjustPoint(lineL[0], lineL[1], width * 0.5);
+      AdjustPoint(lineL[len-1], lineL[len-2], width * 0.5);
+    end else
+      lineL := line;
+
+    //first grow the left side of the line => Result
+    Result := Grow(lineL, normals,
+      halfWidth, joinStyle, miterLimOrRndScale, true);
+    //reverse normals and path and grow the right side => lineR
+    normals := ReverseNormals(normals);
+    lineR := Grow(ReversePath(lineL), normals,
+      halfWidth, joinStyle, miterLimOrRndScale, true);
+    //join both sides
+    AppendPath(Result, lineR);
+  end;
+end;
+//------------------------------------------------------------------------------
+
 function GrowClosedLine(const line: TPathD; width: double;
   joinStyle: TJoinStyle; miterLimOrRndScale: double): TPathsD;
 var
-  len: integer;
   line2, norms: TPathD;
   rec: TRectD;
   skipHole: Boolean;
 begin
-  len := length(line);
-  if len < 3 then
-  begin
-    result := GrowOpenLine(line, width,
-      joinStyle, esPolygon, miterLimOrRndScale);
-    Exit;
-  end;
-
-  if width < MinStrokeWidth then width := MinStrokeWidth;
-  if joinStyle = jsAuto then
-  begin
-    if width < AutoWidthThreshold then
-      joinStyle := jsSquare else
-      joinStyle := jsRound;
-  end;
-
   rec := GetBoundsD(line);
   skipHole := (rec.Width <= width) or (rec.Height <= width);
   if skipHole then
-    SetLength(Result, 1) else
+  begin
+    SetLength(Result, 1);
+    norms := GetNormals(line);
+    Result[0] := Grow(line, norms, width/2, joinStyle, miterLimOrRndScale);
+  end else
+  begin
     SetLength(Result, 2);
-  norms := GetNormals(line);
-  Result[0] := Grow(line, norms, width/2, joinStyle, miterLimOrRndScale);
-
-  if skipHole then Exit;
-  line2 := ReversePath(line);
-  norms := ReverseNormals(norms);
-  Result[1] := Grow(line2, norms, width/2, joinStyle, miterLimOrRndScale);
+    norms := GetNormals(line);
+    Result[0] := Grow(line, norms, width/2, joinStyle, miterLimOrRndScale);
+    line2 := ReversePath(line);
+    norms := ReverseNormals(norms);
+    Result[1] := Grow(line2, norms, width/2, joinStyle, miterLimOrRndScale);
+  end;
 end;
-//------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 
 function Outline(const line: TPathD; lineWidth: double;
@@ -2037,12 +2337,15 @@ function Outline(const line: TPathD; lineWidth: double;
 begin
   if not assigned(line) then
     Result := nil
-  else if endStyle = esPolygon then
+  else if endStyle = esClosed then
     result := GrowClosedLine(line,
       lineWidth, joinStyle, miterLimOrRndScale)
   else
-    result := GrowOpenLine(line,
-      lineWidth, joinStyle, endStyle, miterLimOrRndScale);
+  begin
+    SetLength(Result,1);
+    result[0] := GrowOpenLine(line, lineWidth,
+      joinStyle, endStyle, miterLimOrRndScale);
+  end;
 end;
 //------------------------------------------------------------------------------
 
@@ -2051,18 +2354,6 @@ function Outline(const lines: TPathsD; lineWidth: double;
   miterLimOrRndScale: double): TPathsD;
 var
   i: integer;
-
-  procedure AddPaths(const paths: TPathsD);
-  var
-    i, len, len2: integer;
-  begin
-    len := length(result);
-    len2 := length(paths);
-    setLength(result, len + len2);
-    for i := 0 to len2 -1 do
-      result[len+i] := paths[i];
-  end;
-
 begin
   result := nil;
   if not assigned(lines) then exit;
@@ -2074,12 +2365,12 @@ begin
   end;
   if endStyle = esPolygon then
     for i := 0 to high(lines) do
-      AddPaths(GrowClosedLine(lines[i],
+      AppendPath(Result, GrowClosedLine(lines[i],
         lineWidth, joinStyle, miterLimOrRndScale))
   else
     for i := 0 to high(lines) do
-      AddPaths(GrowOpenLine(lines[i],
-        lineWidth, joinStyle, endStyle, miterLimOrRndScale));
+      AppendPath(Result, GrowOpenLine(lines[i], lineWidth,
+        joinStyle, endStyle, miterLimOrRndScale));
 end;
 //------------------------------------------------------------------------------
 
@@ -2198,10 +2489,8 @@ begin
     Result := Rectangle(rec);
     Exit;
   end;
-
   magic.X := radius.X * magicC;
   magic.Y := radius.Y * magicC;
-
   SetLength(Corners, 4);
   with rec do
   begin
@@ -2213,7 +2502,6 @@ begin
   SetLength(Result, 1);
   Result[0].X := corners[3].X + radius.X;
   Result[0].Y := corners[3].Y;
-
   SetLength(bezPts, 4);
   for i := 0 to High(corners) do
   begin
@@ -2277,12 +2565,24 @@ begin
 end;
 //------------------------------------------------------------------------------
 
-function Ellipse(const rec: TRectD; scale: double): TPathD;
+function Circle(const pt: TPointD; radius: double; pendingScale: double): TPathD;
+var
+  rec: TRectD;
+begin
+  rec.Left := pt.X - radius;
+  rec.Right := pt.X + radius;
+  rec.Top := pt.Y - radius;
+  rec.Bottom := pt.Y + radius;
+  Result := Ellipse(rec, pendingScale);
+end;
+//------------------------------------------------------------------------------
+
+function Ellipse(const rec: TRectD; pendingScale: double): TPathD;
 var
   steps: integer;
 begin
-  if scale <= 0 then scale := 1;
-  steps := 4 * Max(1, Trunc(Sqrt((rec.width + rec.Height) * scale)));
+  if pendingScale <= 0 then pendingScale := 1;
+  steps := Round(CalcRoundingSteps((rec.width + rec.Height) * pendingScale));
   Result := Ellipse(rec, steps);
 end;
 //------------------------------------------------------------------------------
@@ -2307,14 +2607,10 @@ begin
     centre := rec.MidPoint;
     radius := PointD(Width * 0.5, Height  * 0.5);
   end;
-
   if steps < 4 then
-  begin
-    steps := 4 * Max(1, Trunc(Sqrt(rec.width + rec.height)));
-  end;
+    steps := Round(CalcRoundingSteps(rec.width + rec.height));
   GetSinCos(2 * Pi / Steps, sinA, cosA);
   delta.x := cosA; delta.y := sinA;
-
   SetLength(Result, Steps);
   Result[0] := PointD(centre.X + radius.X, centre.Y);
   for i := 1 to steps -1 do
@@ -2324,6 +2620,34 @@ begin
     delta :=  PointD(delta.X * cosA - delta.Y * sinA,
       delta.Y * cosA + delta.X * sinA);
   end; //rotates clockwise
+end;
+//------------------------------------------------------------------------------
+
+function RotatedEllipse(const rec: TRectD; angle: double; steps: integer = 0): TPathD;
+begin
+  Result := Ellipse(rec, steps);
+  if angle = 0 then Exit;
+  Result := RotatePath(Result, rec.MidPoint, angle);
+end;
+//------------------------------------------------------------------------------
+
+function RotatedEllipse(const rec: TRectD; angle: double; pendingScale: double): TPathD;
+begin
+  Result := Ellipse(rec, pendingScale);
+  if angle = 0 then Exit;
+  Result := RotatePath(Result, rec.MidPoint, angle);
+end;
+//------------------------------------------------------------------------------
+
+function AngleToEllipticalAngle(const ellRec: TRectD; angle: double): double;
+begin
+  Result := arctan2(ellRec.Height/ellRec.Width * sin(angle), cos(angle));
+end;
+//------------------------------------------------------------------------------
+
+function EllipticalAngleToAngle(const ellRec: TRectD; angle: double): double;
+begin
+  Result := ArcTan2(sin(angle) *ellRec.Width, cos(angle) * ellRec.Height);
 end;
 //------------------------------------------------------------------------------
 
@@ -2340,7 +2664,6 @@ begin
   if indentFrac < 0.2 then indentFrac := 0.2
   else if indentFrac > 0.8 then indentFrac := 0.8;
   innerOff := Min(rec.Width, rec.Height) * indentFrac * 0.5;
-
   if not Odd(points) then inc(points);
   p := Ellipse(rec, points);
   if not Assigned(p) then Exit;
@@ -2395,31 +2718,30 @@ var
   sinA, cosA: double;
   centre, radius: TPointD;
   deltaX, deltaX2, deltaY: double;
+const
+  qtrDeg = PI/1440;
 begin
   Result := nil;
   if (endAngle = startAngle) or IsEmptyRect(rec) then Exit;
   if scale <= 0 then scale := 4.0;
-
   if not ClockwiseRotationIsAnglePositive then
   begin
     startAngle := -startAngle;
     endAngle := -endAngle;
   end;
-
-  NormalizeAngle(startAngle);
-  NormalizeAngle(endAngle);
-
+  NormalizeAngle(startAngle, qtrDeg);
+  NormalizeAngle(endAngle, qtrDeg);
   with rec do
   begin
-    centre := rec.MidPoint;
+    centre := MidPoint;
     radius := PointD(Width * 0.5, Height  * 0.5);
   end;
-
   if endAngle < startAngle then
     angle := endAngle - startAngle + angle360 else
     angle := endAngle - startAngle;
   //steps = (No. steps for a whole ellipse) * angle/(2*Pi)
-  steps := 4 * Trunc(angle * Sqrt((rec.width + rec.height) * scale));
+  steps := Round(CalcRoundingSteps((rec.width + rec.height) * scale));
+  steps := steps div 2; /////////////////////////////////
   if steps < 2 then steps := 2;
   SetLength(Result, Steps +1);
   //angle of the first step ...
@@ -2463,7 +2785,6 @@ begin
   sDiv60 := size * 0.60;
   sDiv120 := sDiv60 * 2;
   unitVec := GetUnitVector(ctrlPt, arrowTip);
-
   case arrowStyle of
     asNone:
       Exit;
@@ -2511,7 +2832,6 @@ begin
         result[4] := OffsetPoint(basePt, unitVec.Y * sDiv40, -unitVec.X * sDiv40);
         result[5] := OffsetPoint(arrowTip, unitVec.Y * sDiv40, -unitVec.X * sDiv40);
       end;
-
   end;
 end;
 //------------------------------------------------------------------------------
@@ -2519,6 +2839,18 @@ end;
 function GetDefaultArrowHeadSize(lineWidth: double): double;
 begin
   Result := lineWidth *3 + 7;
+end;
+//------------------------------------------------------------------------------
+
+procedure AdjustPoint(var pt: TPointD; const referencePt: TPointD; delta: double);
+var
+  vec: TPointD;
+begin
+  //Positive delta moves pt away from referencePt, and
+  //negative delta moves pt toward referencePt.
+  vec := GetUnitVector(referencePt, pt);
+  pt.X := pt.X + (vec.X * delta);
+  pt.Y := pt.Y + (vec.Y * delta);
 end;
 //------------------------------------------------------------------------------
 
@@ -2533,7 +2865,6 @@ begin
   highPath := high(path);
   if highPath < 1 then Exit;
   amount2 := amount;
-
   if pathEnd <> peEnd then
   begin
     //shorten start
@@ -2558,7 +2889,6 @@ begin
       result[0].Y := result[0].Y + vec.Y * amount;
     end;
   end;
-
   if pathEnd <> peStart then
   begin
     //shorten end
@@ -2623,11 +2953,9 @@ begin
   Result := nil;
   paIdx := 0;
   patCnt := length(pattern);
-
   path2 := path;
   highI := high(path2);
   if (highI < 1) or (patCnt = 0) then Exit;
-
   if closed and
     ((path2[highI].X <> path2[0].X) or (path2[highI].Y <> path2[0].Y)) then
   begin
@@ -2635,18 +2963,14 @@ begin
     setLength(path2, highI +2);
     path2[highI] := path2[0];
   end;
-
   vecs := GetVectors(path2);
   if (vecs[0].X = 0) and (vecs[0].Y = 0) then Exit; //not a line
-
   if not assigned(patternOffset) then
     patOff := 0 else
     patOff := patternOffset^;
-
   patLen := 0;
   for i := 0 to patCnt -1 do
     inc(patLen, pattern[i]);
-
   if patOff < 0 then
   begin
     patOff := patLen + patOff;
@@ -2655,13 +2979,11 @@ begin
   end
   else while patOff > patLen do
     patOff := patOff - patLen;
-
   //nb: each dash is made up of 2 or more pts
   dashCnt := 0;
   dashCapacity := 0;
   ptsCnt := 0;
   ptsCapacity := 0;
-
   filling := true;
   while patOff >= pattern[paIdx] do
   begin
@@ -2670,7 +2992,6 @@ begin
     paIdx := (paIdx + 1) mod patCnt;
   end;
   residualPat := pattern[paIdx] - patOff;
-
   pt := path2[0];
   ExtendDash(pt);
   i := 0;
@@ -2698,7 +3019,6 @@ begin
   end;
   NewDash;
   SetLength(Result, dashCnt);
-
   if not assigned(patternOffset) then Exit;
   patOff := 0;
   for i := 0 to paIdx -1 do
@@ -2716,6 +3036,8 @@ var
   tmp: TPathsD;
 begin
   Result := nil;
+  for i := 0 to High(pattern) do
+    if pattern[i] <= 0 then pattern[i] := 1;
   tmp := GetDashedPath(path, closed, pattern, patternOffset);
   for i := 0 to high(tmp) do
     AppendPath(Result, GrowOpenLine(tmp[i],
@@ -2795,6 +3117,29 @@ begin
 end;
 //------------------------------------------------------------------------------
 
+function PrePendPoint(const pt: TPointD; const p: TPathD): TPathD;
+var
+  len: integer;
+begin
+  len := Length(p);
+  SetLength(Result, len +1);
+  Result[0] := pt;
+  if len > 0 then Move(p[0], Result[1], len * SizeOf(TPointD));
+end;
+//------------------------------------------------------------------------------
+
+function PrePendPoints(const pt1, pt2: TPointD; const p: TPathD): TPathD;
+var
+  len: integer;
+begin
+  len := Length(p);
+  SetLength(Result, len +2);
+  Result[0] := pt1;
+  Result[1] := pt2;
+  if len > 0 then Move(p[0], Result[2], len * SizeOf(TPointD));
+end;
+//------------------------------------------------------------------------------
+
 function GetPointInQuadBezier(const a,b,c: TPointD; t: double): TPointD;
 var
   omt: double;
@@ -2807,15 +3152,11 @@ begin
 end;
 //------------------------------------------------------------------------------
 
-function FlattenQBezier(const pts: TPathsD; tolerance: double = 0.0): TPathsD;
-var
-  i, len: integer;
+function FlattenQBezier(const firstPt: TPointD; const pts: TPathD;
+  tolerance: double = 0.0): TPathD; overload;
 begin
-  len := Length(pts);
-  SetLength(Result, len);
   if tolerance <= 0.0 then tolerance := BezierTolerance;
-  for i := 0 to len -1 do
-    Result[i] := FlattenQBezier(pts[i], tolerance);
+  Result := FlattenQBezier(PrePendPoint(firstPt, pts), tolerance);
 end;
 //------------------------------------------------------------------------------
 
@@ -2888,7 +3229,6 @@ var
 begin
   resultLen := 0; resultCnt := 0;
   if tolerance <= 0.0 then tolerance := BezierTolerance;
-
   AddPoint(pt1);
   if ((pt1.X = pt2.X) and (pt1.Y = pt2.Y)) or
     ((pt2.X = pt3.X) and (pt2.Y = pt3.Y)) then
@@ -2912,15 +3252,10 @@ begin
 end;
 //------------------------------------------------------------------------------
 
-function FlattenCBezier(const pts: TPathsD; tolerance: double = 0.0): TPathsD;
-var
-  i, len: integer;
+function FlattenCBezier(const firstPt: TPointD; const pts: TPathD;
+  tolerance: double = 0.0): TPathD; overload;
 begin
-  len := Length(pts);
-  SetLength(Result, len);
-  if tolerance <= 0.0 then tolerance := BezierTolerance;
-  for i := 0 to len -1 do
-    Result[i] := FlattenCBezier(pts[i], tolerance);
+    Result := FlattenCBezier(PrePendPoint(firstPt, pts), tolerance);
 end;
 //------------------------------------------------------------------------------
 
@@ -2974,13 +3309,12 @@ var
   var
     p12, p23, p34, p123, p234, p1234: TPointD;
   begin
-    if (abs(p1.x + p3.x - 2*p2.x) + abs(p2.x + p4.x - 2*p3.x) +
-      abs(p1.y + p3.y - 2*p2.y) + abs(p2.y + p4.y - 2*p3.y)) < tolerance then
+    if  ((abs(p1.x +p3.x - 2*p2.x)  < tolerance) and
+        (abs(p2.x +p4.x - 2*p3.x) < tolerance)) and
+        ((abs(p1.y +p3.y - 2*p2.y)  < tolerance) and
+        (abs(p2.y +p4.y - 2*p3.y) < tolerance)) then
     begin
-      if resultCnt = length(result) then
-        setLength(result, length(result) +BuffSize);
-      result[resultCnt] := p4;
-      inc(resultCnt);
+      AddPoint(p4);
     end else
     begin
       p12.X := (p1.X + p2.X) / 2;
@@ -3004,10 +3338,9 @@ begin
   result := nil;
   resultLen := 0; resultCnt := 0;
   if tolerance <= 0.0 then tolerance := BezierTolerance;
-
   AddPoint(pt1);
-  if (pt1.X = pt2.X) and (pt1.Y = pt2.Y) and
-    (pt3.X = pt4.X) and (pt3.Y = pt4.Y) then
+  if ValueAlmostZero(pt1.X - pt2.X) and ValueAlmostZero(pt1.Y - pt2.Y) and
+    ValueAlmostZero(pt3.X - pt4.X) and ValueAlmostZero(pt3.Y - pt4.Y) then
   begin
     AddPoint(pt4)
   end else
@@ -3023,8 +3356,23 @@ begin
 end;
 //------------------------------------------------------------------------------
 
-function FlattenCSpline(const pts: TPathD;
-  tolerance: double = 0.0): TPathD;
+function FlattenCSpline(const priorCtrlPt, startPt: TPointD;
+  const pts: TPathD; tolerance: double = 0.0): TPathD;
+var
+  p: TPathD;
+  len: integer;
+begin
+  len := Length(pts);
+  SetLength(p, len + 2);
+  p[0] := startPt;
+  p[1] := ReflectPoint(priorCtrlPt, startPt);
+  if len > 0 then
+    Move(pts[0], p[2], len * SizeOf(TPointD));
+  Result := FlattenCSpline(p, tolerance);
+end;
+//------------------------------------------------------------------------------
+
+function FlattenCSpline(const pts: TPathD; tolerance: double = 0.0): TPathD;
 var
   resultCnt, resultLen: integer;
 
@@ -3077,9 +3425,7 @@ begin
   result := nil;
   len := Length(pts); resultLen := 0; resultCnt := 0;
   if (len < 4) then Exit;
-
   if tolerance <= 0.0 then tolerance := BezierTolerance;
-
   //ignore incomplete trailing control points
   if Odd(len) then dec(len);
   p := @pts[0];
@@ -3098,8 +3444,23 @@ begin
 end;
 //------------------------------------------------------------------------------
 
-function FlattenQSpline(const pts: TPathD;
-  tolerance: double = 0.0): TPathD;
+function FlattenQSpline(const priorCtrlPt, startPt: TPointD;
+  const pts: TPathD; tolerance: double = 0.0): TPathD;
+var
+  p: TPathD;
+  len: integer;
+begin
+  len := Length(pts);
+  SetLength(p, len + 2);
+  p[0] := startPt;
+  p[1] := ReflectPoint(priorCtrlPt, startPt);
+  if len > 0 then
+    Move(pts[0], p[2], len * SizeOf(TPointD));
+  Result := FlattenQSpline(p, tolerance);
+end;
+//------------------------------------------------------------------------------
+
+function FlattenQSpline(const pts: TPathD; tolerance: double = 0.0): TPathD;
 var
   resultCnt, resultLen: integer;
 
@@ -3146,7 +3507,6 @@ begin
   resultLen := 0;
   resultCnt := 0;
   if tolerance <= 0.0 then tolerance := BezierTolerance;
-
   p := @pts[0];
   AddPoint(p^);
   pt1 := p^; inc(p);
@@ -3162,39 +3522,14 @@ begin
 end;
 //------------------------------------------------------------------------------
 
-function MakePathI(const pts: array of integer): TPathD; overload;
-var
-  i,j, x,y, len: Integer;
-begin
-  Result := nil;
-  len := length(pts) div 2;
-  if len < 1 then Exit;
-
-  setlength(Result, len);
-  Result[0].X := pts[0];
-  Result[0].Y := pts[1];
-  j := 0;
-  for i := 1 to len -1 do
-  begin
-    x := pts[i*2];
-    y := pts[i*2 +1];
-    inc(j);
-    Result[j].X := x;
-    Result[j].Y := y;
-  end;
-  setlength(Result, j+1);
-end;
-//------------------------------------------------------------------------------
-
-function MakePathD(const pts: array of double): TPathD;
+function MakePath(const pts: array of double): TPathD;
 var
   i, j, len: Integer;
   x,y: double;
 begin
   Result := nil;
   len := length(pts) div 2;
-  if len < 1 then Exit;
-
+  if len = 0 then Exit;
   setlength(Result, len);
   Result[0].X := pts[0];
   Result[0].Y := pts[1];

@@ -2,8 +2,8 @@ unit Img32.Draw;
 
 (*******************************************************************************
 * Author    :  Angus Johnson                                                   *
-* Version   :  3.3                                                             *
-* Date      :  21 September 2021                                               *
+* Version   :  4.2                                                             *
+* Date      :  30 May 2022                                                     *
 * Website   :  http://www.angusj.com                                           *
 * Copyright :  Angus Johnson 2019-2021                                         *
 *                                                                              *
@@ -21,8 +21,7 @@ interface
 {.$DEFINE MemCheck} //for debugging only (adds a minimal cost to performance)
 
 uses
-  SysUtils, Classes, Types, Math, Img32, Img32.Vector,
-  Img32.Transform; //experimental;
+  SysUtils, Classes, Types, Math, Img32, Img32.Vector;
 
 type
   TFillRule = Img32.Vector.TFillRule;
@@ -78,6 +77,16 @@ type
   public
     constructor Create(color: TColor32 = clNone32);
     procedure SetColor(value: TColor32);
+  end;
+
+  TAliasedColorRenderer = class(TCustomRenderer)
+  private
+    fColor: TColor32;
+  protected
+    function Initialize(targetImage: TImage32): Boolean; override;
+    procedure RenderProc(x1, x2, y: integer; alpha: PByte); override;
+  public
+    constructor Create(color: TColor32 = clNone32);
   end;
 
   TEraseRenderer = class(TCustomRenderer)
@@ -202,6 +211,8 @@ type
     radius: double; color: TColor32); overload;
 
   procedure DrawLine(img: TImage32;
+    const pt1, pt2: TPointD; lineWidth: double; color: TColor32); overload;
+  procedure DrawLine(img: TImage32;
     const line: TPathD; lineWidth: double; color: TColor32;
     endStyle: TEndStyle; joinStyle: TJoinStyle = jsAuto;
     miterLimit: double = 2); overload;
@@ -324,8 +335,8 @@ type
   PArgbs = ^TArgbs;
   TArgbs = array [0.. (Maxint div SizeOf(TARGB)) -1] of TARGB;
 
-procedure ApplyClearType(img: TImage32;
-  textColor: TColor32 = clBlack32; bkColor: TColor32 = clWhite32);
+procedure ApplyClearType(img: TImage32; textColor: TColor32 = clBlack32;
+  bkColor: TColor32 = clWhite32);
 const
   centerWeighting = 5; //0 <= centerWeighting <= 25
 var
@@ -341,24 +352,23 @@ var
 begin
   // Precondition: the background to text drawn onto 'img' must be transparent
 
-  // multiplication tables (see Img32.pas)
   // 85 + (2 * 57) + (2 * 28) == 255
   primeTbl := PByteArray(@MulTable[85 + centerWeighting *2]);
   nearTbl  := PByteArray(@MulTable[57]);
   farTbl   := PByteArray(@MulTable[28 - centerWeighting]);
-
-  SetLength(rowBuffer, img.Width+4);
-  FillChar(rowBuffer[0], Length(rowBuffer) *  SizeOf(TColor32), 0);
+  SetLength(rowBuffer, img.Width +4);
 
   for h := 0 to img.Height -1 do
   begin
-    dst := PARGB(@img.Pixels[h * img.Width]);
     //each row of the image is copied into a temporary buffer ...
+    //noting that while 'dst' (img.Pixels) is initially the source
+    //it will later be destination (during image compression).
+    dst := PARGB(@img.Pixels[h * img.Width]);
     src := PARGB(@rowBuffer[2]);
     Move(dst^, src^, img.Width * SizeOf(TColor32));
     srcArr := PArgbs(rowBuffer);
 
-    //using this buffer update the image ...
+    //using this buffer compress the image ...
     w := 2;
     while w < img.Width do
     begin
@@ -379,7 +389,7 @@ begin
     end;
   end;
 
-  //The right 2/3 of the image can now be removed ...
+  //Following compression the right 2/3 of the image is redundant
    img.Crop(Types.Rect(0,0, img.Width div 3, img.Height));
 
   //currently text is white and the background is black
@@ -393,14 +403,15 @@ begin
   dst := PARGB(img.PixelBase);
   for h := 0 to img.Width * img.Height -1 do
   begin
-    if dst.R > 0 then
+    if dst.R = 0 then
+      dst.Color := bkColor
+    else
     begin
-      //blend font and background colors ...
+      //blend front (text) and background colors ...
       dst.R := (bg8_R + diff_R * dst.R) shr 8;
       dst.G := (bg8_G + diff_G * dst.G) shr 8;
       dst.B := (bg8_B + diff_B * dst.B) shr 8;
-    end
-    else dst.Color := 0;
+    end;
     inc(dst);
   end;
 end;
@@ -409,7 +420,7 @@ end;
 // Other miscellaneous functions
 //------------------------------------------------------------------------------
 
-////__Trunc: A very efficient Trunc() algorithm (ie rounds toward zero)
+////__Trunc: An efficient Trunc() algorithm (ie rounds toward zero)
 //function __Trunc(val: double): integer; {$IFDEF INLINE} inline; {$ENDIF}
 //var
 //  exp: integer;
@@ -419,7 +430,7 @@ end;
 //  Result := 0;
 //  if i64 = 0 then Exit;
 //  exp := Integer(Cardinal(i64 shr 52) and $7FF) - 1023;
-//  //nb: when exp == 1024 then val == INF or NAN
+//  //nb: when exp == 1024 then val == INF or NAN.
 //  if exp < 0 then Exit;
 //  Result := ((i64 and $1FFFFFFFFFFFFF) shr (52-exp)) or (1 shl exp);
 //  if val < 0 then Result := -Result;
@@ -948,7 +959,7 @@ type
 procedure Rasterize(const paths: TPathsD; const clipRec: TRect;
   fillRule: TFillRule; renderer: TCustomRenderer);
 var
-  i,j, xli, xri, maxW, maxH, aa: integer;
+  i,j, xli,xri, maxW, maxH, aa: integer;
   clipRec2: TRect;
   paths2: TPathsD;
   accum: double;
@@ -1005,24 +1016,34 @@ begin
       case fillRule of
         frEvenOdd:
           begin
-            aa := Round(Abs(accum) * 1275) mod 2550; //255 * 5/4 (see below)
+            aa := Round(Abs(accum) * 1275) mod 2550;              // *5
             if aa > 1275 then
-              byteBuffer[j] := Min(255, (2550 - aa) shr 2) else
-              byteBuffer[j] := Min(255, aa shr 2);
+              byteBuffer[j] := Min(255, (2550 - aa) shr 2) else   // /4
+              byteBuffer[j] := Min(255, aa shr 2);                // /4
           end;
         frNonZero:
           begin
-            byteBuffer[j] := Min(255, Round(Abs(accum) * 318)); //318=255*1.25
+            byteBuffer[j] := Min(255, Round(Abs(accum) * 318));
           end;
         frPositive:
           begin
+{$IFDEF REVERSE_ORIENTATION}
+            if accum < -0.002 then
+              byteBuffer[j] := Min(255, Round(-accum * 318));
+{$ELSE}
             if accum > 0.002 then
               byteBuffer[j] := Min(255, Round(accum * 318));
+{$ENDIF}
           end;
         frNegative:
           begin
+{$IFDEF REVERSE_ORIENTATION}
+            if accum > 0.002 then
+              byteBuffer[j] := Min(255, Round(accum * 318));
+{$ELSE}
             if accum < -0.002 then
               byteBuffer[j] := Min(255, Round(-accum * 318));
+{$ENDIF}
           end;
       end;
     end;
@@ -1061,13 +1082,13 @@ begin
 end;
 //------------------------------------------------------------------------------
 
-type THackedImage32 = class(TImage32); //to expose protected 'Changed' method.
+type THackedImage32 = class(TImage32); //exposes protected Changed method.
 
 function TCustomRenderer.Initialize(targetImage: TImage32): Boolean;
 begin
   fChangeProc := THackedImage32(targetImage).Changed;
   with targetImage do
-    result := Initialize(PixelBase, Width, Height, 4); //Result always true
+    result := Initialize(PixelBase, Width, Height, SizeOf(TColor32));
 end;
 //------------------------------------------------------------------------------
 
@@ -1096,14 +1117,14 @@ end;
 function TColorRenderer.Initialize(targetImage: TImage32): Boolean;
 begin
   //there's no point rendering if the color is fully transparent
-  result := inherited Initialize(targetImage) and (fAlpha > 0);
+  result := (fAlpha > 0) and inherited Initialize(targetImage);
 end;
 //------------------------------------------------------------------------------
 
 procedure TColorRenderer.SetColor(value: TColor32);
 begin
   fColor := value and $FFFFFF;
-  fAlpha := value shr 24;
+  fAlpha := GetAlpha(value);
 end;
 //------------------------------------------------------------------------------
 
@@ -1118,7 +1139,39 @@ begin
     //BlendToAlpha is marginally slower than BlendToOpaque but it's used
     //here because it's universally applicable.
     //Ord() is used here because very old compilers define PByte as a PChar
-    dst^ := BlendToAlpha(dst^, ((Ord(alpha^) * fAlpha) shr 8) shl 24 or fColor);
+    if Ord(alpha^) > 1 then
+      dst^ := BlendToAlpha(dst^, ((Ord(alpha^) * fAlpha) shr 8) shl 24 or fColor);
+    inc(dst); inc(alpha);
+  end;
+end;
+
+//------------------------------------------------------------------------------
+// TAliasedColorRenderer
+//------------------------------------------------------------------------------
+
+constructor TAliasedColorRenderer.Create(color: TColor32 = clNone32);
+begin
+  fColor := color;
+end;
+//------------------------------------------------------------------------------
+
+function TAliasedColorRenderer.Initialize(targetImage: TImage32): Boolean;
+begin
+  //there's no point rendering if the color is fully transparent
+  result := (GetAlpha(fColor) > 0) and
+    inherited Initialize(targetImage);
+end;
+//------------------------------------------------------------------------------
+
+procedure TAliasedColorRenderer.RenderProc(x1, x2, y: integer; alpha: PByte);
+var
+  i: integer;
+  dst: PColor32;
+begin
+  dst := GetDstPixel(x1,y);
+  for i := x1 to x2 do
+  begin
+    if Ord(alpha^) > 127 then dst^ := fColor; //ie no blending
     inc(dst); inc(alpha);
   end;
 end;
@@ -1385,6 +1438,7 @@ procedure TRadialGradientRenderer.SetParameters(const focalRect: TRect;
   innerColor, outerColor: TColor32;
   gradientFillStyle: TGradientFillStyle);
 var
+  w,h: integer;
   radX,radY: double;
 begin
   inherited SetParameters(innerColor, outerColor, gradientFillStyle);
@@ -1393,8 +1447,9 @@ begin
 
   fCenterPt.X  := (focalRect.Left + focalRect.Right) * 0.5;
   fCenterPt.Y  := (focalRect.Top + focalRect.Bottom) * 0.5;
-  radX    :=  RectWidth(focalRect) * 0.5;
-  radY    :=  RectHeight(focalRect) * 0.5;
+  RectWidthHeight(focalRect, w, h);
+  radX    :=  w * 0.5;
+  radY    :=  h * 0.5;
   if radX >= radY then
   begin
     fScaleX     := 1;
@@ -1443,7 +1498,7 @@ procedure TSvgRadialGradientRenderer.SetParameters(const ellipseRect: TRect;
   const focus: TPoint; innerColor, outerColor: TColor32;
   gradientFillStyle: TGradientFillStyle = gfsClamp);
 var
-  radii : TPointD;
+  w, h  : integer;
 begin
   inherited SetParameters(innerColor, outerColor);
   case gradientFillStyle of
@@ -1456,11 +1511,10 @@ begin
   if IsEmptyRect(ellipseRect) then Exit;
 
   fCenterPt  := RectD(ellipseRect).MidPoint;
-  radii.X    := RectWidth(ellipseRect) * 0.5;
-  radii.Y    :=  RectHeight(ellipseRect) * 0.5;
+  RectWidthHeight(ellipseRect, w, h);
+  fA    := w * 0.5;
+  fB    := h * 0.5;
 
-  fA    :=  RectWidth(ellipseRect) * 0.5;
-  fB    :=  RectHeight(ellipseRect) * 0.5;
   fFocusPt.X := focus.X - fCenterPt.X;
   fFocusPt.Y := focus.Y - fCenterPt.Y;
   fColorsCnt := Ceil(Hypot(fA*2, fB*2)) +1;
@@ -1685,6 +1739,19 @@ begin
 end;
 //------------------------------------------------------------------------------
 
+procedure DrawLine(img: TImage32;
+  const pt1, pt2: TPointD; lineWidth: double; color: TColor32);
+var
+  lines: TPathsD;
+begin
+  setLength(lines, 1);
+  setLength(lines[0], 2);
+  lines[0][0] := pt1;
+  lines[0][1] := pt2;
+  DrawLine(img, lines, lineWidth, color, esRound);
+end;
+//------------------------------------------------------------------------------
+
 procedure DrawLine(img: TImage32; const line: TPathD; lineWidth: double;
   color: TColor32; endStyle: TEndStyle; joinStyle: TJoinStyle;
   miterLimit: double);
@@ -1725,13 +1792,15 @@ procedure DrawLine(img: TImage32; const lines: TPathsD;
   endStyle: TEndStyle; joinStyle: TJoinStyle; miterLimit: double);
 var
   lines2: TPathsD;
-  cr: TColorRenderer;
+  cr: TCustomRenderer;
 begin
   if not assigned(lines) then exit;
   if (lineWidth < MinStrokeWidth) then lineWidth := MinStrokeWidth;
   lines2 := Outline(lines, lineWidth, joinStyle, endStyle, miterLimit);
 
-  cr := TColorRenderer.Create(color);
+  if img.AntiAliased then
+    cr := TColorRenderer.Create(color) else
+    cr := TAliasedColorRenderer.Create(color);
   try
     if cr.Initialize(img) then
     begin
@@ -1791,9 +1860,14 @@ procedure DrawDashedLine(img: TImage32; const line: TPathD;
 var
   lines: TPathsD;
   cr: TColorRenderer;
+  i: integer;
 begin
   if (lineWidth < MinStrokeWidth) then lineWidth := MinStrokeWidth;
   if not assigned(line) then exit;
+
+  for i := 0 to High(dashPattern) do
+    if dashPattern[i] <= 0 then dashPattern[i] := 1;
+
   lines := GetDashedPath(line, endStyle = esPolygon, dashPattern, patternOffset);
   if Length(lines) = 0 then Exit;
   case joinStyle of
@@ -1835,10 +1909,15 @@ procedure DrawDashedLine(img: TImage32; const line: TPathD;
   dashPattern: TArrayOfInteger; patternOffset: PDouble; lineWidth: double;
   renderer: TCustomRenderer; endStyle: TEndStyle; joinStyle: TJoinStyle);
 var
+  i: integer;
   lines: TPathsD;
 begin
   if (not assigned(line)) or (not assigned(renderer)) then exit;
   if (lineWidth < MinStrokeWidth) then lineWidth := MinStrokeWidth;
+
+  for i := 0 to High(dashPattern) do
+    if dashPattern[i] <= 0 then dashPattern[i] := 1;
+
   lines := GetDashedPath(line, endStyle = esPolygon, dashPattern, patternOffset);
   if Length(lines) = 0 then Exit;
   lines := Outline(lines, lineWidth, joinStyle, endStyle);
@@ -1868,11 +1947,16 @@ procedure DrawInvertedDashedLine(img: TImage32;
   patternOffset: PDouble; lineWidth: double; endStyle: TEndStyle;
   joinStyle: TJoinStyle = jsAuto);
 var
+  i: integer;
   lines: TPathsD;
   renderer: TInverseRenderer;
 begin
   if not assigned(line) then exit;
   if (lineWidth < MinStrokeWidth) then lineWidth := MinStrokeWidth;
+
+  for i := 0 to High(dashPattern) do
+    if dashPattern[i] <= 0 then dashPattern[i] := 1;
+
   lines := GetDashedPath(line, endStyle = esPolygon, dashPattern, patternOffset);
   if Length(lines) = 0 then Exit;
   lines := Outline(lines, lineWidth, joinStyle, endStyle);
@@ -1934,10 +2018,12 @@ end;
 procedure DrawPolygon(img: TImage32; const polygons: TPathsD;
   fillRule: TFillRule; color: TColor32);
 var
-  cr: TColorRenderer;
+  cr: TCustomRenderer;
 begin
   if not assigned(polygons) then exit;
-  cr := TColorRenderer.Create(color);
+  if img.AntiAliased then
+    cr := TColorRenderer.Create(color) else
+    cr := TAliasedColorRenderer.Create(color);
   try
     if cr.Initialize(img) then
     begin
@@ -1965,6 +2051,7 @@ end;
 procedure DrawPolygon_ClearType(img: TImage32; const polygons: TPathsD;
   fillRule: TFillRule; color: TColor32; backColor: TColor32);
 var
+  w, h: integer;
   tmpImg: TImage32;
   rec: TRect;
   tmpPolygons: TPathsD;
@@ -1973,17 +2060,15 @@ begin
   if not assigned(polygons) then exit;
 
   rec := GetBounds(polygons);
-  tmpImg := TImage32.Create(RectWidth(rec) *3, RectHeight(rec));
+  RectWidthHeight(rec, w, h);
+  tmpImg := TImage32.Create(w *3, h);
   try
     tmpPolygons := OffsetPath(polygons, -rec.Left, -rec.Top);
     tmpPolygons := ScalePath(tmpPolygons, 3, 1);
     cr := TColorRenderer.Create(clBlack32);
     try
       if cr.Initialize(tmpImg) then
-      begin
         Rasterize(tmpPolygons, tmpImg.bounds, fillRule, cr);
-        cr.NotifyChange;
-      end;
     finally
       cr.Free;
     end;
