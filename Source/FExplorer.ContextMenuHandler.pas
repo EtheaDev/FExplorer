@@ -50,7 +50,7 @@ type
     //IContextMenu2, IContextMenu3,
     IShellExtInit)
   private
-    fFileName: string;
+    FFileName: string;
     FOwnerDrawId: UINT;
   protected
     {Declare IContextMenu methods here}
@@ -108,11 +108,15 @@ var
   medium: TStgMedium;
   fe: TFormatEtc;
   LFileExt: string;
+  LCountFile: Integer;
 begin
+  TLogPreview.Add('TFEContextMenu.InitShellExt');
+
   Result := E_FAIL;
   // check if the lpdobj pointer is nil
-  if Assigned (lpdobj) then
+  if Assigned(lpdobj) then
   begin
+    TLogPreview.Add('Assigned(lpdobj)');
     with fe do
     begin
       cfFormat := CF_HDROP;
@@ -123,15 +127,18 @@ begin
     end;
     // transform the lpdobj data to a storage medium structure
     Result := lpdobj.GetData(fe, medium);
-    if not Failed (Result) then
+    if not Failed(Result) then
     begin
+      LCountFile := DragQueryFile(medium.hGlobal, $FFFFFFFF, nil, 0);
+      TLogPreview.Add('LCountFile: '+IntToStr(LCountFile));
       // check if only one file is selected
-      if DragQueryFile(medium.hGlobal, $FFFFFFFF, nil, 0) = 1 then
+      if LCountFile = 1 then
       begin
-        SetLength(fFileName, 1000);
-        DragQueryFile(medium.hGlobal, 0, PChar (fFileName), 1000);
+        SetLength(FFileName, 1000);
+        DragQueryFile(medium.hGlobal, 0, PChar (FFileName), 1000);
         // realign string
-        fFileName := PChar(fFileName);
+        FFileName := PChar(FFileName);
+        TLogPreview.Add('FFileName: '+FFileName);
         LFileExt := ExtractFileExt(fFileName);
         // only for .xml and .xml.p7m files di Fatture Elettroniche
         if IndexText(LFileExt, ['.xml', '.xml.p7m', '.p7m']) <> -1 then
@@ -171,17 +178,24 @@ function TFEContextMenu.InvokeCommand(var lpici: TCMInvokeCommandInfo): HResult;
 var
   Reg: TRegistry;
   LCommand: string;
+  LFileName: string;
 
   procedure EditorNotInstalled;
   begin
-    MessageBox(0, 'Editor non installato',
+    MessageBox(0, '"Editor Fattura Elettronica" non installato',
       'Visualizzatore Fattura Elettronica', MB_OK);
+  end;
+
+  procedure EditorNotFound;
+  begin
+    MessageBox(0, '"Editor Fattura Elettronica" non trovato!',
+      'Error opening file', MB_OK);
   end;
 
 begin
   Result := NOERROR;
   // Make sure we are not being called by an application
-  if HiWord(Integer(lpici.lpVerb)) <> 0 then
+  if HiWord(NativeInt(lpici.lpVerb)) <> 0 then
   begin
     Result := E_FAIL;
     Exit;
@@ -195,7 +209,8 @@ begin
   // execute the command specified by lpici.lpVerb.
   if LoWord(lpici.lpVerb) = MENU_ITEM_PREVIEW_INVOICE then
   begin
-    //TLogPreview.Add('TFEContextMenu: Menu clicked');
+    TLogPreview.Add('TMDContextMenu: Menu clicked');
+
     Reg := TRegistry.Create(KEY_READ);
     try
       Reg.RootKey := HKEY_CLASSES_ROOT;
@@ -204,15 +219,20 @@ begin
       begin
         LCommand := Reg.ReadString('');
         LCommand := StringReplace(LCommand,' "%1"','', []);
-        LCommand := StringReplace(LCommand,'"','', [rfReplaceAll]);
-        TLogPreview.Add(Format('TFEContextMenuHandler: Open Editor: %s', [LCommand]));
-        if (LCommand <> '') and FileExists(LCommand) then
-          ShellExecute(0, 'Open', PChar(LCommand), PChar(FFileName), nil, SW_SHOWNORMAL)
+        LFileName := format('"%s"',[FFileName]);
+        TLogPreview.Add(Format('TFEContextMenuHandler: Command: %s FileName %s',
+          [LCommand, LFileName]));
+        if (FFileName <> '') and FileExists(FFileName) then
+        begin
+          TLogPreview.Add(Format('TFEContextMenuHandler: ShellExecute: %s for file %s',
+            [LCommand, LFileName]));
+          ShellExecute(0, 'Open', PChar(LCommand), PChar(LFileName), nil, SW_SHOWNORMAL);
+        end
         else
           EditorNotInstalled;
       end
       else
-        EditorNotInstalled;
+        EditorNotFound;
     finally
       Reg.Free;
     end;

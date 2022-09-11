@@ -267,13 +267,15 @@ end;
 
 //- BG ----------------------------------------------------------- 10.03.2006 --
 constructor TBegaMetaFilePrinter.create(AOwner: TComponent);
+const
+  defaultPrintMargin = 5; //20;
 begin
   inherited create(AOwner);
   FPrintScale := 1.0;
-  FPrintMargins.Left := 20;
-  FPrintMargins.Right := 20;
-  FPrintMargins.Top := 20;
-  FPrintMargins.Bottom := 20;
+  FPrintMargins.Left := defaultPrintMargin;
+  FPrintMargins.Right := defaultPrintMargin;
+  FPrintMargins.Top := defaultPrintMargin;
+  FPrintMargins.Bottom := defaultPrintMargin;
   FOwnsPages := True;
 
   try

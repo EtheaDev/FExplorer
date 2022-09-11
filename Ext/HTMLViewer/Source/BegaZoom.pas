@@ -24,7 +24,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 unit BegaZoom;
 
 interface
-{$ifndef NoFlatScrollbars}
 
 uses
   Classes, Controls, ExtCtrls, Math, Types,
@@ -81,9 +80,7 @@ type
 procedure begaZoomControlAroundPoint(ZoomedControl: TControl; Zoom: Double; Around: TPoint);
 function begaZoomFactorToMode(Factor: Double): TBegaZoomMode;
 
-{$endif NoFlatScrollbars}
 implementation
-{$ifndef NoFlatScrollbars}
 
 //- BG ----------------------------------------------------------- 12.11.2006 --
 procedure begaZoomControlAroundPoint(ZoomedControl: TControl; Zoom: Double; Around: TPoint);
@@ -238,5 +235,4 @@ begin
     Result := nil;
 end;
 
-{$endif NoFlatScrollbars}
 end.

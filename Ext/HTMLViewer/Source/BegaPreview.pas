@@ -42,7 +42,7 @@ uses
   // own units
   BegaMetaFilePrinter,
   BegaPreviewPanel,
-  BegaZoom, BegaScrollBox;
+  BegaZoom, BegaScrollBox, System.ImageList;
 
 const
    crZoom = 40;
@@ -351,9 +351,9 @@ begin
   inherited;
   FOptions := CBegaPreviewOptionsDefault;
   FZoom := 1.0;
-  ZoomBox.ItemIndex := 0;
+  ZoomBox.ItemIndex := 2; //default fittowidth
   ContentZoomBox.ItemIndex := 6;
-  UnitsBox.ItemIndex := 0;
+  UnitsBox.ItemIndex := 1; //default centimeters
   loadPreviewCursors;
 //  ZoomingClick(Zooming);
   FMFPrinter := TBegaMetaFilePrinter.Create(Self);

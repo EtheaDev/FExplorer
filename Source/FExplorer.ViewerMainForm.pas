@@ -384,6 +384,7 @@ uses
   , BegaPreview
   , SynPDF
   , vmHtmlToPdf
+  , uLogExcept
   , PKCS7Extractor
   ;
 
@@ -481,7 +482,7 @@ end;
 
 procedure TEditingFile.RenderAllegati;
 var
-  LIndex: Integer;
+  LIndex: NativeInt;
   LAllegato: TLinkedDoc;
   LButton: TToolButton;
 begin
@@ -540,6 +541,7 @@ begin
 
   FileName := EditFileName;
   Fextension := ExtractFileExt(FileName);
+
   FIcon := TIcon.Create;
   if FileExists(FileName) then
     FIcon.Handle := ExtractAssociatedIcon(hInstance, PChar(DoubleQuote(FileName)),Filter);
@@ -647,6 +649,7 @@ function TfrmMain.OpenFile(const FileName : string;
 var
   EditingFile: TEditingFile;
   I, J: Integer;
+  LErrorMsg: string;
 begin
   Screen.Cursor := crHourGlass;
   Try
@@ -698,7 +701,11 @@ begin
     begin
       Result := False;
       if ARaiseError then
-        Raise EFilerError.CreateFmt(FILE_NOT_FOUND,[FileName]);
+      begin
+        LErrorMsg := Format(FILE_NOT_FOUND,[FileName]);
+        StatusBar.Panels[STATUSBAR_MESSAGE].Text := LErrorMsg;
+        Raise EFilerError.Create(LErrorMsg);
+      end;
     end;
   Finally
     FProcessingFiles := False;
@@ -971,12 +978,14 @@ var
   I: Integer;
   LFileName: string;
   LIndex: Integer;
+  LCurrentFileName: string;
 begin
   LIndex := -1;
   for I := 0 to FEditorSettings.OpenedFileList.Count-1 do
   begin
+    LCurrentFileName := FEditorSettings.CurrentFileName;
     LFileName := FEditorSettings.OpenedFileList.Strings[I];
-    if OpenFile(LFileName, False) and SameText(LFileName, FEditorSettings.CurrentFileName) then
+    if OpenFile(LFileName, False) and SameText(LFileName, LCurrentFileName) then
       LIndex := I;
   end;
   if LIndex <> -1 then
@@ -988,6 +997,7 @@ procedure TfrmMain.FormCreate(Sender: TObject);
 var
   InitialDir : string;
   FileVersionStr: string;
+  LFileName: string;
 begin
   FThumbnailResource := TdmThumbnailResources.Create(nil);
   //creo la lista dei files aperti
@@ -1028,11 +1038,13 @@ begin
   LoadOpenedFiles;
 
   //Inizializza Open e Save Dialog dalla Dir di lancio del programma
-  if ParamStr(1) <> '' then
+  LFileName := ParamStr(1);
+  if LFileName <> '' then
   begin
+    TLogPreview.Add(Format('ParamStr(1): %s', [LFileName]));
     //Carico l'eventuale file esterno
-    InitialDir := ParamStr(1);
-    OpenFile(ParamStr(1));
+    InitialDir := ExtractFilePath(LFileName);
+    OpenFile(LFileName);
     UpdateInvoiceViewer;
   end
   else
@@ -1168,7 +1180,7 @@ begin
     LTabSheet := TTabSheet.Create(self);
     LTabSheet.PageControl := PageControl;
     //Attacco al TAG del tabsheet l'oggetto del file da editare
-    LTabSheet.Tag := Integer(EditingFile);
+    LTabSheet.Tag := NativeInt(EditingFile);
     LTabSheet.Caption := EditingFile.Name;
     LTabSheet.Imagename := EditingFile.ImageName+'-gray';
     LTabSheet.Parent := PageControl;

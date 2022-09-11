@@ -1,12 +1,12 @@
 {******************************************************************************}
 {                                                                              }
-{       SVG Text Editor: Shell extensions for SVG files                        }
+{       FExplorer: Shell extensions per Fattura Elettronica                    }
 {       (Preview Panel, Thumbnail Icon, F.E.Viewer)                            }
 {                                                                              }
 {       Copyright (c) 2021-2022 (Ethea S.r.l.)                                 }
 {       Author: Carlo Barazzetta                                               }
 {                                                                              }
-{       https://github.com/EtheaDev/SVGShellExtensions                         }
+{       https://github.com/EtheaDev/FExplorer                                  }
 {                                                                              }
 {******************************************************************************}
 {                                                                              }
