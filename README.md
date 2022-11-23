@@ -64,7 +64,7 @@ Per installare manualmente FExplorer.dll seguire questi step:
 ## Release Notes ##
 
 23 Nov 2022 - Versione 2.1.0
-- Aggiunto "Stile" SudTirolo (ITA/DEU)[16]
+- Aggiunto "Stile" SudTirolo (ITA/DEU) [github.com/provbz/fatturapa-xsl-southtyrol][16]
 - Aggiunta possibilità di spegnere pannello anteprima icona e testo XML nel Viewer
 
 11 Sep 2022 - Versione 2.0.0
