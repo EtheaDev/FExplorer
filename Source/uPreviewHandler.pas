@@ -34,7 +34,8 @@ uses
   Windows,
   uPreviewContainer,
   System.Generics.Collections,
-  ActiveX;
+  ActiveX,
+  FExplorer.PreviewForm;
 
 
 type
@@ -70,7 +71,7 @@ type
     FCurrentPPI: Integer;
     FBackgroundColor: TColorRef;
     FBounds: TRect;
-    FContainer: TPreviewContainer;
+    FContainer: TFrmPreview;
     FLogFont: TLogFont;
     FParentWindow: HWND;
     FPreviewHandler: TPreviewHandler;
@@ -81,7 +82,7 @@ type
     procedure SetBounds(const Value: TRect);
     procedure UpdateContainerBoundsRect;
   protected
-    procedure CheckContainer;
+    function CheckContainer: Boolean;
     procedure CheckPreviewHandler;
     procedure InternalUnload; virtual; abstract;
     procedure InternalDoPreview; virtual; abstract;
@@ -95,7 +96,7 @@ type
     property  Site: IInterface read FSite;
   public
     destructor Destroy; override;
-    property  Container: TPreviewContainer read FContainer write FContainer;
+    property  Container: TFrmPreview read FContainer write FContainer;
     property PreviewHandlerClass: TPreviewHandlerClass read FPreviewHandlerClass write FPreviewHandlerClass;
   end;
 
@@ -110,16 +111,15 @@ uses
     ExtCtrls,
     uMisc,
     uLogExcept,
-    FExplorer.PreviewForm,
-    FExplorer.PreviewHandlerRegister;
+    uPreviewHandlerRegister;
 
 
 destructor TComPreviewHandler.Destroy;
 begin
   TLogPreview.Add('Destroy Init');
-  inherited Destroy;
   FreeAndNil(FContainer);
   FreeAndNil(FPreviewHandler);
+  inherited Destroy;
   TLogPreview.Add('Destroy Done');
 end;
 
@@ -138,35 +138,39 @@ begin
   end;
 end;
 
-procedure TComPreviewHandler.CheckContainer;
+function TComPreviewHandler.CheckContainer: Boolean;
+var
+  LRect: TRect;
 begin
   TLogPreview.Add('CheckContainer Init');
-  TLogPreview.Add('CheckContainer FContainer = nil '+BoolToStr(FContainer = nil, True)+
-    'Fbounds.Width: '+FBounds.width.ToString);
   if (FContainer = nil) and IsWindow(FParentWindow) then
   begin
-    TLogPreview.Add('ParentWindow '+IntToHex(ParentWindow, 8));
+    TLogPreview.Add('ParentWindow '+IntToHex(FParentWindow, 8));
 
-    FContainer := TPreviewContainer.Create(nil);
+    GetWindowRect(FParentWindow, LRect);
+    TLogPreview.Add('CheckContainer'+GetRect(LRect,' - GetWindowRect'));
+
+    FContainer := TFrmPreview.Create(nil);
+
+    TLogPreview.Add('FContainer created:'+GetRect(FBounds,' FBounds'));
     FContainer.ParentWindow := FParentWindow;
     FContainer.BorderStyle := bsNone;
-    FContainer.Visible := True;
     UpdateContainerBoundsRect;
     FContainer.PreviewHandler := Self;
     TFrmPreview.AParent := FContainer;
   end;
   TLogPreview.Add('CheckContainer Done');
+  Result := Assigned(FContainer);
 end;
 
 procedure TComPreviewHandler.CheckPreviewHandler;
 begin
   TLogPreview.Add('CheckPreviewHandler Init');
-  if FContainer = nil then
-    CheckContainer;
-
-  if FPreviewHandler = nil then
-    FPreviewHandler := PreviewHandlerClass.Create(Container);
-
+  if CheckContainer then
+  begin
+    if FPreviewHandler = nil then
+      FPreviewHandler := PreviewHandlerClass.Create(Container);
+  end;
   TLogPreview.Add('CheckPreviewHandler Done');
 end;
 
@@ -190,6 +194,8 @@ begin
 end;
 
 function TComPreviewHandler.GetWindow(out wnd: HWND): HRESULT;
+var
+  LRect: TRect;
 begin
   TLogPreview.Add('GetWindow Init');
   if (Container = nil) or (Container.Handle = 0) then
@@ -200,6 +206,9 @@ begin
   else
   begin
     wnd := Container.Handle;
+    GetWindowRect(wnd, LRect);
+    TLogPreview.Add('GetWindow'+GetRect(LRect,' - GetWindowRect'));
+
     result := S_OK;
   end;
   TLogPreview.Add('GetWindow Done');
@@ -207,6 +216,7 @@ end;
 
 function TComPreviewHandler.IPreviewHandler_DoPreview: HRESULT;
 begin
+  Result := S_OK;
   TLogPreview.Add('IPreviewHandler_DoPreview Init');
   try
     CheckPreviewHandler;
@@ -216,14 +226,14 @@ begin
       TLogPreview.Add(Format('Error in TComPreviewHandler.IPreviewHandler_DoPreview - Message: %s: Trace %s',
         [E.Message, E.StackTrace]));
   end;
-  Result := S_OK;
   TLogPreview.Add('IPreviewHandler_DoPreview Done');
 end;
 
 function TComPreviewHandler.QueryFocus(var phwnd: HWND): HRESULT;
 begin
   TLogPreview.Add('QueryFocus Init');
-  phwnd := GetFocus;
+  if Container <> nil then
+    phwnd := GetFocus;
   Result := S_OK;
   TLogPreview.Add('QueryFocus Done');
 end;
@@ -248,7 +258,9 @@ begin
   if (Value.Width <> 0) and (Value.Height <> 0) then
   begin
     FBounds := Value;
-    CheckPreviewHandler;
+    FBounds.Left := 0;
+    FBounds.Top := 0;
+    //CheckPreviewHandler;
     UpdateContainerBoundsRect;
   end;
 end;
@@ -258,6 +270,7 @@ begin
   TLogPreview.Add('SetFocus Init');
   if Container <> nil then
   begin
+    Container.Visible := True;
     if GetKeyState(VK_SHIFT) < 0 then
       Container.SetFocusTabLast
     else
@@ -280,6 +293,7 @@ end;
 function TComPreviewHandler.SetRect(var prc: TRect): HRESULT;
 var
   LNewPPI: Integer;
+  LRect: TRect;
 begin
   LNewPPI := GetDpiForWindow(FParentWindow);
 
@@ -287,16 +301,13 @@ begin
     ' prc.Width: '+prc.Width.ToString+
     ' prc.Height: '+prc.Height.ToString+
     ' GetDpiForWindow: '+LNewPPI.ToString);
-(*
-  if (LNewPPI <> FCurrentPPI) then
-  begin
-    FreeAndNil(FPreviewHandler);
-    FreeAndNil(FContainer);
-    CheckPreviewHandler;
-    InternalDoPreview;
-  end;
-*)
-  Bounds := prc;
+
+  GetWindowRect(FParentWindow, LRect);
+  TLogPreview.Add('SetRect'+GetRect(LRect,' - GetWindowRect'));
+
+  //Bounds is calculated on Windows Rect
+  TLogPreview.Add('SetRect: Imposto Bounds dalla Window'+GetRect(LRect, ' LRect'));
+  Bounds := TRect.Create(0,0,LRect.Width,LRect.Height);
   FCurrentPPI := LNewPPI;
   TLogPreview.Add('FCurrentPPI := LNewPPI: '+LNewPPI.ToString);
   Result := S_OK;
@@ -308,13 +319,14 @@ begin
   TLogPreview.Add('SetSite Init');
   FSite := PUnkSite;
   FPreviewHandlerFrame := FSite as IPreviewHandlerFrame;
+  FBounds := TRect.Create(0,0,0,0);
   result := S_OK;
   TLogPreview.Add('SetSite Done');
 end;
 
 function TComPreviewHandler.SetTextColor(color: Cardinal): HRESULT;
 begin
-  TLogPreview.Add('SetTextColor Init');
+  TLogPreview.Add('SetTextColor Init - Color:'+Color.ToString);
   FTextColor := color;
   if Container <> nil then
     Container.SetTextColor(FTextColor);
@@ -327,10 +339,13 @@ var
   LMonitor: TMonitor;
   LRect: TRect;
 begin
-  TLogPreview.Add('SetWindow Init');
+  TLogPreview.Add('SetWindow Init'+GetRect(prc, '-prc:'));
   FParentWindow := hwnd;
 //  FCurrentPPI := 96;
   FCurrentPPI := GetDpiForWindow(hwnd);
+
+  GetWindowRect(FParentWindow, LRect);
+  TLogPreview.Add('SetWindow'+GetRect(LRect,' - GetWindowRect'));
 
   TLogPreview.Add('SetWindow: Window DPI: '+FCurrentPPI.ToString);
 
@@ -341,6 +356,11 @@ begin
   ' Height: '+LMonitor.Height.ToString+
   ' PPI: '+LMonitor.PixelsPerInch.ToString);
 
+  TLogPreview.Add('SetWindow: Imposto Bounds'+GetRect(LRect, ' LRect'));
+  Bounds := TRect.Create(0,0,LRect.Width,LRect.Height);
+
+  Result := S_OK;
+(*
   if (prc.Width <> 0) and (prc.Height <> 0) then
   begin
     Bounds := prc;
@@ -354,6 +374,7 @@ begin
     Bounds := LRect;
     Result := S_OK;
   end;
+*)
   TLogPreview.Add('SetWindow Done');
 end;
 
@@ -367,12 +388,12 @@ end;
 
 function TComPreviewHandler.Unload: HRESULT;
 begin
-  TLogPreview.Add('Unload Init');
+  TLogPreview.Add('TComPreviewHandler Unload Init');
   if PreviewHandler <> nil then
     PreviewHandler.Unload;
   InternalUnload;
   result := S_OK;
-  TLogPreview.Add('Unload Done');
+  TLogPreview.Add('TComPreviewHandler Unload Done');
 end;
 
 constructor TPreviewHandler.Create(AParent: TWinControl);

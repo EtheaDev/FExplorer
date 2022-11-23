@@ -81,6 +81,7 @@ type
     FUseDarkStyle: boolean;
     FXMLFontName: string;
     FShowXML: Boolean;
+    FShowIcon: Boolean;
     FPreferD2D: Boolean;
     FActivePageIndex: Integer;
     FThemeSelection: TThemeSelection;
@@ -111,7 +112,7 @@ type
     class property SettingsFileName: string read GetSettingsFileName;
 
     procedure UpdateSettings(const AXMLFontName, AHTMLFontName: string;
-      AXMLFontSize, AHTMLFontSize: Integer; AEditorVisible: Boolean);
+      AXMLFontSize, AHTMLFontSize: Integer; AEditorVisible: Boolean;  AIconVisible: Boolean);
     procedure ReadSettings(const ASynEditHighilighter: TSynCustomHighlighter;
       const ASynEditorOptions: TSynEditorOptionsContainer); virtual;
     procedure WriteSettings(const ASynEditHighilighter: TSynCustomHighlighter;
@@ -126,6 +127,7 @@ type
     property HTMLFontName: string read FHTMLFontName write FHTMLFontName;
     property StyleName: string read FStyleName write FStyleName;
     property ShowXML: Boolean read FShowXML write FShowXML;
+    property ShowIcon: Boolean read FShowIcon write FShowIcon;
     property SplitterPos: Integer read FSplitterPos write FSplitterPos;
     property PreferD2D: Boolean read FPreferD2D write SetPreferD2D;
     property SVGEngine: TSVGEngine read FSVGEngine write SetSVGEngine;
@@ -351,6 +353,7 @@ begin
   FXMLFontName := FIniFile.ReadString('Global', 'XMLFontName', 'Consolas');
   FHTMLFontName := FIniFile.ReadString('Global', 'HTMLFontName', 'Arial');
   FShowXML := FIniFile.ReadInteger('Global', 'ShowXML', 0) = 1;
+  FShowIcon := FIniFile.ReadInteger('Global', 'ShowIcon', 1) = 1;
   FSplitterPos := FIniFile.ReadInteger('Global', 'SplitterPos', 33);
   LPreferD2D := FIniFile.ReadInteger('Global', 'PreferD2D', 0);
   PreferD2D := not ((LPreferD2D = 0) or (LPreferD2D = 255));
@@ -425,13 +428,14 @@ begin
 end;
 
 procedure TSettings.UpdateSettings(const AXMLFontName, AHTMLFontName: string;
-  AXMLFontSize, AHTMLFontSize: Integer; AEditorVisible: Boolean);
+  AXMLFontSize, AHTMLFontSize: Integer; AEditorVisible: Boolean; AIconVisible: Boolean);
 begin
   XMLFontSize := AXMLFontSize;
   XMLFontName := AXMLFontName;
   HTMLFontSize := AHTMLFontSize;
   HTMLFontName := AHTMLFontName;
   ShowXML := AEditorVisible;
+  ShowIcon:= AIconVisible;
 end;
 
 procedure TSettings.WriteSettings(const ASynEditHighilighter: TSynCustomHighlighter;
@@ -449,6 +453,7 @@ begin
 
   FIniFile.WriteString('Global', 'StyleName', FStyleName);
   FIniFile.WriteInteger('Global', 'ShowXML', Ord(FShowXML));
+  FIniFile.WriteInteger('Global', 'ShowIcon', Ord(FShowIcon));
   FIniFile.WriteInteger('Global', 'SplitterPos', FSplitterPos);
   FIniFile.WriteInteger('Global', 'PreferD2D', Ord(FPreferD2D));
   FIniFile.WriteInteger('Global', 'SVGEngine', Ord(FSVGEngine));

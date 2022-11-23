@@ -1,39 +1,30 @@
-object FrmPreview: TFrmPreview
+inherited FrmPreview: TFrmPreview
   Left = 522
   Top = 286
-  ClientHeight = 651
-  ClientWidth = 672
-  Color = clBtnFace
+  ClientHeight = 613
+  ClientWidth = 601
   DoubleBuffered = True
-  Font.Charset = DEFAULT_CHARSET
-  Font.Color = clWindowText
-  Font.Height = -11
   Font.Name = 'Segoe UI'
-  Font.Style = []
-  OldCreateOrder = False
-  OnAfterMonitorDpiChanged = FormAfterMonitorDpiChanged
-  OnCreate = FormCreate
-  OnDestroy = FormDestroy
   OnResize = FormResize
-  PixelsPerInch = 96
+  ExplicitWidth = 617
+  ExplicitHeight = 652
   TextHeight = 13
   object Splitter: TSplitter
     Left = 0
     Top = 145
-    Width = 672
+    Width = 601
     Height = 6
     Cursor = crVSplit
     Align = alTop
     AutoSnap = False
     MinSize = 100
     OnMoved = SplitterMoved
-    ExplicitTop = 329
     ExplicitWidth = 888
   end
   object PanelTop: TPanel
     Left = 0
     Top = 0
-    Width = 672
+    Width = 601
     Height = 35
     Align = alTop
     BevelOuter = bvNone
@@ -41,7 +32,7 @@ object FrmPreview: TFrmPreview
     object ToolBar: TToolBar
       Left = 0
       Top = 0
-      Width = 672
+      Width = 605
       Height = 35
       Align = alClient
       AutoSize = True
@@ -51,7 +42,6 @@ object FrmPreview: TFrmPreview
       EdgeOuter = esNone
       Images = SVGIconImageList
       List = True
-      ShowCaptions = True
       TabOrder = 0
       object ToolButtonShowText: TToolButton
         Left = 0
@@ -67,7 +57,7 @@ object FrmPreview: TFrmPreview
         OnMouseLeave = ToolButtonMouseLeave
       end
       object ToolButtonZoomIn: TToolButton
-        Left = 111
+        Left = 35
         Top = 0
         Cursor = crHandPoint
         Hint = 'Zoom + (aumento lo zoom)'
@@ -80,7 +70,7 @@ object FrmPreview: TFrmPreview
         OnMouseLeave = ToolButtonMouseLeave
       end
       object ToolButtonZoomOut: TToolButton
-        Left = 190
+        Left = 70
         Top = 0
         Cursor = crHandPoint
         Hint = 'Zoom - (diminuisce lo zoom)'
@@ -93,7 +83,7 @@ object FrmPreview: TFrmPreview
         OnMouseLeave = ToolButtonMouseLeave
       end
       object ToolButtonSettings: TToolButton
-        Left = 265
+        Left = 105
         Top = 0
         Cursor = crHandPoint
         Hint = 'Modifica impostazioni...'
@@ -107,7 +97,7 @@ object FrmPreview: TFrmPreview
         OnMouseLeave = ToolButtonMouseLeave
       end
       object ToolButtonAbout: TToolButton
-        Left = 379
+        Left = 140
         Top = 0
         Cursor = crHandPoint
         Hint = 'Mostra info...'
@@ -121,14 +111,14 @@ object FrmPreview: TFrmPreview
         OnMouseLeave = ToolButtonMouseLeave
       end
       object SeparatorEditor: TToolButton
-        Left = 448
+        Left = 175
         Top = 0
         Width = 8
         ImageName = 'settings'
         Style = tbsSeparator
       end
       object ToolButtonReformat: TToolButton
-        Left = 456
+        Left = 183
         Top = 0
         Hint = 'Riformatta testo XML'
         AutoSize = True
@@ -144,7 +134,7 @@ object FrmPreview: TFrmPreview
   object PanelXML: TPanel
     Left = 0
     Top = 35
-    Width = 672
+    Width = 601
     Height = 110
     Align = alTop
     BevelOuter = bvNone
@@ -153,7 +143,7 @@ object FrmPreview: TFrmPreview
     object SynEdit: TSynEdit
       Left = 0
       Top = 0
-      Width = 672
+      Width = 605
       Height = 110
       Align = alClient
       Font.Charset = DEFAULT_CHARSET
@@ -180,12 +170,13 @@ object FrmPreview: TFrmPreview
       Gutter.ShowLineNumbers = True
       ReadOnly = True
       FontSmoothing = fsmNone
+      ExplicitWidth = 601
     end
   end
   object StatusBar: TStatusBar
     Left = 0
-    Top = 630
-    Width = 672
+    Top = 592
+    Width = 601
     Height = 21
     Panels = <>
     ParentFont = True
@@ -198,8 +189,8 @@ object FrmPreview: TFrmPreview
   end
   object PanelBottom: TPanel
     Left = 0
-    Top = 600
-    Width = 672
+    Top = 562
+    Width = 601
     Height = 30
     Align = alBottom
     BevelOuter = bvNone
@@ -207,7 +198,7 @@ object FrmPreview: TFrmPreview
     object ToolBarAllegati: TToolBar
       Left = 0
       Top = 0
-      Width = 672
+      Width = 605
       Height = 30
       Align = alClient
       AutoSize = True
@@ -217,16 +208,16 @@ object FrmPreview: TFrmPreview
       EdgeOuter = esNone
       Images = SVGIconImageList
       List = True
-      ShowCaptions = True
       TabOrder = 0
       Transparent = True
+      ExplicitWidth = 601
     end
   end
   object HtmlViewer: THtmlViewer
     Left = 0
     Top = 151
-    Width = 672
-    Height = 449
+    Width = 601
+    Height = 411
     BorderStyle = htFocused
     HistoryMaxCount = 0
     NoSelect = False
@@ -243,91 +234,75 @@ object FrmPreview: TFrmPreview
     Touch.InteractiveGestureOptions = [igoPanSingleFingerHorizontal, igoPanSingleFingerVertical, igoPanInertia]
   end
   object SVGIconImageList: TVirtualImageList
-    DisabledGrayscale = False
-    DisabledSuffix = '_Disabled'
     Images = <
       item
         CollectionIndex = 42
         CollectionName = 'Show-Text'
-        Disabled = False
         Name = 'Show-Text'
       end
       item
         CollectionIndex = 43
         CollectionName = 'Hide-Text'
-        Disabled = False
         Name = 'Hide-Text'
       end
       item
         CollectionIndex = 23
         CollectionName = 'about'
-        Disabled = False
         Name = 'about'
       end
       item
         CollectionIndex = 41
         CollectionName = 'Support'
-        Disabled = False
         Name = 'Support'
       end
       item
         CollectionIndex = 0
         CollectionName = 'Style'
-        Disabled = False
         Name = 'Style'
       end
       item
         CollectionIndex = 45
         CollectionName = 'Services'
-        Disabled = False
         Name = 'Services'
       end
       item
         CollectionIndex = 26
         CollectionName = 'plus'
-        Disabled = False
         Name = 'plus'
       end
       item
         CollectionIndex = 25
         CollectionName = 'Minus'
-        Disabled = False
         Name = 'Minus'
       end
       item
         CollectionIndex = 6
         CollectionName = 'Search'
-        Disabled = False
         Name = 'Search'
       end
       item
         CollectionIndex = 38
         CollectionName = 'export'
-        Disabled = False
         Name = 'export'
       end
       item
         CollectionIndex = 19
         CollectionName = 'Reformat'
-        Disabled = False
         Name = 'Reformat'
       end
       item
         CollectionIndex = 48
         CollectionName = 'attachment'
-        Disabled = False
         Name = 'attachment'
       end
       item
         CollectionIndex = 28
         CollectionName = 'preferences-desktop'
-        Disabled = False
         Name = 'preferences-desktop'
       end
       item
         CollectionIndex = 16
         CollectionName = 'Print-preview'
-        Disabled = False
         Name = 'Print-preview'
       end>
     ImageCollection = dmResources.SVGIconImageCollection

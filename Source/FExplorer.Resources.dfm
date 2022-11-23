@@ -10991,4 +10991,5638 @@ object dmResources: TdmResources
     Top = 131
     DOMVendorDesc = 'MSXML'
   end
+  object SudTirolo_ITA_DEU: TXMLDocument
+    NodeIndentStr = #9
+    Options = [doNodeAutoIndent]
+    XML.Strings = (
+      '<?xml version="1.0" encoding="UTF-8"?>'
+      '<!-- Versionsdatum: 2020-11-23 -->'
+      '<!-- Feedback erw'#252'nscht an info@ing-tavernini.com -->'
+      '<!--'
+      'fatturapa_v1.2.1_de-it.xsl'
+      'Copyright (C) 2020 Ferdinand Tavernini WOBI-IPES Bozen/Bolzano'
+      ''
+      'The XSL-stylesheet fatturapa_v1.2.1_de-it.xsl is free software:'
+      'you can redistribute it and/or modify it under the terms of the'
+      'GNU General Public License as published by the Free Software'
+      
+        'Foundation, either version 3 of the License, or any later versio' +
+        'n.'
+      ''
+      
+        'fatturapa_v1.2.1_de-it.xsl is distributed in the hope that it wi' +
+        'll'
+      'be useful, but WITHOUT ANY WARRANTY; without even the implied'
+      'warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.'
+      'See the GNU General Public License for more details.'
+      ''
+      
+        'You should have received a copy of the GNU General Public Licens' +
+        'e'
+      'along with this program (see LICENSE file). If not, see'
+      'http://www.gnu.org/licenses/.'
+      ''
+      '-->'
+      '<xsl:stylesheet'
+      #9'version="1.1"'
+      #9'xmlns:xsl="http://www.w3.org/1999/XSL/Transform"'
+      
+        #9'xmlns:a="http://ivaservizi.agenziaentrate.gov.it/docs/xsd/fattu' +
+        're/v1.2">'
+      '<xsl:output method="html" />'
+      ''
+      '     <xsl:variable name="VersionFT">'
+      
+        '         <p>Stylesheet fatturapa_v1.2.1_de-it.xsl v20201125 ft -' +
+        ' <a href="http://tinyurl.com/fatturapa-xsl-southtyrol">http://ti' +
+        'nyurl.com/fatturapa-xsl-southtyrol</a></p>'
+      '     </xsl:variable>'
+      
+        '     <xsl:decimal-format name="euro" decimal-separator="," group' +
+        'ing-separator="."/>'
+      ''
+      '     <xsl:template name="CodiceUnivocoUfficio">'
+      '          <xsl:param name="kode"/>'
+      '          <xsl:choose>'
+      
+        '               <xsl:when test="$kode = '#39'U9CVVQ'#39'"><span><xsl:valu' +
+        'e-of select="$kode"/></span><br/>Generaldirektion<br/><i>DIREZIO' +
+        'NE GENERALE</i></xsl:when>'
+      
+        '               <xsl:when test="$kode = '#39'9G9VCD'#39'"><span><xsl:valu' +
+        'e-of select="$kode"/></span><br/>Rechtsamt<br/><i>UFFICIO AFFARI' +
+        ' LEGALI</i></xsl:when>'
+      
+        '               <xsl:when test="$kode = '#39'D31MSA'#39'"><span><xsl:valu' +
+        'e-of select="$kode"/></span><br/>EDV-Amt<br/><i>UFFICIO EDP</i><' +
+        '/xsl:when>'
+      
+        '               <xsl:when test="$kode = '#39'0COHRW'#39'"><span><xsl:valu' +
+        'e-of select="$kode"/></span><br/>Personal- und Organisationsamt<' +
+        'br/><i>UFFICIO PERSONALE ED ORGANIZZAZIONE</i></xsl:when>'
+      
+        '               <xsl:when test="$kode = '#39'LSXW8L'#39'"><span><xsl:valu' +
+        'e-of select="$kode"/></span><br/>Wohnungszuweisung und Mieterang' +
+        'elegenheiten<br/><i>RIPARTIZIONE ALLOGGI ED INQUILINATO</i></xsl' +
+        ':when>'
+      
+        '               <xsl:when test="$kode = '#39'RW81BN'#39'"><span><xsl:valu' +
+        'e-of select="$kode"/></span><br/>Mieterservicestelle Bozen<br/><' +
+        'i>CENTRO SERVIZI ALL'#39'INQUILINATO DI BOLZANO</i></xsl:when>'
+      
+        '               <xsl:when test="$kode = '#39'GNXLXD'#39'"><span><xsl:valu' +
+        'e-of select="$kode"/></span><br/>Mieterservicestelle Meran<br/><' +
+        'i>CENTRO SERVIZI ALL'#39'INQUILINATO DI MERANO</i></xsl:when>'
+      
+        '               <xsl:when test="$kode = '#39'GSRA1J'#39'"><span><xsl:valu' +
+        'e-of select="$kode"/></span><br/>Mieterservicestelle Brixen<br/>' +
+        '<i>CENTRO SERVIZI ALL'#39'INQUILINATO DI BRESSANONE</i></xsl:when>'
+      
+        '               <xsl:when test="$kode = '#39'80WPE5'#39'"><span><xsl:valu' +
+        'e-of select="$kode"/></span><br/>Technisches Dienste<br/><i>RIPA' +
+        'RTIZIONE SERVIZI TECNICI</i></xsl:when>'
+      
+        '               <xsl:when test="$kode = '#39'NP7VMX'#39'"><span><xsl:valu' +
+        'e-of select="$kode"/></span><br/>Technisches Amt Mitte S'#252'd<br/><' +
+        'i>UFFICIO TECNICO CENTRO SUD</i></xsl:when>'
+      
+        '               <xsl:when test="$kode = '#39'KOJPJL'#39'"><span><xsl:valu' +
+        'e-of select="$kode"/></span><br/>Technisches Amt Ost<br/><i>UFFI' +
+        'CIO TECNICO EST</i></xsl:when>'
+      
+        '               <xsl:when test="$kode = '#39'6ACTCE'#39'"><span><xsl:valu' +
+        'e-of select="$kode"/></span><br/>Technisches Amt West<br/><i>UFF' +
+        'ICIO TECNICO OVEST</i></xsl:when>'
+      
+        '               <xsl:when test="$kode = '#39'UAQVHQ'#39'"><span><xsl:valu' +
+        'e-of select="$kode"/></span><br/>Amt f'#252'r Buchhaltung, Bilanzen, ' +
+        'Versicherung und Zahlungen<br/><i>UFFICIO CONTABILITA, BILANCI, ' +
+        'ASSICURAZIONI E PAGAMENTI</i></xsl:when>'
+      
+        '               <xsl:when test="$kode = '#39'3PZ58V'#39'"><span><xsl:valu' +
+        'e-of select="$kode"/></span><br/>Arbeitsgruppe f'#252'r Vergabe, Vert' +
+        'r'#228'ge und Verm'#246'gen<br/><i>GRUPPO DI LAVORO APPALTI, CONTRATTI E P' +
+        'ATRIMONIO</i></xsl:when>'
+      
+        '               <xsl:when test="$kode = '#39'00ROQ2'#39'"><span><xsl:valu' +
+        'e-of select="$kode"/></span><br/>Technisches Amt Instandhaltung<' +
+        'br/><i>UFFICIO TECNICO MANUTENZIONE</i></xsl:when>'
+      
+        '               <xsl:when test="$kode = '#39'UFQKV2'#39'"><span><xsl:valu' +
+        'e-of select="$kode"/></span><br/>Uff_eFatturaPA</xsl:when>'
+      ''
+      
+        '               <xsl:when test="$kode = '#39'0000000'#39'"><span><xsl:val' +
+        'ue-of select="$kode"/></span><br/>Nicht akkreditierter Rechnungs' +
+        'empf'#228'nger <br/><i>Destinatario non accreditato</i></xsl:when>'
+      
+        '               <xsl:when test="$kode = '#39'XXXXXXX'#39'"><span><xsl:val' +
+        'ue-of select="$kode"/></span><br/>Ausl'#228'ndischer Rechnungsempf'#228'ng' +
+        'er <br/><i>Destinatario non residenti</i></xsl:when>'
+      ''
+      
+        '               <xsl:otherwise><span><xsl:value-of select="$kode"' +
+        '/></span></xsl:otherwise>'
+      '          </xsl:choose>'
+      '          <xsl:variable name="kodeSel" select="'#39#39'"/>'
+      '     </xsl:template>'
+      ''
+      '     <xsl:template name="FormatDate">'
+      '          <xsl:param name="DateTime"/>'
+      ''
+      
+        '          <xsl:variable name="year" select="substring($DateTime,' +
+        '1,4)"/>'
+      
+        '          <xsl:variable name="month" select="substring($DateTime' +
+        ',6,2)"/>'
+      
+        '          <xsl:variable name="day" select="substring($DateTime,9' +
+        ',2)"/>'
+      ''
+      '          <xsl:value-of select="'#39' ('#39'"/>'
+      '          <xsl:value-of select="$day"/>'
+      '          <xsl:value-of select="'#39' '#39'"/>'
+      '          <xsl:choose>'
+      
+        '               <xsl:when test="$month = '#39'1'#39' or $month = '#39'01'#39'">Ja' +
+        'n./Gen.</xsl:when>'
+      
+        '               <xsl:when test="$month = '#39'2'#39' or $month = '#39'02'#39'">Fe' +
+        'b.</xsl:when>'
+      
+        '               <xsl:when test="$month = '#39'3'#39' or $month = '#39'03'#39'">Ma' +
+        'r.</xsl:when>'
+      
+        '               <xsl:when test="$month = '#39'4'#39' or $month = '#39'04'#39'">Ap' +
+        'r.</xsl:when>'
+      
+        '               <xsl:when test="$month = '#39'5'#39' or $month = '#39'05'#39'">Ma' +
+        'i/Mag.</xsl:when>'
+      
+        '               <xsl:when test="$month = '#39'6'#39' or $month = '#39'06'#39'">Ju' +
+        'n./Giu.</xsl:when>'
+      
+        '               <xsl:when test="$month = '#39'7'#39' or $month = '#39'07'#39'">Ju' +
+        'l./Lug.</xsl:when>'
+      
+        '               <xsl:when test="$month = '#39'8'#39' or $month = '#39'08'#39'">Au' +
+        'g./Ago.</xsl:when>'
+      
+        '               <xsl:when test="$month = '#39'9'#39' or $month = '#39'09'#39'">Se' +
+        'p./Set.</xsl:when>'
+      
+        '               <xsl:when test="$month = '#39'10'#39'">Okt./Ott.</xsl:whe' +
+        'n>'
+      '               <xsl:when test="$month = '#39'11'#39'">Nov.</xsl:when>'
+      
+        '               <xsl:when test="$month = '#39'12'#39'">Dez./Dic.</xsl:whe' +
+        'n>'
+      
+        '               <xsl:otherwise><font color="red">Unbekannter Mona' +
+        't - <i>Mese non riconosciuto</i></font></xsl:otherwise>'
+      '          </xsl:choose>'
+      '          <xsl:value-of select="'#39' '#39'"/>'
+      '          <xsl:value-of select="$year"/>'
+      
+        '          <xsl:variable name="time" select="substring($DateTime,' +
+        '12)"/>'
+      '          <xsl:if test="$time != '#39#39'">'
+      
+        '               <xsl:variable name="hh" select="substring($time,1' +
+        ',2)"/>'
+      
+        '               <xsl:variable name="mm" select="substring($time,4' +
+        ',2)"/>'
+      
+        '               <xsl:variable name="ss" select="substring($time,7' +
+        ',2)"/>'
+      '               <xsl:value-of select="'#39' '#39'"/>'
+      '               <xsl:value-of select="$hh"/>'
+      '               <xsl:value-of select="'#39':'#39'"/>'
+      '               <xsl:value-of select="$mm"/>'
+      '               <xsl:value-of select="'#39':'#39'"/>'
+      '               <xsl:value-of select="$ss"/>'
+      '          </xsl:if>'
+      '          <xsl:value-of select="'#39')'#39'"/>'
+      '     </xsl:template>'
+      '     <xsl:template match="/">'
+      '          <html>'
+      '               <head>'
+      
+        '                    <meta http-equiv="X-UA-Compatible" content="' +
+        'IE=edge"/>'
+      '                    '#9'<style type="text/css">'
+      #9#9#9#9'#fattura-container { width: 100%; position: relative; }'
+      ''
+      
+        #9#9#9#9'#fattura-elettronica { font-family: sans-serif; font-size: 1' +
+        '0px; margin-left: auto; margin-right: auto; max-width: 840px; mi' +
+        'n-width: 600px; padding: 0; }'
+      
+        #9#9#9#9'#fattura-elettronica .version{ font-size: 9px; float:right; ' +
+        'color: #777777; }'
+      
+        #9#9#9#9'#fattura-elettronica h1 { padding: 5px 0 0 0; margin: 0; fon' +
+        't-size: 22px; }'
+      
+        #9#9#9#9'#fattura-elettronica h2 { padding: 5px 0 0 0; margin: 0; fon' +
+        't-size: 18px; }'
+      
+        #9#9#9#9'#fattura-elettronica h3 { padding: 5px 0 0 0; margin: 0; fon' +
+        't-size: 15px; }'
+      
+        #9#9#9#9'#fattura-elettronica h4 { padding: 5px 0 0 0; margin: 0; fon' +
+        't-size: 12px; }'
+      
+        #9#9#9#9'#fattura-elettronica h5 { padding: 3px 0 0 0; margin: 0; fon' +
+        't-size: 10px; font-style: italic; }'
+      
+        #9#9#9#9'#fattura-elettronica ul { list-style-type: none; margin: 0 !' +
+        'important; padding: 10px 0 0 40px !important; }'
+      #9#9#9#9'#fattura-elettronica ul li {}'
+      
+        #9#9#9#9'#fattura-elettronica span { font-weight: bold; font-size: 10' +
+        'pt;}'
+      
+        '     '#9#9#9#9'#fattura-elettronica fehler {color: red; text-decoratio' +
+        'n:blink; }'
+      #9#9#9#9'#fattura-elettronica div { padding: 0; margin: 0; }'
+      #9#9#9#9'#fattura-elettronica'
+      ''
+      #9#9#9#9'div.page {'
+      #9#9#9#9'background-color: #fff !important;'
+      #9#9#9#9'position: relative;'
+      ''
+      #9#9#9#9'margin: 10px 0 5px 0; padding: 5px;'
+      ''
+      
+        #9#9#9#9'background: -moz-linear-gradient(0% 0 360deg, #FFFFFF, #F2F2' +
+        'F2 20%, #FFFFFF) repeat scroll 0 0 transparent;'
+      #9#9#9#9'border: 1px solid #CCCCCC;'
+      #9#9#9#9'-webkitbox-shadow: 0 0 10px rgba(0, 0, 0, 0.3);'
+      #9#9#9#9'-mozbox-shadow: 0'
+      #9#9#9#9'0 10px rgba(0, 0, 0, 0.3);'
+      #9#9#9#9'box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);'
+      ''
+      
+        #9#9#9#9'background: url('#39'logo_sdi_trasparente.jpg'#39') 98% 50px no-repe' +
+        'at;'
+      #9#9#9#9'}'
+      #9#9#9#9'table {table-layout: auto; width: 99%; font-size: 12px;}'
+      #9#9#9#9'table td {overflow: hidden;}'
+      
+        #9#9#9#9'table, td, th { border: 1px solid black; border-collapse: co' +
+        'llapse;}'
+      #9#9#9#9'#t1 td, #t1 th { border: none; }'
+      #9#9#9#9'#ti td { color: #000000; background-color: #EAF2D3;}'
+      #9#9#9#9'th { padding: 2px;}'
+      #9#9#9#9'td { padding: 2px; word-wrap:break-word;}'
+      
+        #9#9#9#9'div.footer { padding: 10px 0 0 0; margin: 0; font-size: 10px' +
+        '; text-align: center; color: #777777; }'
+      #9#9#9#9'tr:nth-of-type(even){background-color: #F3F3F3;}'
+      #9#9#9#9'tr:nth-of-type(odd) {background-color:#d0d0d0;}'
+      #9#9#9#9'th {background-color:#808080; color: #ffffff;}'
+      #9#9#9'</style>'
+      '               </head>'
+      '               <body>'
+      '                    <div id="fattura-container">'
+      '                         <!--INIZIO DATI HEADER-->'
+      '                         <xsl:if test="a:FatturaElettronica">'
+      
+        '                              <div id="fattura-elettronica"><h1>' +
+        'Italienische elektronische Rechnung<br/><i>FATTURA ELETTRONICA</' +
+        'i></h1><xsl:if test="a:FatturaElettronica/FatturaElettronicaHead' +
+        'er">'
+      '                                        <div class="page">'
+      
+        '                                             <div class="version' +
+        '">FatturaPA Version/<i>versione </i><xsl:value-of select="a:Fatt' +
+        'uraElettronica/@versione"/></div>'
+      
+        '                                             <xsl:if test="a:Fat' +
+        'turaElettronica/FatturaElettronicaHeader/DatiTrasmissione">'
+      
+        '                                                  <!--INIZIO DAT' +
+        'I DELLA TRASMISSIONE-->'
+      
+        '                                                  <div id="dati-' +
+        'trasmissione"><h3>Daten zur '#220'bertragung - <i>Dati relativi alla ' +
+        'trasmissione</i></h3>'
+      
+        '                                                       <table id' +
+        '="t1">'
+      
+        '                                                            <xsl' +
+        ':for-each select="a:FatturaElettronica/FatturaElettronicaHeader/' +
+        'DatiTrasmissione">'
+      
+        '                                                                ' +
+        ' <xsl:if test="IdTrasmittente or ProgressivoInvio or FormatoTras' +
+        'missione">'
+      
+        '                                                                ' +
+        '      <tr><td width="100px">1.1.[3|1|2]</td>'
+      
+        '                                                                ' +
+        '           <td width="200px">'#220'bertragungskennung<br/><i>Ident. d' +
+        'i trasmissione</i></td>'
+      
+        '                                                                ' +
+        '                <td width="500px"><span>'
+      
+        '                                                                ' +
+        '                <xsl:if test="FormatoTrasmissione"><xsl:value-of' +
+        ' select="FormatoTrasmissione"/>:</xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="IdTrasmittente"><xsl:value-of sele' +
+        'ct="IdTrasmittente/IdPaese"/><xsl:value-of select="IdTrasmittent' +
+        'e/IdCodice"/>_</xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="ProgressivoInvio"><xsl:value-of se' +
+        'lect="ProgressivoInvio"/></xsl:if>'
+      
+        '                                                                ' +
+        '                </span></td></tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        '           <xsl:if test="CodiceDestinatario">'
+      
+        '                                                                ' +
+        '                <tr><td>1.1.4</td><td>Kennung Rechnungsempf'#228'nger' +
+        '<br/><i>Codice destinatario</i></td>'
+      
+        '                                                                ' +
+        '                     <td><xsl:call-template name="CodiceUnivocoU' +
+        'fficio"><xsl:with-param name="kode" select="CodiceDestinatario"/' +
+        '></xsl:call-template></td>'
+      
+        '                                                                ' +
+        '                </tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        '           <xsl:if test="ContattiTrasmittente/Telefono">'
+      
+        '                                                                ' +
+        '                <tr><td>1.1.5.1</td><td>Telefonnummer Sender<br/' +
+        '><i>Telefono del trasmittente</i></td>'
+      
+        '                                                                ' +
+        '                     <td><span><xsl:value-of select="ContattiTra' +
+        'smittente/Telefono"/></span></td></tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        '           <xsl:if test="ContattiTrasmittente/Email">'
+      
+        '                                                                ' +
+        '                 <tr><td>1.1.5.2</td><td>E-Mail des Senders<br/>' +
+        '<i>E-mail del trasmittente</i></td>'
+      
+        '                                                                ' +
+        '                 <td><span><xsl:value-of select="ContattiTrasmit' +
+        'tente/Email"/></span></td></tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        '           <!-- Version 1.2 -->'
+      
+        '                                                                ' +
+        '           <xsl:if test="PECDestinatario">'
+      
+        '                                                                ' +
+        '                 <tr><td>1.1.6</td><td>zertifizierte E-Mail des ' +
+        'Empf'#228'ngers<br/><i>E-mail certificata del destinatario</i></td>'
+      
+        '                                                                ' +
+        '                 <td><span><xsl:value-of select="PECDestinatario' +
+        '"/></span></td></tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                            </xs' +
+        'l:for-each>'
+      '                                                       </table>'
+      '                                                  </div>'
+      '                                             </xsl:if>'
+      
+        '                                             <!--FINE DATI DELLA' +
+        ' TRASMISSIONE-->'
+      ''
+      
+        '                                             <!--INIZIO DATI CED' +
+        'ENTE PRESTATORE-->'
+      
+        '                                             <xsl:if test="a:Fat' +
+        'turaElettronica/FatturaElettronicaHeader/CedentePrestatore">'
+      
+        '                                                  <div id="ceden' +
+        'te">'
+      
+        '                                                       <h3>Daten' +
+        ' zum Lieferanten/Freiberufler - <i>Dati del cedente/prestatore</' +
+        'i></h3>'
+      
+        '                                                       <xsl:if t' +
+        'est="a:FatturaElettronica/FatturaElettronicaHeader/CedentePresta' +
+        'tore/DatiAnagrafici">'
+      
+        '                                                            <h4>' +
+        'Anagrafische Daten - <i>Dati anagrafici</i></h4>'
+      
+        '                                                                ' +
+        ' <table id="t1">'
+      
+        '                                                                ' +
+        ' <xsl:for-each select="a:FatturaElettronica/FatturaElettronicaHe' +
+        'ader/CedentePrestatore/DatiAnagrafici">'
+      
+        '                                                                ' +
+        '      <xsl:if test="Anagrafica/Denominazione or Anagrafica/Nome"' +
+        '>'
+      
+        '                                                                ' +
+        '           <tr><td width="100px">1.2.1.3.[1|4|2|3]</td><td width' +
+        '="200px">Benennung<br/><i>Nominativo</i></td>'
+      
+        '                                                                ' +
+        '                <td width="500px"><span><xsl:value-of select="An' +
+        'agrafica/Denominazione"/>'#160'<xsl:value-of select="Anagrafica/Titol' +
+        'o"/>'#160'<xsl:value-of select="Anagrafica/Nome"/>'#160'<xsl:value-of sele' +
+        'ct="Anagrafica/Cognome"/></span></td>'
+      
+        '                                                                ' +
+        '           </tr>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      
+        '                                                                ' +
+        '      <xsl:if test="Anagrafica/CodEORI">'
+      
+        '                                                                ' +
+        '           <tr><td>1.2.1.3.5</td><td>EORI-Kennung<br/><i>Codice ' +
+        'EORI</i></td>'
+      
+        '                                                                ' +
+        '                <td><span><xsl:value-of select="Anagrafica/CodEO' +
+        'RI"/></span></td>'
+      
+        '                                                                ' +
+        '           </tr>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      
+        '                                                                ' +
+        '      <xsl:if test="AlboProfessionale or ProvinciaAlbo or Numero' +
+        'IscrizioneAlbo or DataIscrizioneAlbo">'
+      
+        '                                                                ' +
+        '           <tr><td>1.2.1.[4|5|6|7]</td><td>Zugeh'#246'rigkeit Berufsa' +
+        'lbum<br/><i>Albo professionale di appartenenza</i></td>'
+      
+        '                                                                ' +
+        '                <td><span><xsl:value-of select="AlboProfessional' +
+        'e"/>'#160'<xsl:value-of select="ProvinciaAlbo"/>'#160'<xsl:value-of select' +
+        '="NumeroIscrizioneAlbo"/></span><xsl:if test="DataIscrizioneAlbo' +
+        '">'#160'<span><xsl:value-of select="DataIscrizioneAlbo"/></span><xsl:' +
+        'call-template name="FormatDate"><xsl:with-param name="DateTime" ' +
+        'select="DataIscrizioneAlbo"/></xsl:call-template></xsl:if></td>'
+      
+        '                                                                ' +
+        '           </tr>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      ''
+      ''
+      
+        '                                                                ' +
+        '      <xsl:if test="IdFiscaleIVA">'
+      
+        '                                                                ' +
+        '           <tr><td>1.2.1.1</td><td>Mehrwertsteuernummer<br/><i>I' +
+        'dent. fiscale ai fini IVA</i></td>'
+      
+        '                                                                ' +
+        '                <td><span><xsl:value-of select="IdFiscaleIVA/IdP' +
+        'aese"/><xsl:value-of select="IdFiscaleIVA/IdCodice"/></span></td' +
+        '>'
+      
+        '                                                                ' +
+        '           </tr>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      
+        '                                                                ' +
+        '      <xsl:if test="CodiceFiscale">'
+      
+        '                                                                ' +
+        '           <tr><td>1.2.1.2</td><td>Steuernummer<br/><i>Codice fi' +
+        'scale</i></td>'
+      
+        '                                                                ' +
+        '                <td><span><xsl:value-of select="CodiceFiscale"/>' +
+        '</span></td>'
+      
+        '                                                                ' +
+        '           </tr>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      
+        '                                                                ' +
+        '      <xsl:if test="RegimeFiscale">'
+      
+        '                                                                ' +
+        '           <tr><td>1.2.1.8</td><td>Steuersystem<br/><i>Regime fi' +
+        'scale</i></td>'
+      
+        '                                                                ' +
+        '                <td><span><xsl:value-of select="RegimeFiscale"/>' +
+        '</span>'
+      
+        '                                                                ' +
+        '                <xsl:variable name="RF"><xsl:value-of select="Re' +
+        'gimeFiscale"/></xsl:variable>'
+      
+        '                                                                ' +
+        '                <xsl:choose>'
+      
+        '                                                                ' +
+        '                     <xsl:when test="$RF='#39'RF01'#39'"> (ordinario)</x' +
+        'sl:when>'
+      
+        '                                                                ' +
+        '                     <xsl:when test="$RF='#39'RF02'#39'"> (contribuenti ' +
+        'minimi)</xsl:when>'
+      
+        '                                                                ' +
+        '                     <xsl:when test="$RF='#39'RF03'#39'"> (nuove iniziat' +
+        'ive produttive)</xsl:when>'
+      
+        '                                                                ' +
+        '                     <xsl:when test="$RF='#39'RF04'#39'"> (agricoltura e' +
+        ' attivit'#224' connesse e pesca)</xsl:when>'
+      
+        '                                                                ' +
+        '                     <xsl:when test="$RF='#39'RF05'#39'"> (vendita sali ' +
+        'e tabacchi)</xsl:when>'
+      
+        '                                                                ' +
+        '                     <xsl:when test="$RF='#39'RF06'#39'"> (commercio fia' +
+        'mmiferi)</xsl:when>'
+      
+        '                                                                ' +
+        '                     <xsl:when test="$RF='#39'RF07'#39'"> (editoria)</xs' +
+        'l:when>'
+      
+        '                                                                ' +
+        '                     <xsl:when test="$RF='#39'RF08'#39'"> (gestione serv' +
+        'izi telefonia pubblica)</xsl:when>'
+      
+        '                                                                ' +
+        '                     <xsl:when test="$RF='#39'RF09'#39'"> (rivendita doc' +
+        'umenti di trasporto pubblico e di sosta)</xsl:when>'
+      
+        '                                                                ' +
+        '                     <xsl:when test="$RF='#39'RF10'#39'"> (intrattenimen' +
+        'ti, giochi e altre attivit'#224' di cui alla tariffa allegata al DPR ' +
+        '640/72)</xsl:when>'
+      
+        '                                                                ' +
+        '                     <xsl:when test="$RF='#39'RF11'#39'"> (agenzie viagg' +
+        'i e turismo)</xsl:when>'
+      
+        '                                                                ' +
+        '                     <xsl:when test="$RF='#39'RF12'#39'"> (agriturismo)<' +
+        '/xsl:when>'
+      
+        '                                                                ' +
+        '                     <xsl:when test="$RF='#39'RF13'#39'"> (vendite a dom' +
+        'icilio)</xsl:when>'
+      
+        '                                                                ' +
+        '                     <xsl:when test="$RF='#39'RF14'#39'"> (rivendita ben' +
+        'i usati, oggetti d'#8217'arte, d'#8217'antiquariato o da collezione)</xsl:wh' +
+        'en>'
+      
+        '                                                                ' +
+        '                     <xsl:when test="$RF='#39'RF15'#39'"> (agenzie di ve' +
+        'ndite all'#8217'asta di oggetti d'#8217'arte, antiquariato o da collezione)<' +
+        '/xsl:when>'
+      
+        '                                                                ' +
+        '                     <xsl:when test="$RF='#39'RF16'#39'"> (IVA per cassa' +
+        ' P.A.)</xsl:when>'
+      
+        '                                                                ' +
+        '                     <xsl:when test="$RF='#39'RF17'#39'"> (IVA per cassa' +
+        ' - art. 32-bis, D.L. 83/2012)</xsl:when>'
+      
+        '                                                                ' +
+        '                     <xsl:when test="$RF='#39'RF19'#39'"> (Regime forfet' +
+        'tario)</xsl:when>'
+      
+        '                                                                ' +
+        '                     <xsl:when test="$RF='#39'RF18'#39'"> (altro)</xsl:w' +
+        'hen>'
+      
+        '                                                                ' +
+        '                     <xsl:when test="$RF='#39#39'"/>'
+      
+        '                                                                ' +
+        '                     <xsl:otherwise><fehler> (!!! falsche Kennun' +
+        'g !!!)<i>(!!! codice non previsto !!!)</i></fehler></xsl:otherwi' +
+        'se>'
+      
+        '                                                                ' +
+        '                </xsl:choose>'
+      
+        '                                                                ' +
+        '                </td></tr>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      
+        '                                                                ' +
+        ' </xsl:for-each>'
+      
+        '                                                            </ta' +
+        'ble>'
+      '                                                       </xsl:if>'
+      
+        '                                                       <xsl:if t' +
+        'est="a:FatturaElettronica/FatturaElettronicaHeader/CedentePresta' +
+        'tore/Sede">'
+      
+        '                                                            <h4>' +
+        'Firmensitz - <i>Dati della sede</i></h4>'
+      
+        '                                                            <tab' +
+        'le id="t1">'
+      
+        '                                                                ' +
+        ' <xsl:for-each select="a:FatturaElettronica/FatturaElettronicaHe' +
+        'ader/CedentePrestatore/Sede">'
+      
+        '                                                                ' +
+        '      <xsl:if test="Indirizzo or NumeroCivico or CAP or Comune o' +
+        'r Provincia or Nazione">'
+      
+        '                                                                ' +
+        '           <tr><td width="100px">1.2.2.[1|2|3|4|5|6]</td><td wid' +
+        'th="200px">Anschrift<br/><i>indirizzo</i></td>'
+      
+        '                                                                ' +
+        '                <td width="500px"><span><xsl:value-of select="In' +
+        'dirizzo"/>'#160'<xsl:value-of select="NumeroCivico"/><br/><xsl:value-' +
+        'of select="CAP"/>'#160'<xsl:value-of select="Comune"/>'#160'<xsl:value-of ' +
+        'select="Provincia"/>'#160'<xsl:value-of select="Nazione"/></span></td' +
+        '>'
+      
+        '                                                                ' +
+        '           </tr>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      
+        '                                                                ' +
+        ' </xsl:for-each>'
+      
+        '                                                            </ta' +
+        'ble>'
+      '                                                       </xsl:if>'
+      ''
+      
+        '                                                       <xsl:if t' +
+        'est="a:FatturaElettronica/FatturaElettronicaHeader/CedentePresta' +
+        'tore/StabileOrganizzazione">'
+      
+        '                                                            <h4>' +
+        'Daten der Organisation - <i>Dati della stabile organizzazione</i' +
+        '></h4>'
+      
+        '                                                            <tab' +
+        'le id="t1">'
+      
+        '                                                                ' +
+        ' <xsl:for-each select="a:FatturaElettronica/FatturaElettronicaHe' +
+        'ader/CedentePrestatore/StabileOrganizzazione">'
+      
+        '                                                                ' +
+        '      <xsl:if test="Indirizzo or NumeroCivico or CAP or Comune o' +
+        'r Provincia or Nazione">'
+      
+        '                                                                ' +
+        '           <tr><td width="100px">1.2.3.[1|2|3|4|5]</td><td width' +
+        '="200px">Anschrift<br/><i>indirizzo</i></td>'
+      
+        '                                                                ' +
+        '                <td width="500px"><span><xsl:value-of select="In' +
+        'dirizzo"/>'#160'<xsl:value-of select="NumeroCivico"/><br/><xsl:value-' +
+        'of select="CAP"/>'#160'<xsl:value-of select="Comune"/>'#160'<xsl:value-of ' +
+        'select="Provincia"/>'#160'<xsl:value-of select="Nazione"/></span></td' +
+        '>'
+      
+        '                                                                ' +
+        '           </tr>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      
+        '                                                                ' +
+        ' </xsl:for-each>'
+      
+        '                                                            </ta' +
+        'ble>'
+      '                                                       </xsl:if>'
+      ''
+      
+        '                                                       <xsl:if t' +
+        'est="a:FatturaElettronica/FatturaElettronicaHeader/CedentePresta' +
+        'tore/IscrizioneREA">'
+      
+        '                                                            <h4>' +
+        'Handelsregistereintragung - <i>Dati di iscrizione nel registro d' +
+        'elle imprese</i></h4>'
+      
+        '                                                            <tab' +
+        'le id="t1">'
+      
+        '                                                                ' +
+        ' <xsl:for-each select="a:FatturaElettronica/FatturaElettronicaHe' +
+        'ader/CedentePrestatore/IscrizioneREA">'
+      
+        '                                                                ' +
+        '      <xsl:if test="Ufficio">'
+      
+        '                                                                ' +
+        '           <tr><td width="100px">1.2.4.1</td><td width="200px">H' +
+        'andelsregister der Provinz<br/><i>Uff. Reg. Imp. Provinciale</i>' +
+        '</td>'
+      
+        '                                                                ' +
+        '                <td width="500px"><span><xsl:value-of select="Uf' +
+        'ficio"/></span></td>'
+      
+        '                                                                ' +
+        '           </tr>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      
+        '                                                                ' +
+        '      <xsl:if test="NumeroREA">'
+      
+        '                                                                ' +
+        '           <tr><td>1.2.4.2</td><td>Eintragungsnummer<br/><i>Nume' +
+        'ro di iscrizione</i></td>'
+      
+        '                                                                ' +
+        '                <td><span><xsl:value-of select="NumeroREA"/></sp' +
+        'an></td>'
+      
+        '                                                                ' +
+        '           </tr>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      
+        '                                                                ' +
+        '      <xsl:if test="CapitaleSociale or SocioUnico">'
+      
+        '                                                                ' +
+        '           <tr><td>1.2.4.[3|4]</td><td>Handelskapital<br/><i>Cap' +
+        'itale sociale </i></td>'
+      
+        '                                                                ' +
+        '           <td>'
+      
+        '                                                                ' +
+        '           <xsl:if test="CapitaleSociale">'
+      
+        '                                                                ' +
+        '                     <span><xsl:value-of select="format-number(C' +
+        'apitaleSociale, '#39'###.##0,00 '#8364#39', '#39'euro'#39')"/></span>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        '           <xsl:if test="SocioUnico">'
+      
+        '                                                                ' +
+        '                '#160'<span><xsl:value-of select="SocioUnico"/></span' +
+        '>'
+      
+        '                                                                ' +
+        '                     <xsl:variable name="NS"><xsl:value-of selec' +
+        't="SocioUnico"/></xsl:variable>'
+      
+        '                                                                ' +
+        '                     <xsl:choose>'
+      
+        '                                                                ' +
+        '                          <xsl:when test="$NS='#39'SU'#39'"> (Einzelgese' +
+        'llschafter)<i>(socio unico)</i></xsl:when>'
+      
+        '                                                                ' +
+        '                          <xsl:when test="$NS='#39'SM'#39'"> (mehrere Ge' +
+        'sellschafter)<i>(pi'#249' soci)</i></xsl:when>'
+      
+        '                                                                ' +
+        '                          <xsl:when test="$NS='#39#39'"/>'
+      
+        '                                                                ' +
+        '                          <xsl:otherwise><fehler> (!!! falsche K' +
+        'ennung !!!)<i>(!!! codice non previsto !!!)</i></fehler></xsl:ot' +
+        'herwise>'
+      
+        '                                                                ' +
+        '                     </xsl:choose>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        '           </td></tr>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      
+        '                                                                ' +
+        '      <xsl:if test="StatoLiquidazione">'
+      
+        '                                                                ' +
+        '           <tr><td>1.2.4.5</td><td>Aufl'#246'sung<br/><i>Stato di liq' +
+        'uidazione</i></td>'
+      
+        '                                                                ' +
+        '                <td><span><xsl:value-of select="StatoLiquidazion' +
+        'e"/></span><xsl:variable name="SL"><xsl:value-of select="StatoLi' +
+        'quidazione"/></xsl:variable>'
+      
+        '                                                                ' +
+        '                <xsl:choose>'
+      
+        '                                                                ' +
+        '                     <xsl:when test="$SL='#39'LS'#39'"> (in Aufl'#246'sung)<i' +
+        '>(in liquidazione)</i></xsl:when>'
+      
+        '                                                                ' +
+        '                     <xsl:when test="$SL='#39'LN'#39'"> (nicht in Aufl'#246's' +
+        'ung)<i>(non in liquidazione)</i></xsl:when>'
+      
+        '                                                                ' +
+        '                     <xsl:when test="$SL='#39#39'"/>'
+      
+        '                                                                ' +
+        '                     <xsl:otherwise><fehler>(!!! falsche Kennung' +
+        ' !!!)<i>(!!! codice non previsto !!!)</i></fehler></xsl:otherwis' +
+        'e>'
+      
+        '                                                                ' +
+        '                </xsl:choose></td>'
+      
+        '                                                                ' +
+        '           </tr>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      
+        '                                                                ' +
+        ' </xsl:for-each>'
+      
+        '                                                            </ta' +
+        'ble>'
+      '                                                       </xsl:if>'
+      ''
+      
+        '                                                       <xsl:for-' +
+        'each select="a:FatturaElettronica/FatturaElettronicaHeader/Ceden' +
+        'tePrestatore/Contatti">'
+      
+        '                                                            <xsl' +
+        ':if test="Telefono or Fax or Email">'
+      
+        '                                                                ' +
+        ' <h4>Adresse - <i>Recapiti</i></h4>'
+      
+        '                                                                ' +
+        ' <table id="t1">'
+      
+        '                                                                ' +
+        '      <xsl:if test="Telefono">'
+      
+        '                                                                ' +
+        '           <tr><td width="100px">1.2.5.1</td><td width="200px">T' +
+        'elefon<br/><i>Telefono</i></td>'
+      
+        '                                                                ' +
+        '                <td width="500px"><span><xsl:value-of select="Te' +
+        'lefono"/></span></td>'
+      
+        '                                                                ' +
+        '           </tr>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      
+        '                                                                ' +
+        '      <xsl:if test="Fax">'
+      
+        '                                                                ' +
+        '           <tr><td width="100px">1.2.5.2</td><td width="200px">F' +
+        'AX<br/><i>Fax</i></td>'
+      
+        '                                                                ' +
+        '                <td width="500px"><span><xsl:value-of select="Fa' +
+        'x"/></span></td>'
+      
+        '                                                                ' +
+        '           </tr>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      
+        '                                                                ' +
+        '      <xsl:if test="Email">'
+      
+        '                                                                ' +
+        '           <tr><td width="100px">1.2.5.3</td><td width="200px">E' +
+        '-Mail<br/><i>E-mail</i></td>'
+      
+        '                                                                ' +
+        '                <td width="500px"><span><xsl:value-of select="Em' +
+        'ail"/></span></td>'
+      
+        '                                                                ' +
+        '           </tr>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      
+        '                                                                ' +
+        ' </table>'
+      
+        '                                                            </xs' +
+        'l:if>'
+      
+        '                                                       </xsl:for' +
+        '-each>'
+      ''
+      
+        '                                                       <xsl:if t' +
+        'est="a:FatturaElettronica/FatturaElettronicaHeader/CedentePresta' +
+        'tore/RiferimentoAmministrazione">'
+      
+        '                                                            <h4>' +
+        'Hinweis Verwaltung / Buchhaltung - <i>Riferimento amministrativo' +
+        '</i></h4>'
+      
+        '                                                                ' +
+        ' <table id="t1">'
+      
+        '                                                                ' +
+        '      <tr><td width="100px">1.2.6</td><td width="200px">Referenz' +
+        '<br/><i>Riferimento</i></td>'
+      
+        '                                                                ' +
+        '           <td width="500px"><span><xsl:value-of select="a:Fattu' +
+        'raElettronica/FatturaElettronicaHeader/CedentePrestatore/Riferim' +
+        'entoAmministrazione"/></span></td>'
+      
+        '                                                                ' +
+        '      </tr>'
+      
+        '                                                                ' +
+        ' </table>'
+      '                                                       </xsl:if>'
+      '                                                  </div>'
+      '                                             </xsl:if>'
+      
+        '                                             <!--FINE DATI CEDEN' +
+        'TE PRESTATORE-->'
+      ''
+      
+        '                                             <!--INIZIO DATI RAP' +
+        'PRESENTANTE FISCALE-->'
+      
+        '                                             <xsl:if test="a:Fat' +
+        'turaElettronica/FatturaElettronicaHeader/RappresentanteFiscale">'
+      
+        '                                                  <div id="rappr' +
+        'esentante-fiscale">'
+      
+        '                                                       <h3>Daten' +
+        ' des Vertreters f'#252'r Steuerfragen f'#252'r Dienstleisters / Lieferante' +
+        'n<br/><i>Dati del rappresentante fiscale del cedente / prestator' +
+        'e</i></h3>'
+      
+        '                                                       <xsl:if t' +
+        'est="a:FatturaElettronica/FatturaElettronicaHeader/Rappresentant' +
+        'eFiscale/DatiAnagrafici">'
+      
+        '                                                            <h4>' +
+        'Anagrafische Daten - <i>Dati anagrafici</i></h4>'
+      
+        '                                                            <tab' +
+        'le id="t1">'
+      
+        '                                                                ' +
+        ' <xsl:for-each select="a:FatturaElettronica/FatturaElettronicaHe' +
+        'ader/RappresentanteFiscale/DatiAnagrafici">'
+      
+        '                                                                ' +
+        '      <xsl:if test="IdFiscaleIVA">'
+      
+        '                                                                ' +
+        '           <tr><td width="100px">1.3.1.1</td><td width="200px">M' +
+        'ehrwertsteuernummer<br/><i>Ident. fiscale ai fini IVA</i></td>'
+      
+        '                                                                ' +
+        '                <td width="500px"><span><xsl:value-of select="Id' +
+        'FiscaleIVA/IdPaese"/><xsl:value-of select="IdFiscaleIVA/IdCodice' +
+        '"/></span></td>'
+      
+        '                                                                ' +
+        '                </tr>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      
+        '                                                                ' +
+        '      <xsl:if test="CodiceFiscale">'
+      
+        '                                                                ' +
+        '           <tr><td>1.3.1.2</td><td>Steuernummer<br/><i>Codice fi' +
+        'scale</i></td>'
+      
+        '                                                                ' +
+        '                <td><span><xsl:value-of select="CodiceFiscale"/>' +
+        '</span></td>'
+      
+        '                                                                ' +
+        '                </tr>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      
+        '                                                                ' +
+        '      <xsl:if test="Anagrafica/Denominazione or Anagrafica/Titol' +
+        'o or Anagrafica/Nome or Anagrafica/Cognome">'
+      
+        '                                                                ' +
+        '           <tr><td width="100px">1.3.1.3.[1|4|2|3]</td><td width' +
+        '="200px">Anschrift<br/><i>indirizzo</i></td>'
+      
+        '                                                                ' +
+        '                <td width="500px"><span><xsl:value-of select="An' +
+        'agrafica/Denominazione"/>'#160'<xsl:value-of select="Anagrafica/Titol' +
+        'o"/><xsl:value-of select="Anagrafica/Nome"/>'#160'<xsl:value-of selec' +
+        't="Anagrafica/Cognome"/></span></td>'
+      
+        '                                                                ' +
+        '           </tr>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      ''
+      
+        '                                                                ' +
+        '      <xsl:if test="Anagrafica/CodEORI">'
+      
+        '                                                                ' +
+        '           <tr><td>1.3.1.3.5</td><td>EORI-Kennung<br/><i>Codice ' +
+        'EORI</i></td>'
+      
+        '                                                                ' +
+        '                <td><span><xsl:value-of select="Anagrafica/CodEO' +
+        'RI"/></span></td>'
+      
+        '                                                                ' +
+        '           </tr>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      
+        '                                                                ' +
+        ' </xsl:for-each>'
+      
+        '                                                            </ta' +
+        'ble>'
+      '                                                       </xsl:if>'
+      '                                                  </div>'
+      '                                             </xsl:if>'
+      
+        '                                             <!--FINE DATI RAPPR' +
+        'ESENTANTE FISCALE-->'
+      ''
+      
+        '                                             <!--INIZIO DATI CES' +
+        'SIONARIO COMMITTENTE-->'
+      
+        '                                             <xsl:if test="a:Fat' +
+        'turaElettronica/FatturaElettronicaHeader/CessionarioCommittente"' +
+        '>'
+      
+        '                                                  <div id="cessi' +
+        'onario">'
+      
+        '                                                       <h3>Daten' +
+        ' des Rechnungsempf'#228'ngers - <i>Dati del cessionario / committente' +
+        '</i></h3>'
+      
+        '                                                       <xsl:if t' +
+        'est="a:FatturaElettronica/FatturaElettronicaHeader/CessionarioCo' +
+        'mmittente/DatiAnagrafici">'
+      
+        '                                                            <h4>' +
+        'Anagrafische Daten - <i>Dati anagrafici</i></h4>'
+      
+        '                                                            <tab' +
+        'le id="t1">'
+      
+        '                                                                ' +
+        ' <xsl:for-each select="a:FatturaElettronica/FatturaElettronicaHe' +
+        'ader/CessionarioCommittente/DatiAnagrafici">'
+      
+        '                                                                ' +
+        '      <xsl:if test="Anagrafica/Denominazione or Anagrafica/Titol' +
+        'o or Anagrafica/Nome or Anagrafica/Cognome">'
+      
+        '                                                                ' +
+        '           <tr><td width="100px">1.4.1.3.[1|4|2|3]</td><td width' +
+        '="200px">Benennung<br/><i>denominazione</i></td>'
+      
+        '                                                                ' +
+        '                <td width="500px"><span><xsl:value-of select="An' +
+        'agrafica/Denominazione"/>'#160'<xsl:value-of select="Anagrafica/Titol' +
+        'o"/><xsl:value-of select="Anagrafica/Nome"/>'#160'<xsl:value-of selec' +
+        't="Anagrafica/Cognome"/></span></td>'
+      
+        '                                                                ' +
+        '           </tr>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      
+        '                                                                ' +
+        '      <xsl:if test="IdFiscaleIVA">'
+      
+        '                                                                ' +
+        '           <tr><td>1.4.1.1</td><td>Mehrwertsteuernummer<br/><i>I' +
+        'dent. fiscale ai fini IVA</i></td>'
+      
+        '                                                                ' +
+        '                <td><span><xsl:value-of select="IdFiscaleIVA/IdP' +
+        'aese"/><xsl:value-of select="IdFiscaleIVA/IdCodice"/> </span></t' +
+        'd>'
+      
+        '                                                                ' +
+        '           </tr>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      
+        '                                                                ' +
+        '      <xsl:if test="CodiceFiscale">'
+      
+        '                                                                ' +
+        '           <tr><td>1.4.1.2</td><td>Steuernummer<br/><i>Codice Fi' +
+        'scale</i></td>'
+      
+        '                                                                ' +
+        '                <td><span><xsl:value-of select="CodiceFiscale"/>' +
+        '</span></td>'
+      
+        '                                                                ' +
+        '           </tr>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      
+        '                                                                ' +
+        '      <xsl:if test="Anagrafica/CodEORI">'
+      
+        '                                                                ' +
+        '           <tr><td>1.4.1.3.5</td><td>EORI-Kennung<br/><i>Codice ' +
+        'EORI</i></td>'
+      
+        '                                                                ' +
+        '                <td><span><xsl:value-of select="Anagrafica/CodEO' +
+        'RI"/></span></td>'
+      
+        '                                                                ' +
+        '           </tr>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      
+        '                                                                ' +
+        ' </xsl:for-each>'
+      
+        '                                                            </ta' +
+        'ble>'
+      '                                                       </xsl:if>'
+      
+        '                                                       <xsl:if t' +
+        'est="a:FatturaElettronica/FatturaElettronicaHeader/CessionarioCo' +
+        'mmittente/Sede">'
+      
+        '                                                            <h4>' +
+        'Firmensitz - <i>Dati della sede</i></h4>'
+      
+        '                                                            <tab' +
+        'le id="t1">'
+      
+        '                                                                ' +
+        ' <xsl:for-each select="a:FatturaElettronica/FatturaElettronicaHe' +
+        'ader/CessionarioCommittente/Sede">'
+      
+        '                                                                ' +
+        '      <xsl:if test="Indirizzo or NumeroCivico or CAP or Comune o' +
+        'r Provincia or Nazione">'
+      
+        '                                                                ' +
+        '           <tr><td width="100px">1.4.2.[1|2|3|4|5|6]</td><td wid' +
+        'th="200px">Anschrift<br/><i>indirizzo</i></td>'
+      
+        '                                                                ' +
+        '                <td width="500px"><span><xsl:value-of select="In' +
+        'dirizzo"/>'#160'<xsl:value-of select="NumeroCivico"/><br/> <xsl:value' +
+        '-of select="CAP"/>'#160'<xsl:value-of select="Comune"/>'#160'<xsl:value-of' +
+        ' select="Provincia"/> '#160'<xsl:value-of select="Nazione"/></span></' +
+        'td>'
+      
+        '                                                                ' +
+        '           </tr>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      
+        '                                                                ' +
+        ' </xsl:for-each>'
+      
+        '                                                            </ta' +
+        'ble>'
+      '                                                       </xsl:if>'
+      
+        '                                                       <!-- neu ' +
+        'seit Version 1.2-->'
+      
+        '                                                       <xsl:if t' +
+        'est="a:FatturaElettronica/FatturaElettronicaHeader/CessionarioCo' +
+        'mmittente/StabileOrganizzazione">'
+      
+        '                                                            <h4>' +
+        'Firmensitz - <i>Dati della stabile organizzazione</i></h4>'
+      
+        '                                                            <tab' +
+        'le id="t1">'
+      
+        '                                                                ' +
+        ' <xsl:for-each select="a:FatturaElettronica/FatturaElettronicaHe' +
+        'ader/CessionarioCommittente/StabileOrganizzazione">'
+      
+        '                                                                ' +
+        '      <xsl:if test="Indirizzo or NumeroCivico or CAP or Comune o' +
+        'r Provincia or Nazione">'
+      
+        '                                                                ' +
+        '           <tr><td width="100px">1.4.3.[1|2|3|4|5|6]</td><td wid' +
+        'th="200px">Anschrift<br/><i>indirizzo</i></td>'
+      
+        '                                                                ' +
+        '                <td width="500px"><span><xsl:value-of select="In' +
+        'dirizzo"/>'#160'<xsl:value-of select="NumeroCivico"/><br/> <xsl:value' +
+        '-of select="CAP"/>'#160'<xsl:value-of select="Comune"/>'#160'<xsl:value-of' +
+        ' select="Provincia"/> '#160'<xsl:value-of select="Nazione"/></span></' +
+        'td>'
+      
+        '                                                                ' +
+        '           </tr>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      
+        '                                                                ' +
+        ' </xsl:for-each>'
+      
+        '                                                            </ta' +
+        'ble>'
+      '                                                       </xsl:if>'
+      
+        '                                                       <xsl:if t' +
+        'est="a:FatturaElettronica/FatturaElettronicaHeader/CessionarioCo' +
+        'mmittente/RappresentanteFiscale">'
+      
+        '                                                            <h4>' +
+        'Steuerberater - <i>Rappresentante fiscale</i></h4>'
+      
+        '                                                            <tab' +
+        'le id="t1">'
+      
+        '                                                                ' +
+        ' <xsl:for-each select="a:FatturaElettronica/FatturaElettronicaHe' +
+        'ader/CessionarioCommittente/RappresentanteFiscale">'
+      
+        '                                                                ' +
+        '      <xsl:if test="IdFiscaleIVA">'
+      
+        '                                                                ' +
+        '           <tr><td>1.4.4.1</td><td>Mehrwertsteuernummer<br/><i>I' +
+        'dent. fiscale ai fini IVA</i></td>'
+      
+        '                                                                ' +
+        '                <td><span><xsl:value-of select="IdFiscaleIVA/IdP' +
+        'aese"/><xsl:value-of select="IdFiscaleIVA/IdCodice"/> </span></t' +
+        'd>'
+      
+        '                                                                ' +
+        '           </tr>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      
+        '                                                                ' +
+        '      <xsl:if test="Denominazione or Nome or Cognome">'
+      
+        '                                                                ' +
+        '           <tr><td width="100px">1.4.4.[2 / 3|4]</td><td width="' +
+        '200px">Benennung<br/><i>denominazione</i></td>'
+      
+        '                                                                ' +
+        '                <td width="500px"><span><xsl:value-of select="De' +
+        'nominazione"/>'#160'<xsl:value-of select="Nome"/>'#160'<xsl:value-of selec' +
+        't="Cognome"/></span></td>'
+      
+        '                                                                ' +
+        '           </tr>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      
+        '                                                                ' +
+        ' </xsl:for-each>'
+      
+        '                                                            </ta' +
+        'ble>'
+      '                                                       </xsl:if>'
+      '<!-- -->'
+      '                                                </div>'
+      '                                             </xsl:if>'
+      
+        '                                             <!--FINE DATI CESSI' +
+        'ONARIO COMMITTENTE-->'
+      ''
+      
+        '                                             <!--INIZIO DATI TER' +
+        'ZO INTERMEDIARIO SOGGETTO EMITTENTE-->'
+      
+        '                                             <xsl:if test="a:Fat' +
+        'turaElettronica/FatturaElettronicaHeader/TerzoIntermediarioOSogg' +
+        'ettoEmittente">'
+      
+        '                                                  <div id="terzo' +
+        'intermediario">'
+      ''
+      
+        '                                                       <xsl:for-' +
+        'each select="a:FatturaElettronica/FatturaElettronicaHeader/Terzo' +
+        'IntermediarioOSoggettoEmittente">'
+      
+        '                                                            <h3>' +
+        'Daten des Vermittlers des Emittenten - <i>Dati del terzo interme' +
+        'diario soggetto emittente</i></h3>'
+      ''
+      
+        '                                                            <xsl' +
+        ':if test="DatiAnagrafici">'
+      
+        '                                                                ' +
+        ' <h4>Anagrafische Daten - <i>Dati anagrafici</i></h4>'
+      
+        '                                                                ' +
+        ' <table id="t1">'
+      
+        '                                                                ' +
+        '      <xsl:if test="DatiAnagrafici/Anagrafica/Denominazione or D' +
+        'atiAnagrafici/Anagrafica/Titolo or DatiAnagrafici/Anagrafica/Nom' +
+        'e or DatiAnagrafici/Anagrafica/Cognome">'
+      
+        '                                                                ' +
+        '           <tr><td width="100px">1.5.1.3.[1|4|2|3]</td><td width' +
+        '="200px">Anschrift<br/><i>indirizzo</i></td>'
+      
+        '                                                                ' +
+        '                <td width="500px"><span><xsl:value-of select="Da' +
+        'tiAnagrafici/Anagrafica/Denominazione"/>'#160'<xsl:value-of select="D' +
+        'atiAnagrafici/Anagrafica/Titolo"/>'#160'<xsl:value-of select="DatiAna' +
+        'grafici/Anagrafica/Nome"/> '#160'<xsl:value-of select="DatiAnagrafici' +
+        '/Anagrafica/Cognome"/></span></td>'
+      
+        '                                                                ' +
+        '           </tr>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      ''
+      ''
+      
+        '                                                                ' +
+        '      <xsl:if test="DatiAnagrafici/IdFiscaleIVA">'
+      
+        '                                                                ' +
+        '           <tr><td>1.5.1.1</td><td>Mehrwertsteuernummer<br/><i>I' +
+        'dent. fiscale ai fini IVA</i></td>'
+      
+        '                                                                ' +
+        '                <td><span><xsl:value-of select="DatiAnagrafici/I' +
+        'dFiscaleIVA/IdPaese"/><xsl:value-of select="DatiAnagrafici/IdFis' +
+        'caleIVA/IdCodice"/></span></td>'
+      
+        '                                                                ' +
+        '           </tr>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      
+        '                                                                ' +
+        '      <xsl:if test="DatiAnagrafici/CodiceFiscale">'
+      
+        '                                                                ' +
+        '           <tr><td>1.5.1.2</td><td>Steuernummer<br/><i>Codice Fi' +
+        'scale</i></td>'
+      
+        '                                                                ' +
+        '                <td><span><xsl:value-of select="DatiAnagrafici/C' +
+        'odiceFiscale"/></span></td>'
+      
+        '                                                                ' +
+        '           </tr>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      
+        '                                                                ' +
+        '      <xsl:if test="DatiAnagrafici/Anagrafica/CodEORI">'
+      
+        '                                                                ' +
+        '           <tr><td>1.5.1.3.5</td><td>EORI-Kennung<br/><i>Codice ' +
+        'EORI</i></td>'
+      
+        '                                                                ' +
+        '                <td><span><xsl:value-of select="DatiAnagrafici/A' +
+        'nagrafica/CodEORI"/></span></td>'
+      
+        '                                                                ' +
+        '           </tr>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      
+        '                                                                ' +
+        ' </table>'
+      
+        '                                                            </xs' +
+        'l:if>'
+      
+        '                                                       </xsl:for' +
+        '-each>'
+      '                                                  </div>'
+      '                                             </xsl:if>'
+      
+        '                                             <!--FINE DATI TERZO' +
+        ' INTERMEDIARIO SOGGETTO EMITTENTE-->'
+      ''
+      
+        '                                             <!--INIZIO DATI SOG' +
+        'GETTO EMITTENTE-->'
+      
+        '                                             <xsl:if test="a:Fat' +
+        'turaElettronica/FatturaElettronicaHeader/SoggettoEmittente">'
+      
+        '                                                  <div id="sogge' +
+        'tto-emittente">'
+      
+        '                                                       <h3>Rechn' +
+        'ungsersteller - <i>Soggetto emittente la fattura</i></h3>'
+      
+        '                                                       <table id' +
+        '="t1">'
+      
+        '                                                            <tr>' +
+        '<td width="100px">1.6</td><td width="200px">Austeller<br/><i>Sog' +
+        'getto emittente</i></td>'
+      
+        '                                                            <td ' +
+        'width="500px"><span><xsl:value-of select="a:FatturaElettronica/F' +
+        'atturaElettronicaHeader/SoggettoEmittente"/> </span><xsl:variabl' +
+        'e name="SC"><xsl:value-of select="a:FatturaElettronica/FatturaEl' +
+        'ettronicaHeader/SoggettoEmittente"/> </xsl:variable>'
+      
+        '                                                                ' +
+        ' <xsl:choose>'
+      
+        '                                                                ' +
+        '      <xsl:when test="$SC='#39'CC'#39'"> (Rechnungssteller)<i>(cessionar' +
+        'io/committente)</i></xsl:when>'
+      
+        '                                                                ' +
+        '      <xsl:when test="$SC='#39'TZ'#39'"> (dritter)<i>(terzo)</i></xsl:wh' +
+        'en>'
+      
+        '                                                                ' +
+        '      <xsl:when test="$SC='#39#39'"/>'
+      
+        '                                                                ' +
+        '      <xsl:otherwise><fehler> (!!! falsche Kennung !!!)<i>(!!! c' +
+        'odice non previsto !!!)</i></fehler></xsl:otherwise>'
+      
+        '                                                                ' +
+        ' </xsl:choose></td>'
+      
+        '                                                            </tr' +
+        '>'
+      '                                                       </table>'
+      '                                                  </div>'
+      '                                             </xsl:if>'
+      
+        '                                             <!--FINE DATI SOGGE' +
+        'TTO EMITTENTE-->'
+      ''
+      
+        '                                             <div class="footer"' +
+        '><xsl:copy-of select="$VersionFT"/></div>'
+      '                                        </div>'
+      '                                   </xsl:if>'
+      '                                   <!--FINE DATI HEADER-->'
+      ''
+      '                                   <!--INIZIO DATI BODY-->'
+      ''
+      
+        '                                   <xsl:variable name="TOTALBODY' +
+        '">'
+      
+        '                                        <xsl:value-of select="co' +
+        'unt(a:FatturaElettronica/FatturaElettronicaBody)"/>'
+      '                                   </xsl:variable>'
+      ''
+      
+        '                                   <xsl:for-each select="a:Fattu' +
+        'raElettronica/FatturaElettronicaBody">'
+      
+        '                                        <xsl:if test="$TOTALBODY' +
+        '&gt;1">'
+      
+        '                                             <h2>Dokument Nummer' +
+        ' <i>Numero documento nel lotto</i>:<xsl:value-of select="positio' +
+        'n()"/></h2>'
+      '                                        </xsl:if>'
+      ''
+      '                                        <div class="page">'
+      
+        '                                             <div class="version' +
+        '">FatturaPA Version/<i>versione </i><xsl:value-of select="../@ve' +
+        'rsione"/></div>'
+      ''
+      
+        '                                             <xsl:variable name=' +
+        '"Valuta" select="DatiGenerali/DatiGeneraliDocumento/Divisa"/>'
+      ''
+      
+        '                                             <xsl:if test="DatiG' +
+        'enerali">'
+      
+        '                                                  <!--INIZIO DAT' +
+        'I GENERALI-->'
+      
+        '                                                  <div id="dati-' +
+        'generali">'
+      ''
+      
+        '                                                       <xsl:if t' +
+        'est="DatiGenerali/DatiGeneraliDocumento">'
+      ''
+      
+        '                                                            <!--' +
+        'INIZIO DATI GENERALI DOCUMENTO-->'
+      
+        '                                                            <div' +
+        ' id="dati-generali-documento">'
+      
+        '                                                                ' +
+        ' <h3>Generelle Rechnungssdaten - <i>Dati generali del documento<' +
+        '/i></h3>'
+      ''
+      
+        '                                                                ' +
+        ' <table id="t1">'
+      
+        '                                                                ' +
+        '      <xsl:if test="DatiGenerali/DatiGeneraliDocumento/TipoDocum' +
+        'ento">'
+      
+        '                                                                ' +
+        '           <tr><td width="100px">2.1.1.[2|1]</td><td width="200p' +
+        'x">W'#228'hrung : Dokumententyp<br/><i>Valuta : Tipologia doc.</i></t' +
+        'd>'
+      
+        '                                                                ' +
+        '                <td width="500px"><span><xsl:value-of select="$V' +
+        'aluta"/>'#160':'#160'<xsl:value-of select="DatiGenerali/DatiGeneraliDocume' +
+        'nto/TipoDocumento"/> </span><xsl:variable name="TD"><xsl:value-o' +
+        'f select="DatiGenerali/DatiGeneraliDocumento/TipoDocumento"/> </' +
+        'xsl:variable>'
+      
+        '                                                                ' +
+        '                          <xsl:choose>'
+      
+        '                                                                ' +
+        '                               <xsl:when test="$TD='#39'TD01'#39'"> (Rec' +
+        'hnung)<i>(fattura)</i></xsl:when>'
+      
+        '                                                                ' +
+        '                               <xsl:when test="$TD='#39'TD02'#39'"> (Acc' +
+        'ontorechnung)<i>(acconto/anticipo su fattura)</i></xsl:when>'
+      
+        '                                                                ' +
+        '                               <xsl:when test="$TD='#39'TD03'#39'"> (Acc' +
+        'ontohonorar)<i>(acconto/anticipo su parcella)</i></xsl:when>'
+      
+        '                                                                ' +
+        '                               <xsl:when test="$TD='#39'TD04'#39'"> (Gut' +
+        'schrift)<i>(nota di credito)</i></xsl:when>'
+      
+        '                                                                ' +
+        '                               <xsl:when test="$TD='#39'TD05'#39'"> (Las' +
+        'tschrift)<i>(nota di debito)</i></xsl:when>'
+      
+        '                                                                ' +
+        '                               <xsl:when test="$TD='#39'TD06'#39'"> (Hon' +
+        'orarnote)<i>(parcella)</i></xsl:when>'
+      
+        '                                                                ' +
+        '                               <!-- Version 1.2.1 -->'
+      
+        #9#9#9#9#9#9#9#9#9#9#9'       <xsl:when test="$TD='#39'TD16'#39'"> (Integration der ' +
+        'internenen reverse charge Rechnungen)<br/><i>(Integrazione fattu' +
+        'ra reverse charge interno)</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9'       <xsl:when test="$TD='#39'TD17'#39'"> (Integration/Selb' +
+        'sfakturierung f'#252'r den Einkauf von Dienstleistungen aus dem Ausla' +
+        'nd)<br/><i>(Integrazione/autofattura per acquisto servizi dall'#39'e' +
+        'stero)</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9'       <xsl:when test="$TD='#39'TD18'#39'"> (Integration f'#252'r ' +
+        'den Kauf von innergemeinschaftlichen Waren)<br/><i>(Integrazione' +
+        ' per acquisto di beni intracomunitari)</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9'       <xsl:when test="$TD='#39'TD19'#39'"> (Integration/Selb' +
+        'stfakturierung f'#252'r den Kauf von Waren ex Art. 17, Abs. 2 DPR 633' +
+        '/72)<br/><i>(Integrazione/autofattura per acquisto di beni ex ar' +
+        't.17 c.2 DPR 633/72)</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9'       <xsl:when test="$TD='#39'TD20'#39'"> (Selbstfakturieru' +
+        'ng Anzeige (Art.6c, Komma 8 Dekret 471/97)<br/>)<i>(Autofattura ' +
+        'denuncia (art.6c .8 d.lgs. 471/97))</i></xsl:when>'
+      
+        '                                                                ' +
+        '                               <xsl:when test="$TD='#39'TD21'#39'"> (Sel' +
+        'bstfakturierung bei '#220'berschreiten des Plafonds)<i>(Autofattura p' +
+        'er splafonamento)</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9'       <xsl:when test="$TD='#39'TD22'#39'"> (Warenentnahme au' +
+        's dem Mehrwertsteuerlager)<br/><i>(Estrazione beni da Deposito I' +
+        'VA)</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9'       <xsl:when test="$TD='#39'TD23'#39'"> (Warenentnahme au' +
+        's dem Mehrwertsteuerlager mit Mehrwertsteuerzahlung)<br/><i>(Est' +
+        'razione beni da Deposito IVA con versamento dell'#39'IVA)</i></xsl:w' +
+        'hen>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9'       <xsl:when test="$TD='#39'TD24'#39'"> (Aufgeschobene Re' +
+        'chnung gem'#228#223' Artikel 21, Absatz 4, Buchstabe a))<br/><i>(Fattura' +
+        ' differita di cui all'#39'art. 21, comma 4, lett. a))</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9'       <xsl:when test="$TD='#39'TD25'#39'"> (Aufgeschobene Re' +
+        'chnung gem'#228#223' Artikel 21, Absatz 4, Dritter Satz Buchstabe b))<br' +
+        '/><i>(Fattura differita di cui all'#39'art. 21, comma 4, terzo perio' +
+        'do lett. b))</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9'       <xsl:when test="$TD='#39'TD26'#39'"> ('#220'bertragung von ' +
+        'abschreibungsf'#228'higen G'#252'tern und f'#252'r interner Transaktionen (Art.' +
+        ' 36 DPR 633/72))<br/><i>(Cessione di beni ammortizzabili e per p' +
+        'assaggi interni (art.36 DPR 633/72))</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9'       <xsl:when test="$TD='#39'TD27'#39'"> (Rechnung f'#252'r Eig' +
+        'enverbrauch oder f'#252'r kostenlose Abtretungen ohne Entsch'#228'digung)<' +
+        'br/><i>(Fattura per autoconsumo o per cessioni gratuite senza ri' +
+        'valsa)</i></xsl:when>'
+      
+        '                                                                ' +
+        '                               <xsl:when test="$TD='#39#39'"/>'
+      
+        '                                                                ' +
+        '                               <xsl:otherwise><fehler> (!!! fals' +
+        'che Kennung !!!)<i>(!!! codice non previsto !!!)</i></fehler></x' +
+        'sl:otherwise>'
+      
+        '                                                                ' +
+        '                          </xsl:choose></td>'
+      
+        '                                                                ' +
+        '           </tr>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      
+        '                                                                ' +
+        '      <xsl:if test="DatiGenerali/DatiGeneraliDocumento/Data">'
+      
+        '                                                                ' +
+        '           <tr><td>2.1.1.[4|3]</td><td>Dok.-nummer und -datum<br' +
+        '/><i>Numero e data doc.</i></td>'
+      
+        '                                                                ' +
+        '                <td><span><xsl:value-of select="DatiGenerali/Dat' +
+        'iGeneraliDocumento/Numero"/>'#160'-'#160'<xsl:value-of select="DatiGeneral' +
+        'i/DatiGeneraliDocumento/Data"/></span><xsl:call-template name="F' +
+        'ormatDate"><xsl:with-param name="DateTime" select="DatiGenerali/' +
+        'DatiGeneraliDocumento/Data"/></xsl:call-template>'
+      
+        '                                                                ' +
+        '           </td></tr>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      
+        '                                                                ' +
+        '      <xsl:if test="DatiGenerali/DatiGeneraliDocumento/ImportoTo' +
+        'taleDocumento">'
+      
+        '                                                                ' +
+        '           <tr><td>2.1.1.9</td><td>Gesamtbetrag Dokument<br/><i>' +
+        'Importo totale documento</i></td>'
+      
+        '                                                                ' +
+        '                <td><span><xsl:value-of select="$Valuta"/>'#160'<xsl:' +
+        'variable name="ITD" select="DatiGenerali/DatiGeneraliDocumento/I' +
+        'mportoTotaleDocumento"/><xsl:value-of select="format-number($ITD' +
+        ', '#39'###.##0,00'#39', '#39'euro'#39')"/></span></td>'
+      
+        '                                                                ' +
+        '           </tr>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      
+        '                                                                ' +
+        '      <xsl:if test="DatiGenerali/DatiGeneraliDocumento/Arrotonda' +
+        'mento">'
+      
+        '                                                                ' +
+        '           <tr><td>2.1.1.10</td><td>Rundung auf dem Gesamtbetrag' +
+        '<br/><i>Arrotondamento su Importo totale documento</i></td>'
+      
+        '                                                                ' +
+        '                <td><span><xsl:value-of select="DatiGenerali/Dat' +
+        'iGeneraliDocumento/Arrotondamento"/></span></td>'
+      
+        '                                                                ' +
+        '           </tr>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      
+        '                                                                ' +
+        '      <xsl:for-each select="DatiGenerali/DatiGeneraliDocumento/C' +
+        'ausale">'
+      
+        '                                                                ' +
+        '           <tr><td>2.1.1.11</td><td>Grund<br/><i>Causale</i></td' +
+        '>'
+      
+        '                                                                ' +
+        '                <td><span><xsl:value-of select="current()"/></sp' +
+        'an></td>'
+      
+        '                                                                ' +
+        '           </tr>'
+      
+        '                                                                ' +
+        '      </xsl:for-each>'
+      
+        '                                                                ' +
+        '      <xsl:if test="DatiGenerali/DatiGeneraliDocumento/Art73">'
+      
+        '                                                                ' +
+        '           <tr><td>2.1.1.12</td><td colspan="2">Art. 73 DPR 633/' +
+        '72</td>'
+      
+        '                                                                ' +
+        '                <td><span><xsl:value-of select="DatiGenerali/Dat' +
+        'iGeneraliDocumento/Art73"/></span></td>'
+      
+        '                                                                ' +
+        '           </tr>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      
+        '                                                                ' +
+        ' </table>'
+      ''
+      
+        '                                                                ' +
+        ' <!--INIZIO DATI DELLA RITENUTA-->'
+      
+        '                                                                ' +
+        ' <xsl:if test="DatiGenerali/DatiGeneraliDocumento/DatiRitenuta">'
+      
+        '                                                                ' +
+        '      <div id="dati-ritenuta">'
+      
+        '                                                                ' +
+        '           <xsl:for-each select="DatiGenerali/DatiGeneraliDocume' +
+        'nto/DatiRitenuta">'
+      
+        '                                                                ' +
+        '                <h4>Einbehalte - <i>Ritenuta</i></h4>'
+      
+        '                                                                ' +
+        '                <table id="t1">'
+      
+        '                                                                ' +
+        '                     <xsl:if test="TipoRitenuta">'
+      
+        '                                                                ' +
+        '                          <tr><td width="100px">2.1.1.5.1</td><t' +
+        'd width="200px">Art des Einbehaltes<br/><i>Tipologia ritenuta</i' +
+        '></td>'
+      
+        '                                                                ' +
+        '                               <td width="500px"><span><xsl:valu' +
+        'e-of select="TipoRitenuta"/></span><xsl:variable name="TR"><xsl:' +
+        'value-of select="TipoRitenuta"/></xsl:variable>'
+      
+        '                                                                ' +
+        '                               <xsl:choose>'
+      
+        '                                                                ' +
+        '                                    <xsl:when test="$TR='#39'RT01'#39'">' +
+        ' (ritenuta persone fisiche)</xsl:when>'
+      
+        '                                                                ' +
+        '                                    <xsl:when test="$TR='#39'RT02'#39'">' +
+        ' (ritenuta persone giuridiche)</xsl:when>'
+      
+        '                                                                ' +
+        '                                    <!-- Version 1.2.1-->'
+      
+        '                                                                ' +
+        '                                    <xsl:when test="$TR='#39'RT03'#39'">' +
+        ' (contributo INPS)</xsl:when>'
+      
+        '                                                                ' +
+        '                                    <xsl:when test="$TR='#39'RT04'#39'">' +
+        ' (contributo ENASARCO)</xsl:when>'
+      
+        '                                                                ' +
+        '                                    <xsl:when test="$TR='#39'RT05'#39'">' +
+        ' (contributo ENPAM)</xsl:when>'
+      
+        '                                                                ' +
+        '                                    <xsl:when test="$TR='#39'RT06'#39'">' +
+        ' (altro contributo previdenziale)</xsl:when>'
+      
+        '                                                                ' +
+        '                                    <xsl:when test="$TR='#39#39'"/>'
+      
+        '                                                                ' +
+        '                                    <xsl:otherwise><fehler> (!!!' +
+        ' falsche Kennung !!!)<i>(!!! codice non previsto !!!)</i></fehle' +
+        'r></xsl:otherwise>'
+      
+        '                                                                ' +
+        '                               </xsl:choose>'
+      
+        '                                                                ' +
+        '                          </td></tr>'
+      
+        '                                                                ' +
+        '                     </xsl:if>'
+      
+        '                                                                ' +
+        '                     <xsl:if test="ImportoRitenuta">'
+      
+        '                                                                ' +
+        '                          <tr><td>2.1.1.5.2</td><td>Einbehaltene' +
+        'r Betrag<br/><i>Importo ritenuta</i></td>'
+      
+        '                                                                ' +
+        '                               <td><span><xsl:value-of select="$' +
+        'Valuta"/>'#160'<xsl:value-of select="format-number(ImportoRitenuta, '#39 +
+        '###.##0,00'#39', '#39'euro'#39')"/></span></td>'
+      
+        '                                                                ' +
+        '                          </tr>'
+      
+        '                                                                ' +
+        '                     </xsl:if>'
+      
+        '                                                                ' +
+        '                     <xsl:if test="AliquotaRitenuta">'
+      
+        '                                                                ' +
+        '                          <tr><td>2.1.1.5.3</td><td>Einbehaltsat' +
+        'z<br/><i>Aliquota ritenuta (%)</i></td>'
+      
+        '                                                                ' +
+        '                               <td><span><xsl:value-of select="f' +
+        'ormat-number(AliquotaRitenuta, '#39'###'#39')"/> %</span></td>'
+      
+        '                                                                ' +
+        '                          </tr>'
+      
+        '                                                                ' +
+        '                     </xsl:if>'
+      
+        '                                                                ' +
+        '                     <xsl:if test="CausalePagamento">'
+      
+        '                                                                ' +
+        '                          <tr><td>2.1.1.5.4</td><td>Zahlungsgrun' +
+        'd<br/><i>Causale di pagamento</i></td>'
+      
+        '                                                                ' +
+        '                               <td><span><xsl:value-of select="C' +
+        'ausalePagamento"/></span><xsl:variable name="CP"><xsl:value-of s' +
+        'elect="CausalePagamento"/></xsl:variable><xsl:if test="$CP!='#39#39'">' +
+        ' (Kennung nach Modell 770S)<i>(decodifica come da modello 770S)<' +
+        '/i></xsl:if></td>'
+      
+        '                                                                ' +
+        '                          </tr>'
+      
+        '                                                                ' +
+        '                     </xsl:if>'
+      
+        '                                                                ' +
+        '                </table>'
+      
+        '                                                                ' +
+        '           </xsl:for-each>'
+      
+        '                                                                ' +
+        '      </div>'
+      
+        '                                                                ' +
+        ' </xsl:if>'
+      
+        '                                                                ' +
+        ' <!--FINE DATI DELLA RITENUTA-->'
+      ''
+      
+        '                                                                ' +
+        ' <!--INIZIO DATI DEL BOLLO-->'
+      
+        '                                                                ' +
+        ' <xsl:if test="DatiGenerali/DatiGeneraliDocumento/DatiBollo">'
+      
+        '                                                                ' +
+        '      <div id="dati-bollo">'
+      
+        '                                                                ' +
+        '           <xsl:for-each select="DatiGenerali/DatiGeneraliDocume' +
+        'nto/DatiBollo">'
+      
+        '                                                                ' +
+        '                <h4>Stempelwert - <i>Bollo</i></h4>'
+      
+        '                                                                ' +
+        '                <table id="t1">'
+      
+        '                                                                ' +
+        '                     <xsl:if test="BolloVirtuale">'
+      
+        '                                                                ' +
+        '                          <tr><td width="100px">2.1.1.6.1</td><t' +
+        'd width="200px">Virtueller Stempelwert<br/><i>Bollo virtuale</i>' +
+        '</td>'
+      
+        '                                                                ' +
+        '                               <td width="500px"><span><xsl:valu' +
+        'e-of select="BolloVirtuale"/></span></td>'
+      
+        '                                                                ' +
+        '                          </tr>'
+      
+        '                                                                ' +
+        '                     </xsl:if>'
+      
+        '                                                                ' +
+        '                     <xsl:if test="ImportoBollo">'
+      
+        '                                                                ' +
+        '                          <tr><td>2.1.1.6.2</td><td>Betrag Stemp' +
+        'elwert<br/><i>Importo bollo</i></td>'
+      
+        '                                                                ' +
+        '                               <td><span><xsl:value-of select="$' +
+        'Valuta"/>'#160'<xsl:value-of select="format-number(ImportoBollo, '#39'###' +
+        '.##0,00'#39', '#39'euro'#39')"/></span></td>'
+      
+        '                                                                ' +
+        '                          </tr>'
+      
+        '                                                                ' +
+        '                     </xsl:if>'
+      
+        '                                                                ' +
+        '                </table>'
+      
+        '                                                                ' +
+        '           </xsl:for-each>'
+      
+        '                                                                ' +
+        '      </div>'
+      
+        '                                                                ' +
+        ' </xsl:if>'
+      
+        '                                                                ' +
+        ' <!--FINE DATI DEL BOLLO-->'
+      ''
+      
+        '                                                                ' +
+        ' <!--INIZIO DATI DELLA CASSA PREVIDENZIALE-->'
+      
+        '                                                                ' +
+        ' <xsl:if test="DatiGenerali/DatiGeneraliDocumento/DatiCassaPrevi' +
+        'denziale">'
+      
+        '                                                                ' +
+        '      <div id="dati-cassa-previdenziale">'
+      
+        '                                                                ' +
+        '           <h4>F'#252'rsorgekasse - <i>Cassa previdenziale</i></h4>'
+      
+        '                                                                ' +
+        '           <xsl:for-each select="DatiGenerali/DatiGeneraliDocume' +
+        'nto/DatiCassaPrevidenziale">'
+      
+        '                                                                ' +
+        '                <table id="t1">'
+      
+        '                                                                ' +
+        '                     <xsl:if test="TipoCassa">'
+      
+        '                                                                ' +
+        '                          <tr><td width="100px">2.1.1.7.1</td><t' +
+        'd width="200px">F'#252'rsorgekasse<br/><i>Cassa previdenziale</i></td' +
+        '>'
+      
+        '                                                                ' +
+        '                               <td width="500px"><span><xsl:valu' +
+        'e-of select="TipoCassa"/></span><xsl:variable name="TC"><xsl:val' +
+        'ue-of select="TipoCassa"/>'
+      
+        '                                                                ' +
+        '                               </xsl:variable>'
+      
+        '                                                                ' +
+        '                               <xsl:choose>'
+      
+        '                                                                ' +
+        '                                    <xsl:when test="$TC='#39'TC01'#39'">' +
+        ' (Cassa Nazionale Previdenza e Assistenza Avvocati e Procuratori' +
+        ' legali)</xsl:when>'
+      
+        '                                                                ' +
+        '                                    <xsl:when test="$TC='#39'TC02'#39'">' +
+        ' (Cassa Previdenza Dottori Commercialisti)</xsl:when>'
+      
+        '                                                                ' +
+        '                                    <xsl:when test="$TC='#39'TC03'#39'">' +
+        ' (Cassa Previdenza e Assistenza Geometri)</xsl:when>'
+      
+        '                                                                ' +
+        '                                    <xsl:when test="$TC='#39'TC04'#39'">' +
+        ' (Cassa Nazionale Previdenza e Assistenza Ingegneri e Architetti' +
+        ' liberi profess.)</xsl:when>'
+      
+        '                                                                ' +
+        '                                    <xsl:when test="$TC='#39'TC05'#39'">' +
+        ' (Cassa Nazionale del Notariato)</xsl:when>'
+      
+        '                                                                ' +
+        '                                    <xsl:when test="$TC='#39'TC06'#39'">' +
+        ' (Cassa Nazionale Previdenza e Assistenza Ragionieri e Periti co' +
+        'mmerciali)</xsl:when>'
+      
+        '                                                                ' +
+        '                                    <xsl:when test="$TC='#39'TC07'#39'">' +
+        ' (Ente Nazionale Assistenza Agenti e Rappresentanti di Commercio' +
+        '-ENASARCO)</xsl:when>'
+      
+        '                                                                ' +
+        '                                    <xsl:when test="$TC='#39'TC08'#39'">' +
+        ' (Ente Nazionale Previdenza e Assistenza Consulenti del Lavoro-E' +
+        'NPACL)</xsl:when>'
+      
+        '                                                                ' +
+        '                                    <xsl:when test="$TC='#39'TC09'#39'">' +
+        ' (Ente Nazionale Previdenza e Assistenza Medici-ENPAM)</xsl:when' +
+        '>'
+      
+        '                                                                ' +
+        '                                    <xsl:when test="$TC='#39'TC10'#39'">' +
+        ' (Ente Nazionale Previdenza e Assistenza Farmacisti-ENPAF)</xsl:' +
+        'when>'
+      
+        '                                                                ' +
+        '                                    <xsl:when test="$TC='#39'TC11'#39'">' +
+        ' (Ente Nazionale Previdenza e Assistenza Veterinari-ENPAV)</xsl:' +
+        'when>'
+      
+        '                                                                ' +
+        '                                    <xsl:when test="$TC='#39'TC12'#39'">' +
+        ' (Ente Nazionale Previdenza e Assistenza Impiegati dell'#39'Agricolt' +
+        'ura-ENPAIA)</xsl:when>'
+      
+        '                                                                ' +
+        '                                    <xsl:when test="$TC='#39'TC13'#39'">' +
+        ' (Fondo Previdenza Impiegati Imprese di Spedizione e Agenzie Mar' +
+        'ittime)</xsl:when>'
+      
+        '                                                                ' +
+        '                                    <xsl:when test="$TC='#39'TC14'#39'">' +
+        ' (Istituto Nazionale Previdenza Giornalisti Italiani-INPGI)</xsl' +
+        ':when>'
+      
+        '                                                                ' +
+        '                                    <xsl:when test="$TC='#39'TC15'#39'">' +
+        ' (Opera Nazionale Assistenza Orfani Sanitari Italiani-ONAOSI)</x' +
+        'sl:when>'
+      
+        '                                                                ' +
+        '                                    <xsl:when test="$TC='#39'TC16'#39'">' +
+        ' (Cassa Autonoma Assistenza Integrativa Giornalisti Italiani-CAS' +
+        'AGIT)</xsl:when>'
+      
+        '                                                                ' +
+        '                                    <xsl:when test="$TC='#39'TC17'#39'">' +
+        ' (Ente Previdenza Periti Industriali e Periti Industriali Laurea' +
+        'ti-EPPI)</xsl:when>'
+      
+        '                                                                ' +
+        '                                    <xsl:when test="$TC='#39'TC18'#39'">' +
+        ' (Ente Previdenza e Assistenza Pluricategoriale-EPAP)</xsl:when>'
+      
+        '                                                                ' +
+        '                                    <xsl:when test="$TC='#39'TC19'#39'">' +
+        ' (Ente Nazionale Previdenza e Assistenza Biologi-ENPAB)</xsl:whe' +
+        'n>'
+      
+        '                                                                ' +
+        '                                    <xsl:when test="$TC='#39'TC20'#39'">' +
+        ' (Ente Nazionale Previdenza e Assistenza Professione Infermieris' +
+        'tica-ENPAPI)</xsl:when>'
+      
+        '                                                                ' +
+        '                                    <xsl:when test="$TC='#39'TC21'#39'">' +
+        ' (Ente Nazionale Previdenza e Assistenza Psicologi-ENPAP)</xsl:w' +
+        'hen>'
+      
+        '                                                                ' +
+        '                                    <xsl:when test="$TC='#39'TC22'#39'">' +
+        ' (INPS)</xsl:when>'
+      
+        '                                                                ' +
+        '                                    <xsl:when test="$TC='#39#39'"/>'
+      
+        '                                                                ' +
+        '                                    <xsl:otherwise><fehler> (!!!' +
+        ' falsche Kennung !!!)<i>(!!! codice non previsto !!!)</i></fehle' +
+        'r></xsl:otherwise>'
+      
+        '                                                                ' +
+        '                               </xsl:choose></td>'
+      
+        '                                                                ' +
+        '                          </tr>'
+      
+        '                                                                ' +
+        '                     </xsl:if>'
+      
+        '                                                                ' +
+        '                     <xsl:if test="ImponibileCassa">'
+      
+        '                                                                ' +
+        '                          <tr><td>2.1.1.7.4</td><td>Grundlage F'#252 +
+        'rsorgebeitrag<br/><i>Imponibile previdenziale</i></td>'
+      
+        '                                                                ' +
+        '                               <td><span><xsl:value-of select="$' +
+        'Valuta"/>'#160'<xsl:value-of select="format-number(ImponibileCassa, '#39 +
+        '###.##0,00'#39', '#39'euro'#39')"/></span></td>'
+      
+        '                                                                ' +
+        '                          </tr>'
+      
+        '                                                                ' +
+        '                     </xsl:if>'
+      
+        '                                                                ' +
+        '                     <xsl:if test="AlCassa">'
+      
+        '                                                                ' +
+        '                          <tr><td>2.1.1.7.2</td><td>F'#252'rsorgebeit' +
+        'ragssatz (%)<br/><i>Aliquota contri. cassa (%)</i></td>'
+      
+        '                                                                ' +
+        '                               <td><span><xsl:value-of select="f' +
+        'ormat-number(AlCassa, '#39'###'#39')"/> %</span></td>'
+      
+        '                                                                ' +
+        '                          </tr>'
+      
+        '                                                                ' +
+        '                     </xsl:if>'
+      
+        '                                                                ' +
+        '                     <xsl:if test="ImportoContributoCassa">'
+      
+        '                                                                ' +
+        '                          <tr><td>2.1.1.7.3</td><td>F'#252'rsorgebeit' +
+        'rag<br/><i>Importo contributo cassa</i></td>'
+      
+        '                                                                ' +
+        '                               <td><span><xsl:value-of select="$' +
+        'Valuta"/>'#160'<xsl:value-of select="format-number(ImportoContributoC' +
+        'assa, '#39'###.##0,00'#39', '#39'euro'#39')"/></span></td>'
+      
+        '                                                                ' +
+        '                          </tr>'
+      
+        '                                                                ' +
+        '                     </xsl:if>'
+      
+        '                                                                ' +
+        '                     <xsl:if test="AliquotaIVA">'
+      
+        '                                                                ' +
+        '                          <tr><td>2.1.1.7.5</td><td>MwSt-Satz<br' +
+        '/><i>Aliquota IVA applicata</i></td>'
+      
+        '                                                                ' +
+        '                               <td><span><xsl:value-of select="f' +
+        'ormat-number(AliquotaIVA, '#39'###'#39')"/> %</span></td>'
+      
+        '                                                                ' +
+        '                          </tr>'
+      
+        '                                                                ' +
+        '                     </xsl:if>'
+      
+        '                                                                ' +
+        '                     <xsl:if test="Ritenuta">'
+      
+        '                                                                ' +
+        '                          <tr><td>2.1.1.7.6</td><td>F'#252'rsorgebeit' +
+        'rag im Abzug<br/><i>Contributo cassa soggetto a ritenuta</i></td' +
+        '>'
+      
+        '                                                                ' +
+        '                               <td><span><xsl:value-of select="R' +
+        'itenuta"/></span></td>'
+      
+        '                                                                ' +
+        '                          </tr>'
+      
+        '                                                                ' +
+        '                     </xsl:if>'
+      
+        '                                                                ' +
+        '                     <xsl:if test="Natura">'
+      
+        '                                                                ' +
+        '                          <tr><td>2.1.1.7.7</td><td>Art der Beit' +
+        'ragsfreistellung<br/><i>Tipologia di non imponibilit'#224' del contri' +
+        'buto</i></td>'
+      
+        '                                                                ' +
+        '                               <td><span><xsl:value-of select="N' +
+        'atura"/></span><xsl:variable name="NT"><xsl:value-of select="Nat' +
+        'ura"/></xsl:variable>'
+      
+        '                                                                ' +
+        '                               <xsl:choose>'
+      
+        '                                                                ' +
+        '                                    <!-- Version 1.2.1 -->'
+      
+        #9#9#9#9#9#9#9#9#9#9#9#9'       <xsl:when test="$NT='#39'N1'#39'"> (ausgenommener Ges' +
+        'ch'#228'ftsvorg. ex Art. 15)<br/><i>(escluse ex art. 15)</i></xsl:whe' +
+        'n>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9#9'       <xsl:when test="$NT='#39'N2'#39'"> (nicht unterworfen' +
+        'er Gesch'#228'ftsvorg. (darf nach dem 31.12.2020 nicht mehr verwendet' +
+        ' werden))<br/><i>(non soggette (non pi'#249' utilizabile dopo il 31.1' +
+        '2.2020))</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9#9'       <xsl:when test="$NT='#39'N2.1'#39'"> (nicht unterworf' +
+        'ener Gesch'#228'ftsvorg. im Sinne der Artikel von 7 bis 7-septies des' +
+        ' DPR 633/72)<br/><i>(Non soggette ad IVA ai sensi degli artt. da' +
+        ' 7 a 7- septies del DPR 633/72)</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9#9'       <xsl:when test="$NT='#39'N2.2'#39'"> (nicht unterworf' +
+        'ener Gesch'#228'ftsvorg. '#8211' andere F'#228'lle)<br/><i>(non soggette '#8211' altri' +
+        ' casi)</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9#9'       <xsl:when test="$NT='#39'N3'#39'"> (nicht Mehrwertste' +
+        'uerpflichtig (darf nach dem 31.12.2020 nicht mehr verwendet werd' +
+        'en) )<br/><i>(non imponibili (non pi'#249' utilizabile dopo il 31.12.' +
+        '2020))</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9#9'       <xsl:when test="$NT='#39'N3.1'#39'"> (nicht Mehrwerts' +
+        'teuerpflichtig--Export)<br/><i>(non imponibili '#8211' esportazioni)</' +
+        'i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9#9'       <xsl:when test="$NT='#39'N3.2'#39'"> (nicht Mehrwerts' +
+        'teuerpflichtig--innergemeinschaftliche Verk'#228'ufe)<br/><i>(non imp' +
+        'onibili '#8211' cessioni intracomunitarie)</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9#9'       <xsl:when test="$NT='#39'N3.3'#39'"> (nicht Mehrwerts' +
+        'teuerpflichtig--Verk'#228'ufe nach San Marino)<br/><i>(non imponibili' +
+        ' '#8211' cessioni verso San Marino)</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9#9'       <xsl:when test="$NT='#39'N3.4'#39'"> (nicht Mehrwerts' +
+        'teuerpflichtig--als Exporte behandelte Transaktionen)<br/><i>(no' +
+        'n imponibili '#8211' operazioni assimilate alle cessioni all'#8217'esportazi' +
+        'one)</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9#9'       <xsl:when test="$NT='#39'N3.5'#39'"> (nicht Mehrwerts' +
+        'teuerpflichtig--nach einer Absichtserkl'#228'rung)<br/><i>(non imponi' +
+        'bili '#8211' a seguito di dichiarazioni d'#8217'intento)</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9#9'       <xsl:when test="$NT='#39'N3.6'#39'"> (nicht Mehrwerts' +
+        'teuerpflichtig--andere Operationen, die nicht zur Bildung des Pl' +
+        'afonds beitragen)<br/><i>(non imponibili '#8211' altre operazioni che ' +
+        'non concorrono alla formazione del plafond)</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9#9'       <xsl:when test="$NT='#39'N4'#39'"> (befreit)<br/><i>(' +
+        'esenti)</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9#9'       <xsl:when test="$NT='#39'N5'#39'"> (im Rahmen der Dif' +
+        'ferenzbesteuerung)<br/><i>(regime del margine)</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9#9'       <xsl:when test="$NT='#39'N6'#39'"> (Umkehrung der Ste' +
+        'uerschuldnerschaft(darf nach dem 31.12.2020 nicht mehr verwendet' +
+        ' werden))<br/><i>(inversione contabile (non pi'#249' utilizabile dopo' +
+        ' il 31.12.2020))</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9#9'       <xsl:when test="$NT='#39'N6.1'#39'"> (Reverse-Charge ' +
+        '(Umkehrung der Steuerschuldnerschaft) - Verkauf von Schrott und ' +
+        'anderen recycelten Materialien)<br/><i>(inversione contabile '#8211' c' +
+        'essione di rottami e altri materiali di recupero)</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9#9'       <xsl:when test="$NT='#39'N6.2'#39'"> (Reverse-Charge ' +
+        '(Umkehrung der Steuerschuldnerschaft) - Verkauf von reinem Gold ' +
+        'und Silber)<br/><i>(inversione contabile '#8211' cessione di oro e arg' +
+        'ento puro)</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9#9'       <xsl:when test="$NT='#39'N6.3'#39'"> (Reverse-Charge ' +
+        '(Umkehrung der Steuerschuldnerschaft) - Unterauftr'#228'ge im Bausekt' +
+        'or)<br/><i>(inversione contabile '#8211' subappalto nel settore edile)' +
+        '</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9#9'       <xsl:when test="$NT='#39'N6.4'#39'"> (Reverse-Charge ' +
+        '(Umkehrung der Steuerschuldnerschaft) - Verkauf von Geb'#228'uden)<br' +
+        '/><i>(inversione contabile '#8211' cessione di fabbricati)</i></xsl:wh' +
+        'en>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9#9'       <xsl:when test="$NT='#39'N6.5'#39'"> (Reverse-Charge ' +
+        '(Umkehrung der Steuerschuldnerschaft) - Verkauf von Mobiltelefon' +
+        'en)<br/><i>(inversione contabile '#8211' cessione di telefoni cellular' +
+        'i)</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9#9'       <xsl:when test="$NT='#39'N6.6'#39'"> (Reverse-Charge ' +
+        '(Umkehrung der Steuerschuldnerschaft) - Verkauf von elektronisch' +
+        'en Ger'#228'ten)<br/><i>(inversione contabile '#8211' cessione di prodotti ' +
+        'elettronici)</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9#9'       <xsl:when test="$NT='#39'N6.7'#39'"> (Reverse-Charge ' +
+        '(Umkehrung der Steuerschuldnerschaft) - Dienstleistungen des Bau' +
+        'sektors und damit verwandte Sektoren)<br/><i>(inversione contabi' +
+        'le '#8211' prestazioni comparto edile e settori connessi)</i></xsl:whe' +
+        'n>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9#9'       <xsl:when test="$NT='#39'N6.8'#39'"> (Reverse-Charge ' +
+        '(Umkehrung der Steuerschuldnerschaft) - Operationen im Energiese' +
+        'ktor)<br/><i>(inversione contabile '#8211' operazioni settore energeti' +
+        'co)</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9#9'       <xsl:when test="$NT='#39'N6.9'#39'"> (Reverse-Charge ' +
+        '(Umkehrung der Steuerschuldnerschaft) - andere F'#228'lle)<br/><i>(in' +
+        'versione contabile '#8211' altri casi)</i></xsl:when>'
+      
+        '                                                                ' +
+        '                                    <!-- Version 1.2 -->'
+      
+        #9#9#9#9#9#9#9#9#9#9#9#9'       <xsl:when test="$NT='#39'N7'#39'"> (MwSt.-Schuld in e' +
+        'inem anderen EU-Land abgegolten)<i>(IVA assolta in altro stato U' +
+        'E)<br/></i></xsl:when>'
+      
+        '                                                                ' +
+        '                                    <xsl:when test="$NT='#39#39'"/>'
+      
+        '                                                                ' +
+        '                                    <xsl:otherwise><fehler> (!!!' +
+        ' falsche Kennung !!!)<i>(!!! codice non previsto !!!)</i></fehle' +
+        'r></xsl:otherwise>'
+      
+        '                                                                ' +
+        '                               </xsl:choose></td>'
+      
+        '                                                                ' +
+        '                          </tr>'
+      
+        '                                                                ' +
+        '                     </xsl:if>'
+      
+        '                                                                ' +
+        '                     <xsl:if test="RiferimentoAmministrazione">'
+      
+        '                                                                ' +
+        '                          <tr><td>2.1.1.7.8</td><td>Hinweis Verw' +
+        'altung / Buchhaltung<br/><i>Riferimento amministrativo / contabi' +
+        'le</i></td>'
+      
+        '                                                                ' +
+        '                               <td><span><xsl:value-of select="R' +
+        'iferimentoAmministrazione"/></span></td>'
+      
+        '                                                                ' +
+        '                          </tr>'
+      
+        '                                                                ' +
+        '                     </xsl:if>'
+      
+        '                                                                ' +
+        '                </table>'
+      
+        '                                                                ' +
+        '           </xsl:for-each>'
+      
+        '                                                                ' +
+        '      </div>'
+      
+        '                                                                ' +
+        ' </xsl:if>'
+      
+        '                                                                ' +
+        ' <!--FINE DATI DELLA CASSA PREVIDENZIALE-->'
+      ''
+      
+        '                                                                ' +
+        ' <!--INIZIO DATI SCONTO / MAGGIORAZIONE-->'
+      
+        '                                                                ' +
+        ' <xsl:if test="DatiGenerali/DatiGeneraliDocumento/ScontoMaggiora' +
+        'zione">'
+      
+        '                                                                ' +
+        '      <h4>Skonto/Aufschl'#228'ge - <i>Sconto/maggiorazione</i></h4>'
+      
+        '                                                                ' +
+        '      <div id="dati-sconto-maggiorazione">'
+      
+        '                                                                ' +
+        '           <xsl:for-each select="DatiGenerali/DatiGeneraliDocume' +
+        'nto/ScontoMaggiorazione">'
+      
+        '                                                                ' +
+        '                <table id="t1">'
+      
+        '                                                                ' +
+        '                     <xsl:if test="Tipo">'
+      
+        '                                                                ' +
+        '                          <tr><td width="100px">2.1.1.8.[2|1]</t' +
+        'd><td width="200px">Prozentsatz-Typologie<br/><i>Percentuale e t' +
+        'ipologia</i></td>'
+      
+        '                                                                ' +
+        '                               <td width="500px">'
+      
+        '                                                                ' +
+        '                               <xsl:if test="Percentuale">'
+      
+        '                                                                ' +
+        '                                     <span><xsl:value-of select=' +
+        '"Percentuale"/> % </span>'
+      
+        '                                                                ' +
+        '                               </xsl:if>'
+      
+        '                                                                ' +
+        '                               <span><xsl:value-of select="Tipo"' +
+        '/></span>'
+      
+        '                                                                ' +
+        '                               <xsl:variable name="TSM"><xsl:val' +
+        'ue-of select="Tipo"/></xsl:variable>'
+      
+        '                                                                ' +
+        '                               <xsl:choose>'
+      
+        '                                                                ' +
+        '                                    <xsl:when test="$TSM='#39'SC'#39'"> ' +
+        '(Skonto)<i>(sconto)</i></xsl:when>'
+      
+        '                                                                ' +
+        '                                    <xsl:when test="$TSM='#39'MG'#39'"> ' +
+        '(Aufpreis)<i>(maggiorazione)</i></xsl:when>'
+      
+        '                                                                ' +
+        '                                    <xsl:otherwise> <fehler> (!!' +
+        '! falsche Kennung !!!)<i>(!!! codice non previsto !!!)</i></fehl' +
+        'er></xsl:otherwise>'
+      
+        '                                                                ' +
+        '                               </xsl:choose></td>'
+      
+        '                                                                ' +
+        '                          </tr>'
+      
+        '                                                                ' +
+        '                     </xsl:if> <!--'
+      
+        '                                                                ' +
+        '                     <xsl:if test="Percentuale">'
+      
+        '                                                                ' +
+        '                          <tr><td>2.1.1.8.2</td><td>Prozentsatz<' +
+        'br /><i>Percentuale</i></td>'
+      
+        '                                                                ' +
+        '                               <td><span><xsl:value-of select="P' +
+        'ercentuale" /> %</span></td>'
+      
+        '                                                                ' +
+        '                          </tr>'
+      
+        '                                                                ' +
+        '                     </xsl:if> -->'
+      
+        '                                                                ' +
+        '                     <xsl:if test="Importo">'
+      
+        '                                                                ' +
+        '                          <tr><td>2.1.1.8.3</td><td>Betrag<br/><' +
+        'i>Importo</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span>'
+      
+        '                                                                ' +
+        '                          <xsl:variable name="TSCM"><xsl:value-o' +
+        'f select="Tipo"/></xsl:variable>'
+      
+        '                                                                ' +
+        '                          <xsl:choose>'
+      
+        '                                                                ' +
+        '                               <xsl:when test="$TSCM='#39'SC'#39'">-</xs' +
+        'l:when>'
+      
+        '                                                                ' +
+        '                               <xsl:when test="$TSCM='#39'MG'#39'">+</xs' +
+        'l:when>'
+      
+        '                                                                ' +
+        '                          </xsl:choose>'
+      
+        '                                                                ' +
+        '                          <xsl:value-of select="format-number(Im' +
+        'porto, '#39'###.##0,00'#39', '#39'euro'#39')"/></span></td>'
+      
+        '                                                                ' +
+        '                          </tr>'
+      
+        '                                                                ' +
+        '                     </xsl:if>'
+      
+        '                                                                ' +
+        '                </table>'
+      
+        '                                                                ' +
+        '           </xsl:for-each>'
+      
+        '                                                                ' +
+        '      </div>'
+      
+        '                                                                ' +
+        ' </xsl:if>'
+      
+        '                                                                ' +
+        ' <!--FINE DATI SCONTO / MAGGIORAZIONE-->'
+      ''
+      
+        '                                                            </di' +
+        'v>'
+      '                                                       </xsl:if>'
+      
+        '                                                       <!--FINE ' +
+        'DATI GENERALI DOCUMENTO-->'
+      ''
+      
+        '                                                       <!--INIZI' +
+        'O DATI DELL'#39'ORDINE DI ACQUISTO-->'
+      
+        '                                                       <xsl:if t' +
+        'est="DatiGenerali/DatiOrdineAcquisto">'
+      
+        '                                                            <div' +
+        ' id="dati-ordine-acquisto">'
+      
+        '                                                                ' +
+        ' <h3>Daten zur Bestellung - <i>Dati dell'#39'ordine di acquisto</i><' +
+        '/h3>'
+      
+        '                                                                ' +
+        ' <table id="t1">'
+      
+        '                                                                ' +
+        ' <xsl:for-each select="DatiGenerali/DatiOrdineAcquisto">'
+      
+        '                                                                ' +
+        '           <xsl:if test="RiferimentoNumeroLinea">'
+      
+        '                                                                ' +
+        '                <tr><td width="100px">2.1.2.1</td><td width="200' +
+        'px">Zugeh'#246'rige Zeilennummer der Rechnung<br/><i>Numero linea di ' +
+        'fattura a cui si riferisce</i></td>'
+      
+        '                                                                ' +
+        '                     <td width="500px"><xsl:for-each select="Rif' +
+        'erimentoNumeroLinea"><span><xsl:if test="(position( )) &gt; 1">,' +
+        ' </xsl:if><xsl:value-of select="."/></span></xsl:for-each></td>'
+      
+        '                                                                ' +
+        '                </tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        '           <xsl:if test="IdDocumento">'
+      
+        '                                                                ' +
+        '                <tr><td width="100px">2.1.2.2</td><td width="200' +
+        'px">Bestellkennung<br/><i>Ident. ordine di acquisto</i></td>'
+      
+        '                                                                ' +
+        '                     <td width="500px"><span><xsl:value-of selec' +
+        't="IdDocumento"/></span></td>'
+      
+        '                                                                ' +
+        '                </tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        '           <xsl:if test="Data">'
+      
+        '                                                                ' +
+        '                <tr><td>2.1.2.3</td><td>Bestellungsdatum<br/><i>' +
+        'Data ordine di acquisto</i></td>'
+      
+        '                                                                ' +
+        '                     <td><span><xsl:value-of select="Data"/></sp' +
+        'an><xsl:call-template name="FormatDate"><xsl:with-param name="Da' +
+        'teTime" select="Data"/></xsl:call-template></td>'
+      
+        '                                                                ' +
+        '                </tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        '           <xsl:if test="NumItem">'
+      
+        '                                                                ' +
+        '                <tr><td>2.1.2.4</td><td>Zeilennummer der Bestell' +
+        'ung<br/><i>Numero linea ordine di acquisto</i></td>'
+      
+        '                                                                ' +
+        '                     <td><span><xsl:value-of select="NumItem"/><' +
+        '/span></td>'
+      
+        '                                                                ' +
+        '                </tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        '           <xsl:if test="CodiceCommessaConvenzione">'
+      
+        '                                                                ' +
+        '                <tr><td>2.1.2.5</td><td>Verkaufs-/Konventionskod' +
+        'ex<br/><i>Codice commessa/convenzione</i></td>'
+      
+        '                                                                ' +
+        '                     <td><span><xsl:value-of select="CodiceComme' +
+        'ssaConvenzione"/></span></td>'
+      
+        '                                                                ' +
+        '                </tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        '           <xsl:if test="CodiceCUP">'
+      
+        '                                                                ' +
+        '                <tr><td>2.1.2.6</td><td>Staatlicher Projektkodex' +
+        '<br/><i>Codice Unitario Progetto (CUP)</i></td>'
+      
+        '                                                                ' +
+        '                     <td><span><xsl:value-of select="CodiceCUP"/' +
+        '></span></td>'
+      
+        '                                                                ' +
+        '                </tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        '           <xsl:if test="CodiceCIG">'
+      
+        '                                                                ' +
+        '                <tr><td>2.1.2.7</td><td>Ausschreibungskode<br/><' +
+        'i>Codice Ident. Gara (CIG)</i></td>'
+      
+        '                                                                ' +
+        '                     <td><span><xsl:value-of select="CodiceCIG"/' +
+        '></span></td>'
+      
+        '                                                                ' +
+        '                </tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        ' </xsl:for-each>'
+      
+        '                                                                ' +
+        ' </table>'
+      
+        '                                                            </di' +
+        'v>'
+      '                                                       </xsl:if>'
+      
+        '                                                       <!--FINE ' +
+        'DATI DELL'#39'ORDINE DI ACQUISTO-->'
+      ''
+      
+        '                                                       <!--INIZI' +
+        'O DATI DEL CONTRATTO-->'
+      
+        '                                                       <xsl:if t' +
+        'est="DatiGenerali/DatiContratto">'
+      
+        '                                                            <div' +
+        ' id="dati-contratto">'
+      
+        '                                                                ' +
+        ' <h3>Vertragsdaten - <i>Dati del contratto</i></h3>'
+      
+        '                                                                ' +
+        ' <table id="t1">'
+      
+        '                                                                ' +
+        ' <xsl:for-each select="DatiGenerali/DatiContratto">'
+      
+        '                                                                ' +
+        '           <xsl:if test="RiferimentoNumeroLinea">'
+      
+        '                                                                ' +
+        '                <tr><td width="100px">2.1.3.1</td><td width="200' +
+        'px">Zugeh'#246'rige Zeilennummer der Rechnung<br/><i>Numero linea di ' +
+        'fattura a cui si riferisce</i></td>'
+      
+        '                                                                ' +
+        '                     <td width="500px"><xsl:for-each select="Rif' +
+        'erimentoNumeroLinea"><span><xsl:if test="(position( )) &gt; 1">,' +
+        ' </xsl:if><xsl:value-of select="."/></span></xsl:for-each></td>'
+      
+        '                                                                ' +
+        '                </tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        '           <xsl:if test="IdDocumento">'
+      
+        '                                                                ' +
+        '                <tr><td width="100px">2.1.3.2</td><td width="200' +
+        'px">Vertragskenndaten<br/><i>Ident. contratto</i></td>'
+      
+        '                                                                ' +
+        '                     <td width="500px"><span><xsl:value-of selec' +
+        't="IdDocumento"/></span></td>'
+      
+        '                                                                ' +
+        '                </tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        '           <xsl:if test="Data">'
+      
+        '                                                                ' +
+        '                <tr><td>2.1.3.3</td><td>Vertagsdatum<br/><i>Data' +
+        ' contratto</i></td>'
+      
+        '                                                                ' +
+        '                     <td><span><xsl:value-of select="Data"/></sp' +
+        'an><xsl:call-template name="FormatDate"><xsl:with-param name="Da' +
+        'teTime" select="Data"/></xsl:call-template></td>'
+      
+        '                                                                ' +
+        '                </tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        '           <xsl:if test="NumItem">'
+      
+        '                                                                ' +
+        '                <tr><td>2.1.3.4</td><td>Zeilennummer Vertrag<br/' +
+        '><i>Numero linea contratto</i></td>'
+      
+        '                                                                ' +
+        '                     <td><span><xsl:value-of select="NumItem"/><' +
+        '/span></td>'
+      
+        '                                                                ' +
+        '                </tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        '           <xsl:if test="CodiceCommessaConvenzione">'
+      
+        '                                                                ' +
+        '                <tr><td>2.1.3.5</td><td>Verk.-/Konv.-kodex<br/><' +
+        'i>Codice comm./conv.</i></td>'
+      
+        '                                                                ' +
+        '                     <td><span><xsl:value-of select="CodiceComme' +
+        'ssaConvenzione"/></span></td>'
+      
+        '                                                                ' +
+        '                </tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        '           <xsl:if test="CodiceCUP">'
+      
+        '                                                                ' +
+        '                <tr><td>2.1.3.6</td><td>Staatlicher Projektkodex' +
+        '<br/><i>Codice Unitario Progetto</i></td>'
+      
+        '                                                                ' +
+        '                     <td><span><xsl:value-of select="CodiceCUP"/' +
+        '></span></td>'
+      
+        '                                                                ' +
+        '                </tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        '           <xsl:if test="CodiceCIG">'
+      
+        '                                                                ' +
+        '                <tr><td>2.1.3.7</td><td>Ausschreibungskode<br/><' +
+        'i>Codice Ident. Gara (CIG)</i></td>'
+      
+        '                                                                ' +
+        '                     <td><span><xsl:value-of select="CodiceCIG"/' +
+        '></span></td>'
+      
+        '                                                                ' +
+        '                </tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        ' </xsl:for-each>'
+      
+        '                                                                ' +
+        ' </table>'
+      
+        '                                                            </di' +
+        'v>'
+      '                                                       </xsl:if>'
+      
+        '                                                       <!--FINE ' +
+        'DATI DEL CONTRATTO-->'
+      ''
+      
+        '                                                       <!--INIZI' +
+        'O DATI CONVENZIONE-->'
+      
+        '                                                       <xsl:if t' +
+        'est="DatiGenerali/DatiConvenzione">'
+      
+        '                                                            <div' +
+        ' id="dati-convenzione">'
+      
+        '                                                                ' +
+        ' <h3>Daten der Konvention - <i>Dati della convenzione</i></h3>'
+      
+        '                                                                ' +
+        ' <table id="t1">'
+      
+        '                                                                ' +
+        ' <xsl:for-each select="DatiGenerali/DatiConvenzione">'
+      
+        '                                                                ' +
+        '           <xsl:if test="RiferimentoNumeroLinea">'
+      
+        '                                                                ' +
+        '                <tr><td width="100px">2.1.4.1</td><td width="200' +
+        'px">Zugeh'#246'rige Zeilennummer der Rechnung<br/><i>Numero linea di ' +
+        'fattura a cui si riferisce</i></td>'
+      
+        '                                                                ' +
+        '                     <td width="500px"><xsl:for-each select="Rif' +
+        'erimentoNumeroLinea"><span><xsl:if test="(position( )) &gt; 1">,' +
+        ' </xsl:if><xsl:value-of select="."/></span></xsl:for-each></td>'
+      
+        '                                                                ' +
+        '                </tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        '           <xsl:if test="IdDocumento">'
+      
+        '                                                                ' +
+        '                <tr><td>2.1.4.2</td><td>Konventionskennung<br/><' +
+        'i>Ident. convenzione</i></td>'
+      
+        '                                                                ' +
+        '                     <td><span><xsl:value-of select="IdDocumento' +
+        '"/></span></td>'
+      
+        '                                                                ' +
+        '                </tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        '           <xsl:if test="Data">'
+      
+        '                                                                ' +
+        '                <tr><td>2.1.4.3</td><td>Datum Konvention<br/><i>' +
+        'Data convenzione</i></td>'
+      
+        '                                                                ' +
+        '                     <td><span><xsl:value-of select="Data"/></sp' +
+        'an><xsl:call-template name="FormatDate"><xsl:with-param name="Da' +
+        'teTime" select="Data"/></xsl:call-template></td>'
+      
+        '                                                                ' +
+        '                </tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        '           <xsl:if test="NumItem">'
+      
+        '                                                                ' +
+        '                <tr><td>2.1.4.4</td><td>Zeilennummer Konvention<' +
+        'br/><i>Numero linea convenzione</i></td>'
+      
+        '                                                                ' +
+        '                     <td><span><xsl:value-of select="NumItem"/><' +
+        '/span></td>'
+      
+        '                                                                ' +
+        '                </tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        '           <xsl:if test="CodiceCommessaConvenzione">'
+      
+        '                                                                ' +
+        '                <tr><td>2.1.4.5</td><td>Verkaufs- / Konventionsk' +
+        'odex<br/><i>Codice commessa/convenzione</i></td>'
+      
+        '                                                                ' +
+        '                     <td><span><xsl:value-of select="CodiceComme' +
+        'ssaConvenzione"/></span></td>'
+      
+        '                                                                ' +
+        '                </tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        '           <xsl:if test="CodiceCUP">'
+      
+        '                                                                ' +
+        '                <tr><td>2.1.4.6</td><td>Staatlicher Projektkodex' +
+        '<br/><i>Codice Unitario Progetto (CUP)</i></td>'
+      
+        '                                                                ' +
+        '                     <td><span><xsl:value-of select="CodiceCUP"/' +
+        '></span></td>'
+      
+        '                                                                ' +
+        '                </tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        '           <xsl:if test="CodiceCIG">'
+      
+        '                                                                ' +
+        '                <tr><td>2.1.4.7</td><td>Ausschreibungskode<br/><' +
+        'i>Codice Ident. Gara (CIG)</i></td>'
+      
+        '                                                                ' +
+        '                     <td><span><xsl:value-of select="CodiceCIG"/' +
+        '></span></td>'
+      
+        '                                                                ' +
+        '                </tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        ' </xsl:for-each>'
+      
+        '                                                                ' +
+        ' </table>'
+      
+        '                                                            </di' +
+        'v>'
+      '                                                       </xsl:if>'
+      
+        '                                                       <!--FINE ' +
+        'DATI CONVENZIONE-->'
+      ''
+      
+        '                                                       <!--INIZI' +
+        'O DATI RICEZIONE-->'
+      
+        '                                                       <xsl:if t' +
+        'est="DatiGenerali/DatiRicezione">'
+      
+        '                                                            <div' +
+        ' id="dati-ricezione">'
+      
+        '                                                                ' +
+        ' <h3>Daten zum Erhalt der Leistung - <i>Dati della ricezione</i>' +
+        '</h3>'
+      
+        '                                                                ' +
+        ' <table id="t1">'
+      
+        '                                                                ' +
+        ' <xsl:for-each select="DatiGenerali/DatiRicezione">'
+      
+        '                                                                ' +
+        '           <xsl:if test="RiferimentoNumeroLinea">'
+      
+        '                                                                ' +
+        '                <tr><td width="100px">2.1.5.1</td><td width="200' +
+        'px">Zugeh'#246'rige Zeilennummer der Rechnung<br/><i>Numero linea di ' +
+        'fattura a cui si riferisce</i></td>'
+      
+        '                                                                ' +
+        '                     <td width="500px"><xsl:for-each select="Rif' +
+        'erimentoNumeroLinea"><span><xsl:if test="(position( )) &gt; 1">,' +
+        ' </xsl:if><xsl:value-of select="."/></span></xsl:for-each></td>'
+      
+        '                                                                ' +
+        '                </tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        '           <xsl:if test="IdDocumento">'
+      
+        '                                                                ' +
+        '                <tr><td>2.1.5.2</td><td>Kennzeichen des Empfangs' +
+        '<br/><i>Ident. ricezione</i></td>'
+      
+        '                                                                ' +
+        '                     <td><span><xsl:value-of select="IdDocumento' +
+        '"/></span></td>'
+      
+        '                                                                ' +
+        '                </tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        '           <xsl:if test="Data">'
+      
+        '                                                                ' +
+        '                <tr><td>2.1.5.3</td><td>Empfangsdatum<br/><i>Dat' +
+        'a ricezione</i></td>'
+      
+        '                                                                ' +
+        '                     <td><span><xsl:value-of select="Data"/></sp' +
+        'an><xsl:call-template name="FormatDate"><xsl:with-param name="Da' +
+        'teTime" select="Data"/></xsl:call-template></td>'
+      
+        '                                                                ' +
+        '                </tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        '           <xsl:if test="NumItem">'
+      
+        '                                                                ' +
+        '                <tr><td>2.1.5.4</td><td>Zeilennummer des Empfang' +
+        's<br/><i>Numero linea ricezione</i></td>'
+      
+        '                                                                ' +
+        '                     <td><span><xsl:value-of select="NumItem"/><' +
+        '/span></td>'
+      
+        '                                                                ' +
+        '                </tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        '           <xsl:if test="CodiceCommessaConvenzione">'
+      
+        '                                                                ' +
+        '                <tr><td>2.1.5.5</td><td>Verkaufs- / Konventionsk' +
+        'ennung<br/><i>Codice commessa/convenzione</i></td>'
+      
+        '                                                                ' +
+        '                     <td><span><xsl:value-of select="CodiceComme' +
+        'ssaConvenzione"/></span></td>'
+      
+        '                                                                ' +
+        '                </tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        '           <xsl:if test="CodiceCUP">'
+      
+        '                                                                ' +
+        '                <tr><td>2.1.5.6</td><td>Staatlicher Projektkodex' +
+        '<br/><i>Codice Unitario Progetto (CUP)</i></td>'
+      
+        '                                                                ' +
+        '                     <td><span><xsl:value-of select="CodiceCUP"/' +
+        '></span></td>'
+      
+        '                                                                ' +
+        '                </tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        '           <xsl:if test="CodiceCIG">'
+      
+        '                                                                ' +
+        '                <tr><td>2.1.5.7</td><td>Ausschreibungskennung<br' +
+        '/><i>Codice Ident. Gara (CIG)</i></td>'
+      
+        '                                                                ' +
+        '                     <td><span><xsl:value-of select="CodiceCIG"/' +
+        '></span></td>'
+      
+        '                                                                ' +
+        '                </tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        '      </xsl:for-each>'
+      
+        '                                                                ' +
+        ' </table>'
+      
+        '                                                            </di' +
+        'v>'
+      '                                                       </xsl:if>'
+      
+        '                                                       <!--FINE ' +
+        'DATI RICEZIONE-->'
+      ''
+      
+        '                                                       <!--INIZI' +
+        'O DATI FATTURE COLLEGATE-->'
+      
+        '                                                       <xsl:if t' +
+        'est="DatiGenerali/DatiFattureCollegate">'
+      
+        '                                                            <div' +
+        ' id="dati-fatture-collegate">'
+      
+        '                                                                ' +
+        ' <h3>Daten zu verbundenen Rechnungen - <i>Dati della fattura col' +
+        'legata</i></h3>'
+      
+        '                                                                ' +
+        ' <table id="t1">'
+      
+        '                                                                ' +
+        ' <xsl:for-each select="DatiGenerali/DatiFattureCollegate">'
+      
+        '                                                                ' +
+        '           <xsl:if test="RiferimentoNumeroLinea">'
+      
+        '                                                                ' +
+        '                <tr><td width="100px">2.1.6.1</td><td width="200' +
+        'px">Zugeh'#246'rige Zeilennummer der Rechnung<br/><i>Numero linea di ' +
+        'fattura a cui si riferisce</i></td>'
+      
+        '                                                                ' +
+        '                     <td width="500px"><xsl:for-each select="Rif' +
+        'erimentoNumeroLinea"><span><xsl:if test="(position( )) &gt; 1">,' +
+        ' </xsl:if><xsl:value-of select="."/></span></xsl:for-each></td>'
+      
+        '                                                                ' +
+        '                </tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        '           <xsl:if test="IdDocumento">'
+      
+        '                                                                ' +
+        '                <tr><td>2.1.6.2</td><td>Kennzeichen der dazugeh'#246 +
+        'renden Rechnung<br/><i>Ident. fattura collegata</i></td>'
+      
+        '                                                                ' +
+        '                     <td><span><xsl:value-of select="IdDocumento' +
+        '"/></span></td>'
+      
+        '                                                                ' +
+        '                </tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        '           <xsl:if test="Data">'
+      
+        '                                                                ' +
+        '                <tr><td>2.1.6.3</td><td>Datum der dazugeh'#246'renden' +
+        ' Rechnung<br/><i>Data fattura collegata</i></td>'
+      
+        '                                                                ' +
+        '                     <td><span><xsl:value-of select="Data"/></sp' +
+        'an><xsl:call-template name="FormatDate"><xsl:with-param name="Da' +
+        'teTime" select="Data"/></xsl:call-template></td>'
+      
+        '                                                                ' +
+        '                </tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        '           <xsl:if test="NumItem">'
+      
+        '                                                                ' +
+        '                <tr><td>2.1.6.4</td><td>Zeilennummer bei der daz' +
+        'ugeh'#246'renden Rechnung<br/><i>Numero linea fattura collegata</i></' +
+        'td>'
+      
+        '                                                                ' +
+        '                     <td><span><xsl:value-of select="NumItem"/><' +
+        '/span></td>'
+      
+        '                                                                ' +
+        '                </tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        '           <xsl:if test="CodiceCommessaConvenzione">'
+      
+        '                                                                ' +
+        '                <tr><td>2.1.6.5</td><td>Verkaufs- / Konventionsk' +
+        'odex<br/><i>Codice commessa/convenzione</i></td>'
+      
+        '                                                                ' +
+        '                     <td><span><xsl:value-of select="CodiceComme' +
+        'ssaConvenzione"/></span></td>'
+      
+        '                                                                ' +
+        '                </tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        '           <xsl:if test="CodiceCUP">'
+      
+        '                                                                ' +
+        '                <tr><td>2.1.6.6</td><td>Staatlicher Projektkodex' +
+        '<br/><i>Codice Unitario Progetto (CUP)</i></td>'
+      
+        '                                                                ' +
+        '                     <td><span><xsl:value-of select="CodiceCUP"/' +
+        '></span></td>'
+      
+        '                                                                ' +
+        '                </tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        '           <xsl:if test="CodiceCIG">'
+      
+        '                                                                ' +
+        '                <tr><td>2.1.6.7</td><td>Ausschreibungskennung<br' +
+        '/><i>Codice Ident. Gara (CIG)</i></td>'
+      
+        '                                                                ' +
+        '                     <td><span><xsl:value-of select="CodiceCIG"/' +
+        '></span></td>'
+      
+        '                                                                ' +
+        '                </tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        '      </xsl:for-each>'
+      
+        '                                                                ' +
+        ' </table>'
+      
+        '                                                            </di' +
+        'v>'
+      '                                                       </xsl:if>'
+      
+        '                                                       <!--FINE ' +
+        'DATI FATTURE COLLEGATE-->'
+      ''
+      
+        '                                                       <!--INIZI' +
+        'O DATI RIFERIMENTO SAL-->'
+      
+        '                                                       <xsl:if t' +
+        'est="DatiGenerali/DatiSAL">'
+      
+        '                                                            <div' +
+        ' id="dati-sal">'
+      
+        '                                                                ' +
+        ' <h3>Baufortschritt - <i>Stato avanzamento lavori</i></h3>'
+      
+        '                                                                ' +
+        ' <table id="t1">'
+      
+        '                                                                ' +
+        '      <xsl:if test="DatiGenerali/DatiSAL/RiferimentoFase">'
+      
+        '                                                                ' +
+        '           <tr><td width="100px">2.1.7.1</td><td width="200px">N' +
+        'ummer Baufortschritt<br/><i>Numero fase avanzamento</i></td>'
+      
+        '                                                                ' +
+        '                <td width="500px"><xsl:for-each select="DatiGene' +
+        'rali/DatiSAL/RiferimentoFase"><span><xsl:if test="(position( )) ' +
+        '&gt; 1">, </xsl:if><xsl:value-of select="."/></span></xsl:for-ea' +
+        'ch></td>'
+      
+        '                                                                ' +
+        '           </tr>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      
+        '                                                                ' +
+        ' </table>'
+      
+        '                                                            </di' +
+        'v>'
+      '                                                       </xsl:if>'
+      
+        '                                                       <!--FINE ' +
+        'DATI RIFERIMENTO SAL-->'
+      ''
+      
+        '                                                       <!--INIZI' +
+        'O DATI  DDT-->'
+      
+        '                                                       <xsl:if t' +
+        'est="DatiGenerali/DatiDDT">'
+      
+        '                                                            <div' +
+        ' id="dati-ddt">'
+      
+        '                                                                ' +
+        ' <h3>Daten zum Warenbegleitschein (WBS) - <i>Dati del documento ' +
+        'di trasporto (DDT)</i></h3>'
+      
+        '                                                                ' +
+        ' <table id="t1">'
+      
+        '                                                                ' +
+        ' <xsl:for-each select="DatiGenerali/DatiDDT">'
+      
+        '                                                                ' +
+        '           <xsl:if test="NumeroDDT or DataDDT or RiferimentoNume' +
+        'roLinea">'
+      
+        '                                                                ' +
+        '                <tr><td width="100px">2.1.8.[1|2|3]</td>'
+      
+        '                                                                ' +
+        '                <td width="200px">Nummer, Datum WBS<br/><i>Numer' +
+        'o data DDT</i></td>'
+      
+        '                                                                ' +
+        '                     <td width="500px">'
+      
+        '                                                                ' +
+        '                     <xsl:if test="NumeroDDT"><span><xsl:value-o' +
+        'f select="NumeroDDT"/></span></xsl:if>'
+      
+        '                                                                ' +
+        '                     <xsl:if test="DataDDT"> vom/<i>del</i>'#160'<spa' +
+        'n><xsl:value-of select="DataDDT"/></span><xsl:call-template name' +
+        '="FormatDate"><xsl:with-param name="DateTime" select="DataDDT"/>' +
+        '</xsl:call-template></xsl:if>'
+      
+        '                                                                ' +
+        '                     <xsl:if test="RiferimentoNumeroLinea"><br/>' +
+        'Betrifft Zeile/<i>Rif.linea</i>'#160'<xsl:for-each select="Riferiment' +
+        'oNumeroLinea"><span><xsl:if test="(position( )) &gt; 1">, </xsl:' +
+        'if><xsl:value-of select="."/></span></xsl:for-each></xsl:if>'
+      
+        '                                                                ' +
+        '                </td></tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        '      </xsl:for-each>'
+      
+        '                                                                ' +
+        ' </table>'
+      
+        '                                                            </di' +
+        'v>'
+      '                                                       </xsl:if>'
+      
+        '                                                       <!--FINE ' +
+        'DATI DDT-->'
+      ''
+      
+        '                                                       <!--INIZI' +
+        'O DATI  TRASPORTO-->'
+      
+        '                                                       <xsl:if t' +
+        'est="DatiGenerali/DatiTrasporto">'
+      
+        '                                                            <div' +
+        ' id="dati-trasporto">'
+      
+        '                                                                ' +
+        ' <h3>Daten zum Warentransport - <i>Dati relativi al trasporto</i' +
+        '></h3>'
+      
+        '                                                                ' +
+        ' <xsl:if test="DatiGenerali/DatiTrasporto/DatiAnagraficiVettore"' +
+        '>'
+      
+        '                                                                ' +
+        '      <h4>Daten des Fr'#228'chters - <i>Dati del vettore</i></h4>'
+      
+        '                                                                ' +
+        ' </xsl:if>'
+      
+        '                                                                ' +
+        ' <table id="t1">'
+      
+        '                                                                ' +
+        ' <xsl:if test="DatiGenerali/DatiTrasporto/DatiAnagraficiVettore"' +
+        '>'
+      
+        '                                                                ' +
+        '           <xsl:for-each select="DatiGenerali/DatiTrasporto/Dati' +
+        'AnagraficiVettore">'
+      
+        '                                                                ' +
+        '                <xsl:if test="Anagrafica/Denominazione">'
+      
+        '                                                                ' +
+        '                     <tr><td width="100px">2.1.9.1.3.1</td><td w' +
+        'idth="200px">Benennung<br/><i>Denominazione</i></td>'
+      
+        '                                                                ' +
+        '                          <td width="500px"><span><xsl:value-of ' +
+        'select="Anagrafica/Denominazione"/></span></td>'
+      
+        '                                                                ' +
+        '                     </tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="Anagrafica/Titolo">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.1.9.1.3.4</td><td>Honorartitel<br' +
+        '/><i>Titolo onorifico</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="Anagra' +
+        'fica/Titolo"/></span></td>'
+      
+        '                                                                ' +
+        '                     </tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="Anagrafica/Nome">'
+      
+        '                                                                ' +
+        '                     <tr><td width="90px">2.1.9.1.3.2</td><td wi' +
+        'dth="200px">Name<br/><i>Nome</i></td>'
+      
+        '                                                                ' +
+        '                          <td width="500px"><span><xsl:value-of ' +
+        'select="Anagrafica/Nome"/></span></td>'
+      
+        '                                                                ' +
+        '                     </tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="Anagrafica/Cognome">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.1.9.1.3.3</td><td>Nachname<br/><i' +
+        '>Cognome</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="Anagra' +
+        'fica/Cognome"/></span></td>'
+      
+        '                                                                ' +
+        '                     </tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="IdFiscaleIVA/IdPaese">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.1.9.1.1</td><td>Mehrwertsteuernum' +
+        'mer<br/><i>Ident. fiscale ai fini IVA</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="IdFisc' +
+        'aleIVA/IdPaese"/><xsl:value-of select="IdFiscaleIVA/IdCodice"/><' +
+        '/span></td>'
+      
+        '                                                                ' +
+        '                     </tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="CodiceFiscale">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.1.9.1.2</td><td>Steuernummer<br/>' +
+        '<i>Codice Fiscale</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="Codice' +
+        'Fiscale"/></span></td>'
+      
+        '                                                                ' +
+        '                     </tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="Anagrafica/CodEORI">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.1.9.1.3.5</td><td>EORI-Kennung<br' +
+        '/><i>Codice EORI</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="Anagra' +
+        'fica/CodEORI"/></span></td>'
+      
+        '                                                                ' +
+        '                     </tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="NumeroLicenzaGuida">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.1.9.1.4</td><td>F'#252'hrerscheinnumme' +
+        'r<br/><i>Numero licenza di guida</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="Numero' +
+        'LicenzaGuida"/></span></td>'
+      
+        '                                                                ' +
+        '                     </tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '           </xsl:for-each>'
+      
+        '                                                                ' +
+        ' </xsl:if>'
+      ''
+      
+        '                                                                ' +
+        ' <xsl:if test="DatiGenerali/DatiTrasporto/MezzoTrasporto or Dati' +
+        'Generali/DatiTrasporto/CausaleTrasporto or DatiGenerali/DatiTras' +
+        'porto/NumeroColli or DatiGenerali/DatiTrasporto/Descrizione or D' +
+        'atiGenerali/DatiTrasporto/UnitaMisuraPeso or DatiGenerali/DatiTr' +
+        'asporto/PesoLordo or DatiGenerali/DatiTrasporto/PesoNetto or Dat' +
+        'iGenerali/DatiTrasporto/DataOraRitiro or DatiGenerali/DatiTraspo' +
+        'rto/DataInizioTrasporto or DatiGenerali/DatiTrasporto/TipoResa o' +
+        'r DatiGenerali/DatiTrasporto/IndirizzoResa">'
+      
+        '                                                                ' +
+        '      <tr><td colspan="3"><h4>Weitere Daten - <i>Altri dati</i><' +
+        '/h4></td></tr>'
+      
+        '                                                                ' +
+        '           <xsl:for-each select="DatiGenerali/DatiTrasporto">'
+      
+        '                                                                ' +
+        '                <xsl:if test="MezzoTrasporto">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.1.9.2</td><td>Transortmittel<br/>' +
+        '<i>Mezzo di trasporto</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="MezzoT' +
+        'rasporto"/></span></td>'
+      
+        '                                                                ' +
+        '                     </tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="CausaleTrasporto">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.1.9.3</td><td>Transportgrund<br/>' +
+        '<i>Causale trasporto</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="Causal' +
+        'eTrasporto"/></span></td>'
+      
+        '                                                                ' +
+        '                     </tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="NumeroColli">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.1.9.4</td><td>Anzahl der Frachtst' +
+        #252'cke<br/><i>Numero colli trasportati</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="Numero' +
+        'Colli"/></span></td>'
+      
+        '                                                                ' +
+        '                     </tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="Descrizione">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.1.9.5</td><td>Beschreibung der tr' +
+        'ansportierten G'#252'ter<br/><i>Descrizione beni trasportati</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="Descri' +
+        'zione"/></span></td>'
+      
+        '                                                                ' +
+        '                     </tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="UnitaMisuraPeso">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.1.9.6</td><td>Messeinheit der War' +
+        'e<br/><i>Unit'#224' di misura del peso merce</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="UnitaM' +
+        'isuraPeso"/></span></td>'
+      
+        '                                                                ' +
+        '                     </tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="PesoLordo">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.1.9.7</td><td>Bruttogewicht<br/><' +
+        'i>Peso lordo</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="PesoLo' +
+        'rdo"/></span></td>'
+      
+        '                                                                ' +
+        '                     </tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="PesoNetto">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.1.9.8</td><td>Nettogewicht<br/><i' +
+        '>Peso netto</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="PesoNe' +
+        'tto"/></span></td>'
+      
+        '                                                                ' +
+        '                     </tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="DataOraRitiro">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.1.9.9</td><td>Datum und Zeit der ' +
+        'Abgabe<br/><i>Data e ora ritiro merce</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="DataOr' +
+        'aRitiro"/></span><xsl:call-template name="FormatDate"><xsl:with-' +
+        'param name="DateTime" select="DataOraRitiro"/></xsl:call-templat' +
+        'e></td>'
+      
+        '                                                                ' +
+        '                     </tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="DataInizioTrasporto">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.1.9.10</td><td>Datum Transportbeg' +
+        'inn<br/><i>Data inizio trasporto</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="DataIn' +
+        'izioTrasporto"/>'
+      
+        '                                                                ' +
+        '                          </span><xsl:call-template name="Format' +
+        'Date"><xsl:with-param name="DateTime" select="DataInizioTrasport' +
+        'o"/></xsl:call-template></td>'
+      
+        '                                                                ' +
+        '                     </tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="TipoResa">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.1.9.11</td><td>Typologie der Abga' +
+        'be<br/><i>Tipologia di resa</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="TipoRe' +
+        'sa"/></span> (Kodifizierung nach ICC-Standard)<br/><i>(codifica ' +
+        'secondo standard ICC)</i></td>'
+      
+        '                                                                ' +
+        '                     </tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="IndirizzoResa/Indirizzo">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.1.9.12.1</td><td>Adresse der Abga' +
+        'be<br/><i>Indirizzo di resa</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="Indiri' +
+        'zzoResa/Indirizzo"/></span></td></tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="IndirizzoResa/NumeroCivico">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.1.9.12.2</td><td>Hausnummer Abgab' +
+        'eadresse<br/><i>Numero civico indirizzo di resa</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="Indiri' +
+        'zzoResa/NumeroCivico"/></span></td>'
+      
+        '                                                                ' +
+        '                     </tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="IndirizzoResa/CAP">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.1.9.12.3</td><td>PLZ Adresse Abga' +
+        'be<br/><i>CAP indirizzo di resa</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="Indiri' +
+        'zzoResa/CAP"/></span></td>'
+      
+        '                                                                ' +
+        '                     </tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="IndirizzoResa/Comune">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.1.9.12.4</td><td>Gemeinde Abgabe<' +
+        'br/><i>Comune di resa</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="Indiri' +
+        'zzoResa/Comune"/></span></td>'
+      
+        '                                                                ' +
+        '                     </tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="IndirizzoResa/Provincia">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.1.9.12.5</td><td>Provinz Abgabe<b' +
+        'r/><i>Provincia di resa</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="Indiri' +
+        'zzoResa/Provincia"/></span></td>'
+      
+        '                                                                ' +
+        '                     </tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="IndirizzoResa/Nazione">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.1.9.12.6</td><td>Land der Abgabe<' +
+        'br/><i>Nazione di resa</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="Indiri' +
+        'zzoResa/Nazione"/></span></td>'
+      
+        '                                                                ' +
+        '                          </tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="DataOraConsegna">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.1.9.13</td><td>Land der Abgabe<br' +
+        '/><i>Nazione di resa</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="DataOr' +
+        'aConsegna"/></span></td>'
+      
+        '                                                                ' +
+        '                     </tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '           </xsl:for-each>'
+      
+        '                                                                ' +
+        ' </xsl:if>'
+      
+        '                                                                ' +
+        '      </table>'
+      
+        '                                                            </di' +
+        'v>'
+      '                                                       </xsl:if>'
+      
+        '                                                       <!--FINE ' +
+        'DATI TRASPORTO-->'
+      ''
+      
+        '                                                       <!--INIZI' +
+        'O FATTURA PRINCIPALE-->'
+      
+        '                                                       <xsl:if t' +
+        'est="DatiGenerali/FatturaPrincipale/NumeroFatturaPrincipale">'
+      
+        '                                                            <div' +
+        ' id="fattura-principale">'
+      
+        '                                                                ' +
+        ' <h3>Daten zur Hauptrechnung - <i>Dati relativi alla fattura pri' +
+        'ncipale</i></h3>'
+      
+        '                                                                ' +
+        ' <table id="t1">'
+      
+        '                                                                ' +
+        '      <xsl:if test="DatiGenerali/FatturaPrincipale/NumeroFattura' +
+        'Principale">'
+      
+        '                                                                ' +
+        '           <tr><td width="100px">2.1.10.1</td>'
+      
+        '                                                                ' +
+        '                <td width="200px">Nummer der Hauptrechnung<br/><' +
+        'i>Numero fattura principale</i></td>'
+      
+        '                                                                ' +
+        '                <td width="500px"><span><xsl:value-of select="Da' +
+        'tiGenerali/FatturaPrincipale/NumeroFatturaPrincipale"/></span></' +
+        'td>'
+      
+        '                                                                ' +
+        '           </tr>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      
+        '                                                                ' +
+        '      <xsl:if test="DatiGenerali/FatturaPrincipale/DataFatturaPr' +
+        'incipale">'
+      
+        '                                                                ' +
+        '           <tr><td width="100px">2.1.10.2</td>'
+      
+        '                                                                ' +
+        '                <td width="200px">Datum Hauptrechnung<br/><i>Dat' +
+        'a fattura principale</i></td>'
+      
+        '                                                                ' +
+        '                <td width="500px"><span><xsl:value-of select="Da' +
+        'tiGenerali/FatturaPrincipale/DataFatturaPrincipale"/></span><xsl' +
+        ':call-template name="FormatDate"><xsl:with-param name="DateTime"' +
+        ' select="DatiGenerali/FatturaPrincipale/DataFatturaPrincipale"/>' +
+        '</xsl:call-template></td>'
+      
+        '                                                                ' +
+        '           </tr>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      
+        '                                                                ' +
+        ' </table>'
+      
+        '                                                            </di' +
+        'v>'
+      '                                                       </xsl:if>'
+      
+        '                                                       <!--FINE ' +
+        'FATTURA PRINCIPALE-->'
+      ''
+      '                                                  </div>'
+      '                                             </xsl:if>'
+      
+        '                                             <!--FINE DATI GENER' +
+        'ALI-->'
+      ''
+      
+        '                                             <!--INIZIO DATI BEN' +
+        'I E SERVIZI-->'
+      
+        '                                             <xsl:if test="DatiB' +
+        'eniServizi/DettaglioLinee">'
+      
+        '                                                  <div id="dati-' +
+        'dettaglio-linee">'
+      ''
+      
+        '                                                       <!--INIZI' +
+        'O DATI DI DETTAGLIO DELLE LINEE-->'
+      
+        '                                                       <xsl:if t' +
+        'est="DatiBeniServizi/DettaglioLinee">'
+      
+        '                                                            <div' +
+        ' id="righe">'
+      
+        '                                                                ' +
+        ' <h3>Daten zur Lieferung - <i>Dati relativi alle linee di dettag' +
+        'lio della fornitura</i></h3>'
+      
+        '                                                                ' +
+        '<table id="t2">'
+      
+        '                                                                ' +
+        '  <tr bgcolor="#808080">'
+      
+        '                                                                ' +
+        '    <th align="center" width="25">Nr</th>'
+      
+        '                                                                ' +
+        '    <th width="175">Beschreibung<br/>Descrizione cessione/presta' +
+        'zione</th>'
+      
+        '                                                                ' +
+        '    <th width="60">Menge<br/>Quantit'#224'</th>'
+      
+        '                                                                ' +
+        '    <th width="25">ME<br/>UM</th>'
+      
+        '                                                                ' +
+        '    <th width="85">Preis<br/>Prezzo</th>'
+      
+        '                                                                ' +
+        '    <th width="80">Skonto<br/>Sconto</th>'
+      
+        '                                                                ' +
+        '    <th width="85">Preis gesamt<br/>Prezzo totale</th>'
+      
+        '                                                                ' +
+        '    <th width="40">MwSt<br/>IVA<br/>(%)</th>'
+      
+        '                                                                ' +
+        '  </tr>'
+      
+        '                                                                ' +
+        '  <xsl:for-each select="DatiBeniServizi/DettaglioLinee">'
+      
+        '                                                                ' +
+        '  <tr>'
+      
+        '                                                                ' +
+        '    <td align="center"><span><xsl:value-of select="NumeroLinea"/' +
+        '></span></td>'
+      
+        '                                                                ' +
+        '      <td>'
+      
+        '                                                                ' +
+        '      <xsl:if test="Descrizione">'
+      
+        '                                                                ' +
+        '        <xsl:if test="CodiceArticolo">'
+      
+        '                                                                ' +
+        '          <xsl:for-each select="CodiceArticolo">'
+      
+        '                                                                ' +
+        '            <xsl:if test="CodiceTipo"><span><xsl:value-of select' +
+        '="CodiceTipo"/></span></xsl:if>'
+      
+        '                                                                ' +
+        '            <xsl:if test="CodiceValore"><span><xsl:value-of sele' +
+        'ct="CodiceValore"/></span></xsl:if><br/>'
+      
+        '                                                                ' +
+        '          </xsl:for-each>'
+      
+        '                                                                ' +
+        '        </xsl:if>'
+      
+        '                                                                ' +
+        '        <span><xsl:value-of select="Descrizione"/></span>'
+      
+        '                                                                ' +
+        '      </xsl:if>  <!-- 2.2.1.2 -->'
+      
+        '                                                                ' +
+        '      <xsl:if test="TipoCessionePrestazione"><br/><span><xsl:val' +
+        'ue-of select="TipoCessionePrestazione"/></span>'
+      
+        '                                                                ' +
+        '         <xsl:variable name="TCP"><xsl:value-of select="TipoCess' +
+        'ionePrestazione"/></xsl:variable>'
+      
+        '                                                                ' +
+        '         <xsl:choose>'
+      
+        '                                                                ' +
+        '              <xsl:when test="$TCP='#39'SC'#39'"> (Skonto)<i>(sconto)</i' +
+        '></xsl:when>'
+      
+        '                                                                ' +
+        '              <xsl:when test="$TCP='#39'PR'#39'"> (Pr'#228'mie)<i>(premio)</i' +
+        '></xsl:when>'
+      
+        '                                                                ' +
+        '              <xsl:when test="$TCP='#39'AB'#39'"> (Gutschrift)<i>(abbuon' +
+        'o)</i></xsl:when>'
+      
+        '                                                                ' +
+        '              <xsl:when test="$TCP='#39'AC'#39'"> (Zusatzspesen)<i>(spes' +
+        'a accessoria)</i></xsl:when>'
+      
+        '                                                                ' +
+        '              <xsl:otherwise><fehler> (!!! falsche Kennung !!!)<' +
+        'i>(!!! codice non previsto !!!)</i></fehler></xsl:otherwise>'
+      
+        '                                                                ' +
+        '         </xsl:choose><!-- <span><xsl:value-of select="ScontoMag' +
+        'giorazione/Percentuale" />%</span>   -->'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      
+        '                                                                ' +
+        '      <xsl:if test="RiferimentoAmministrazione">'
+      
+        '                                                                ' +
+        '         <br/>'
+      
+        '                                                                ' +
+        '         <!-- 2.2.1.15: RiferimentoAmministrazione -->'
+      
+        '                                                                ' +
+        '         <span><xsl:value-of select="RiferimentoAmministrazione"' +
+        '/></span>'
+      
+        '                                                                ' +
+        '         Hinweis Verwaltung / Buchhaltung <i>RiferimentoAmminist' +
+        'razione</i>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      
+        '                                                                ' +
+        '      <xsl:if test="AltriDatiGestionali">'
+      
+        '                                                                ' +
+        '          <xsl:for-each select="AltriDatiGestionali">'
+      
+        '                                                                ' +
+        '              <xsl:if test="TipoDato">'
+      
+        '                                                                ' +
+        '                  <br/>'
+      
+        '                                                                ' +
+        '                  <!-- 2.2.1.16.1: Datentyp <i>Tipo dato:</i> --' +
+        '>'
+      
+        '                                                                ' +
+        '                  <xsl:value-of select="TipoDato"/>:'
+      
+        '                                                                ' +
+        '              </xsl:if>'
+      
+        '                                                                ' +
+        '              <xsl:if test="RiferimentoTesto">'
+      
+        '                                                                ' +
+        '                  <br/>'
+      
+        '                                                                ' +
+        '                  <!-- 2.2.1.16.2: Text-Wert <i>Valore testo</i>' +
+        ' -->'
+      
+        '                                                                ' +
+        '                  <span><xsl:value-of select="RiferimentoTesto"/' +
+        '></span>'
+      
+        '                                                                ' +
+        '              </xsl:if>'
+      
+        '                                                                ' +
+        '              <xsl:if test="RiferimentoNumero">'
+      
+        '                                                                ' +
+        '                  <br/>'
+      
+        '                                                                ' +
+        '                  <!-- 2.2.1.16.3: Nummerischer Wert<i>Valore nu' +
+        'merico</i> -->'
+      
+        '                                                                ' +
+        '                  <span><xsl:value-of select="RiferimentoNumero"' +
+        '/></span>'
+      
+        '                                                                ' +
+        '              </xsl:if>'
+      
+        '                                                                ' +
+        '              <xsl:if test="RiferimentoData">'
+      
+        '                                                                ' +
+        '                  <br/>'
+      
+        '                                                                ' +
+        '                      <!-- 2.2.1.16.4: Datumswert <i>Valore data' +
+        ' </i>  -->'
+      
+        '                                                                ' +
+        '                      <span><xsl:value-of select="RiferimentoDat' +
+        'a"/></span><xsl:call-template name="FormatDate">'
+      
+        '                                                                ' +
+        '                          <xsl:with-param name="DateTime" select' +
+        '="RiferimentoData"/>'
+      
+        '                                                                ' +
+        '                      </xsl:call-template>'
+      
+        '                                                                ' +
+        '              </xsl:if>'
+      
+        '                                                                ' +
+        '          </xsl:for-each>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      
+        '                                                                ' +
+        '      <xsl:if test="DataInizioPeriodo"><br/>'
+      
+        '                                                                ' +
+        '        <xsl:if test="DataInizioPeriodo">Datum Beginn des Leistu' +
+        'ngszeitraumes <i>inizio periodo di riferimento</i>: <span>'
+      
+        '                                                                ' +
+        '          <xsl:value-of select="DataInizioPeriodo"/></span><xsl:' +
+        'call-template name="FormatDate">'
+      
+        '                                                                ' +
+        '          <xsl:with-param name="DateTime" select="DataInizioPeri' +
+        'odo"/></xsl:call-template>'
+      
+        '                                                                ' +
+        '          <xsl:if test="DataFinePeriodo"><br/> </xsl:if></xsl:if' +
+        '>'
+      
+        '                                                                ' +
+        '          <xsl:if test="DataFinePeriodo">Datum Ende des Leistung' +
+        'szeitraumes <i>Data fine periodo di riferimento</i>: <span>'
+      
+        '                                                                ' +
+        '        <xsl:value-of select="DataFinePeriodo"/></span><xsl:call' +
+        '-template name="FormatDate">'
+      
+        '                                                                ' +
+        '        <xsl:with-param name="DateTime" select="DataFinePeriodo"' +
+        '/></xsl:call-template></xsl:if></xsl:if>'
+      
+        '                                                                ' +
+        '      <xsl:if test="ScontoMaggiorazione/Tipo">'
+      #9#9#9#9#9#9#9#9#9'      <xsl:for-each select="ScontoMaggiorazione"><br/>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9#9' <!-- <span><xsl:value-of select="Percentuale"/> % <' +
+        '/span>-->'
+      #9#9#9#9#9#9#9#9#9#9#9#9'      <span><xsl:value-of select="Tipo"/></span>'
+      
+        '                                                                ' +
+        '                <xsl:variable name="TSCM"><xsl:value-of select="' +
+        'Tipo"/></xsl:variable>'
+      
+        '                                                                ' +
+        '                <xsl:choose>'
+      
+        '                                                                ' +
+        '                     <xsl:when test="$TSCM='#39'SC'#39'"> (Skonto)<i>(sc' +
+        'onto)</i></xsl:when>'
+      
+        '                                                                ' +
+        '                     <xsl:when test="$TSCM='#39'MG'#39'"> (Aufpreis)<i>(' +
+        'maggiorazione)</i></xsl:when>'
+      
+        '                                                                ' +
+        '                     <xsl:otherwise><fehler> (!!! falsche Kennun' +
+        'g !!!)<i>(!!! codice non previsto !!!)</i></fehler></xsl:otherwi' +
+        'se>'
+      
+        '                                                                ' +
+        '                </xsl:choose>'
+      
+        '                                                                ' +
+        '           </xsl:for-each>'
+      
+        '                                                                ' +
+        '      </xsl:if>'
+      
+        '                                                                ' +
+        '      </td>'
+      
+        '                                                                ' +
+        '      <td align="right">'
+      
+        '                                                                ' +
+        '           <xsl:if test="Quantita">'
+      
+        '                                                                ' +
+        '           <span><xsl:value-of select="format-number(Quantita, '#39 +
+        '#.###,###'#39','#39'euro'#39')"/></span></xsl:if></td>'
+      
+        '                                                                ' +
+        '            <td><xsl:if test="UnitaMisura"><span><xsl:value-of s' +
+        'elect="UnitaMisura"/></span></xsl:if></td>'
+      
+        '                                                                ' +
+        '            <td align="right"><xsl:if test="PrezzoUnitario"><spa' +
+        'n><xsl:value-of select="format-number(PrezzoUnitario, '#39'###.##0,0' +
+        '0###'#39', '#39'euro'#39')"/></span></xsl:if></td>'
+      
+        '                                                                ' +
+        '            <td align="right">'
+      
+        '                                                                ' +
+        '            <xsl:if test="ScontoMaggiorazione/Tipo">'
+      
+        '                                                                ' +
+        '                <xsl:for-each select="ScontoMaggiorazione">'
+      
+        '                                                                ' +
+        '                <xsl:variable name="TSCM"><xsl:value-of select="' +
+        'Tipo"/></xsl:variable>'
+      
+        '                                                                ' +
+        '                <xsl:if test="Percentuale">'
+      
+        '                                                                ' +
+        '                '#9'<xsl:choose>'
+      
+        '                                                                ' +
+        '                     '#9#9'<xsl:when test="$TSCM='#39'SC'#39'">-</xsl:when>'
+      
+        '                                                                ' +
+        '                     '#9#9'<xsl:when test="$TSCM='#39'MG'#39'">+</xsl:when>'
+      
+        '                                                                ' +
+        '                '#9'</xsl:choose>'
+      
+        '                                                                ' +
+        '                <span><xsl:value-of select="Percentuale"/> % </s' +
+        'pan><br/>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="Importo">'
+      
+        '                                                                ' +
+        '                    <xsl:choose>'
+      
+        '                                                                ' +
+        '                     '#9#9'<xsl:when test="$TSCM='#39'SC'#39'"> -</xsl:when>'
+      
+        '                                                                ' +
+        '                     '#9#9'<xsl:when test="$TSCM='#39'MG'#39'"> +</xsl:when>'
+      
+        '                                                                ' +
+        '                '#9'</xsl:choose>'
+      
+        '                                                                ' +
+        '                <span><xsl:value-of select="format-number(Import' +
+        'o, '#39'###.##0,00'#39', '#39'euro'#39')"/></span><br/>'
+      
+        '                                                                ' +
+        '                </xsl:if><br/>'
+      
+        '                                                                ' +
+        '                </xsl:for-each>'
+      
+        '                                                                ' +
+        '            </xsl:if>'
+      
+        '                                                                ' +
+        '       </td>'
+      
+        '                                                                ' +
+        '       <td align="right"><xsl:if test="PrezzoTotale"><span><xsl:' +
+        'value-of select="format-number(PrezzoTotale, '#39'###.##0,00'#39', '#39'euro' +
+        #39')"/></span></xsl:if></td>'
+      
+        '                                                                ' +
+        '       <td align="center"><xsl:if test="AliquotaIVA">'
+      
+        '                                                                ' +
+        '       <xsl:variable name="IVA" select="AliquotaIVA"/>'
+      
+        '                                                                ' +
+        '       <xsl:choose>'
+      
+        '                                                                ' +
+        '              <xsl:when test="$IVA='#39'0.00'#39' or $IVA='#39'0'#39'">'
+      
+        '                                                                ' +
+        '                   <xsl:if test="Natura"><span><xsl:value-of sel' +
+        'ect="Natura"/></span></xsl:if>'
+      
+        '                                                                ' +
+        '              </xsl:when>'
+      
+        '                                                                ' +
+        '              <xsl:otherwise><span><xsl:value-of select="format-' +
+        'number(AliquotaIVA, '#39'##0'#39')"/></span></xsl:otherwise>'
+      
+        '                                                                ' +
+        '         </xsl:choose>'
+      
+        '                                                                ' +
+        '         </xsl:if></td>'
+      
+        '                                                                ' +
+        '      </tr>'
+      
+        '                                                                ' +
+        ' </xsl:for-each>'
+      
+        '                                                              </' +
+        'table>'
+      
+        '                                                            </di' +
+        'v>'
+      '                                                       </xsl:if>'
+      
+        '                                                       <!--FINE ' +
+        'DATI DI DETTAGLIO DELLE LINEE-->'
+      ''
+      
+        '                                                       <!--INIZI' +
+        'O DATI DI RIEPILOGO ALIQUOTE E NATURE-->'
+      
+        '                                                       <xsl:if t' +
+        'est="DatiBeniServizi/DatiRiepilogo">'
+      
+        '                                                            <div' +
+        ' id="riepilogo-aliquote-nature">'
+      
+        '                                                                ' +
+        ' <h3>Daten zur MwSt. nach Satz und Art - <i>Dati di riepilogo pe' +
+        'r aliquota IVA e natura</i></h3>'
+      
+        '                                                                ' +
+        ' <table border="1" width="610px">'
+      
+        '                                                                ' +
+        ' <tr bgcolor="#808080">'
+      
+        '                                                                ' +
+        '        <th width="45">MwSt<br/>Aliq.</th>'
+      
+        '                                                                ' +
+        '        <th width="70">Art<br/>Natura</th>'
+      
+        '                                                                ' +
+        '        <th width="75">Spesen<br/>Spese</th>'
+      
+        '                                                                ' +
+        '        <th width="75">Rundung<br/>Arroton.</th>'
+      
+        '                                                                ' +
+        '        <th width="75">Grundlage<br/>Imponibile</th>'
+      
+        '                                                                ' +
+        '        <th width="75">Steuer<br/>Imposta</th>'
+      
+        '                                                                ' +
+        '        <th width="75">F'#228'lligkeit<br/>Esigibilita</th>'
+      
+        '                                                                ' +
+        '        <th width="85">Ges.Bezug<br/>Rif.Norma</th>'
+      
+        '                                                                ' +
+        ' </tr>'
+      
+        '                                                                ' +
+        ' <xsl:for-each select="DatiBeniServizi/DatiRiepilogo">'
+      
+        '                                                                ' +
+        '      <tr>'
+      
+        '                                                                ' +
+        '           <td align="center"><xsl:if test="AliquotaIVA">'
+      
+        '                                                                ' +
+        '                     <xsl:variable name="IVA" select="AliquotaIV' +
+        'A"/>'
+      
+        '                                                                ' +
+        '                     <xsl:choose>'
+      
+        '                                                                ' +
+        '                          <xsl:when test="$IVA='#39'0.00'#39' or $IVA='#39'0' +
+        #39'">'
+      
+        '                                                                ' +
+        '                               <xsl:if test="Natura"><span><xsl:' +
+        'value-of select="Natura"/></span></xsl:if>'
+      
+        '                                                                ' +
+        '                          </xsl:when>'
+      
+        '                                                                ' +
+        '                          <xsl:otherwise><span><xsl:value-of sel' +
+        'ect="format-number(AliquotaIVA, '#39'##0'#39')"/></span></xsl:otherwise>'
+      
+        '                                                                ' +
+        '                     </xsl:choose>'
+      
+        '                                                                ' +
+        '                     </xsl:if></td>'
+      ''
+      
+        '                                                                ' +
+        '           <td><xsl:if test="Natura"><xsl:variable name="NAT1"><' +
+        'xsl:value-of select="Natura"/></xsl:variable>'
+      
+        '                                                                ' +
+        '                     <xsl:choose>'
+      
+        '                                                                ' +
+        '                          <!-- Version 1.2.1 -->'
+      
+        #9#9#9#9#9#9#9#9#9#9#9'     <xsl:when test="$NAT1='#39'N1'#39'"> (ausgenommener Gesc' +
+        'h'#228'ftsvorg. ex Art. 15)<br/><i>(escluse ex art. 15)</i></xsl:when' +
+        '>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9'     <xsl:when test="$NAT1='#39'N2'#39'"> (nicht unterworfene' +
+        'r Gesch'#228'ftsvorg.(darf nach dem 31.12.2020 nicht mehr verwendet w' +
+        'erden))<br/><i>(non soggette (non pi'#249' utilizabile dopo il 31.12.' +
+        '2020))</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9'     <xsl:when test="$NAT1='#39'N2.1'#39'"> (nicht unterworfe' +
+        'ner Gesch'#228'ftsvorg. im Sinne der Artikel von 7 bis 7-septies des ' +
+        'DPR 633/72)<br/><i>(Non soggette ad IVA ai sensi degli artt. da ' +
+        '7 a 7- septies del DPR 633/72)</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9'     <xsl:when test="$NAT1='#39'N2.2'#39'"> (nicht unterworfe' +
+        'ner Gesch'#228'ftsvorg. '#8211' andere F'#228'lle)<br/><i>(non soggette '#8211' altri ' +
+        'casi)</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9'     <xsl:when test="$NAT1='#39'N3'#39'"> (nicht Mehrwertsteu' +
+        'erpflichtig-(darf nach dem 31.12.2020 nicht mehr verwendet werde' +
+        'n))<br/><i>(non imponibili (non pi'#249' utilizabile dopo il 31.12.20' +
+        '20))</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9'     <xsl:when test="$NAT1='#39'N3.1'#39'"> (nicht Mehrwertst' +
+        'euerpflichtig--Export)<br/><i>(non imponibili '#8211' esportazioni)</i' +
+        '></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9'     <xsl:when test="$NAT1='#39'N3.2'#39'"> (nicht Mehrwertst' +
+        'euerpflichtig--innergemeinschaftliche Verk'#228'ufe)<br/><i>(non impo' +
+        'nibili '#8211' cessioni intracomunitarie)</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9'     <xsl:when test="$NAT1='#39'N3.3'#39'"> (nicht Mehrwertst' +
+        'euerpflichtig--Verk'#228'ufe nach San Marino)<br/><i>(non imponibili ' +
+        #8211' cessioni verso San Marino)</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9'     <xsl:when test="$NAT1='#39'N3.4'#39'"> (nicht Mehrwertst' +
+        'euerpflichtig--als Exporte behandelte Transaktionen)<br/><i>(non' +
+        ' imponibili '#8211' operazioni assimilate alle cessioni all'#8217'esportazio' +
+        'ne)</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9'     <xsl:when test="$NAT1='#39'N3.5'#39'"> (nicht Mehrwertst' +
+        'euerpflichtig--nach einer Absichtserkl'#228'rung)<br/><i>(non imponib' +
+        'ili '#8211' a seguito di dichiarazioni d'#8217'intento)</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9'     <xsl:when test="$NAT1='#39'N3.6'#39'"> (nicht Mehrwertst' +
+        'euerpflichtig--andere Operationen, die nicht zur Bildung des Pla' +
+        'fonds beitragen)<br/><i>(non imponibili '#8211' altre operazioni che n' +
+        'on concorrono alla formazione del plafond)</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9'     <xsl:when test="$NAT1='#39'N4'#39'"> (befreit)<br/><i>(e' +
+        'senti)</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9'     <xsl:when test="$NAT1='#39'N5'#39'"> (im Rahmen der Diff' +
+        'erenzbesteuerung)<br/><i>(regime del margine)</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9'     <xsl:when test="$NAT1='#39'N6'#39'"> (Umkehrung derSteue' +
+        'rschuldnerschaft(darf nach dem 31.12.2020 nicht mehr verwendet w' +
+        'erden))<br/><i>(inversione contabile (non pi'#249' utilizabile dopo i' +
+        'l 31.12.2020))</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9'     <xsl:when test="$NAT1='#39'N6.1'#39'"> (Reverse-Charge (' +
+        'Umkehrung der Steuerschuldnerschaft) - Verkauf von Schrott und a' +
+        'nderen recycelten Materialien)<br/><i>(inversione contabile '#8211' ce' +
+        'ssione di rottami e altri materiali di recupero)</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9'     <xsl:when test="$NAT1='#39'N6.2'#39'"> (Reverse-Charge (' +
+        'Umkehrung der Steuerschuldnerschaft) - Verkauf von reinem Gold u' +
+        'nd Silber)<br/><i>(inversione contabile '#8211' cessione di oro e arge' +
+        'nto puro)</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9'     <xsl:when test="$NAT1='#39'N6.3'#39'"> (Reverse-Charge (' +
+        'Umkehrung der Steuerschuldnerschaft) - Unterauftr'#228'ge im Bausekto' +
+        'r)<br/><i>(inversione contabile '#8211' subappalto nel settore edile)<' +
+        '/i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9'     <xsl:when test="$NAT1='#39'N6.4'#39'"> (Reverse-Charge (' +
+        'Umkehrung der Steuerschuldnerschaft) - Verkauf von Geb'#228'uden)<br/' +
+        '><i>(inversione contabile '#8211' cessione di fabbricati)</i></xsl:whe' +
+        'n>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9'     <xsl:when test="$NAT1='#39'N6.5'#39'"> (Reverse-Charge (' +
+        'Umkehrung der Steuerschuldnerschaft) - Verkauf von Mobiltelefone' +
+        'n)<br/><i>(inversione contabile '#8211' cessione di telefoni cellulari' +
+        ')</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9'     <xsl:when test="$NAT1='#39'N6.6'#39'"> (Reverse-Charge (' +
+        'Umkehrung der Steuerschuldnerschaft) - Verkauf von elektronische' +
+        'n Ger'#228'ten)<br/><i>(inversione contabile '#8211' cessione di prodotti e' +
+        'lettronici)</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9'     <xsl:when test="$NAT1='#39'N6.7'#39'"> (Reverse-Charge (' +
+        'Umkehrung der Steuerschuldnerschaft) - Dienstleistungen des Baus' +
+        'ektors und damit verwandte Sektoren)<br/><i>(inversione contabil' +
+        'e '#8211' prestazioni comparto edile e settori connessi)</i></xsl:when' +
+        '>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9'     <xsl:when test="$NAT1='#39'N6.8'#39'"> (Reverse-Charge (' +
+        'Umkehrung der Steuerschuldnerschaft) - Operationen im Energiesek' +
+        'tor)<br/><i>(inversione contabile '#8211' operazioni settore energetic' +
+        'o)</i></xsl:when>'
+      
+        #9#9#9#9#9#9#9#9#9#9#9'     <xsl:when test="$NAT1='#39'N6.9'#39'"> (Reverse-Charge (' +
+        'Umkehrung der Steuerschuldnerschaft) - andere F'#228'lle)<br/><i>(inv' +
+        'ersione contabile '#8211' altri casi)</i></xsl:when>'
+      
+        '                                                                ' +
+        '                          <!-- Version 1.2 -->'
+      
+        #9#9#9#9#9#9#9#9#9#9#9'     <xsl:when test="$NAT1='#39'N7'#39'"> (MwSt.-Schuld in ei' +
+        'nem anderen EU-Land abgegolten)<br/><i>(IVA assolta in altro sta' +
+        'to UE)</i></xsl:when>'
+      
+        '                                                                ' +
+        '                          <xsl:when test="$NAT1='#39#39'"/>'
+      
+        '                                                                ' +
+        '                          <xsl:otherwise><fehler> (!!! falsche K' +
+        'ennung !!!)<i>(!!! codice non previsto !!!)</i></fehler></xsl:ot' +
+        'herwise>'
+      
+        '                                                                ' +
+        '                     </xsl:choose>'
+      
+        '                                                                ' +
+        '             </xsl:if></td>'
+      
+        '                                                                ' +
+        '           <td align="right"><xsl:if test="SpeseAccessorie"><spa' +
+        'n><xsl:value-of select="format-number(SpeseAccessorie, '#39'###.##0,' +
+        '00'#39', '#39'euro'#39')"/></span></xsl:if></td>'
+      
+        '                                                                ' +
+        '           <td align="right"><xsl:if test="Arrotondamento"><span' +
+        '><xsl:value-of select="format-number(Arrotondamento, '#39'###.##0,00' +
+        #39', '#39'euro'#39')"/></span></xsl:if></td>'
+      
+        '                                                                ' +
+        '           <td align="right"><xsl:if test="ImponibileImporto"><s' +
+        'pan><xsl:variable name="Ii" select="ImponibileImporto"/><xsl:val' +
+        'ue-of select="format-number($Ii, '#39'###.##0,00'#39', '#39'euro'#39')"/></span>' +
+        '</xsl:if></td>'
+      
+        '                                                                ' +
+        '           <td align="right"><xsl:if test="Imposta"><span><xsl:v' +
+        'alue-of select="format-number(Imposta, '#39'###.##0,00'#39', '#39'euro'#39')"/><' +
+        '/span></xsl:if></td>'
+      
+        '                                                                ' +
+        '           <td><xsl:if test="EsigibilitaIVA"><span><xsl:value-of' +
+        ' select="EsigibilitaIVA"/></span><xsl:variable name="EI"><xsl:va' +
+        'lue-of select="EsigibilitaIVA"/></xsl:variable>'
+      
+        '                                                                ' +
+        '                     <xsl:choose>'
+      
+        '                                                                ' +
+        '                          <xsl:when test="$EI='#39'I'#39'"> (esigibilit'#224 +
+        ' immediata)</xsl:when>'
+      
+        '                                                                ' +
+        '                          <xsl:when test="$EI='#39'D'#39'"> (esigibilit'#224 +
+        ' differita)</xsl:when>'
+      
+        '                                                                ' +
+        '                          <xsl:when test="$EI='#39'S'#39'"> (scissione d' +
+        'ei pagamenti)</xsl:when>'
+      
+        '                                                                ' +
+        '                          <xsl:otherwise><fehler> (!!! falsche K' +
+        'ennung !!!)<i>(!!! codice non previsto !!!)</i></fehler></xsl:ot' +
+        'herwise>'
+      
+        '                                                                ' +
+        '                     </xsl:choose>'
+      
+        '                                                                ' +
+        '              </xsl:if></td>'
+      
+        '                                                                ' +
+        '           <td><xsl:if test="RiferimentoNormativo"><span><xsl:va' +
+        'lue-of select="RiferimentoNormativo"/></span></xsl:if></td>'
+      
+        '                                                                ' +
+        '      </tr>'
+      
+        '                                                                ' +
+        ' </xsl:for-each>'
+      
+        '                                                                ' +
+        ' </table>'
+      
+        '                                                            </di' +
+        'v>'
+      '                                                       </xsl:if>'
+      
+        '                                                       <!--FINE ' +
+        'DATI RIEPILOGO ALIQUOTE E NATURE-->'
+      ''
+      '                                                  </div>'
+      '                                             </xsl:if>'
+      
+        '                                             <!--FINE DATI BENI ' +
+        'E SERVIZI-->'
+      ''
+      
+        '                                             <!--INIZIO DATI VEI' +
+        'COLI-->'
+      
+        '                                             <xsl:if test="DatiV' +
+        'eicoli">'
+      
+        '                                                  <div id="dati-' +
+        'veicoli"><h3>Daten zum Transportfahrzeug - <i>Dati Veicoli ex ar' +
+        't. 38 dl 331/1993</i></h3>'
+      
+        '                                                       <table id' +
+        '="t1">'
+      
+        '                                                            <xsl' +
+        ':for-each select="DatiVeicoli">'
+      
+        '                                                                ' +
+        ' <xsl:if test="Data">'
+      
+        '                                                                ' +
+        '      <tr><td width="100px">2.3.1</td><td width="200px">Datum Er' +
+        'steinschreibung des Fahrzeuges<br/><i> prima immatricolazione / ' +
+        'iscrizione PR </i></td>'
+      
+        '                                                                ' +
+        '           <td width="500px"><span><xsl:value-of select="Data"/>' +
+        '</span><xsl:call-template name="FormatDate"><xsl:with-param name' +
+        '="DateTime" select="Data"/></xsl:call-template></td>'
+      
+        '                                                                ' +
+        '      </tr>'
+      
+        '                                                                ' +
+        ' </xsl:if>'
+      
+        '                                                                ' +
+        ' <xsl:if test="TotalePercorso">'
+      
+        '                                                                ' +
+        '      <tr><td>2.3.2</td><td>Gesamtl'#228'nge Fahrt<br/><i>Totale perc' +
+        'orso</i></td>'
+      
+        '                                                                ' +
+        '           <td><span><xsl:value-of select="TotalePercorso"/></sp' +
+        'an></td>'
+      
+        '                                                                ' +
+        '      </tr>'
+      
+        '                                                                ' +
+        ' </xsl:if>'
+      
+        '                                                            </xs' +
+        'l:for-each>'
+      '                                                       </table>'
+      '                                                  </div>'
+      '                                             </xsl:if>'
+      
+        '                                             <!--FINE DATI VEICO' +
+        'LI-->'
+      ''
+      
+        '                                             <!--INIZIO DATI PAG' +
+        'AMENTO-->'
+      
+        '                                             <xsl:if test="DatiP' +
+        'agamento">'
+      
+        '                                                  <div id="dati-' +
+        'pagamento-condizioni">'
+      
+        '                                                       <h3>Daten' +
+        ' zur Bezahlung - <i>Dati relativi al pagamento</i></h3>'
+      
+        '                                                            <xsl' +
+        ':for-each select="DatiPagamento">'
+      
+        '                                                                ' +
+        ' <xsl:if test="CondizioniPagamento">'
+      
+        '                                                                ' +
+        ' <table id="t1">'
+      
+        '                                                                ' +
+        '      <tr><td width="100px">2.4.1</td><td width="200px">Zahlungs' +
+        'bedingungen<br/><i>Condizioni di pagamento</i></td>'
+      
+        '                                                                ' +
+        '           <td width="500px"><span><xsl:value-of select="Condizi' +
+        'oniPagamento"/></span><xsl:variable name="CP"><xsl:value-of sele' +
+        'ct="CondizioniPagamento"/></xsl:variable>'
+      
+        '                                                                ' +
+        '           <xsl:choose>'
+      
+        '                                                                ' +
+        '                <xsl:when test="$CP='#39'TP01'#39'"> (Ratenzahlung)<i>(p' +
+        'agamento a rate)</i></xsl:when>'
+      
+        '                                                                ' +
+        '                <xsl:when test="$CP='#39'TP02'#39'"> (Einmalzahlung)<i>(' +
+        'pagamento completo)</i></xsl:when>'
+      
+        '                                                                ' +
+        '                <xsl:when test="$CP='#39'TP03'#39'"> (Vorauszahlung)<i>(' +
+        'anticipo)</i></xsl:when>'
+      
+        '                                                                ' +
+        '                <xsl:when test="$CP='#39#39'"/>'
+      
+        '                                                                ' +
+        '                <xsl:otherwise><fehler> (!!! falsche Kennung !!!' +
+        ')<i>(!!! codice non previsto !!!)</i></fehler></xsl:otherwise>'
+      
+        '                                                                ' +
+        '           </xsl:choose></td>'
+      
+        '                                                                ' +
+        '      </tr>'
+      
+        '                                                                ' +
+        ' </table>'
+      
+        '                                                                ' +
+        ' </xsl:if>'
+      ''
+      
+        '                                                                ' +
+        ' <xsl:if test="DettaglioPagamento">'
+      
+        '                                                                ' +
+        ' <xsl:variable name="TOTALRATEN" select="count(DettaglioPagament' +
+        'o)"/>'
+      
+        '                                                                ' +
+        ' <xsl:for-each select="DettaglioPagamento">'
+      
+        '                                                                ' +
+        ' <xsl:if test="$TOTALRATEN&gt;1">'
+      
+        '                                                                ' +
+        '      <h4>Rate Nr. <i>Rata N'#176'</i>:'#160'<xsl:value-of select="positio' +
+        'n()"/>'#160'<xsl:call-template name="FormatDate"><xsl:with-param name' +
+        '="DateTime" select="DataScadenzaPagamento"/></xsl:call-template>' +
+        '</h4>'
+      
+        '                                                                ' +
+        ' </xsl:if>'
+      
+        '                                                                ' +
+        ' <table id="t1">'
+      
+        '                                                                ' +
+        '      <xsl:if test="Beneficiario">'
+      
+        '                                                                ' +
+        '           <tr><td width="100px">2.4.2.1</td><td width="200px">Z' +
+        'ahlungsempf'#228'nger<br/><i>Beneficiario pagamento</i></td>'
+      
+        '                                                                ' +
+        '                <td width="500px"><span><xsl:value-of select="Be' +
+        'neficiario"/></span></td>'
+      
+        '                                                                ' +
+        '           </tr>'
+      
+        '                                                                ' +
+        '           </xsl:if>'
+      
+        '                                                                ' +
+        '           <xsl:if test="ModalitaPagamento">'
+      
+        '                                                                ' +
+        '                <tr><td width="100px">2.4.2.2</td><td width="200' +
+        'px">Zahlungsmodalit'#228't<br/><i>Modalit'#224' di pagamento</i></td>'
+      
+        '                                                                ' +
+        '                     <td width="500px"><span><xsl:value-of selec' +
+        't="ModalitaPagamento"/></span><xsl:variable name="MP"><xsl:value' +
+        '-of select="ModalitaPagamento"/></xsl:variable>'
+      
+        '                                                                ' +
+        '                     <xsl:choose>'
+      
+        '                                                                ' +
+        '                          <xsl:when test="$MP='#39'MP01'#39'"> (bar)<i>(' +
+        'contanti)</i></xsl:when>'
+      
+        '                                                                ' +
+        '                          <xsl:when test="$MP='#39'MP02'#39'"> (Scheck)<' +
+        'i>(assegno)</i></xsl:when>'
+      
+        '                                                                ' +
+        '                          <xsl:when test="$MP='#39'MP03'#39'"> (Zirkular' +
+        'scheck)<i>(assegno circolare)</i></xsl:when>'
+      
+        '                                                                ' +
+        '                          <xsl:when test="$MP='#39'MP04'#39'"> ('#252'ber Sch' +
+        'atzamt)<i>(contanti presso Tesoreria)</i></xsl:when>'
+      
+        '                                                                ' +
+        '                          <xsl:when test="$MP='#39'MP05'#39'"> ('#220'berweis' +
+        'ung)<i>(bonifico)</i></xsl:when>'
+      
+        '                                                                ' +
+        '                          <xsl:when test="$MP='#39'MP06'#39'"> (Wechsel)' +
+        '<i>(vaglia cambiario)</i></xsl:when>'
+      
+        '                                                                ' +
+        '                          <xsl:when test="$MP='#39'MP07'#39'"> (Bankmitt' +
+        'eilung)<i>(bollettino bancario)</i></xsl:when>'
+      
+        '                                                                ' +
+        '                          <xsl:when test="$MP='#39'MP08'#39'"> (Zahlkart' +
+        'e)<i>(carta di pagamento)</i></xsl:when>'
+      
+        '                                                                ' +
+        '                          <xsl:when test="$MP='#39'MP09'#39'"> (RID)</xs' +
+        'l:when>'
+      
+        '                                                                ' +
+        '                          <xsl:when test="$MP='#39'MP10'#39'"> (RID norm' +
+        'al)<i>(RID utenze)</i></xsl:when>'
+      
+        '                                                                ' +
+        '                          <xsl:when test="$MP='#39'MP11'#39'"> (RID Schn' +
+        'ell)<i>(RID veloce)</i></xsl:when>'
+      
+        '                                                                ' +
+        '                          <xsl:when test="$MP='#39'MP12'#39'"> (RIBA)</x' +
+        'sl:when>'
+      
+        '                                                                ' +
+        '                          <xsl:when test="$MP='#39'MP13'#39'"> (MAV)</xs' +
+        'l:when>'
+      
+        '                                                                ' +
+        '                          <xsl:when test="$MP='#39'MP14'#39'"> (quietanz' +
+        'a erario)</xsl:when>'
+      
+        '                                                                ' +
+        '                          <xsl:when test="$MP='#39'MP15'#39'"> (girocont' +
+        'o su conti di con</xsl:when>'
+      
+        '                                                                ' +
+        '                          <xsl:when test="$MP='#39'MP16'#39'"> (Bankdaue' +
+        'rauftrag)<i>(domiciliazione bancaria)</i></xsl:when>'
+      
+        '                                                                ' +
+        '                          <xsl:when test="$MP='#39'MP17'#39'"> (Postdaue' +
+        'rauftrag)<i>(domiciliazione postale)</i></xsl:when>'
+      
+        '                                                                ' +
+        '                          <xsl:when test="$MP='#39'MP18'#39'"> (Post'#252'ber' +
+        'weisung)<i>(bollettino di c/c postale)</i></xsl:when>'
+      
+        '                                                                ' +
+        '                          <xsl:when test="$MP='#39'MP19'#39'"> (SEPA Dir' +
+        'ect Debit)</xsl:when>'
+      
+        '                                                                ' +
+        '                          <xsl:when test="$MP='#39'MP20'#39'"> (SEPA Dir' +
+        'ect Debit CORE)</xsl:when>'
+      
+        '                                                                ' +
+        '                          <xsl:when test="$MP='#39'MP21'#39'"> (SEPA Dir' +
+        'ect Debit B2B)</xsl:when>'
+      
+        '                                                                ' +
+        '                          <!-- Version 1.2 -->'
+      
+        '                                                                ' +
+        '                          <xsl:when test="$MP='#39'MP22'#39'"> (Einbehal' +
+        't auf bereits bezahlte Summe)<i>(Trattenuta su somme gi'#224' riscoss' +
+        'e)</i></xsl:when>'
+      
+        '                                                                ' +
+        '                          <!-- Version 1.2.1 -->'
+      
+        '                                                                ' +
+        '                          <xsl:when test="$MP='#39'MP23'#39'"> (pagoPA)<' +
+        'i>(pagoPA)</i></xsl:when>'
+      
+        '                                                                ' +
+        '                          <xsl:when test="$MP='#39#39'"/>'
+      
+        '                                                                ' +
+        '                          <xsl:otherwise><fehler> (!!! falsche K' +
+        'ennung !!!)<i>(!!! codice non previsto !!!)</i></fehler></xsl:ot' +
+        'herwise>'
+      
+        '                                                                ' +
+        '                     </xsl:choose>'
+      
+        '                                                                ' +
+        '                     </td></tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="DataRiferimentoTerminiPagamento">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.4.2.3</td><td>Beginn Zahlungsfris' +
+        't<br/><i>Dec. termine pagamento</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="DataRi' +
+        'ferimentoTerminiPagamento"/></span><xsl:call-template name="Form' +
+        'atDate"><xsl:with-param name="DateTime" select="DataRiferimentoT' +
+        'erminiPagamento"/></xsl:call-template></td>'
+      
+        '                                                                ' +
+        '                     </tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="GiorniTerminiPagamento">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.4.2.4</td><td>Zahlungsziel (Tagen' +
+        ')<br/><i>Term. pagamento (giorni)</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="Giorni' +
+        'TerminiPagamento"/></span></td>'
+      
+        '                                                                ' +
+        '                     </tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="DataScadenzaPagamento">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.4.2.5</td><td>Ende Zahlungsziel<b' +
+        'r/><i>Data scadenza pagamento</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="DataSc' +
+        'adenzaPagamento"/></span><xsl:call-template name="FormatDate"><x' +
+        'sl:with-param name="DateTime" select="DataScadenzaPagamento"/></' +
+        'xsl:call-template></td>'
+      
+        '                                                                ' +
+        '                     </tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="ImportoPagamento">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.4.2.6</td><td>Betrag<br/><i>Impor' +
+        'to</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="$Valut' +
+        'a"/>'#160'<xsl:value-of select="format-number(ImportoPagamento, '#39'###.' +
+        '##0,00'#39', '#39'euro'#39')"/></span></td>'
+      
+        '                                                                ' +
+        '                     </tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="CodUfficioPostale">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.4.2.7</td><td>Kennung Postamt<br/' +
+        '><i>Codice Ufficio Postale</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="CodUff' +
+        'icioPostale"/></span></td>'
+      
+        '                                                                ' +
+        '                     </tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="TitoloQuietanzante">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.4.2.11</td><td>Titel des Quittier' +
+        'enden<br/><i>Titolo del quietanzante</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="Titolo' +
+        'Quietanzante"/></span></td>'
+      
+        '                                                                ' +
+        '                     </tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="NomeQuietanzante">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.4.2.8</td><td>Name des Quittieren' +
+        'den<br/><i>Nome del quietanzante</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="NomeQu' +
+        'ietanzante"/></span></td>'
+      
+        '                                                                ' +
+        '                     </tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="CognomeQuietanzante">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.4.2.9</td><td>Nachname des Quitti' +
+        'erenden<br/><i>Cognome del quietanzante</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="Cognom' +
+        'eQuietanzante"/></span></td>'
+      
+        '                                                                ' +
+        '                     </tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="CFQuietanzante">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.4.2.10</td><td>StNr. des Quittier' +
+        'enden<br/><i>CF del quietanzante</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="CFQuie' +
+        'tanzante"/></span></td>'
+      
+        '                                                                ' +
+        '                     </tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="IstitutoFinanziario">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.4.2.12</td><td>Finanzinstitut<br/' +
+        '><i>Istituto finanziario</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="Istitu' +
+        'toFinanziario"/></span></td>'
+      
+        '                                                                ' +
+        '                     </tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="IBAN">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.4.2.13</td><td>IBAN<br/><i>Codice' +
+        ' IBAN</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="IBAN"/' +
+        '></span></td>'
+      
+        '                                                                ' +
+        '                     </tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="ABI">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.4.2.14</td><td>ABI<br/><i>Codice ' +
+        'ABI</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="ABI"/>' +
+        '</span></td>'
+      
+        '                                                                ' +
+        '                     </tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="CAB">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.4.2.15</td><td>CAB<br/><i>Codice ' +
+        'CAB</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="CAB"/>' +
+        '</span></td>'
+      
+        '                                                                ' +
+        '                     </tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="BIC">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.4.2.16</td><td>BIC<br/><i>Codice ' +
+        'BIC</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="BIC"/>' +
+        '</span></td>'
+      
+        '                                                                ' +
+        '                          </tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="ScontoPagamentoAnticipato">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.4.2.17</td><td>Skonto f'#252'r Zahlung' +
+        ' vor Zahlungsziel<br/><i>Sconto per pagamento anticipato</i></td' +
+        '>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="Sconto' +
+        'PagamentoAnticipato"/></span></td>'
+      
+        '                                                                ' +
+        '                     </tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="DataLimitePagamentoAnticipato">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.4.2.18</td><td>letzter Termin f'#252'r' +
+        ' Zahlung vor Zahlungsziel<br/>'
+      
+        '                                                                ' +
+        '                          <i>Data limite per il pagamento antici' +
+        'pato</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="DataLi' +
+        'mitePagamentoAnticipato"/></span><xsl:call-template name="Format' +
+        'Date"><xsl:with-param name="DateTime" select="DataLimitePagament' +
+        'oAnticipato"/></xsl:call-template></td>'
+      
+        '                                                                ' +
+        '                     </tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="PenalitaPagamentiRitardati">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.4.2.19</td><td>P'#246'nale f'#252'r versp'#228't' +
+        'ete Zahlung<br/><i>Penale per ritardato pagamento</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="Penali' +
+        'taPagamentiRitardati"/></span></td></tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="DataDecorrenzaPenale">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.4.2.20</td><td>Beginndatum f'#252'r An' +
+        'wendung der P'#246'nale<br/><i>Data di decorrenza della penale</i></t' +
+        'd>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="DataDe' +
+        'correnzaPenale"/></span><xsl:call-template name="FormatDate"><xs' +
+        'l:with-param name="DateTime" select="DataDecorrenzaPenale"/></xs' +
+        'l:call-template></td></tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '                <xsl:if test="CodicePagamento">'
+      
+        '                                                                ' +
+        '                     <tr><td>2.4.2.21</td><td>Zahlungs-Kennung<b' +
+        'r/><i>Codice pagamento</i></td>'
+      
+        '                                                                ' +
+        '                          <td><span><xsl:value-of select="Codice' +
+        'Pagamento"/></span></td></tr>'
+      
+        '                                                                ' +
+        '                </xsl:if>'
+      
+        '                                                                ' +
+        '           </table>'
+      
+        '                                                                ' +
+        '      </xsl:for-each>'
+      
+        '                                                                ' +
+        ' </xsl:if>'
+      
+        '                                                            </xs' +
+        'l:for-each>'
+      '                                                  </div>'
+      '                                             </xsl:if>'
+      
+        '                                             <!--FINE DATI PAGAM' +
+        'ENTO-->'
+      ''
+      
+        '                                             <!--INIZIO ALLEGATI' +
+        '-->'
+      
+        '                                             <xsl:if test="Alleg' +
+        'ati">'
+      
+        '                                                  <div id="alleg' +
+        'ati"><h3>Daten zu den Anlagen - <i>Dati relativi agli allegati</' +
+        'i></h3><xsl:for-each select="Allegati">'
+      
+        '                                                            <tab' +
+        'le id="t1">'
+      
+        '                                                                ' +
+        ' <xsl:if test="NomeAttachment">'
+      
+        '                                                                ' +
+        '      <tr><td width="100px">2.5.1</td><td width="200px">Name der' +
+        ' Anlage<br/><i>Nome dell'#39'allegato</i></td>'
+      
+        '                                                                ' +
+        '           <td width="500px"><span><xsl:value-of select="NomeAtt' +
+        'achment"/></span></td></tr>'
+      
+        '                                                                ' +
+        ' </xsl:if>'
+      
+        '                                                                ' +
+        ' <xsl:if test="AlgoritmoCompressione">'
+      
+        '                                                                ' +
+        '      <tr><td>2.5.2</td><td>Kompressionsalgoritmus<br/><i>Algori' +
+        'tmo di compressione</i></td>'
+      
+        '                                                                ' +
+        '           <td><span><xsl:value-of select="AlgoritmoCompressione' +
+        '"/></span></td></tr>'
+      
+        '                                                                ' +
+        ' </xsl:if>'
+      
+        '                                                                ' +
+        ' <xsl:if test="FormatoAttachment">'
+      
+        '                                                                ' +
+        '      <tr><td>2.5.3</td><td>Format<br/><i>Formato</i></td>'
+      
+        '                                                                ' +
+        '           <td><span><xsl:value-of select="FormatoAttachment"/><' +
+        '/span></td></tr>'
+      
+        '                                                                ' +
+        ' </xsl:if>'
+      
+        '                                                                ' +
+        ' <xsl:if test="DescrizioneAttachment">'
+      
+        '                                                                ' +
+        '      <tr><td>2.5.4</td>'
+      
+        '                                                                ' +
+        '           <td>Beschreibung<br/><i>Descrizione</i></td>'
+      
+        '                                                                ' +
+        '           <td><span><xsl:value-of select="DescrizioneAttachment' +
+        '"/></span></td></tr>'
+      
+        '                                                                ' +
+        ' </xsl:if>'
+      
+        '                                                            </ta' +
+        'ble>'
+      
+        '                                                       </xsl:for' +
+        '-each>'
+      '                                                  </div>'
+      '                                             </xsl:if>'
+      
+        '                                             <!--FINE ALLEGATI--' +
+        '>'
+      ''
+      
+        '                                             <div class="footer"' +
+        '><xsl:copy-of select="$VersionFT"/></div>'
+      '                                        </div>'
+      '                                   </xsl:for-each>'
+      '                                   <!--FINE BODY-->'
+      ''
+      '                              </div>'
+      '                         </xsl:if>'
+      '                    </div>'
+      '               </body>'
+      '          </html>'
+      '     </xsl:template>'
+      '</xsl:stylesheet>')
+    Left = 39
+    Top = 160
+    DOMVendorDesc = 'MSXML'
+  end
 end

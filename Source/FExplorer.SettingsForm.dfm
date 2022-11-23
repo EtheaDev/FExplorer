@@ -14,12 +14,10 @@ object SVGSettingsForm: TSVGSettingsForm
   Font.Height = -12
   Font.Name = 'Segoe UI'
   Font.Style = []
-  OldCreateOrder = False
   Position = poDefault
   ShowHint = True
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  PixelsPerInch = 96
   TextHeight = 15
   object TLabel
     Left = 4
@@ -61,31 +59,8 @@ object SVGSettingsForm: TSVGSettingsForm
           Items.Strings = (
             'AssoSoftware'
             'AgenziaEntrate'
+            'SudTirolo_ITA_DEU'
             'Custom')
-          ExplicitWidth = 209
-        end
-      end
-      object IconStyleGroupBox: TGroupBox
-        Left = 3
-        Top = 236
-        Width = 310
-        Height = 62
-        Caption = 'Stile anteprima Icone'
-        TabOrder = 2
-        DesignSize = (
-          310
-          62)
-        object IconStyleSheetComboBox: TComboBox
-          Left = 16
-          Top = 24
-          Width = 281
-          Height = 23
-          Anchors = [akLeft, akTop, akRight]
-          TabOrder = 0
-          Text = 'Default'
-          Items.Strings = (
-            'Default')
-          ExplicitWidth = 209
         end
       end
       object RenderingGroupBox: TGroupBox
@@ -113,6 +88,51 @@ object SVGSettingsForm: TSVGSettingsForm
             'Delphi Image32'
             'Delphi TSVG')
           TabOrder = 1
+        end
+      end
+      object GUIElementsGroupBox: TGroupBox
+        Left = 2
+        Top = 236
+        Width = 310
+        Height = 147
+        Caption = 'Visualizzazione elementi interfaccia utente'
+        TabOrder = 2
+        DesignSize = (
+          310
+          147)
+        object IconStyleLabel: TLabel
+          Left = 14
+          Top = 74
+          Width = 111
+          Height = 15
+          Caption = 'Stile anteprima Icona'
+        end
+        object ShowIconCheckBox: TCheckBox
+          Left = 14
+          Top = 52
+          Width = 280
+          Height = 18
+          Caption = 'Mostra anteprima icona'
+          TabOrder = 1
+        end
+        object IconStyleSheetComboBox: TComboBox
+          Left = 14
+          Top = 95
+          Width = 280
+          Height = 23
+          Anchors = [akLeft, akTop, akRight]
+          TabOrder = 2
+          Text = 'Default'
+          Items.Strings = (
+            'Default')
+        end
+        object ShowXMLCheckBox: TCheckBox
+          Left = 14
+          Top = 25
+          Width = 280
+          Height = 17
+          Caption = 'Mostra testo originale (XML)'
+          TabOrder = 0
         end
       end
     end
@@ -173,61 +193,53 @@ object SVGSettingsForm: TSVGSettingsForm
         Left = 16
         Top = 164
         Width = 281
-        Height = 149
+        Height = 130
         Caption = 'Testo XML'
         TabOrder = 1
         object FontLabel: TLabel
           Left = 8
-          Top = 44
+          Top = 22
           Width = 57
           Height = 15
           Caption = 'Font name'
         end
         object SizeLabel: TLabel
           Left = 8
-          Top = 90
+          Top = 72
           Width = 63
           Height = 15
           Caption = 'Dimensione'
         end
         object XMLFontComboBox: TComboBox
           Left = 8
-          Top = 61
+          Top = 39
           Width = 225
           Height = 22
           Style = csOwnerDrawFixed
           Sorted = True
-          TabOrder = 1
+          TabOrder = 0
           OnDrawItem = FontDrawItem
         end
         object XMLFontSizeEdit: TEdit
           Left = 8
-          Top = 107
+          Top = 89
           Width = 34
           Height = 23
           Alignment = taRightJustify
           NumbersOnly = True
-          TabOrder = 2
+          TabOrder = 1
           Text = '12'
         end
         object XMLUpDown: TUpDown
           Left = 42
-          Top = 107
+          Top = 89
           Width = 16
           Height = 23
           Associate = XMLFontSizeEdit
           Min = 8
           Max = 30
           Position = 12
-          TabOrder = 3
-        end
-        object ShowXMLCheckBox: TCheckBox
-          Left = 8
-          Top = 24
-          Width = 121
-          Height = 17
-          Caption = 'Mostra testo XML'
-          TabOrder = 0
+          TabOrder = 2
         end
       end
       object HTMLGroupBox: TGroupBox
@@ -237,14 +249,14 @@ object SVGSettingsForm: TSVGSettingsForm
         Height = 121
         Caption = 'Testo HTML (default)'
         TabOrder = 0
-        object Label1: TLabel
+        object HTMLFontNameLabel: TLabel
           Left = 8
           Top = 19
           Width = 57
           Height = 15
           Caption = 'Font name'
         end
-        object Label2: TLabel
+        object HTMLSizeLabel: TLabel
           Left = 8
           Top = 65
           Width = 63
@@ -578,6 +590,7 @@ object SVGSettingsForm: TSVGSettingsForm
         AutoSize = False
         ImageList = OrientationImageList
         ImageIndex = 0
+        ImageName = 'portrait'
       end
       object OrientationRadioGroup: TRadioGroup
         Left = 16
@@ -754,6 +767,8 @@ object SVGSettingsForm: TSVGSettingsForm
       end>
     TabOrder = 2
     OnButtonClicked = MenuButtonGroupButtonClicked
+    ExplicitLeft = 1
+    ExplicitTop = 35
   end
   object TitlePanel: TPanel
     Left = 0
@@ -767,8 +782,8 @@ object SVGSettingsForm: TSVGSettingsForm
     TabOrder = 3
   end
   object OpenDialog: TOpenDialog
-    Left = 592
-    Top = 352
+    Left = 634
+    Top = 372
   end
   object SettingsImageList: TSVGIconImageList
     Size = 36
@@ -865,8 +880,8 @@ object SVGSettingsForm: TSVGSettingsForm
           '17V13H18.5V11.5H17V10.5H18.5V9Z" /></svg>'
       end>
     Scaled = True
-    Left = 492
-    Top = 368
+    Left = 570
+    Top = 307
   end
   object OrientationImageList: TSVGIconImageList
     Size = 128
@@ -894,7 +909,7 @@ object SVGSettingsForm: TSVGSettingsForm
           '65v12.5c0,1.4,1.1,2.5,2.5,2.5H90V80z"/>'#13#10'</svg>'#13#10
       end>
     Scaled = True
-    Left = 356
-    Top = 336
+    Left = 596
+    Top = 232
   end
 end

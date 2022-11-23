@@ -2,7 +2,7 @@
 
 ## **Anteprima Fattura Elettronica (Viewer e Icone) integrato in Windows Explorer e Visualizzatore**
 
-### Versione attuale 2.0 ###
+### Versione attuale 2.1 ###
 
 **Una serie di strumenti per gestire i file xml contenenti Fatture Elettroniche in Windows:**
 
@@ -13,7 +13,7 @@
 - Un [Visualizzatore][10] di F.E. che permette di visualizzarla in formati diversi e stamparla
 
 ### Funzionalità
-- Possibilità di definire liberamente un "template" per il disegno dell'icona
+- Possibilità di scegliere lo stile di visualizzazione della fattura (PA, AssoSoftware, Custom...)
 - Possibilità di associare colori diversi alle icone in base ai tipi di F.E. o ad altre regole
 - Supporta Windows Vista, 7, 8 and 10 (sia 32 bit che 64 bit).
 - Supporto dei temi (Scuro o Chiaro) in accordo con le preferenze dell'utente in Windows
@@ -62,6 +62,10 @@ Per installare manualmente FExplorer.dll seguire questi step:
 5. Una volta registrato, puoi continuare a modificare il codice e ricompilare la dll (attenzione a chiudere tutte le istanze di Explorer ogni volta che si ricompila).
 
 ## Release Notes ##
+
+23 Nov 2022 - Versione 2.1.0
+- Aggiunto "Stile" SudTirolo (ITA/DEU)[16]
+- Aggiunta possibilità di spegnere pannello anteprima icona e testo XML nel Viewer
 
 11 Sep 2022 - Versione 2.0.0
 - Build con Delphi 11.2 Alexandria
@@ -171,3 +175,5 @@ Related links: [embarcadero.com][11] - [learndelphi.org][12]
 [14]: https://github.com/DelphiClubItalia/PKCS7Extractor
 
 [15]: http://www.angusj.com/delphi/image32/Docs/_Body.htm
+
+[16]: https://github.com/provbz/fatturapa-xsl-southtyrol

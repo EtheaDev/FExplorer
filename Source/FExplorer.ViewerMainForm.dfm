@@ -226,14 +226,15 @@ object frmMain: TfrmMain
         AutoSize = False
         ImageList = VirtualImageList
         ImageIndex = 39
+        ImageName = 'error'
         Align = alLeft
       end
       object StatusStaticText: TStaticText
         AlignWithMargins = True
         Left = 36
         Top = 4
-        Width = 4
-        Height = 4
+        Width = 210
+        Height = 34
         Align = alClient
         Alignment = taCenter
         TabOrder = 0
@@ -378,10 +379,11 @@ object frmMain: TfrmMain
       Left = 40
       Top = 3
       Width = 170
-      Height = 15
+      Height = 30
       Align = alLeft
       Caption = 'Visualizzatore Fattura Elettronica'
       Layout = tlCenter
+      ExplicitHeight = 15
     end
     object SettingsToolBar: TToolBar
       AlignWithMargins = True

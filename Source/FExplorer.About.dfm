@@ -210,12 +210,14 @@ object FrmAbout: TFrmAbout
     Color = clWindow
     ParentBackground = False
     TabOrder = 0
+    ExplicitTop = 264
+    ExplicitWidth = 442
     object btnOK: TButton
       Left = 360
       Top = 16
       Width = 75
       Height = 25
-      Caption = 'OK'
+      Caption = 'CLOSE'
       Default = True
       TabOrder = 2
       OnClick = btnOKClick
@@ -296,6 +298,12 @@ object FrmAbout: TFrmAbout
         'ody.htm'
       'Copyright '#169'2019-2022 Angus Johnson.'
       ''
+      
+        '- StyleSheet FatturaPA in South-Tyrol - https://github.com/provb' +
+        'z/fatturapa-xsl-'
+      'southtyrol'
+      'Copyright '#169'2017 Ferdinand Tavernini'
+      ''
       'HTMLViewer - https://github.com/BerndGabriel/HtmlViewer'
       'Copyright (c) 1995 - 2008 by L. David Baldwin'
       'Copyright (c) 1995 - 2008 by Anders Melander (DitherUnit.pas)'
@@ -306,6 +314,7 @@ object FrmAbout: TFrmAbout
     ReadOnly = True
     ScrollBars = ssVertical
     TabOrder = 1
+    ExplicitHeight = 114
   end
   object LinkLabel1: TLinkLabel
     Left = 8
@@ -322,11 +331,13 @@ object FrmAbout: TFrmAbout
   object panelLibrary: TGroupBox
     Left = 11
     Top = 204
-    Width = 427
+    Width = 419
     Height = 55
     Anchors = [akLeft, akRight, akBottom]
     Caption = 'OpenSSL Library Info'
     TabOrder = 3
+    ExplicitTop = 203
+    ExplicitWidth = 415
     object OpenSSLlabelLocation: TLabel
       Left = 96
       Top = 17

@@ -77,7 +77,7 @@ end;
 class procedure TLogPreview.InitLogFile;
 begin
   if FLogFile = '' then
-    FLogFile := IncludeTrailingPathDelimiter(GetTempDirectory) + 'MDShellExtensions.log';
+    FLogFile := IncludeTrailingPathDelimiter(GetTempDirectory) + 'FExplorer.log';
 end;
 
 class procedure TLogPreview.Add(const AMessage: string);
@@ -85,7 +85,7 @@ begin
 {$IFDEF ENABLELOG}
   try
     InitLogFile;
-    //if Copy(AMessage,1,14) = 'TMDContextMenu' then
+    //if (Copy(AMessage,1,4) = 'GDI+') then
     AppendAllText(FLogFile, FormatDateTime('hh:nn:ss.zzz', Now) + ' ' + AMessage + sLineBreak);
   except
     on e: EFOpenError do;
@@ -97,7 +97,8 @@ class procedure TLogPreview.Add(const AException: Exception);
 begin
   try
     InitLogFile;
-    AppendAllText(FLogFile, Format('%s %s StackTrace %s %s', [FormatDateTime('hh:nn:ss.zzz', Now), AException.Message,
+    AppendAllText(FLogFile, Format('%s %s StackTrace %s %s', [FormatDateTime('hh:nn:ss.zzz', Now),
+      AException.ClassName+': '+AException.Message,
       AException.StackTrace, sLineBreak]));
   except
     on e: EFOpenError do;

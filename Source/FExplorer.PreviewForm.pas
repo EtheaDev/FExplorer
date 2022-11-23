@@ -43,11 +43,11 @@ uses
   FExplorer.Settings, System.ImageList, SynEditCodeFolding,
   SVGIconImageList, SVGIconImageListBase, SVGIconImage, Vcl.VirtualImageList,
   Vcl.OleCtrls, SHDocVw, Xml.xmldom, Xml.XMLIntf, Xml.Win.msxmldom, Xml.XMLDoc,
-  FExplorer.Resources, HTMLUn2, HtmlView
-  ;
+  FExplorer.Resources, HTMLUn2, HtmlView,
+  UPreviewContainer;
 
 type
-  TFrmPreview = class(TForm)
+  TFrmPreview = class(TPreviewContainer)
     SynEdit: TSynEdit;
     PanelTop: TPanel;
     PanelXML: TPanel;
@@ -77,13 +77,12 @@ type
     procedure ToolButtonMouseEnter(Sender: TObject);
     procedure ToolButtonMouseLeave(Sender: TObject);
     procedure SplitterMoved(Sender: TObject);
-    procedure FormAfterMonitorDpiChanged(Sender: TObject; OldDPI,
-      NewDPI: Integer);
   private
     FXMLFontSize: Integer;
     FHTMLFontSize: Integer;
     FSimpleText: string;
     FFileName: string;
+    FIconVisible: Boolean;
     FPreviewSettings: TPreviewSettings;
     FInvoice: TLegalInvoice;
     FAllegatiButtons: TObjectList<TToolButton>;
@@ -143,6 +142,7 @@ uses
   ;
 
 {$R *.dfm}
+
   { TFrmEditor }
 
 procedure TFrmPreview.AllegatoButtonClick(Sender: TObject);
@@ -258,10 +258,7 @@ end;
 
 function TFrmPreview.DialogPosRect: TRect;
 begin
-  if Self.Parent <> nil then
-    GetWindowRect(Self.Parent.ParentWindow, Result)
-  else
-    Result := TRect.Create(0,0,0,0);
+  Result := ClientToScreen(ActualRect);
 end;
 
 procedure TFrmPreview.UpdateGUI;
@@ -310,18 +307,17 @@ begin
 {$ENDIF}
 end;
 
-procedure TFrmPreview.FormAfterMonitorDpiChanged(Sender: TObject; OldDPI,
-  NewDPI: Integer);
-begin
-  TLogPreview.Add('TFrmEditor.FormAfterMonitorDpiChanged: '+
-  '- Old: '+OldDPI.ToString+' - New: '+NewDPI.ToString);
-end;
-
 procedure TFrmPreview.FormCreate(Sender: TObject);
+var
+  FileVersionStr: string;
 begin
+  inherited;
   TLogPreview.Add('TFrmEditor.FormCreate');
+  FileVersionStr := uMisc.GetFileVersion(GetModuleLocation());
+  FSimpleText := Format(StatusBar.SimpleText,
+    [FileVersionStr, {$IFDEF WIN32}32{$ELSE}64{$ENDIF}]);
+  StatusBar.SimpleText := FSimpleText;
   Application.OnException := AppException;
-  FSimpleText := StatusBar.SimpleText;
   UpdateFromSettings(False);
 end;
 
@@ -377,7 +373,8 @@ begin
     FPreviewSettings.UpdateSettings(SynEdit.Font.Name,
       HtmlViewer.DefFontName,
       XMLFontSize, HTMLFontSize,
-      (PanelXML.Visible and HtmlViewer.Visible));
+      (PanelXML.Visible and HtmlViewer.Visible),
+      FIconVisible);
     FPreviewSettings.WriteSettings(SynEdit.Highlighter, nil);
   end;
 end;
@@ -486,10 +483,10 @@ begin
   HtmlViewer.DefFontName := FPreviewSettings.HTMLFontName;
 
   PanelXML.Visible := FPreviewSettings.ShowXML;
+  FIconVisible := FPreviewSettings.ShowIcon;
 {$IFNDEF DISABLE_STYLES}
   TStyleManager.TrySetStyle(FPreviewSettings.StyleName, False);
 {$ENDIF}
-  //BackgroundTrackBar.Position := FPreviewSettings.LightBackground;
   UpdateHighlighter;
   UpdateGUI;
   if Preview then

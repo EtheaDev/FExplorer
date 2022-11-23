@@ -22,8 +22,14 @@
 {  See the License for the specific language governing permissions and         }
 {  limitations under the License.                                              }
 {                                                                              }
+{  The Original Code is:                                                       }
+{  Delphi Preview Handler  https://github.com/RRUZ/delphi-preview-handler      }
+{                                                                              }
+{  The Initial Developer of the Original Code is Rodrigo Ruz V.                }
+{  Portions created by Rodrigo Ruz V. are Copyright 2011-2021 Rodrigo Ruz V.   }
+{  All Rights Reserved.                                                        }
 {******************************************************************************}
-unit FExplorer.ThumbnailHandlerRegister;
+unit uPreviewHandlerRegister;
 
 interface
 
@@ -31,23 +37,22 @@ uses
   ComObj,
   Classes,
   Windows,
-  FExplorer.ThumbnailHandler;
+  uPreviewHandler;
 
 type
-  TThumbnailHandlerRegister = class(TComObjectFactory)
+  TPreviewHandlerRegister = class(TComObjectFactory)
   private
-    FTThumbnailHandlerClass: TThumbnailHandlerClass;
+    FPreviewHandlerClass: TPreviewHandlerClass;
     class procedure DeleteRegValue(const Key, ValueName: string; RootKey: HKEY);
   protected
   public
-    constructor Create(ATThumbnailHandlerClass: TThumbnailHandlerClass;
+    constructor Create(APreviewHandlerClass: TPreviewHandlerClass;
       const APreviewClassID: TGUID; const AName, ADescription: string);
     destructor Destroy; override;
     function CreateComObject(const Controller: IUnknown): TComObject; override;
-    procedure UpdateRegistry(Register: Boolean); override;
-    property TThumbnailHandlerClass: TThumbnailHandlerClass read FTThumbnailHandlerClass;
+    procedure UpdateRegistry(ARegister: Boolean); override;
+    property PreviewHandlerClass: TPreviewHandlerClass read FPreviewHandlerClass;
   end;
-
 
 implementation
 
@@ -59,21 +64,21 @@ uses
   System.Win.ComConst,
   ComServ;
 
-constructor TThumbnailHandlerRegister.Create(ATThumbnailHandlerClass: TThumbnailHandlerClass;
+constructor TPreviewHandlerRegister.Create(APreviewHandlerClass: TPreviewHandlerClass;
   const APreviewClassID: TGUID;  const AName, ADescription: string);
 begin
-  inherited Create(ComServ.ComServer, ATThumbnailHandlerClass.GetComClass,
-    APreviewClassID, AName, ADescription, ciMultiInstance, tmBoth);
-  FTThumbnailHandlerClass := ATThumbnailHandlerClass;
+  inherited Create(ComServ.ComServer, APreviewHandlerClass.GetComClass,
+    APreviewClassID, AName, ADescription, ciMultiInstance, tmApartment);
+  FPreviewHandlerClass := APreviewHandlerClass;
 end;
 
-function TThumbnailHandlerRegister.CreateComObject(const Controller: IUnknown): TComObject;
+function TPreviewHandlerRegister.CreateComObject(const Controller: IUnknown): TComObject;
 begin
   result := inherited CreateComObject(Controller);
-  TComFEThumbnailProvider(result).ThumbnailHandlerClass := TThumbnailHandlerClass;
+  TComPreviewHandler(result).PreviewHandlerClass := PreviewHandlerClass;
 end;
 
-class procedure TThumbnailHandlerRegister.DeleteRegValue(const Key, ValueName: string; RootKey: HKEY);
+class procedure TPreviewHandlerRegister.DeleteRegValue(const Key, ValueName: string; RootKey: HKEY);
 var
   RegKey: HKEY;
 begin
@@ -87,12 +92,32 @@ begin
   end;
 end;
 
-destructor TThumbnailHandlerRegister.Destroy;
+destructor TPreviewHandlerRegister.Destroy;
 begin
   inherited;
 end;
 
-procedure TThumbnailHandlerRegister.UpdateRegistry(Register: Boolean);
+//How to Register a Preview Handler
+//http://msdn.microsoft.com/en-us/library/cc144144%28v=vs.85%29.aspx
+procedure TPreviewHandlerRegister.UpdateRegistry(ARegister: Boolean);
+
+    function IsWow64Process: Boolean;
+    type
+      TIsWow64Process = function( hProcess: Windows.THandle; var Wow64Process: Windows.BOOL): Windows.BOOL; stdcall;
+    var
+      IsWow64Process: TIsWow64Process;
+      Wow64Process: Windows.BOOL;
+    begin
+      Result := False;
+      IsWow64Process := GetProcAddress(GetModuleHandle(Windows.kernel32), 'IsWow64Process');
+      if Assigned(IsWow64Process) then
+      begin
+        if not IsWow64Process(GetCurrentProcess, Wow64Process) then
+         Raise Exception.Create('Error: Invalid handle');
+        Result := Wow64Process;
+      end;
+    end;
+
 
     procedure CreateRegKeyDWORD(const Key, ValueName: string;Value: DWORD; RootKey: HKEY);
     var
@@ -132,6 +157,10 @@ procedure TThumbnailHandlerRegister.UpdateRegistry(Register: Boolean);
     if Status <> 0 then raise EOleRegistrationError.CreateRes(@SCreateRegKeyError);
   end;
 
+const
+  Prevhost_32 = '{534A1E02-D58F-44f0-B58B-36CBED287C7C}';
+  Prevhost_64 = '{6d2b5079-2f0b-48dd-ab7f-97cec514d30b}';
+
 var
   RootKey: HKEY;
   RootUserReg: HKEY;
@@ -151,33 +180,29 @@ begin
   sClassID := SysUtils.GUIDToString(ClassID);
   ProgID := GetProgID;
   sComServerKey := Format('%sCLSID\%s\%s',[RootPrefix,sClassID,ComServer.ServerKey]);
-  sAppID := ThumbnailProviderGUID;
-  if Register then
+  sAppID := IfThen(IsWow64Process, Prevhost_32, Prevhost_64);
+  if ARegister then
   begin
     inherited UpdateRegistry(True);
+
     LRegKey := Format('%sCLSID\%s',[RootPrefix, sClassID]);
     CreateRegKey(LRegKey, 'AppID', sAppID, RootKey);
-    CreateRegKey(LRegKey, 'DisplayName', 'Delphi Svg Thumbnail Provider', RootKey);
-    //CreateRegKeyDWORD(LRegKey, 'DisableLowILProcessIsolation', 1, RootKey);
+    CreateRegKey(LRegKey, 'DisplayName', 'Delphi F.E. Preview Handler', RootKey);
+    CreateRegKeyDWORD(LRegKey, 'DisableLowILProcessIsolation', 1, RootKey);
+    CreateRegKeyREG_SZ(LRegKey, 'DllSurrogate', '%SystemRoot%\system32\prevhost.exe', RootKey);
 
     if ProgID <> '' then
     begin
       CreateRegKey(sComServerKey, 'ProgID', ProgID, RootKey);
 
-      //Add extension for .xml files di Fattura Elettronica
-      LRegKey := RootPrefix + '.xml' + '\shellex\' + ThumbnailProviderGUID;
-      CreateRegKey(LRegKey, '', sClassID, RootKey);
-
-      LRegKey := RootPrefix + '.p7m' + '\shellex\' + ThumbnailProviderGUID;
-      CreateRegKey(LRegKey, '', sClassID, RootKey);
-
-      LRegKey := RootPrefix + '.xml.p7m' + '\shellex\' + ThumbnailProviderGUID;
-      CreateRegKey(LRegKey, '', sClassID, RootKey);
+      //Add extension for .xml files
+      CreateRegKey(RootPrefix + '.xml' + '\shellex\' + SID_IPreviewHandler, '', sClassID, RootKey);
+      CreateRegKey(RootPrefix + '.p7m' + '\shellex\' + SID_IPreviewHandler, '', sClassID, RootKey);
+      CreateRegKey(RootPrefix + '.xml.p7m' + '\shellex\' + SID_IPreviewHandler, '', sClassID, RootKey);
 
       CreateRegKey(sComServerKey, 'VersionIndependentProgID', ProgID, RootKey);
-
-      LRegKey := RootPrefix + ProgID + '\shellex\' + ThumbnailProviderGUID;
-      CreateRegKey(LRegKey, '', sClassID, RootKey);
+      CreateRegKey(RootPrefix + ProgID + '\shellex\' + SID_IPreviewHandler, '', sClassID, RootKey);
+      CreateRegKey('SOFTWARE\Microsoft\Windows\CurrentVersion\PreviewHandlers', sClassID, Description, RootUserReg);
     end;
   end
   else
@@ -186,12 +211,12 @@ begin
     begin
       DeleteRegValue('SOFTWARE\Microsoft\Windows\CurrentVersion\PreviewHandlers', sClassID, RootUserReg);
       DeleteRegKey(RootPrefix + ProgID + '\shellex', RootKey);
-      DeleteRegValue(LRegKey, 'DllSurrogate', RootKey);
-      DeleteRegValue(LRegKey, 'DisableLowILProcessIsolation', RootKey);
+      DeleteRegValue(Format('%sCLSID\%s',[RootPrefix, sClassID]), 'DllSurrogate', RootKey);
+      DeleteRegValue(Format('%sCLSID\%s',[RootPrefix, sClassID]), 'DisableLowILProcessIsolation', RootKey);
       //Delete extension for xml
-      DeleteRegKey(RootPrefix + '.xml.p7m' + '\shellex\' + ThumbnailProviderGUID, RootKey);
-      DeleteRegKey(RootPrefix + '.p7m' + '\shellex\' + ThumbnailProviderGUID, RootKey);
-      DeleteRegKey(RootPrefix + '.xml' + '\shellex\' + ThumbnailProviderGUID, RootKey);
+      DeleteRegKey(RootPrefix + '.xml.p7m' + '\shellex\' + SID_IPreviewHandler, RootKey);
+      DeleteRegKey(RootPrefix + '.p7m' + '\shellex\' + SID_IPreviewHandler, RootKey);
+      DeleteRegKey(RootPrefix + '.xml' + '\shellex\' + SID_IPreviewHandler, RootKey);
     end;
     inherited UpdateRegistry(False);
   end;

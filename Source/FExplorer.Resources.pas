@@ -102,6 +102,7 @@ type
     const ADE_TEMPLATE_XSLT = 'AgenziaEntrate';
     const ASSOSOFTWARE_XSLT = 'AssoSoftware';
     const CUSTOM_XSLT = 'Custom';
+    const TEMPLATE_SUDTIROL_XSLT = 'SudTirolo_ITA_DEU';
     const EDITING_XSLT = 'Editing';
 
     constructor Create(const AXML: string; const AParseImmediately: Boolean = True);
@@ -127,6 +128,7 @@ type
     SynXSLSyn: TSynXMLSyn;
     SynXSLSynDark: TSynXMLSyn;
     EditingTemplate: TXMLDocument;
+    SudTirolo_ITA_DEU: TXMLDocument;
     procedure DataModuleCreate(Sender: TObject);
   private
   public
@@ -147,6 +149,7 @@ implementation
 
 uses
   Windows
+  , uLogExcept
   , System.StrUtils
   , System.IOUtils
   , System.NetEncoding
@@ -290,6 +293,8 @@ var
 
 begin
   //Inizializza il Documento XML
+  TLogPreview.Add('TLegalInvoice.Parse INIT');
+
   LXMLDoc := LoadXMLData(XML);
 
   LXSLTOutput := '';
@@ -298,6 +303,8 @@ begin
     Transform(dmResources.AgenziaEntrateTemplate)
   else if (StylesheetName = ASSOSOFTWARE_XSLT) or (StylesheetName = '') then
     Transform(dmResources.AssoSoftwareTemplate)
+  else if (StylesheetName = TEMPLATE_SUDTIROL_XSLT) then
+    Transform(dmResources.SudTirolo_ITA_DEU)
   else if (StylesheetName = CUSTOM_XSLT) then
     Transform(dmResources.CustomTemplate)
   else if (StylesheetName = EDITING_XSLT) then
@@ -308,6 +315,7 @@ begin
   ParseAllegati(LXMLDoc);
 
   FParsed := True;
+  TLogPreview.Add('TLegalInvoice.Parse DONE');
 end;
 
 procedure TLegalInvoice.ParseAllegati(const AXMLDoc: IXMLDocument);

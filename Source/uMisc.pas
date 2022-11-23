@@ -23,6 +23,7 @@
 {  limitations under the License.                                              }
 {                                                                              }
 {  The Original Code is uMisc.pas:                                             }
+{  Delphi Preview Handler  https://github.com/RRUZ/delphi-preview-handler      }
 {                                                                              }
 {  The Initial Developer of the Original Code is Rodrigo Ruz V.                }
 {  Portions created by Rodrigo Ruz V. are Copyright 2011-2021 Rodrigo Ruz V.   }
@@ -63,7 +64,7 @@ uses
 procedure Initialize_GDI; stdcall;
 begin
   //Initialize GDI+
-  TLogPreview.Add('Initialize GDI+');
+  TLogPreview.Add('GDI+: Initialize');
   StartupInput.DebugEventCallback := nil;
   StartupInput.SuppressBackgroundThread := False;
   StartupInput.SuppressExternalCodecs := False;
@@ -73,6 +74,7 @@ end;
 
 procedure Finalize_GDI; stdcall;
 begin
+  TLogPreview.Add('GDI+: Finalize');
   GdiplusShutdown(gdiplusToken);
 end;
 
@@ -114,8 +116,6 @@ begin
     StrDispose(lpszPath);
   end;
 end;
-
-
 
 function GetFileVersion(const FileName: string): string;
 var

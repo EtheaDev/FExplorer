@@ -87,14 +87,11 @@ type
     XMLFontSizeEdit: TEdit;
     XMLUpDown: TUpDown;
     HTMLGroupBox: TGroupBox;
-    Label1: TLabel;
-    Label2: TLabel;
+    HTMLFontNameLabel: TLabel;
+    HTMLSizeLabel: TLabel;
     HTMLFontComboBox: TComboBox;
     HTMLFontSizeEdit: TEdit;
     HTMLUpDown: TUpDown;
-    IconStyleGroupBox: TGroupBox;
-    IconStyleSheetComboBox: TComboBox;
-    ShowXMLCheckBox: TCheckBox;
     tsAdvanced: TTabSheet;
     AllowEditCheckBox: TCheckBox;
     DeveloperGroupBox: TGroupBox;
@@ -117,6 +114,11 @@ type
     RenderingGroupBox: TGroupBox;
     PreferD2DCheckBox: TCheckBox;
     EngineRadioGroup: TRadioGroup;
+    GUIElementsGroupBox: TGroupBox;
+    ShowIconCheckBox: TCheckBox;
+    IconStyleSheetComboBox: TComboBox;
+    IconStyleLabel: TLabel;
+    ShowXMLCheckBox: TCheckBox;
     procedure BoxElementsClick(Sender: TObject);
     procedure cbForegroundClick(Sender: TObject);
     procedure cbBackgroundClick(Sender: TObject);
@@ -181,6 +183,7 @@ function ShowSettings(const AParentRect: TRect;
 implementation
 
 uses
+  System.UITypes,
 {$IFNDEF DISABLE_STYLES}
   Vcl.Themes,
 {$ENDIF}
@@ -567,6 +570,7 @@ begin
   ThemesRadioGroup.ItemIndex := Ord(ASettings.ThemeSelection);
 
   ShowXMLCheckBox.Checked := ASettings.ShowXML;
+  ShowIconCheckBox.Checked := ASettings.ShowIcon;
   XMLFontComboBox.ItemIndex := XMLFontComboBox.Items.IndexOf(ASettings.XMLFontName);
   XMLUpDown.Position := ASettings.XMLFontSize;
 
@@ -628,6 +632,7 @@ begin
   ASettings.ThemeSelection := TThemeSelection(ThemesRadioGroup.ItemIndex);
 
   ASettings.ShowXML := ShowXMLCheckBox.Checked;
+  ASettings.ShowIcon := ShowIconCheckBox.Checked;
   ASettings.XMLFontName := XMLFontComboBox.Text;
   ASettings.XMLFontSize := XMLUpDown.Position;
 

@@ -139,7 +139,7 @@ begin
         // realign string
         FFileName := PChar(FFileName);
         TLogPreview.Add('FFileName: '+FFileName);
-        LFileExt := ExtractFileExt(fFileName);
+        LFileExt := ExtractFileExt(FFileName);
         // only for .xml and .xml.p7m files di Fatture Elettroniche
         if IndexText(LFileExt, ['.xml', '.xml.p7m', '.p7m']) <> -1 then
           Result := NOERROR
@@ -209,7 +209,7 @@ begin
   // execute the command specified by lpici.lpVerb.
   if LoWord(lpici.lpVerb) = MENU_ITEM_PREVIEW_INVOICE then
   begin
-    TLogPreview.Add('TMDContextMenu: Menu clicked');
+    TLogPreview.Add('TFEContextMenu: Menu clicked');
 
     Reg := TRegistry.Create(KEY_READ);
     try

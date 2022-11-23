@@ -87,7 +87,6 @@ type
     FFileName : string;
     FName : string;
     FExtension: string;
-    FShowXMLText: Boolean;
     FInvoice: TLegalInvoice;
     FAllegatiButtons: TObjectList<TToolButton>;
     FFileContentType: TFileContentType;
@@ -351,6 +350,7 @@ type
     procedure FileSavedAskToOpen(const AFileName: string);
     function CanAcceptFileName(const AFileName: string): Boolean;
     function AcceptedExtensions: string;
+    procedure ShowXMLEditor(AEditingFile: TEditingFile; const AVisible: Boolean);
     property XMLFontSize: Integer read FXMLFontSize write SetXMLFontSize;
     property HTMLFontSize: Integer read FHTMLFontSize write SetHTMLFontSize;
   protected
@@ -533,7 +533,6 @@ var
   Filter : Word;
 begin
   inherited Create;
-  FShowXMLText := False;
   FAllegatiButtons := TObjectList<TToolButton>.Create(True);
 
   if not IsStyleHookRegistered(TCustomSynEdit, TScrollingStyleHook) then
@@ -823,6 +822,14 @@ begin
   finally
     dlg.Free;
   end;
+end;
+
+procedure TfrmMain.ShowXMLEditor(AEditingFile: TEditingFile;
+  const AVisible: Boolean);
+begin
+  AEditingFile.SynEditor.Visible := AVisible;
+  AEditingFile.Splitter.Visible := AVisible;
+  AEditingFile.Splitter.Left := AEditingFile.SynEditor.Left + 1;
 end;
 
 procedure TfrmMain.SVClosed(Sender: TObject);
@@ -1192,7 +1199,8 @@ begin
     LEditor.OnChange := SynEditChange;
     LEditor.OnEnter := SynEditEnter;
     LEditor.MaxUndo := 5000;
-    LEditor.Align := alClient;
+    LEditor.Align := alLeft;
+    LEditor.Width := LTabSheet.Width div 2;
     LEditor.Parent := LTabSheet;
     LEditor.SearchEngine := SynEditSearch;
     LEditor.PopupMenu := popEditor;
@@ -1203,8 +1211,7 @@ begin
 
     LFEViewer := THtmlViewer.Create(nil);
     LFEViewer.ScrollBars := ssNone;
-    LFEViewer.Align := alRight;
-    LFEViewer.Width := LTabSheet.Width div 2;
+    LFEViewer.Align := alClient;
     LFEViewer.Parent := LTabSheet;
     LFEViewer.PopupMenu := PopHTMLViewer;
 
@@ -1217,8 +1224,8 @@ begin
     LToolBarAllegati.Images := VirtualImageList;
 
     LSplitter := TSplitter.Create(LTabSheet);
-    LSplitter.Align := alRight;
-    LSplitter.Left := LFEViewer.Left-1;
+    LSplitter.Align := alLeft;
+    LSplitter.Left := LEditor.Left+1;
     LSplitter.AutoSnap := False;
     LSplitter.Width := 6;
     LSplitter.Parent := LTabSheet;
@@ -1230,7 +1237,7 @@ begin
 
     UpdateFromSettings(LEditor);
     UpdateHighlighter(LEditor);
-    LEditor.Visible := True;
+    //LEditor.Visible := True;
 
     //Visualizzo il tabsheet
     LTabSheet.Visible := True;
@@ -1687,11 +1694,15 @@ begin
 end;
 
 procedure TfrmMain.UpdateFromSettings(AEditor: TSynEdit);
+var
+  LEditingFile: TEditingfile;
 begin
   if AEditor <> nil then
   begin
     FEditorSettings.ReadSettings(AEditor.Highlighter, self.FEditorOptions);
     AEditor.ReadOnly := not FEditorSettings.AllowEdit;
+    LEditingfile := TEditingFile(TTAbSheet(AEditor.Parent).Tag);
+    ShowXMLEditor(LEditingfile, FEditorSettings.ShowXML);
   end
   else
     FEditorSettings.ReadSettings(nil, self.FEditorOptions);
@@ -1703,6 +1714,7 @@ begin
     HTMLFontSize := FEditorSettings.HTMLFontSize
   else
     HTMLFontSize := MinfontSize;
+  ImagePanel.Visible := FEditorSettings.ShowIcon;
   InitEditorOptions;
   UpdateEditorsOptions;
   UpdateApplicationStyle(FEditorSettings.StyleName);

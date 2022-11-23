@@ -11,7 +11,7 @@
 // a class derived from TPdfDocumentGDI
 // is a public domain.
 // -------------------------------------------------------------------------------------------------
-
+{$WARN IMPLICIT_STRING_CAST OFF}
 unit vmHtmlToPdf;
 
 interface
@@ -385,18 +385,18 @@ begin
         case FPageNumberPositionPrint of
           ppTop:
           begin
-            VCLCanvas.TextOut(Trunc(lMarginR + (lPointsWidth - VCLCanvas.TextWidth(lPageText))/2),
-              Trunc(0 + VCLCanvas.Font.Size), lPageText);
+            VCLCanvas.TextOut(Trunc(lMarginR + (lPointsWidth - VCLCanvas.TextWidth(PDFString(lPageText)))/2),
+              Trunc(0 + VCLCanvas.Font.Size), PDFString(lPageText));
           end;
           ppBottom:
           begin
-            VCLCanvas.TextOut(Trunc(lMarginR + (lPointsWidth - VCLCanvas.TextWidth(lPageText))/2),
-              lHeight + (VCLCanvas.Font.Size * 2), lPageText);
+            VCLCanvas.TextOut(Trunc(lMarginR + (lPointsWidth - VCLCanvas.TextWidth(PDFString(lPageText)))/2),
+              lHeight + (VCLCanvas.Font.Size * 2), PDFString(lPageText));
           end;
         end;
       end;
-      FreeAndNil(LMFPage);
     end;
+    FreeAndNil(LMFPage);
   finally
     FreeAndNil(lPages);
   end;
