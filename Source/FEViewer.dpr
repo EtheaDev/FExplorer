@@ -3,7 +3,7 @@
 {       FExplorer: Shell extensions per Fattura Elettronica                    }
 {       (Preview Panel, Thumbnail Icon, F.E.Viewer)                            }
 {                                                                              }
-{       Copyright (c) 2021-2022 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2021-2023 (Ethea S.r.l.)                                 }
 {       Author: Carlo Barazzetta                                               }
 {                                                                              }
 {       https://github.com/EtheaDev/FExplorer                                  }
@@ -59,7 +59,8 @@ uses
 begin
   Application.Initialize;
   Application.MainFormOnTaskBar := True;
-  Application.Title := Title_FEViewer+'- © 2021-2022 Ethea S.r.l.';
+  Application.ActionUpdateDelay := 50;
+  Application.Title := Title_FEViewer+'- © 2021-2023 Ethea S.r.l.';
   with TSplashForm.Create(nil) do
   Try
     Show;

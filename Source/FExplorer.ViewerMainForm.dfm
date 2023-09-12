@@ -34,9 +34,6 @@ object frmMain: TfrmMain
     Align = alRight
     AutoSnap = False
     MinSize = 240
-    ExplicitLeft = 741
-    ExplicitTop = 61
-    ExplicitHeight = 500
   end
   object ClientPanel: TPanel
     Left = 44
@@ -54,6 +51,32 @@ object frmMain: TfrmMain
       Images = VirtualImageList
       TabOrder = 0
       OnChange = PageControlChange
+      OnMouseEnter = PageControlMouseEnter
+      OnMouseLeave = PageControlMouseLeave
+      OnMouseMove = PageControlMouseMove
+    end
+    object PanelCloseButton: TPanel
+      Left = 122
+      Top = 16
+      Width = 22
+      Height = 22
+      Cursor = crHandPoint
+      BevelOuter = bvNone
+      ParentBackground = False
+      TabOrder = 1
+      Visible = False
+      object SVGIconImageCloseButton: TSVGIconImage
+        Left = 0
+        Top = 0
+        Width = 22
+        Height = 22
+        AutoSize = False
+        ImageList = VirtualImageList20
+        ImageIndex = 0
+        ImageName = 'close-circle-outline'
+        Align = alClient
+        OnClick = SVGIconImageCloseButtonClick
+      end
     end
   end
   object StatusBar: TStatusBar
@@ -105,9 +128,6 @@ object frmMain: TfrmMain
       Cursor = crVSplit
       Align = alBottom
       AutoSnap = False
-      ExplicitLeft = 1
-      ExplicitTop = 487
-      ExplicitWidth = 248
     end
     object SVGIconImage: TSVGIconImage
       Left = 0
@@ -233,8 +253,8 @@ object frmMain: TfrmMain
         AlignWithMargins = True
         Left = 36
         Top = 4
-        Width = 210
-        Height = 34
+        Width = 4
+        Height = 4
         Align = alClient
         Alignment = taCenter
         TabOrder = 0
@@ -338,6 +358,7 @@ object frmMain: TfrmMain
             end
             item
               Action = acReplace
+              ImageName = 'Replace'
             end>
         end
         item
@@ -350,6 +371,7 @@ object frmMain: TfrmMain
             end
             item
               Action = actnPrintPreview
+              ImageName = 'Print-preview'
             end>
         end>
       Color = clBtnFace
@@ -376,14 +398,13 @@ object frmMain: TfrmMain
     TabOrder = 2
     object lblTitle: TLabel
       AlignWithMargins = True
-      Left = 40
+      Left = 41
       Top = 3
       Width = 170
       Height = 30
       Align = alLeft
       Caption = 'Visualizzatore Fattura Elettronica'
       Layout = tlCenter
-      ExplicitHeight = 15
     end
     object SettingsToolBar: TToolBar
       AlignWithMargins = True
@@ -446,7 +467,7 @@ object frmMain: TfrmMain
       AlignWithMargins = True
       Left = 3
       Top = 3
-      Width = 31
+      Width = 32
       Height = 30
       Align = alLeft
       AutoSize = True
@@ -1179,5 +1200,18 @@ object frmMain: TfrmMain
     object Chiuditutto1: TMenuItem
       Action = acCloseAll
     end
+  end
+  object VirtualImageList20: TVirtualImageList
+    Images = <
+      item
+        CollectionIndex = 60
+        CollectionName = 'close-circle-outline'
+        Name = 'close-circle-outline'
+      end>
+    ImageCollection = dmResources.SVGIconImageCollection
+    Width = 20
+    Height = 20
+    Left = 448
+    Top = 368
   end
 end

@@ -2,18 +2,21 @@ object SVGTextPropertyEditorForm: TSVGTextPropertyEditorForm
   Left = 916
   Top = 169
   Caption = 
-    'SVGText Property Editor - Copyright (c) Ethea S.r.l. - Apache 2.' +
-    '0 Open Source License'
+    'SVGText Property Editor %s - Copyright (c) Ethea S.r.l. - Apache' +
+    ' 2.0 Open Source License'
   ClientHeight = 256
   ClientWidth = 739
   Color = clBtnFace
+  Constraints.MinHeight = 280
+  Constraints.MinWidth = 440
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'Segoe UI'
   Font.Style = []
-  OldCreateOrder = False
+  OldCreateOrder = True
   ShowHint = True
+  OnCreate = FormCreate
   OnResize = FormResize
   OnShow = FormShow
   PixelsPerInch = 96
@@ -38,40 +41,40 @@ object SVGTextPropertyEditorForm: TSVGTextPropertyEditorForm
     BevelOuter = bvNone
     TabOrder = 1
     object paButtons: TPanel
-      Left = 320
+      Left = 223
       Top = 0
-      Width = 419
+      Width = 516
       Height = 33
       Align = alRight
       BevelOuter = bvNone
       TabOrder = 0
       object CancelButton: TButton
-        Left = 254
+        Left = 356
         Top = 3
         Width = 75
         Height = 25
         Cancel = True
         Caption = '&Cancel'
         ModalResult = 2
-        TabOrder = 3
+        TabOrder = 4
       end
       object OKButton: TButton
-        Left = 173
+        Left = 275
         Top = 3
         Width = 75
         Height = 25
         Caption = '&OK'
         Default = True
         ModalResult = 1
-        TabOrder = 2
+        TabOrder = 3
       end
       object HelpButton: TButton
-        Left = 336
+        Left = 438
         Top = 3
         Width = 74
         Height = 25
         Caption = '&Help'
-        TabOrder = 4
+        TabOrder = 5
         OnClick = HelpButtonClick
       end
       object LoadButton: TButton
@@ -92,6 +95,15 @@ object SVGTextPropertyEditorForm: TSVGTextPropertyEditorForm
         TabOrder = 1
         OnClick = SaveButtonClick
       end
+      object ReformatXMLButton: TButton
+        Left = 164
+        Top = 3
+        Width = 95
+        Height = 25
+        Caption = 'Reformat &XML'
+        TabOrder = 2
+        OnClick = ReformatXMLButtonClick
+      end
     end
   end
   object SVGTextMemo: TMemo
@@ -101,12 +113,6 @@ object SVGTextPropertyEditorForm: TSVGTextPropertyEditorForm
     Height = 223
     Align = alClient
     BevelOuter = bvNone
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'Courier New'
-    Font.Style = []
-    ParentFont = False
     ScrollBars = ssBoth
     TabOrder = 0
     OnChange = SVGTextMemoChange
@@ -145,7 +151,6 @@ object SVGTextPropertyEditorForm: TSVGTextPropertyEditorForm
       Color = clWindow
       ParentBackground = False
       TabOrder = 1
-      ExplicitHeight = 195
       object SVGIconImage: TSVGIconImage
         Left = 1
         Top = 1
@@ -153,16 +158,8 @@ object SVGTextPropertyEditorForm: TSVGTextPropertyEditorForm
         Height = 169
         AutoSize = False
         Center = False
-        Proportional = True
-        Stretch = True
-        Opacity = 255
-        Scale = 1.000000000000000000
         ImageIndex = 0
         Align = alClient
-        ExplicitLeft = 6
-        ExplicitTop = 28
-        ExplicitWidth = 175
-        ExplicitHeight = 189
       end
     end
     object BottomPanel: TPanel
@@ -173,7 +170,6 @@ object SVGTextPropertyEditorForm: TSVGTextPropertyEditorForm
       Align = alBottom
       BevelOuter = bvNone
       TabOrder = 2
-      ExplicitTop = 2
       object ProportionalCheckBox: TCheckBox
         Left = 8
         Top = 4
@@ -195,7 +191,7 @@ object SVGTextPropertyEditorForm: TSVGTextPropertyEditorForm
   end
   object SaveDialog: TSavePictureDialog
     DefaultExt = 'svg'
-    Filter = 'Bitmaps (*.bmp)|*.bmp'
+    Filter = 'SVG files (*.svg)|*.svg'
     Options = [ofOverwritePrompt, ofPathMustExist, ofEnableSizing]
     Left = 456
     Top = 24

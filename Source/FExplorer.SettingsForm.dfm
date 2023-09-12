@@ -34,6 +34,8 @@ object SVGSettingsForm: TSVGSettingsForm
     Align = alClient
     Images = SettingsImageList
     TabOrder = 0
+    ExplicitWidth = 658
+    ExplicitHeight = 450
     object stGeneral: TTabSheet
       Caption = 'Anteprima'
       ImageIndex = 4
@@ -61,33 +63,6 @@ object SVGSettingsForm: TSVGSettingsForm
             'AgenziaEntrate'
             'SudTirolo_ITA_DEU'
             'Custom')
-        end
-      end
-      object RenderingGroupBox: TGroupBox
-        Left = 3
-        Top = 3
-        Width = 310
-        Height = 158
-        Caption = 'Opzioni di rendering SVG'
-        TabOrder = 0
-        object PreferD2DCheckBox: TCheckBox
-          Left = 13
-          Top = 127
-          Width = 284
-          Height = 18
-          Caption = 'Precedenza a Direct 2D (if disponibile in Windows)'
-          TabOrder = 0
-        end
-        object EngineRadioGroup: TRadioGroup
-          Left = 13
-          Top = 19
-          Width = 284
-          Height = 102
-          Caption = 'Motore'
-          Items.Strings = (
-            'Delphi Image32'
-            'Delphi TSVG')
-          TabOrder = 1
         end
       end
       object GUIElementsGroupBox: TGroupBox
@@ -134,6 +109,18 @@ object SVGSettingsForm: TSVGSettingsForm
           Caption = 'Mostra testo originale (XML)'
           TabOrder = 0
         end
+      end
+      object EngineRadioGroup: TRadioGroup
+        Left = 3
+        Top = 16
+        Width = 310
+        Height = 129
+        Caption = 'Opzioni di rendering SVG'
+        ItemIndex = 0
+        Items.Strings = (
+          'Delphi Image32'
+          'Windows Direct 2D')
+        TabOrder = 0
       end
     end
     object stTheme: TTabSheet
@@ -717,6 +704,8 @@ object SVGSettingsForm: TSVGSettingsForm
     ParentFont = True
     SimplePanel = True
     UseSystemFont = False
+    ExplicitTop = 491
+    ExplicitWidth = 811
   end
   object MenuButtonGroup: TButtonGroup
     Left = 0
@@ -767,8 +756,7 @@ object SVGSettingsForm: TSVGSettingsForm
       end>
     TabOrder = 2
     OnButtonClicked = MenuButtonGroupButtonClicked
-    ExplicitLeft = 1
-    ExplicitTop = 35
+    ExplicitHeight = 450
   end
   object TitlePanel: TPanel
     Left = 0
@@ -780,6 +768,7 @@ object SVGSettingsForm: TSVGSettingsForm
     BevelOuter = bvNone
     Caption = 'Impostazioni'
     TabOrder = 3
+    ExplicitWidth = 811
   end
   object OpenDialog: TOpenDialog
     Left = 634

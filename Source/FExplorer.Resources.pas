@@ -3,7 +3,7 @@
 {       FExplorer: Shell extensions per Fattura Elettronica                    }
 {       (Preview Panel, Thumbnail Icon, F.E.Viewer)                            }
 {                                                                              }
-{       Copyright (c) 2021-2022 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2021-2023 (Ethea S.r.l.)                                 }
 {       Author: Carlo Barazzetta                                               }
 {                                                                              }
 {       https://github.com/EtheaDev/FExplorer                                  }
@@ -30,12 +30,12 @@ interface
 uses
   SysUtils
   , Classes
-  , SynHighlighterXML
   , Vcl.Graphics
   , Vcl.ImgList
   , Vcl.Controls
   , System.ImageList
   , SynEdit
+  , SynHighlighterXML
   , SynEditOptionsDialog
   , SynEditPrint
   , SynEditCodeFolding
@@ -458,6 +458,6 @@ initialization
   FreeLibrary(GetModuleHandle(LIBEAY32_LIBRARY));
   PKCS7Extractor.SetFolder(
     ExtractFilePath(GetModuleName(HInstance)));
-  PKCS7Extractor.Load
+  PKCS7Extractor.Load;
 
 end.

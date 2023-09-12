@@ -2,18 +2,12 @@
 {                                                                              }
 {       SVGIconImage Registration for Components and Editors                   }
 {                                                                              }
-{       Copyright (c) 2019-2021 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2019-2023 (Ethea S.r.l.)                                 }
 {       Author: Carlo Barazzetta                                               }
 {       Contributors: Vincent Parrett, Kiriakos Vlahos                         }
 {                                                                              }
 {       https://github.com/EtheaDev/SVGIconsImageList                          }
 {                                                                              }
-{******************************************************************************}
-{       Original version (c) 2005, 2008 Martin Walter with license:            }
-{       Use of this file is permitted for commercial and non-commercial        }
-{       use, as long as the author is credited.                                }
-{       home page: http://www.mwcs.de                                          }
-{       email    : martin.walter@mwcs.de                                       }
 {******************************************************************************}
 {                                                                              }
 {  Licensed under the Apache License, Version 2.0 (the "License");             }
@@ -33,6 +27,8 @@ unit SVGIconImageRegister;
 
 interface
 
+{$INCLUDE ..\Source\SVGIconImageList.inc}
+
 uses
   Classes
   , DesignIntf
@@ -50,13 +46,14 @@ type
     procedure ExecuteVerb(Index: Integer); override;
   end;
 
+  {$IFNDEF D10_3+}
   TSVGIconVirtualImageListCompEditor = class(TComponentEditor)
   public
     function GetVerbCount: Integer; override;
     function GetVerb(Index: Integer): string; override;
     procedure ExecuteVerb(Index: Integer); override;
   end;
-
+  {$ENDIF}
 
   TSVGIconImageCollectionCompEditor = class(TComponentEditor)
   public
@@ -114,6 +111,11 @@ implementation
 
 uses
   SysUtils
+  , ToolsAPI
+  , BrandingAPI
+  , Vcl.Themes
+  , Vcl.Forms
+  , Vcl.Controls
   , System.UITypes
   , Winapi.ShellApi
   , Winapi.Windows
@@ -121,12 +123,15 @@ uses
   , SVGIconImageListBase
   , SVGIconImageList
   , SVGIconItems
+  , Img32.Panels
   , SVGIconVirtualImageList
   , SVGIconImageCollection
   , SVGIconImageListEditorUnit
   , SVGTextPropertyEditorUnit;
 
+
 { TSVGIconImageListCompEditor }
+
 procedure TSVGIconImageListCompEditor.ExecuteVerb(Index: Integer);
 begin
   inherited;
@@ -138,7 +143,7 @@ begin
   else if Index = 1 then
   begin
     ShellExecute(0, 'open',
-      PChar('https://github.com/EtheaDev/SVGIconImageList/wiki/Home'), nil, nil,
+      PChar('https://github.com/EtheaDev/SVGIconImageList/wiki/Overview-(VCL)'), nil, nil,
       SW_SHOWNORMAL)
   end;
 end;
@@ -231,7 +236,7 @@ end;
 
 function TSVGTextProperty.GetValue: string;
 begin
-  Result := 'Click to edit SVG Text';
+  Result := 'Click on [...] to edit SVG Text';
 end;
 
 procedure Register;
@@ -243,15 +248,17 @@ begin
      TSVGIconImageCollection]);
 
   RegisterComponentEditor(TSVGIconImageList, TSVGIconImageListCompEditor);
+  {$IFNDEF D10_3+}
   RegisterComponentEditor(TSVGIconVirtualImageList, TSVGIconVirtualImageListCompEditor);
+  {$ENDIF}
   RegisterComponentEditor(TSVGIconImageCollection, TSVGIconImageCollectionCompEditor);
   RegisterComponentEditor(TSVGIconImage, TSVGIconImageCompEditor);
   RegisterPropertyEditor(TypeInfo(TSVGIconItems), TSVGIconImageList, 'SVGIconItems', TSVGIconImageListProperty);
   RegisterPropertyEditor(TypeInfo(TSVGIconItems), TSVGIconImageCollection, 'SVGIconItems', TSVGIconCollectionListProperty);
   RegisterPropertyEditor(TypeInfo(string), TSVGIconItem, 'SVGText', TSVGTextProperty);
   RegisterPropertyEditor(TypeInfo(string), TSVGIconImage, 'SVGText', TSVGTextProperty);
-  RegisterPropertyEditor(TypeInfo(System.UITypes.TImageIndex), TSVGIconImage, 'ImageIndex',
-    TSVGImageIndexPropertyEditor);
+  RegisterPropertyEditor(TypeInfo(System.UITypes.TImageIndex), TSVGIconImage, 'ImageIndex', TSVGImageIndexPropertyEditor);
+  //RegisterPropertyEditor(TypeInfo(System.UITypes.TImageName), TSVGIconImage, 'ImageName', TSVGImageIndexPropertyEditor);
 end;
 
 { TSVGIconImageCollectionCompEditor }
@@ -267,7 +274,7 @@ begin
   else if Index = 1 then
   begin
     ShellExecute(0, 'open',
-      PChar('https://github.com/EtheaDev/SVGIconImageList/wiki/Home'), nil, nil,
+      PChar('https://github.com/EtheaDev/SVGIconImageList/wiki/Overview-(VCL)'), nil, nil,
       SW_SHOWNORMAL)
   end;
 
@@ -287,6 +294,7 @@ begin
   Result := 2;
 end;
 
+{$IFNDEF D10_3+}
 { TSVGIconVirtualImageListCompEditor }
 
 procedure TSVGIconVirtualImageListCompEditor.ExecuteVerb(Index: Integer);
@@ -300,7 +308,7 @@ begin
   else if Index = 1 then
   begin
     ShellExecute(0, 'open',
-      PChar('https://github.com/EtheaDev/SVGIconImageList/wiki/Home'), nil, nil,
+      PChar('https://github.com/EtheaDev/SVGIconImageList/wiki/Overview-(VCL)'), nil, nil,
       SW_SHOWNORMAL)
   end;
 end;
@@ -318,6 +326,7 @@ function TSVGIconVirtualImageListCompEditor.GetVerbCount: Integer;
 begin
   result := 2;
 end;
+{$ENDIF}
 
 { TSVGIconImageCompEditor }
 
@@ -339,7 +348,7 @@ begin
   else if Index = 1 then
   begin
     ShellExecute(0, 'open',
-      PChar('https://github.com/EtheaDev/SVGIconImageList/wiki/Home'), nil, nil,
+      PChar('https://github.com/EtheaDev/SVGIconImageList/wiki/Overview-(VCL)'), nil, nil,
       SW_SHOWNORMAL)
   end;
 end;

@@ -10,10 +10,8 @@ object FrmMain: TFrmMain
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  OldCreateOrder = False
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  PixelsPerInch = 96
   TextHeight = 13
   object Splitter1: TSplitter
     Left = 417
@@ -41,11 +39,12 @@ object FrmMain: TFrmMain
     TabOrder = 1
     object ShellListView1: TShellListView
       Left = 1
-      Top = 1
+      Top = 195
       Width = 415
-      Height = 557
+      Height = 363
       ObjectTypes = [otFolders, otNonFolders]
       Root = 'D:\ETHEA\FExplorer\Docs\Examples'
+      ShellTreeView = ShellTreeView1
       Sorted = True
       Align = alClient
       ReadOnly = False
@@ -53,6 +52,23 @@ object FrmMain: TFrmMain
       OnChange = ShellListView1Change
       TabOrder = 0
       ViewStyle = vsReport
+    end
+    object ShellTreeView1: TShellTreeView
+      Left = 1
+      Top = 1
+      Width = 415
+      Height = 194
+      ObjectTypes = [otFolders]
+      Root = 'D:\ETHEA\FExplorer\Docs\Examples'
+      ShellListView = ShellListView1
+      UseShellImages = True
+      Align = alTop
+      AutoRefresh = False
+      Indent = 19
+      ParentColor = False
+      RightClickSelect = True
+      ShowRoot = False
+      TabOrder = 1
     end
   end
 end

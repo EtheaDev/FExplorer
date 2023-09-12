@@ -210,8 +210,6 @@ object FrmAbout: TFrmAbout
     Color = clWindow
     ParentBackground = False
     TabOrder = 0
-    ExplicitTop = 264
-    ExplicitWidth = 442
     object btnOK: TButton
       Left = 360
       Top = 16
@@ -255,7 +253,7 @@ object FrmAbout: TFrmAbout
       'Autori:'
       'Carlo Barazzetta & Andrea Magni'
       'https://github.com/EtheaDev/FExplorer'
-      'Copyright '#169' 2021-2022 all rights reserved.'
+      'Copyright '#169' 2021-2023 all rights reserved.'
       ''
       'Librerie di terze parti di Ethea:'
       'SVGIconImageList'
@@ -275,7 +273,7 @@ object FrmAbout: TFrmAbout
       'https://github.com/RRUZ/delphi-preview-handler'
       'The Initial Developer of the Original Code is Rodrigo Ruz V.'
       
-        'Portions created by Rodrigo Ruz V. are Copyright '#169' 2011-2021 Rod' +
+        'Portions created by Rodrigo Ruz V. are Copyright '#169' 2011-2023 Rod' +
         'rigo Ruz V.'
       ''
       'Librerie di terze parti utilizzate'
@@ -314,7 +312,6 @@ object FrmAbout: TFrmAbout
     ReadOnly = True
     ScrollBars = ssVertical
     TabOrder = 1
-    ExplicitHeight = 114
   end
   object LinkLabel1: TLinkLabel
     Left = 8
@@ -331,13 +328,11 @@ object FrmAbout: TFrmAbout
   object panelLibrary: TGroupBox
     Left = 11
     Top = 204
-    Width = 419
+    Width = 415
     Height = 55
     Anchors = [akLeft, akRight, akBottom]
     Caption = 'OpenSSL Library Info'
     TabOrder = 3
-    ExplicitTop = 203
-    ExplicitWidth = 415
     object OpenSSLlabelLocation: TLabel
       Left = 96
       Top = 17

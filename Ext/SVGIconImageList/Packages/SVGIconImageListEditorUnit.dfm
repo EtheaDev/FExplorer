@@ -2,8 +2,8 @@ object SVGIconImageListEditor: TSVGIconImageListEditor
   Left = 392
   Top = 450
   Caption = 'SVG Icon ImageList Editor %s - Copyright Ethea S.r.l.'
-  ClientHeight = 619
-  ClientWidth = 719
+  ClientHeight = 618
+  ClientWidth = 715
   Color = clBtnFace
   Constraints.MinHeight = 600
   Constraints.MinWidth = 700
@@ -12,18 +12,16 @@ object SVGIconImageListEditor: TSVGIconImageListEditor
   Font.Height = -12
   Font.Name = 'Segoe UI'
   Font.Style = []
-  OldCreateOrder = True
   ShowHint = True
   OnClose = FormClose
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
-  PixelsPerInch = 96
   TextHeight = 15
   object BottomSplitter: TSplitter
     Left = 0
-    Top = 377
-    Width = 719
+    Top = 376
+    Width = 715
     Height = 4
     Cursor = crVSplit
     Align = alBottom
@@ -35,15 +33,17 @@ object SVGIconImageListEditor: TSVGIconImageListEditor
   object paTop: TPanel
     Left = 0
     Top = 0
-    Width = 791
-    Height = 377
+    Width = 715
+    Height = 376
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 0
+    ExplicitWidth = 719
+    ExplicitHeight = 377
     object paClient: TPanel
       Left = 0
       Top = 0
-      Width = 791
+      Width = 719
       Height = 377
       Align = alClient
       BevelOuter = bvNone
@@ -51,14 +51,14 @@ object SVGIconImageListEditor: TSVGIconImageListEditor
       object ImageListGroupBox: TGroupBox
         Left = 0
         Top = 0
-        Width = 791
-        Height = 62
+        Width = 719
+        Height = 66
         Align = alTop
         Caption = 'Properties of ImageList'
         TabOrder = 0
         object SizeLabel: TLabel
           Left = 8
-          Top = 15
+          Top = 19
           Width = 80
           Height = 15
           AutoSize = False
@@ -67,7 +67,7 @@ object SVGIconImageListEditor: TSVGIconImageListEditor
         end
         object WidthLabel: TLabel
           Left = 94
-          Top = 15
+          Top = 19
           Width = 80
           Height = 15
           AutoSize = False
@@ -76,7 +76,7 @@ object SVGIconImageListEditor: TSVGIconImageListEditor
         end
         object HeightLabel: TLabel
           Left = 181
-          Top = 15
+          Top = 19
           Width = 84
           Height = 15
           AutoSize = False
@@ -85,7 +85,7 @@ object SVGIconImageListEditor: TSVGIconImageListEditor
         end
         object SizeEdit: TEdit
           Left = 8
-          Top = 32
+          Top = 36
           Width = 81
           Height = 23
           NumbersOnly = True
@@ -94,7 +94,7 @@ object SVGIconImageListEditor: TSVGIconImageListEditor
         end
         object WidthEdit: TEdit
           Left = 94
-          Top = 32
+          Top = 36
           Width = 81
           Height = 23
           NumbersOnly = True
@@ -103,7 +103,7 @@ object SVGIconImageListEditor: TSVGIconImageListEditor
         end
         object HeightEdit: TEdit
           Left = 181
-          Top = 32
+          Top = 36
           Width = 81
           Height = 23
           NumbersOnly = True
@@ -113,16 +113,16 @@ object SVGIconImageListEditor: TSVGIconImageListEditor
       end
       object paImages: TPanel
         Left = 0
-        Top = 62
-        Width = 791
-        Height = 315
+        Top = 66
+        Width = 719
+        Height = 311
         Align = alClient
         TabOrder = 1
         object CategorySplitter: TSplitter
           Left = 186
           Top = 1
           Width = 4
-          Height = 313
+          Height = 309
           AutoSnap = False
           MinSize = 150
           ExplicitHeight = 136
@@ -130,16 +130,18 @@ object SVGIconImageListEditor: TSVGIconImageListEditor
         object ImageListGroup: TGroupBox
           Left = 190
           Top = 1
-          Width = 457
-          Height = 313
+          Width = 385
+          Height = 309
           Align = alClient
           Caption = '%d Icons collection'
           TabOrder = 1
           object ImageView: TListView
-            Left = 2
-            Top = 17
-            Width = 453
-            Height = 294
+            AlignWithMargins = True
+            Left = 5
+            Top = 23
+            Width = 375
+            Height = 281
+            Margins.Top = 6
             Align = alClient
             Columns = <>
             DragMode = dmAutomatic
@@ -156,15 +158,15 @@ object SVGIconImageListEditor: TSVGIconImageListEditor
           end
         end
         object paButtons: TPanel
-          Left = 647
+          Left = 575
           Top = 1
           Width = 143
-          Height = 313
+          Height = 309
           Align = alRight
           BevelOuter = bvNone
           TabOrder = 2
           object AddButton: TButton
-            Left = 4
+            Left = 6
             Top = 17
             Width = 135
             Height = 25
@@ -192,22 +194,22 @@ object SVGIconImageListEditor: TSVGIconImageListEditor
             OnClick = ClearAllButtonClick
           end
           object ExportButton: TButton
-            Left = 4
-            Top = 138
+            Left = 6
+            Top = 169
             Width = 135
             Height = 25
-            Caption = '&Export svg files...'
+            Caption = 'Export &svg files...'
             Enabled = False
-            TabOrder = 4
+            TabOrder = 5
             OnClick = ExportButtonClick
           end
           object SetCategoriesButton: TButton
             Left = 4
-            Top = 169
+            Top = 138
             Width = 135
             Height = 25
             Caption = '&Set Categories...'
-            TabOrder = 5
+            TabOrder = 4
             OnClick = SetCategoriesButtonClick
           end
           object DeleteAllButton: TButton
@@ -220,12 +222,67 @@ object SVGIconImageListEditor: TSVGIconImageListEditor
             TabOrder = 2
             OnClick = DeleteAllButtonClick
           end
+          object PngGroupBox: TGroupBox
+            AlignWithMargins = True
+            Left = 4
+            Top = 196
+            Width = 137
+            Height = 110
+            Caption = 'Png export'
+            TabOrder = 6
+            object PngHeightLabel: TLabel
+              Left = 2
+              Top = 51
+              Width = 90
+              Height = 15
+              Alignment = taRightJustify
+              AutoSize = False
+              Caption = 'Height (in pixel)'
+              Transparent = True
+            end
+            object PngWidthLabel: TLabel
+              Left = 2
+              Top = 24
+              Width = 90
+              Height = 15
+              Alignment = taRightJustify
+              AutoSize = False
+              Caption = 'Width (in pixel)'
+              Transparent = True
+            end
+            object PngWidthEdit: TEdit
+              Left = 94
+              Top = 21
+              Width = 36
+              Height = 23
+              NumbersOnly = True
+              TabOrder = 0
+            end
+            object PngHeightEdit: TEdit
+              Left = 94
+              Top = 49
+              Width = 36
+              Height = 23
+              NumbersOnly = True
+              TabOrder = 1
+            end
+            object ExportPngButton: TButton
+              Left = 5
+              Top = 77
+              Width = 125
+              Height = 25
+              Caption = 'Export &png files...'
+              Enabled = False
+              TabOrder = 2
+              OnClick = ExportPngButtonClick
+            end
+          end
         end
         object ImagesPanel: TPanel
           Left = 1
           Top = 1
           Width = 185
-          Height = 313
+          Height = 309
           Align = alLeft
           BevelOuter = bvNone
           TabOrder = 0
@@ -233,15 +290,17 @@ object SVGIconImageListEditor: TSVGIconImageListEditor
             Left = 0
             Top = 0
             Width = 185
-            Height = 154
+            Height = 128
             Align = alClient
             Caption = 'Images/Categories'
             TabOrder = 0
             object CategoryListBox: TListBox
-              Left = 2
-              Top = 17
-              Width = 181
-              Height = 135
+              AlignWithMargins = True
+              Left = 5
+              Top = 23
+              Width = 175
+              Height = 100
+              Margins.Top = 6
               Align = alClient
               ItemHeight = 15
               TabOrder = 0
@@ -249,13 +308,15 @@ object SVGIconImageListEditor: TSVGIconImageListEditor
             end
           end
           object PropertiesGroupBox: TGroupBox
-            Left = 0
-            Top = 138
-            Width = 185
+            AlignWithMargins = True
+            Left = 3
+            Top = 130
+            Width = 179
             Height = 175
             Align = alBottom
             Caption = 'Global properties'
             TabOrder = 1
+            ExplicitTop = 131
             object FixedColorLabel: TLabel
               Left = 6
               Top = 19
@@ -297,7 +358,7 @@ object SVGIconImageListEditor: TSVGIconImageListEditor
             end
             object GrayScaleCheckBox: TCheckBox
               Left = 73
-              Top = 150
+              Top = 149
               Width = 85
               Height = 17
               Caption = 'GrayScale'
@@ -343,17 +404,19 @@ object SVGIconImageListEditor: TSVGIconImageListEditor
   end
   object BottomPanel: TPanel
     Left = 0
-    Top = 581
-    Width = 791
+    Top = 580
+    Width = 715
     Height = 38
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 2
+    ExplicitTop = 581
+    ExplicitWidth = 719
     DesignSize = (
-      791
+      715
       38)
     object OKButton: TButton
-      Left = 425
+      Left = 346
       Top = 6
       Width = 85
       Height = 25
@@ -363,9 +426,10 @@ object SVGIconImageListEditor: TSVGIconImageListEditor
       ModalResult = 1
       TabOrder = 0
       OnClick = OkButtonClick
+      ExplicitLeft = 354
     end
     object ApplyButton: TButton
-      Left = 608
+      Left = 529
       Top = 6
       Width = 85
       Height = 25
@@ -373,9 +437,10 @@ object SVGIconImageListEditor: TSVGIconImageListEditor
       Caption = '&Apply'
       TabOrder = 2
       OnClick = ApplyButtonClick
+      ExplicitLeft = 537
     end
     object CancelButton: TButton
-      Left = 517
+      Left = 438
       Top = 6
       Width = 85
       Height = 25
@@ -384,9 +449,10 @@ object SVGIconImageListEditor: TSVGIconImageListEditor
       Caption = 'Cancel'
       ModalResult = 2
       TabOrder = 1
+      ExplicitLeft = 446
     end
     object HelpButton: TButton
-      Left = 700
+      Left = 621
       Top = 6
       Width = 85
       Height = 25
@@ -394,28 +460,32 @@ object SVGIconImageListEditor: TSVGIconImageListEditor
       Caption = '&Help'
       TabOrder = 3
       OnClick = HelpButtonClick
+      ExplicitLeft = 629
     end
     object SVGErrorStaticText: TStaticText
       Left = 6
       Top = 3
-      Width = 413
+      Width = 338
       Height = 30
       Anchors = [akLeft, akTop, akRight]
       AutoSize = False
       TabOrder = 4
       Transparent = False
+      ExplicitWidth = 346
     end
   end
   object paIcon: TPanel
     Left = 0
-    Top = 381
-    Width = 791
+    Top = 380
+    Width = 715
     Height = 200
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 1
+    ExplicitTop = 381
+    ExplicitWidth = 719
     object IconButtonsPanel: TPanel
-      Left = 694
+      Left = 622
       Top = 0
       Width = 97
       Height = 200
@@ -433,11 +503,11 @@ object SVGIconImageListEditor: TSVGIconImageListEditor
       end
       object ReformatXMLButton: TButton
         Left = 6
-        Top = 162
+        Top = 161
         Width = 85
         Height = 25
         Caption = 'Reformat &XML'
-        TabOrder = 3
+        TabOrder = 2
         OnClick = ReformatXMLButtonClick
       end
       object DeleteButton: TButton
@@ -449,31 +519,21 @@ object SVGIconImageListEditor: TSVGIconImageListEditor
         TabOrder = 1
         OnClick = DeleteButtonClick
       end
-      object ExportPngButton: TButton
-        Left = 6
-        Top = 68
-        Width = 85
-        Height = 25
-        Caption = '&Export png...'
-        Enabled = False
-        TabOrder = 2
-        OnClick = ExportPngButtonClick
-      end
     end
     object ItemGroupBox: TGroupBox
       Left = 0
       Top = 0
-      Width = 694
+      Width = 622
       Height = 200
       Align = alClient
       Caption = 'Selected Icon'
       TabOrder = 0
       DesignSize = (
-        622
+        618
         200)
       object IconNameLabel: TLabel
         Left = 53
-        Top = 13
+        Top = 20
         Width = 140
         Height = 15
         AutoSize = False
@@ -482,7 +542,7 @@ object SVGIconImageListEditor: TSVGIconImageListEditor
       end
       object IconFixedColorLabel: TLabel
         Left = 343
-        Top = 12
+        Top = 20
         Width = 140
         Height = 15
         AutoSize = False
@@ -491,7 +551,7 @@ object SVGIconImageListEditor: TSVGIconImageListEditor
       end
       object IconIndexLabel: TLabel
         Left = 8
-        Top = 13
+        Top = 20
         Width = 38
         Height = 15
         AutoSize = False
@@ -500,7 +560,7 @@ object SVGIconImageListEditor: TSVGIconImageListEditor
       end
       object CategoryLabel: TLabel
         Left = 198
-        Top = 13
+        Top = 20
         Width = 140
         Height = 15
         AutoSize = False
@@ -508,10 +568,10 @@ object SVGIconImageListEditor: TSVGIconImageListEditor
         Transparent = True
       end
       object IconPanel: TPanel
-        Left = 3
-        Top = 57
-        Width = 130
-        Height = 130
+        Left = 7
+        Top = 65
+        Width = 124
+        Height = 124
         BevelOuter = bvNone
         BorderWidth = 2
         BorderStyle = bsSingle
@@ -523,30 +583,29 @@ object SVGIconImageListEditor: TSVGIconImageListEditor
           AlignWithMargins = True
           Left = 2
           Top = 2
-          Width = 153
-          Height = 125
+          Width = 118
+          Height = 118
           Margins.Left = 0
           Margins.Top = 0
           Margins.Right = 0
           Margins.Bottom = 0
           AutoSize = False
-          Proportional = True
           Align = alClient
         end
       end
       object NameEdit: TEdit
         Left = 53
-        Top = 30
+        Top = 37
         Width = 140
         Height = 23
         TabOrder = 1
         OnExit = NameEditExit
       end
       object SVGText: TMemo
-        Left = 139
-        Top = 57
-        Width = 547
-        Height = 130
+        Left = 136
+        Top = 65
+        Width = 469
+        Height = 124
         Hint = 'SVG Text content'
         Anchors = [akLeft, akTop, akRight, akBottom]
         ScrollBars = ssBoth
@@ -555,10 +614,11 @@ object SVGIconImageListEditor: TSVGIconImageListEditor
         OnEnter = SVGTextEnter
         OnExit = SVGTextExit
         OnKeyDown = SVGTextKeyDown
+        ExplicitWidth = 477
       end
       object FixedColorItemComboBox: TColorBox
         Left = 343
-        Top = 29
+        Top = 37
         Width = 140
         Height = 22
         NoneColorColor = clNone
@@ -569,7 +629,7 @@ object SVGIconImageListEditor: TSVGIconImageListEditor
       end
       object GrayScaleItemCheckBox: TCheckBox
         Left = 487
-        Top = 15
+        Top = 22
         Width = 88
         Height = 17
         Caption = 'GrayScale'
@@ -578,7 +638,7 @@ object SVGIconImageListEditor: TSVGIconImageListEditor
       end
       object IconIndexEdit: TEdit
         Left = 8
-        Top = 30
+        Top = 37
         Width = 40
         Height = 23
         Enabled = False
@@ -587,7 +647,7 @@ object SVGIconImageListEditor: TSVGIconImageListEditor
       end
       object CategoryEdit: TEdit
         Left = 198
-        Top = 30
+        Top = 37
         Width = 140
         Height = 23
         TabOrder = 2
@@ -595,7 +655,7 @@ object SVGIconImageListEditor: TSVGIconImageListEditor
       end
       object ApplyToRootOnlyItemCheckBox: TCheckBox
         Left = 487
-        Top = 33
+        Top = 40
         Width = 127
         Height = 17
         Caption = 'Apply to Root only'

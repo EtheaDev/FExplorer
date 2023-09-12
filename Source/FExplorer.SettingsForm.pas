@@ -3,7 +3,7 @@
 {       FExplorer: Shell extensions per Fattura Elettronica                    }
 {       (Preview Panel, Thumbnail Icon, F.E.Viewer)                            }
 {                                                                              }
-{       Copyright (c) 2021-2022 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2021-2023 (Ethea S.r.l.)                                 }
 {       Author: Carlo Barazzetta                                               }
 {                                                                              }
 {       https://github.com/EtheaDev/FExplorer                                  }
@@ -111,14 +111,12 @@ type
     MarginLeftLabel: TLabel;
     MarginRightLabel: TLabel;
     MarginBottomLabel: TLabel;
-    RenderingGroupBox: TGroupBox;
-    PreferD2DCheckBox: TCheckBox;
-    EngineRadioGroup: TRadioGroup;
     GUIElementsGroupBox: TGroupBox;
     ShowIconCheckBox: TCheckBox;
     IconStyleSheetComboBox: TComboBox;
     IconStyleLabel: TLabel;
     ShowXMLCheckBox: TCheckBox;
+    EngineRadioGroup: TRadioGroup;
     procedure BoxElementsClick(Sender: TObject);
     procedure cbForegroundClick(Sender: TObject);
     procedure cbBackgroundClick(Sender: TObject);
@@ -577,13 +575,7 @@ begin
   HTMLFontComboBox.ItemIndex := HTMLFontComboBox.Items.IndexOf(ASettings.HTMLFontName);
   HTMLUpDown.Position := ASettings.HTMLFontSize;
 
-  if not WinSvgSupported then
-  begin
-    PreferD2DCheckBox.Visible := False;
-    PreferD2DCheckBox.Checked := False;
-  end
-  else
-    PreferD2DCheckBox.Checked := ASettings.PreferD2D;
+  EngineRadioGroup.Enabled := WinSvgSupported;
   EngineRadioGroup.ItemIndex := Ord(ASettings.SVGEngine);
   StylesheetComboBox.ItemIndex := StylesheetComboBox.Items.IndexOf(ASettings.StylesheetName);
   IconStyleSheetComboBox.ItemIndex := IconStyleSheetComboBox.Items.IndexOf(ASettings.IconStylesheetName);
@@ -640,7 +632,6 @@ begin
   ASettings.HTMLFontSize := HTMLUpDown.Position;
 
   ASettings.StyleName := SelectedStyleName;
-  ASettings.PreferD2D := PreferD2DCheckBox.Checked;
   ASettings.SVGEngine := TSVGEngine(EngineRadioGroup.ItemIndex);
   if ASettings is TEditorSettings then
   begin

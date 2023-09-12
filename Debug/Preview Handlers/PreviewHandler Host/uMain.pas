@@ -13,6 +13,7 @@ type
     Panel3: TPanel;
     ShellListView1: TShellListView;
     Splitter1: TSplitter;
+    ShellTreeView1: TShellTreeView;
     procedure ShellListView1Change(Sender: TObject; Item: TListItem;
       Change: TItemChange);
     procedure FormCreate(Sender: TObject);
@@ -59,8 +60,10 @@ begin
 
   FPreview.Top := 0;
   FPreview.Left := 0;
+  (*
   FPreview.Width := Panel1.ClientWidth;
   FPreview.Height := Panel1.ClientHeight;
+  *)
   FPreview.Parent := Panel1;
   FPreview.Align := alClient;
   //FPreview.FileName:='C:\Users\Dexter\Desktop\RAD Studio Projects\XE2\delphi-preview-handler\main.pas';

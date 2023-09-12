@@ -3,9 +3,9 @@
 {       SVG Icon ImageList: An extended ImageList for Delphi/VLC+FMX           }
 {       to simplify use of Icons (resize, opacity and more...)                 }
 {                                                                              }
-{       Copyright (c) 2019-2021 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2019-2023 (Ethea S.r.l.)                                 }
 {       Author: Carlo Barazzetta                                               }
-{       Contributors:                                                          }
+{       Contributors: Volodymyr B.                                             }
 {                                                                              }
 {       https://github.com/EtheaDev/SVGIconImageList                           }
 {                                                                              }
@@ -32,10 +32,10 @@ interface
 
 uses
   System.SysUtils, System.Types, System.UITypes, FMX.Controls, System.Classes,
-  System.Actions, FMX.Forms, FMX.Graphics, FMX.ActnList, FMX.StdCtrls, FMX.Colors, FMX.ListBox,
+  System.Actions, System.ImageList, System.UIConsts, FMX.Forms, FMX.Graphics, FMX.ActnList, FMX.StdCtrls, FMX.Colors, FMX.ListBox,
   FMX.Controls.Presentation, FMX.ImgList, FMX.Types, FMX.Layouts,
-  System.ImageList, FMX.SVGIconImageList, FMX.Edit, FMX.EditBox, FMX.SpinBox,
-  FMX.ScrollBox, FMX.Memo, FMX.Dialogs, FMX.Memo.Types;
+  FMX.SVGIconImageList, FMX.Edit, FMX.EditBox, FMX.SpinBox,
+  FMX.ScrollBox, FMX.Memo, FMX.Dialogs, FMX.Memo.Types, FMX.ComboEdit;
 
 type
   TSVGIconImageListEditorFMX = class(TForm)
@@ -58,8 +58,9 @@ type
     DefaultOpacityLabel: TLabel;
     SizeSpinBox: TSpinBox;
     SizeLabel: TLabel;
-    FixedColorComboBox: TComboBox;
     FixedColorLabel: TLabel;
+    FixedColorComboColorBox: TComboColorBox;
+    FixedColorEdit: TEdit;
     GrayScaleCheckBox: TCheckBox;
     ItemPanel: TPanel;
     ItemGroupBox: TGroupBox;
@@ -69,8 +70,9 @@ type
     OpacitySpinBox: TSpinBox;
     SVGText: TMemo;
     GrayScaleItemCheckBox: TCheckBox;
-    FixedColorItemLabel: TLabel;
-    FixedColorItemComboBox: TComboBox;
+    FixedColorItemLabel: TLabel;   
+    FixedColorItemComboColorBox: TComboColorBox;
+    FixedColorItemEdit: TEdit;
     IconPanel: TPanel;
     IconImage: TGlyph;
     WidthLabel: TLabel;
@@ -83,6 +85,10 @@ type
     ImageView: TListBox;
     BottomSplitter: TSplitter;
     ApplyToRootOnlyCheckBox: TCheckBox;
+    ReformatXMLButton: TButton;
+    IconButtonsPanel: TPanel;
+    IconControlsPanel: TPanel;
+    ApplyToRootOnlyItemCheckBox: TCheckBox;
     procedure ClearAllButtonClick(Sender: TObject);
     procedure DeleteButtonClick(Sender: TObject);
     procedure AddButtonClick(Sender: TObject);
@@ -99,11 +105,11 @@ type
     procedure SizeChange(Sender: TObject);
     procedure FormResize(Sender: TObject);
     procedure NewButtonClick(Sender: TObject);
-    procedure FixedColorComboBoxChange(Sender: TObject);
+    procedure FixedColorComboColorBoxChange(Sender: TObject);
+    procedure FixedColorEditChange(Sender: TObject);
     procedure GrayScaleCheckBoxChange(Sender: TObject);
     procedure SVGTextExit(Sender: TObject);
     procedure GrayScaleItemCheckBoxChange(Sender: TObject);
-    procedure FixedColorItemComboBoxChange(Sender: TObject);
     procedure ImageViewDragOver(Sender: TObject; const Data: TDragObject;
       const Point: TPointF; var Operation: TDragOperation);
     procedure ImageViewDragChange(SourceItem, DestItem: TListBoxItem;
@@ -112,6 +118,10 @@ type
       const Point: TPointF);
     procedure ZoomChange(Sender: TObject);
     procedure ApplyToRootOnlyCheckBoxChange(Sender: TObject);
+    procedure ReformatXMLButtonClick(Sender: TObject);
+    procedure ApplyToRootOnlyItemCheckBoxChange(Sender: TObject);
+    procedure FixedColorItemComboColorBoxChange(Sender: TObject);
+    procedure FixedColorItemEditChange(Sender: TObject);
   private
     FIconIndexLabel: string;
     FTotIconsLabel: string;
@@ -124,6 +134,7 @@ type
     procedure SetImageOpacity(Opacity: Single);
     procedure SetImageIconName(IconName: String);
     function SelectedSVGIcon: TSVGIconSourceItem;
+    function GetClearAlphaColorString(AColor: TAlphaColor): string;
   public
     destructor Destroy; override;
   end;
@@ -138,9 +149,9 @@ uses
   Winapi.Messages
   , Winapi.Windows
   , Winapi.shellApi
+  , Xml.XMLDoc
   , System.Math
-  , SVG
-  , SVGColor;
+  , Img32.SVG.Core;
 
 var
   SavedBounds: TRect = (Left: 0; Top: 0; Right: 0; Bottom: 0);
@@ -211,6 +222,7 @@ begin
       //Screen.Cursor := crHourglass;
       try
         FEditingList.Assign(AImageList);
+        FEditingList.RefreshAllIcons;
         SizeSpinBox.Value := Max(FEditingList.Width, FEditingList.Height);
         WidthSpinBox.Value := FEditingList.Width;
         HeightSpinBox.Value := FEditingList.Height;
@@ -314,9 +326,13 @@ begin
     SizeSpinBox.Value := FEditingList.Size;
     AutoSizeCheckBox.IsChecked := FEditingList.AutoSizeBitmaps;
     DefaultOpacitySpinBox.Value := FEditingList.Opacity * 100;
-    FixedColorComboBox.ItemIndex :=
-      FixedColorComboBox.Items.IndexOfObject(TObject(FEditingList.FixedColor));
     GrayScaleCheckBox.IsChecked := FEditingList.GrayScale;
+    
+    if FEditingList.FixedColor <> SVG_INHERIT_COLOR then
+      FixedColorEdit.Text := GetClearAlphaColorString(FEditingList.FixedColor)
+    else FixedColorEdit.Text := '';
+    FixedColorComboColorBox.Color := FEditingList.FixedColor;
+
     if LIsItemSelected then
     begin
       ItemGroupBox.Text := Format(FIconIndexLabel,[LIconItem.Index]);
@@ -324,9 +340,13 @@ begin
       SVGText.Lines.Text := LIconItem.SVGText;
       OpacitySpinBox.Value := LIconItem.Opacity * 100;
       IconImage.ImageIndex := LIconItem.Index;
-      FixedColorItemComboBox.ItemIndex :=
-        FixedColorItemComboBox.Items.IndexOfObject(TObject(LIconItem.FixedColor));
       GrayScaleItemCheckBox.IsChecked := LIconItem.GrayScale;
+
+      if LIconItem.FixedColor <> SVG_INHERIT_COLOR then
+        FixedColorItemEdit.Text := GetClearAlphaColorString(LIconItem.FixedColor)
+      else FixedColorItemEdit.Text := '';
+      FixedColorItemComboColorBox.Color := LIconItem.FixedColor;
+
       IconImage.Repaint;
     end
     else
@@ -488,6 +508,11 @@ begin
   SetImageOpacity(OpacitySpinBox.Value);
 end;
 
+procedure TSVGIconImageListEditorFMX.ReformatXMLButtonClick(Sender: TObject);
+begin
+  SVGText.Lines.Text := Xml.XMLDoc.FormatXMLData(SVGText.Lines.Text);
+end;
+
 procedure TSVGIconImageListEditorFMX.DefaultOpacitySpinBoxChange(
   Sender: TObject);
 begin
@@ -500,29 +525,57 @@ begin
   DeleteSelectedItem;
 end;
 
-procedure TSVGIconImageListEditorFMX.FixedColorComboBoxChange(Sender: TObject);
+procedure TSVGIconImageListEditorFMX.FixedColorComboColorBoxChange(Sender: TObject);
 begin
-  //Screen.Cursor := crHourGlass;
-  try
-    if FixedColorComboBox.ItemIndex >= 0 then begin
-      FEditingList.FixedColor :=
-        TColor(FixedColorComboBox.Items.Objects[FixedColorComboBox.ItemIndex]);
-      UpdateGUI;
-    end;
-  finally
-    //Screen.Cursor := crDefault;
-  end;
+  FixedColorEdit.Text := GetClearAlphaColorString(FixedColorComboColorBox.Color);
 end;
 
-procedure TSVGIconImageListEditorFMX.FixedColorItemComboBoxChange(
-  Sender: TObject);
+procedure TSVGIconImageListEditorFMX.FixedColorEditChange(Sender: TObject);
+var
+  LColorText: string;
 begin
   if FUpdating then Exit;
-  if FixedColorComboBox.ItemIndex >= 0 then begin
-    SelectedSVGIcon.FixedColor :=
-      TColor(FixedColorComboBox.Items.Objects[FixedColorComboBox.ItemIndex]);
+  if (Length(FixedColorEdit.Text) > 0) 
+    and (Length(FixedColorEdit.Text) < 6) then Exit;
+
+  try
+    if FixedColorEdit.Text <> '' then
+    begin
+      LColorText := FixedColorEdit.Text;
+      if (LColorText.Chars[0] <> '#') and (LColorText.Chars[0] <> 'x') then LColorText := '#' + LColorText;
+      FEditingList.FixedColor := StringToAlphaColor(LColorText);
+    end
+    else FEditingList.FixedColor := TAlphaColors.Null;
+
     UpdateGUI;
-  end;
+  except end;
+end;
+
+procedure TSVGIconImageListEditorFMX.FixedColorItemComboColorBoxChange(
+  Sender: TObject);
+begin
+  FixedColorItemEdit.Text := GetClearAlphaColorString(FixedColorItemComboColorBox.Color);
+end;
+
+procedure TSVGIconImageListEditorFMX.FixedColorItemEditChange(Sender: TObject);
+var
+  LColorText: string;
+begin
+  if FUpdating then Exit;
+  if (Length(FixedColorItemEdit.Text) > 0) 
+    and (Length(FixedColorItemEdit.Text) < 6) then Exit;
+
+  try
+    if FixedColorItemEdit.Text <> '' then
+    begin
+      LColorText := FixedColorItemEdit.Text;
+      if (LColorText.Chars[0] <> '#') and (LColorText.Chars[0] <> 'x') then LColorText := '#' + LColorText;
+      SelectedSVGIcon.FixedColor := StringToAlphaColor(LColorText);
+    end
+    else SelectedSVGIcon.FixedColor := TAlphaColors.Null;
+
+    UpdateGUI;
+  except end;
 end;
 
 procedure TSVGIconImageListEditorFMX.FormClose(Sender: TObject;
@@ -543,22 +596,23 @@ begin
   FTotIconsLabel := IconsGroupBox.Text;
   IconImage.Images := FEditingList;
   BottomSplitter.Position.X := 1;
-  AssignSVGColorList(FixedColorComboBox.Items);
-  AssignSVGColorList(FixedColorItemComboBox.Items);
 end;
 
 procedure TSVGIconImageListEditorFMX.FormDestroy(Sender: TObject);
 begin
+  IconImage.Images := nil;
+  ImageView.Images := nil;
+     
   FreeAndNil(FEditingList);
   //Screen.Cursors[crColorPick] := 0;
 end;
 
 procedure TSVGIconImageListEditorFMX.FormResize(Sender: TObject);
 begin
-  if ClientWidth < 610 then
-    ClientWidth := 610;
-  if ClientHeight < 390 then
-    ClientHeight := 390;
+  if ClientWidth < 760 then
+    ClientWidth := 760;
+  if ClientHeight < 500 then
+    ClientHeight := 500;
 end;
 
 function TSVGIconImageListEditorFMX.SelectedSVGIcon: TSVGIconSourceItem;
@@ -626,8 +680,22 @@ procedure TSVGIconImageListEditorFMX.ApplyToRootOnlyCheckBoxChange(
   Sender: TObject);
 begin
   if FUpdating then Exit;
-  SelectedSVGIcon.ApplyFixedColorToRootOnly := ApplyToRootOnlyCheckBox.IsChecked;
+  FEditingList.ApplyFixedColorToRootOnly := ApplyToRootOnlyCheckBox.IsChecked;
   UpdateGUI;
+end;
+
+procedure TSVGIconImageListEditorFMX.ApplyToRootOnlyItemCheckBoxChange(
+  Sender: TObject);
+begin
+  if FUpdating then Exit;
+  SelectedSVGIcon.ApplyFixedColorToRootOnly := ApplyToRootOnlyItemCheckBox.IsChecked;
+  UpdateGUI;
+end;
+
+function TSVGIconImageListEditorFMX.GetClearAlphaColorString(AColor: TAlphaColor): string;
+begin
+  Result := AlphaColorToString(AColor);
+  if (Length(Result) > 3) and (Result.Chars[0] = '#') then Result := '#FF' + Result.Substring(3);
 end;
 
 initialization

@@ -3,7 +3,7 @@
 {       SVGTextPropertyEditorUnit: A property editor for SVGText               }
 {       to simplify use of setting SVGText value                               }
 {                                                                              }
-{       Copyright (c) 2019-2021 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2019-2023 (Ethea S.r.l.)                                 }
 {       Author: Carlo Barazzetta                                               }
 {                                                                              }
 {       https://github.com/EtheaDev/SVGIconImageList                           }
@@ -55,6 +55,7 @@ type
     SVGIconImage: TSVGIconImage;
     BottomPanel: TPanel;
     ProportionalCheckBox: TCheckBox;
+    ReformatXMLButton: TButton;
     procedure FormResize(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure paImageResize(Sender: TObject);
@@ -63,6 +64,8 @@ type
     procedure SaveButtonClick(Sender: TObject);
     procedure HelpButtonClick(Sender: TObject);
     procedure ProportionalCheckBoxClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure ReformatXMLButtonClick(Sender: TObject);
   private
     procedure UpdateImage;
     procedure UpdateGUI;
@@ -83,10 +86,19 @@ uses
   Themes
   , Math
   {$IFDEF DXE3+}
-  , UITypes
+  , System.UITypes
   {$ENDIF}
-  , ShellAPI
-  , SVG;
+  , SVGIconImageListBase
+  , SVGInterfaces
+  , Xml.XMLDoc
+  //WARNING: you must define this directive to use this unit outside the IDE
+  //WARNING: you must define this directive to use this unit outside the IDE
+{$IFNDEF UseSVGEditorsAtRunTime}
+  , ToolsAPI
+  , BrandingAPI
+  {$IF (CompilerVersion >= 32.0)}, IDETheme.Utils{$IFEND}
+{$ENDIF}
+  , ShellAPI;
 
 var
   SavedBounds: TRect = (Left: 0; Top: 0; Right: 0; Bottom: 0);
@@ -115,6 +127,42 @@ constructor TSVGTextPropertyEditorForm.Create(AOwner: TComponent);
 begin
   inherited;
   ;
+end;
+
+procedure TSVGTextPropertyEditorForm.FormCreate(Sender: TObject);
+{$IFNDEF UseSVGEditorsAtRunTime}
+  {$IF (CompilerVersion >= 32.0)}
+  var
+    LStyle: TCustomStyleServices;
+  {$IFEND}
+{$ENDIF}
+begin
+{$IFNDEF UseSVGEditorsAtRunTime}
+  {$IF (CompilerVersion >= 32.0)}
+    {$IF (CompilerVersion <= 34.0)}
+    if UseThemeFont then
+      Self.Font.Assign(GetThemeFont);
+    {$IFEND}
+    {$IF CompilerVersion > 34.0}
+    if TIDEThemeMetrics.Font.Enabled then
+      Self.Font.Assign(TIDEThemeMetrics.Font.GetFont);
+    {$IFEND}
+
+    if ThemeProperties <> nil then
+    begin
+      LStyle := ThemeProperties.StyleServices;
+      StyleElements := StyleElements - [seClient];
+      Color := LStyle.GetSystemColor(clWindow);
+      BottomPanel.StyleElements := BottomPanel.StyleElements - [seClient];
+      BottomPanel.ParentBackground := False;
+      BottomPanel.Color := LStyle.GetSystemColor(clBtnFace);
+      IDEThemeManager.RegisterFormClass(TSVGTextPropertyEditorForm);
+      ThemeProperties.ApplyTheme(Self);
+    end;
+  {$IFEND}
+{$ENDIF}
+  SVGTextMemo.Font.Name := 'Consolas';
+  Caption := Format(Caption, [SVGIconImageListVersion]);
 end;
 
 procedure TSVGTextPropertyEditorForm.FormResize(Sender: TObject);
@@ -165,6 +213,11 @@ begin
   SVGIconImage.Proportional := ProportionalCheckBox.Checked;
 end;
 
+procedure TSVGTextPropertyEditorForm.ReformatXMLButtonClick(Sender: TObject);
+begin
+  SVGTextMemo.Lines.Text := Xml.XMLDoc.FormatXMLData(SVGTextMemo.Lines.Text);
+end;
+
 procedure TSVGTextPropertyEditorForm.SaveButtonClick(Sender: TObject);
 begin
   if SaveDialog.Execute then
@@ -189,8 +242,18 @@ end;
 
 procedure TSVGTextPropertyEditorForm.UpdateImage;
 begin
-  SVGIconImage.SVGText := SVGTextMemo.Lines.Text;
-  SVGIconImage.Repaint;
+  try
+    SVGIconImage.SVGText := SVGTextMemo.Lines.Text;
+    SVGIconImage.Repaint;
+  except
+    On ESVGException do
+    begin
+      SVGIconImage.SVGText := '';
+      SVGIconImage.Repaint;
+    end
+    else
+      raise;
+  end;
 end;
 
 end.

@@ -2,7 +2,7 @@
 
 ## **Anteprima Fattura Elettronica (Viewer e Icone) integrato in Windows Explorer e Visualizzatore**
 
-### Versione attuale 2.1 ###
+### Versione attuale 2.2 ###
 
 **Una serie di strumenti per gestire i file xml contenenti Fatture Elettroniche in Windows:**
 
@@ -41,7 +41,7 @@ Un comodo visualizzatore della fattura elettronica per poterla anche stampare.
 
 ### Build e Installazione manuale (per sviluppatori Delphi) ###
 
-Se hai Delphi 11.1 Alexandria, puoi compilare manualmente il progetto.
+Se hai Delphi 11 o Delphi 12, puoi compilare manualmente il progetto.
 
 ## Compilazione/Installazione packages di componenti di terze parti ##
 
@@ -62,6 +62,13 @@ Per installare manualmente FExplorer.dll seguire questi step:
 5. Una volta registrato, puoi continuare a modificare il codice e ricompilare la dll (attenzione a chiudere tutte le istanze di Explorer ogni volta che si ricompila).
 
 ## Release Notes ##
+
+12 Set 2023 - Versione 2.2.0
+- Aggiornati fogli di stile Assosoftware e PA
+- Build con Delphi 12
+- Rimosso engine TSVG
+- Aggiunto pulsante di chiusura sui Tab
+- Aggiunto supporto a Delphi 12
 
 23 Nov 2022 - Versione 2.1.0
 - Aggiunto "Stile" SudTirolo (ITA/DEU)[16]
@@ -142,7 +149,7 @@ Rilasciato sotto licenza [Apache License, Version 2.0][9] (the "License");
 
 A meno che non sia richiesto dalla legge applicabile o concordato per iscritto, il software distribuito in base alla Licenza è distribuito "COSÌ COM'È", SENZA GARANZIE O CONDIZIONI DI ALCUN TIPO, esplicite o implicite. Vedere la Licenza per la lingua specifica che regola le autorizzazioni e le limitazioni ai sensi della Licenza.
 
-![Delphi 10.4 Sydney Support](https://github.com/EtheaDev/FExplorer/raw/main/Setup/SupportingDelphi.jpg)
+![Delphi 12 Support](./Setup/SupportingDelphi.jpg)
 
 Related links: [embarcadero.com][11] - [learndelphi.org][12]
 

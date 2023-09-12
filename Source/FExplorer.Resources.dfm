@@ -1,7 +1,7 @@
 object dmResources: TdmResources
   OnCreate = DataModuleCreate
-  Height = 246
-  Width = 258
+  Height = 390
+  Width = 434
   object SynXMLSyn: TSynXMLSyn
     DefaultFilter = 'File Fattura Elettronica (*.xml)|*.xml'
     Options.AutoDetectEnabled = False
@@ -30,7 +30,7 @@ object dmResources: TdmResources
     DocTypeAttri.Foreground = 9750039
     SymbolAttri.Foreground = 6008319
     WantBracesParsed = False
-    Left = 53
+    Left = 117
     Top = 8
   end
   object SVGIconImageCollection: TSVGIconImageCollection
@@ -1719,1913 +1719,2917 @@ object dmResources: TdmResources
           'line-height:1.25" xml:space="preserve"><tspan x="17.629883" y="4' +
           '3.53503" fill="#007106" font-family="sans-serif" font-size="12px' +
           '" font-weight="bold">XML</tspan></text>'#10' </g>'#10'</svg>'#10
+      end
+      item
+        IconName = 'close-circle-outline'
+        SVGText = 
+          '<?xml version="1.0"?>'#13#10'<svg xmlns="http://www.w3.org/2000/svg" x' +
+          'mlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="mdi-' +
+          'close-circle-outline" width="24" height="24" viewBox="0 0 24 24"' +
+          '>'#13#10'  <path fill="red" d="M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59' +
+          ',4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2C6.47,' +
+          '2 2,6.47 2,12C2,17.53 6.47,22 12,22C17.53,22 22,17.53 22,12C22,6' +
+          '.47 17.53,2 12,2M14.59,8L12,10.59L9.41,8L8,9.41L10.59,12L8,14.59' +
+          'L9.41,16L12,13.41L14.59,16L16,14.59L13.41,12L16,9.41L14.59,8Z"/>' +
+          #13#10'</svg>'#13#10
       end>
-    Left = 124
-    Top = 76
+    Left = 244
+    Top = 204
   end
   object AssoSoftwareTemplate: TXMLDocument
     NodeIndentStr = #9
     Options = [doNodeAutoIndent]
     XML.Strings = (
       '<?xml version="1.0"?>'
+      '<xsl:stylesheet'
+      #9'version="1.1"'
+      #9'xmlns:xsl="http://www.w3.org/1999/XSL/Transform"'
+      #9'xmlns:b="http://www.fatturapa.gov.it/sdi/fatturapa/v1.1"'
+      #9'xmlns:c="http://www.fatturapa.gov.it/sdi/fatturapa/v1.0"'
       
-        '<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/' +
-        'XSL/Transform" xmlns:b="http://www.fatturapa.gov.it/sdi/fatturap' +
-        'a/v1.1" xmlns:c="http://www.fatturapa.gov.it/sdi/fatturapa/v1.0"' +
-        ' xmlns:a="http://ivaservizi.agenziaentrate.gov.it/docs/xsd/fattu' +
-        're/v1.2" xmlns:d="http://ivaservizi.agenziaentrate.gov.it/docs/x' +
-        'sd/fatture/v1.0">'
-      #9'<xsl:output method="html"/>'
+        #9'xmlns:a="http://ivaservizi.agenziaentrate.gov.it/docs/xsd/fattu' +
+        're/v1.2"'
       
-        #9'<xsl:decimal-format name="euro" decimal-separator="," grouping-' +
-        'separator="."/>'
-      #9'<xsl:template name="FormatDateIta">'
-      #9#9'<xsl:param name="DateTime"/>'
-      #9#9'<xsl:variable name="year" select="substring($DateTime,1,4)"/>'
-      #9#9'<xsl:variable name="month" select="substring($DateTime,6,2)"/>'
-      #9#9'<xsl:variable name="day" select="substring($DateTime,9,2)"/>'
-      #9#9'<xsl:value-of select="$day"/>'
-      #9#9'<xsl:value-of select="'#39'-'#39'"/>'
-      #9#9'<xsl:value-of select="$month"/>'
-      #9#9'<xsl:value-of select="'#39'-'#39'"/>'
-      #9#9'<xsl:value-of select="$year"/>'
-      #9'</xsl:template>'
-      #9'<xsl:template name="FormatIVA">'
-      #9#9'<xsl:param name="Natura"/>'
-      #9#9'<xsl:param name="IVA"/>'
-      #9#9'<xsl:choose>'
-      #9#9#9'<xsl:when test="$Natura">'
-      #9#9#9#9'<xsl:value-of select="$Natura"/>'
-      #9#9#9'</xsl:when>'
-      #9#9#9'<xsl:otherwise>'
-      #9#9#9#9'<xsl:if test="$IVA">'
+        #9'xmlns:d="http://ivaservizi.agenziaentrate.gov.it/docs/xsd/fattu' +
+        're/v1.0">'
+      ''
+      '  <xsl:output method="html" />'
       
-        #9#9#9#9#9'<xsl:value-of select="format-number($IVA,  '#39'###.###.##0,00'#39 +
-        ', '#39'euro'#39')"/>'
-      #9#9#9#9'</xsl:if>'
-      #9#9#9'</xsl:otherwise>'
-      #9#9'</xsl:choose>'
-      #9'</xsl:template>'
-      #9'<xsl:template name="FormatSconto">'
-      #9#9'<xsl:param name="tipo"/>'
-      #9#9'<xsl:param name="percentuale"/>'
-      #9#9'<xsl:param name="importo"/>'
-      #9#9'<xsl:choose>'
-      #9#9#9'<xsl:when test="$tipo = '#39'SC'#39' ">'
-      #9#9#9#9'<xsl:text>-</xsl:text>'
-      #9#9#9'</xsl:when>'
-      #9#9#9'<xsl:when test="$tipo = '#39'MG'#39'">'
-      #9#9#9#9'<xsl:text>+</xsl:text>'
-      #9#9#9'</xsl:when>'
-      #9#9#9'<xsl:otherwise>'
-      #9#9#9'</xsl:otherwise>'
-      #9#9'</xsl:choose>'
-      #9#9'<xsl:choose>'
-      #9#9#9'<xsl:when test="$percentuale">'
-      #9#9#9#9'<xsl:value-of select="$percentuale"/>'
-      #9#9#9#9'<xsl:text>%</xsl:text>'
-      #9#9#9'</xsl:when>'
-      #9#9#9'<xsl:otherwise>'
-      #9#9#9#9'<xsl:if test="$importo">'
+        '  <xsl:decimal-format name="euro" decimal-separator="," grouping' +
+        '-separator="."/>'
+      ''
+      '  <xsl:template name="FormatDateIta">'
+      '    <xsl:param name="DateTime" />'
+      ''
       
-        #9#9#9#9#9'<xsl:value-of select="format-number($importo,  '#39'###.###.##0' +
-        ',00'#39', '#39'euro'#39')"/>'
-      #9#9#9#9'</xsl:if>'
-      #9#9#9'</xsl:otherwise>'
-      #9#9'</xsl:choose>'
-      #9#9'<xsl:text>'
-      #9#9'</xsl:text>'
-      #9'</xsl:template>'
-      #9'<xsl:template name="FormatColSconto">'
-      #9#9'<xsl:param name="tipo"/>'
-      #9#9'<xsl:param name="percentuale"/>'
-      #9#9'<xsl:param name="importo"/>'
-      #9#9'<xsl:choose>'
-      #9#9#9'<xsl:when test="$tipo = '#39'SC'#39' ">'
-      #9#9#9#9'<xsl:text>-</xsl:text>'
-      #9#9#9'</xsl:when>'
-      #9#9#9'<xsl:when test="$tipo = '#39'MG'#39'">'
-      #9#9#9#9'<xsl:text>+</xsl:text>'
-      #9#9#9'</xsl:when>'
-      #9#9#9'<xsl:otherwise>'
-      #9#9#9'</xsl:otherwise>'
-      #9#9'</xsl:choose>'
-      #9#9'<xsl:choose>'
-      #9#9#9'<xsl:when test="$percentuale">'
-      #9#9#9#9'<xsl:value-of select="$percentuale"/>'
-      #9#9#9#9'<xsl:text>%</xsl:text>'
-      #9#9#9'</xsl:when>'
-      #9#9#9'<xsl:otherwise>'
-      #9#9#9#9'<xsl:if test="$importo">'
-      
-        #9#9#9#9#9'<xsl:value-of select="format-number($importo,  '#39'###.###.##0' +
-        ',00'#39', '#39'euro'#39')"/>'
-      #9#9#9#9'</xsl:if>'
-      #9#9#9'</xsl:otherwise>'
-      #9#9'</xsl:choose>'
-      #9'</xsl:template>'
-      
-        #9'<!--DatiOrdineAcquisto  Vs.Ord. XXXXXX del 26/09/2018 CUP:YYYYY' +
-        'Y CIG:ZZZZZZZ-->'
-      
-        #9'<!--DatiContratto  Contratto XXXXXX del 26/09/2018 CUP:YYYYYY C' +
-        'IG:ZZZZZZZ -->'
-      
-        #9'<!--DatiConvenzione  Convenzione XXXXXX del 26/09/2018 CUP:YYYY' +
-        'YY CIG:ZZZZZZZ -->'
-      
-        #9'<!--DatiRicezione  Ricezione XXXXXX del 26/09/2018 CUP:YYYYYY C' +
-        'IG:ZZZZZZZ -->'
-      
-        #9'<!--Fatture collegate Fatt.coll. XXXXXX del 26/09/2018 CUP:YYYY' +
-        'YY CIG:ZZZZZZZ -->'
-      #9'<xsl:template name="DatiCorrelati">'
-      #9#9'<xsl:param name="Prefix"/>'
-      #9#9'<xsl:param name="IdDocumento"/>'
-      #9#9'<xsl:param name="Data"/>'
-      #9#9'<xsl:param name="CodiceCUP"/>'
-      #9#9'<xsl:param name="CodiceCIG"/>'
-      #9#9'<xsl:variable name="descrizione">'
-      #9#9#9'<xsl:value-of select="$Prefix"/>'
-      #9#9#9'<xsl:value-of select="$IdDocumento"/>'
-      #9#9#9'<xsl:if test="$Data">'
-      #9#9#9#9'<xsl:text> del </xsl:text>'
-      #9#9#9#9'<xsl:call-template name="FormatDateIta">'
-      #9#9#9#9#9'<xsl:with-param name="DateTime" select="$Data"/>'
-      #9#9#9#9'</xsl:call-template>'
-      #9#9#9'</xsl:if>'
-      #9#9#9'<xsl:if test="$CodiceCUP">'
-      #9#9#9#9'<xsl:text> CUP: </xsl:text>'
-      #9#9#9#9'<xsl:value-of select="$CodiceCUP"/>'
-      #9#9#9'</xsl:if>'
-      #9#9#9'<xsl:if test="$CodiceCIG">'
-      #9#9#9#9'<xsl:text> CIG: </xsl:text>'
-      #9#9#9#9'<xsl:value-of select="$CodiceCIG"/>'
-      #9#9#9'</xsl:if>'
-      #9#9'</xsl:variable>'
-      #9#9'<xsl:if test="$descrizione">'
-      #9#9#9'<xsl:call-template name="AltraDescrizioneLinea">'
-      
-        #9#9#9#9'<xsl:with-param name="textDescrizione" select="$descrizione"' +
+        '    <xsl:variable name="year" select="substring($DateTime,1,4)" ' +
         '/>'
-      #9#9#9'</xsl:call-template>'
-      #9#9'</xsl:if>'
-      #9'</xsl:template>'
-      #9'<xsl:template match="DatiDDT">'
-      #9#9'<xsl:variable name="descri_DAO">'
-      #9#9#9'<xsl:text>DDT </xsl:text>'
-      #9#9#9'<xsl:value-of select="NumeroDDT"/>'
-      #9#9#9'<xsl:if test="DataDDT">'
-      #9#9#9#9'<xsl:text> del </xsl:text>'
-      #9#9#9#9'<xsl:call-template name="FormatDateIta">'
-      #9#9#9#9#9'<xsl:with-param name="DateTime" select="DataDDT"/>'
-      #9#9#9#9'</xsl:call-template>'
-      #9#9#9'</xsl:if>'
-      #9#9'</xsl:variable>'
-      #9#9'<xsl:if test="$descri_DAO">'
-      #9#9#9'<xsl:call-template name="AltraDescrizioneLinea">'
       
-        #9#9#9#9'<xsl:with-param name="textDescrizione" select="$descri_DAO"/' +
+        '    <xsl:variable name="month" select="substring($DateTime,6,2)"' +
+        ' />'
+      
+        '    <xsl:variable name="day" select="substring($DateTime,9,2)" /' +
         '>'
-      #9#9#9'</xsl:call-template>'
-      #9#9'</xsl:if>'
-      #9'</xsl:template>'
-      #9'<xsl:template match="DettaglioLinee">'
-      #9#9'<xsl:param name="r"/>'
-      #9#9'<xsl:param name="posASWRELSTD"/>'
-      #9#9'<xsl:param name="TipoFattura"/>'
-      #9#9'<xsl:param name="IndiceBody"/>'
-      #9#9'<!--Numero Linea -->'
-      #9#9'<xsl:variable name="valNumeroLinea">'
-      #9#9#9'<xsl:value-of select="number(NumeroLinea)"/>'
-      #9#9'</xsl:variable>'
-      #9#9'<!--Pre LINEA OpzPreLineaDatiDDT -->'
-      #9#9'<xsl:choose>'
-      #9#9#9'<xsl:when test="OpzPreLineaDatiDDT">'
-      #9#9#9#9'<!--Pre LINEA OpzPreLineaDatiDDT -->'
-      #9#9#9#9'<xsl:for-each select="OpzPreLineaDatiDDT">'
-      #9#9#9#9#9'<xsl:call-template name="AltraDescrizioneLinea">'
-      #9#9#9#9#9#9'<xsl:with-param name="textDescrizione" select="."/>'
-      #9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9'</xsl:for-each>'
-      #9#9#9'</xsl:when>'
-      #9#9#9'<xsl:otherwise>'
+      ''
+      '    <xsl:value-of select="$day" />'
+      '    <xsl:value-of select="'#39'-'#39'" />'
+      '    <xsl:value-of select="$month" />'
+      '    <xsl:value-of select="'#39'-'#39'" />'
+      '    <xsl:value-of select="$year" />'
+      ''
+      '  </xsl:template>'
+      ''
+      '  <xsl:template name="FormatIVA">'
+      '    <xsl:param name="Natura" />'
+      '    <xsl:param name="IVA" />'
+      ''
+      #9'<xsl:choose>'
+      '      <xsl:when test="$Natura">'
+      '        <xsl:value-of select="$Natura" />'
+      #9#9'<xsl:if test="number($IVA)" >'
       
-        #9#9#9#9'<xsl:for-each select="$TipoFattura/FatturaElettronicaBody[$I' +
+        #9#9#9'<br/><xsl:value-of select="format-number($IVA,  '#39'###.###.##0,' +
+        '00'#39', '#39'euro'#39')" />'
+      #9#9'</xsl:if>'
+      '      </xsl:when>'
+      '      <xsl:otherwise>'
+      '        <xsl:if test="$IVA">'
+      
+        '          <xsl:value-of select="format-number($IVA,  '#39'###.###.##' +
+        '0,00'#39', '#39'euro'#39')" />'
+      '        </xsl:if>'
+      '      </xsl:otherwise>'
+      '    </xsl:choose>'
+      '  </xsl:template>'
+      ''
+      '  <xsl:template name="FormatSconto">'
+      '    <xsl:param name="tipo" />'
+      '    <xsl:param name="percentuale" />'
+      '    <xsl:param name="importo" />'
+      ''
+      '    <xsl:choose>'
+      '      <xsl:when test="$tipo = '#39'SC'#39' ">'
+      '        <xsl:text>-</xsl:text>'
+      '      </xsl:when>'
+      '      <xsl:when test="$tipo = '#39'MG'#39'">'
+      '        <xsl:text>+</xsl:text>'
+      ''
+      '      </xsl:when>'
+      '      <xsl:otherwise>'
+      ''
+      '      </xsl:otherwise>'
+      '    </xsl:choose>'
+      ''
+      ''
+      '    <xsl:choose>'
+      '      <xsl:when test="$percentuale">'
+      '        <xsl:value-of select="$percentuale" />'
+      '        <xsl:text>%</xsl:text>'
+      '      </xsl:when>'
+      '      <xsl:otherwise>'
+      '        <xsl:if test="$importo">'
+      
+        '          <xsl:value-of select="format-number($importo,  '#39'###.##' +
+        '#.##0,00######'#39', '#39'euro'#39')" />'
+      '        </xsl:if>'
+      '      </xsl:otherwise>'
+      '    </xsl:choose>'
+      '    <xsl:text> </xsl:text>'
+      ''
+      '  </xsl:template>'
+      ''
+      '  <xsl:template name="FormatColSconto">'
+      '    <xsl:param name="tipo" />'
+      '    <xsl:param name="percentuale" />'
+      '    <xsl:param name="importo" />'
+      ''
+      '    <xsl:choose>'
+      '      <xsl:when test="$tipo = '#39'SC'#39' ">'
+      '        <xsl:text>-</xsl:text>'
+      '      </xsl:when>'
+      '      <xsl:when test="$tipo = '#39'MG'#39'">'
+      '        <xsl:text>+</xsl:text>'
+      ''
+      '      </xsl:when>'
+      '      <xsl:otherwise>'
+      ''
+      '      </xsl:otherwise>'
+      '    </xsl:choose>'
+      ''
+      ''
+      '    <xsl:choose>'
+      '      <xsl:when test="$percentuale">'
+      '        <xsl:value-of select="$percentuale" />'
+      '        <xsl:text>%</xsl:text>'
+      '      </xsl:when>'
+      '      <xsl:otherwise>'
+      '        <xsl:if test="$importo">'
+      
+        '          <xsl:value-of select="format-number($importo,  '#39'###.##' +
+        '#.##0,00######'#39', '#39'euro'#39')" />'
+      '        </xsl:if>'
+      '      </xsl:otherwise>'
+      '    </xsl:choose>'
+      ''
+      '  </xsl:template>'
+      ''
+      
+        '  <!--DatiOrdineAcquisto  Vs.Ord. XXXXXX del 26/09/2018 CUP:YYYY' +
+        'YY CIG:ZZZZZZZ-->'
+      
+        '  <!--DatiContratto  Contratto XXXXXX del 26/09/2018 CUP:YYYYYY ' +
+        'CIG:ZZZZZZZ -->'
+      
+        '  <!--DatiConvenzione  Convenzione XXXXXX del 26/09/2018 CUP:YYY' +
+        'YYY CIG:ZZZZZZZ -->'
+      
+        '  <!--DatiRicezione  Ricezione XXXXXX del 26/09/2018 CUP:YYYYYY ' +
+        'CIG:ZZZZZZZ -->'
+      
+        '  <!--Fatture collegate Fatt.coll. XXXXXX del 26/09/2018 CUP:YYY' +
+        'YYY CIG:ZZZZZZZ -->'
+      '  <xsl:template name="DatiCorrelati">'
+      '    <xsl:param name="Prefix" />'
+      '    <xsl:param name="IdDocumento" />'
+      '    <xsl:param name="Data" />'
+      '    <xsl:param name="CodiceCUP" />'
+      '    <xsl:param name="CodiceCIG" />'
+      '    <xsl:variable name="descrizione" >'
+      '      <xsl:value-of select="$Prefix" />'
+      '      <xsl:value-of select="$IdDocumento" />'
+      '      <xsl:if test="$Data">'
+      '        <xsl:text> del </xsl:text>'
+      '        <xsl:call-template name="FormatDateIta">'
+      '          <xsl:with-param name="DateTime" select="$Data" />'
+      '        </xsl:call-template>'
+      '      </xsl:if>'
+      '      <xsl:if test="$CodiceCUP">'
+      '        <xsl:text> CUP: </xsl:text>'
+      '        <xsl:value-of select="$CodiceCUP" />'
+      '      </xsl:if>'
+      '      <xsl:if test="$CodiceCIG">'
+      '        <xsl:text> CIG: </xsl:text>'
+      '        <xsl:value-of select="$CodiceCIG" />'
+      '      </xsl:if>'
+      '    </xsl:variable>'
+      '    <xsl:if test="$descrizione">'
+      '      <xsl:call-template name="AltraDescrizioneLinea">'
+      
+        '        <xsl:with-param name="textDescrizione" select = "$descri' +
+        'zione" />'
+      '      </xsl:call-template>'
+      '    </xsl:if>'
+      '  </xsl:template>'
+      ''
+      '  <xsl:template match="DatiDDT">'
+      #9'  <xsl:variable name="descri_DAO" >'
+      ''
+      #9#9'  <xsl:text>DDT </xsl:text>'
+      #9#9'  <xsl:value-of select="NumeroDDT" />'
+      #9#9'  <xsl:if test="DataDDT">'
+      #9#9#9'<xsl:text> del </xsl:text>'
+      #9#9#9'<xsl:call-template name="FormatDateIta">'
+      #9#9#9'  <xsl:with-param name="DateTime" select="DataDDT" />'
+      #9#9#9'</xsl:call-template>'
+      #9#9'  </xsl:if>'
+      ''
+      #9'  </xsl:variable>'
+      ''
+      #9'  <xsl:if test="$descri_DAO">'
+      #9#9'<xsl:call-template name="AltraDescrizioneLinea">'
+      
+        #9#9'  <xsl:with-param name="textDescrizione" select = "$descri_DAO' +
+        '" />'
+      #9#9'</xsl:call-template>'
+      #9'  </xsl:if>'
+      '  </xsl:template>'
+      ''
+      '  <xsl:template match="DettaglioLinee">'
+      '    <xsl:param name="r" />'
+      '    <xsl:param name="posASWRELSTD" />'
+      '    <xsl:param name="TipoFattura" />'
+      '    <xsl:param name="IndiceBody" />'
+      ''
+      '    <!--Numero Linea -->'
+      '    <xsl:variable name="valNumeroLinea" >'
+      '      <xsl:value-of select="number(NumeroLinea)" />'
+      '    </xsl:variable>'
+      ''
+      '    <!--Pre LINEA OpzPreLineaDatiDDT -->'
+      ''
+      '    <xsl:choose>'
+      ''
+      '      <xsl:when test="OpzPreLineaDatiDDT">'
+      '        <!--Pre LINEA OpzPreLineaDatiDDT -->'
+      '        <xsl:for-each select="OpzPreLineaDatiDDT"  >'
+      '          <xsl:call-template name="AltraDescrizioneLinea">'
+      
+        '            <xsl:with-param name="textDescrizione" select = "." ' +
+        '/>'
+      '          </xsl:call-template>'
+      '        </xsl:for-each>'
+      ''
+      '      </xsl:when>'
+      #9'    <xsl:otherwise>'
+      ''
+      
+        #9'   <xsl:for-each select="$TipoFattura/FatturaElettronicaBody[$I' +
         'ndiceBody]/DatiGenerali/DatiDDT[ number(./RiferimentoNumeroLinea' +
         ') = $valNumeroLinea] ">'
-      #9#9#9#9#9'<xsl:apply-templates select="."/>'
-      #9#9#9#9#9'<!-- apply DatiDDT template -->'
-      #9#9#9#9'</xsl:for-each>'
-      #9#9#9'</xsl:otherwise>'
-      #9#9'</xsl:choose>'
-      #9#9'<!--DatiOrdineAcquisto  -->'
-      #9#9'<xsl:choose>'
-      #9#9#9'<!--Pre LINEA OpzPreLineaDatiOrdineAcquisto  -->'
-      #9#9#9'<xsl:when test="OpzPreLineaDatiOrdineAcquisto ">'
-      #9#9#9#9'<xsl:for-each select="OpzPreLineaDatiOrdineAcquisto">'
-      #9#9#9#9#9'<xsl:call-template name="AltraDescrizioneLinea">'
-      #9#9#9#9#9#9'<xsl:with-param name="textDescrizione" select="."/>'
-      #9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9'</xsl:for-each>'
-      #9#9#9'</xsl:when>'
-      #9#9#9'<xsl:otherwise>'
       
-        #9#9#9#9'<xsl:for-each select="$TipoFattura/FatturaElettronicaBody[$I' +
-        'ndiceBody]/DatiGenerali/DatiOrdineAcquisto[ number(./Riferimento' +
-        'NumeroLinea) = $valNumeroLinea] ">'
-      #9#9#9#9#9'<xsl:call-template name="DatiCorrelati">'
+        #9#9#9#9'<xsl:apply-templates select="."/>'#9'<!-- apply DatiDDT templat' +
+        'e -->'
+      '        </xsl:for-each>'
+      ''
+      '      </xsl:otherwise>'
+      '    </xsl:choose>'
+      ''
+      ''
+      '    <!--DatiOrdineAcquisto  -->'
+      '    <xsl:choose>'
+      '      <!--Pre LINEA OpzPreLineaDatiOrdineAcquisto  -->'
+      '      <xsl:when test="OpzPreLineaDatiOrdineAcquisto ">'
+      '        <xsl:for-each select="OpzPreLineaDatiOrdineAcquisto"  >'
+      '          <xsl:call-template name="AltraDescrizioneLinea">'
       
-        #9#9#9#9#9#9'<xsl:with-param name="Prefix" select="&quot;Vs.Ord. &quot;' +
-        '"/>'
-      #9#9#9#9#9#9'<xsl:with-param name="IdDocumento" select="IdDocumento"/>'
-      #9#9#9#9#9#9'<xsl:with-param name="Data" select="Data"/>'
-      #9#9#9#9#9#9'<xsl:with-param name="CodiceCUP" select="CodiceCUP"/>'
-      #9#9#9#9#9#9'<xsl:with-param name="CodiceCIG" select="CodiceCIG"/>'
-      #9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9'</xsl:for-each>'
-      #9#9#9'</xsl:otherwise>'
-      #9#9'</xsl:choose>'
-      #9#9'<!--DatiContratto  -->'
-      #9#9'<xsl:choose>'
-      #9#9#9'<!--Pre LINEA OpzPreLineaDatiContratto  -->'
-      #9#9#9'<xsl:when test="OpzPreLineaDatiContratto ">'
-      #9#9#9#9'<xsl:for-each select="OpzPreLineaDatiContratto">'
-      #9#9#9#9#9'<xsl:call-template name="AltraDescrizioneLinea">'
-      #9#9#9#9#9#9'<xsl:with-param name="textDescrizione" select="."/>'
-      #9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9'</xsl:for-each>'
-      #9#9#9'</xsl:when>'
-      #9#9#9'<xsl:otherwise>'
+        '            <xsl:with-param name="textDescrizione" select = "." ' +
+        '/>'
+      '          </xsl:call-template>'
+      '        </xsl:for-each>'
+      '      </xsl:when>'
+      ''
+      '      <xsl:otherwise>'
+      ''
       
-        #9#9#9#9'<xsl:for-each select="$TipoFattura/FatturaElettronicaBody[$I' +
-        'ndiceBody]/DatiGenerali/DatiContratto[ number(./RiferimentoNumer' +
-        'oLinea) = $valNumeroLinea] ">'
-      #9#9#9#9#9'<xsl:call-template name="DatiCorrelati">'
+        #9'  <xsl:for-each select="$TipoFattura/FatturaElettronicaBody[$In' +
+        'diceBody]/DatiGenerali/DatiOrdineAcquisto[ number(./RiferimentoN' +
+        'umeroLinea) = $valNumeroLinea] ">'
+      #9#9#9'<xsl:call-template name="DatiCorrelati" >'
       
-        #9#9#9#9#9#9'<xsl:with-param name="Prefix" select="&quot;Contratto &quo' +
-        't;"/>'
-      #9#9#9#9#9#9'<xsl:with-param name="IdDocumento" select="IdDocumento"/>'
-      #9#9#9#9#9#9'<xsl:with-param name="Data" select="Data"/>'
-      #9#9#9#9#9#9'<xsl:with-param name="CodiceCUP" select="CodiceCUP"/>'
-      #9#9#9#9#9#9'<xsl:with-param name="CodiceCIG" select="CodiceCIG"/>'
-      #9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9'</xsl:for-each>'
-      #9#9#9'</xsl:otherwise>'
-      #9#9'</xsl:choose>'
-      #9#9'<!--DatiConvenzione -->'
-      #9#9'<xsl:choose>'
-      #9#9#9'<!--Pre LINEA OpzPreLineaDatiConvenzione -->'
-      #9#9#9'<xsl:when test="OpzPreLineaDatiConvenzione ">'
-      #9#9#9#9'<xsl:for-each select="OpzPreLineaDatiConvenzione">'
-      #9#9#9#9#9'<xsl:call-template name="AltraDescrizioneLinea">'
-      #9#9#9#9#9#9'<xsl:with-param name="textDescrizione" select="."/>'
-      #9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9'</xsl:for-each>'
-      #9#9#9'</xsl:when>'
-      #9#9#9'<xsl:otherwise>'
+        '            <xsl:with-param name="Prefix"   select='#39'"Vs.Ord. "'#39'/' +
+        '>'
       
-        #9#9#9#9'<xsl:for-each select="$TipoFattura/FatturaElettronicaBody[$I' +
-        'ndiceBody]/DatiGenerali/DatiConvenzione[ number(./RiferimentoNum' +
-        'eroLinea) = $valNumeroLinea] ">'
-      #9#9#9#9#9'<xsl:call-template name="DatiCorrelati">'
+        '            <xsl:with-param name="IdDocumento" select="IdDocumen' +
+        'to"/>'
+      '            <xsl:with-param name="Data" select="Data"/>'
       
-        #9#9#9#9#9#9'<xsl:with-param name="Prefix" select="&quot;Convenzione &q' +
-        'uot;"/>'
-      #9#9#9#9#9#9'<xsl:with-param name="IdDocumento" select="IdDocumento"/>'
-      #9#9#9#9#9#9'<xsl:with-param name="Data" select="Data"/>'
-      #9#9#9#9#9#9'<xsl:with-param name="CodiceCUP" select="CodiceCUP"/>'
-      #9#9#9#9#9#9'<xsl:with-param name="CodiceCIG" select="CodiceCIG"/>'
-      #9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9'</xsl:for-each>'
-      #9#9#9'</xsl:otherwise>'
-      #9#9'</xsl:choose>'
-      #9#9'<!--DatiRicezione -->'
-      #9#9'<xsl:choose>'
-      #9#9#9'<!--Pre LINEA OpzPreLineaDatiRicezione -->'
-      #9#9#9'<xsl:when test="OpzPreLineaDatiRicezione ">'
-      #9#9#9#9'<xsl:for-each select="OpzPreLineaDatiRicezione">'
-      #9#9#9#9#9'<xsl:call-template name="AltraDescrizioneLinea">'
-      #9#9#9#9#9#9'<xsl:with-param name="textDescrizione" select="."/>'
-      #9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9'</xsl:for-each>'
-      #9#9#9'</xsl:when>'
-      #9#9#9'<xsl:otherwise>'
+        '            <xsl:with-param name="CodiceCUP" select="CodiceCUP"/' +
+        '>'
       
-        #9#9#9#9'<xsl:for-each select="$TipoFattura/FatturaElettronicaBody[$I' +
-        'ndiceBody]/DatiGenerali/DatiRicezione[ number(./RiferimentoNumer' +
-        'oLinea) = $valNumeroLinea] ">'
-      #9#9#9#9#9'<xsl:call-template name="DatiCorrelati">'
+        '            <xsl:with-param name="CodiceCIG" select="CodiceCIG"/' +
+        '>'
+      '          </xsl:call-template >'
+      '        </xsl:for-each>'
+      ''
+      ''
+      #9'  </xsl:otherwise>'
+      '    </xsl:choose>'
+      ''
+      '    <!--DatiContratto  -->'
+      '      <xsl:choose>'
+      '      <!--Pre LINEA OpzPreLineaDatiContratto  -->'
+      '      <xsl:when test="OpzPreLineaDatiContratto ">'
+      '        <xsl:for-each select="OpzPreLineaDatiContratto"  >'
+      '          <xsl:call-template name="AltraDescrizioneLinea">'
       
-        #9#9#9#9#9#9'<xsl:with-param name="Prefix" select="&quot;Ricezione &quo' +
-        't;"/>'
-      #9#9#9#9#9#9'<xsl:with-param name="IdDocumento" select="IdDocumento"/>'
-      #9#9#9#9#9#9'<xsl:with-param name="Data" select="Data"/>'
-      #9#9#9#9#9#9'<xsl:with-param name="CodiceCUP" select="CodiceCUP"/>'
-      #9#9#9#9#9#9'<xsl:with-param name="CodiceCIG" select="CodiceCIG"/>'
-      #9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9'</xsl:for-each>'
-      #9#9#9'</xsl:otherwise>'
-      #9#9'</xsl:choose>'
-      #9#9'<!--DatiFattureCollegate-->'
-      #9#9'<xsl:choose>'
-      #9#9#9'<!--Pre LINEA OpzPreLineaDatiFattureCollegate-->'
-      #9#9#9'<xsl:when test="OpzPreLineaDatiFattureCollegate ">'
-      #9#9#9#9'<xsl:for-each select="OpzPreLineaDatiFattureCollegate">'
-      #9#9#9#9#9'<xsl:call-template name="AltraDescrizioneLinea">'
-      #9#9#9#9#9#9'<xsl:with-param name="textDescrizione" select="."/>'
-      #9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9'</xsl:for-each>'
-      #9#9#9'</xsl:when>'
-      #9#9#9'<xsl:otherwise>'
+        '            <xsl:with-param name="textDescrizione" select = "." ' +
+        '/>'
+      '          </xsl:call-template>'
+      '        </xsl:for-each>'
+      '      </xsl:when>'
+      ''
+      '      <xsl:otherwise>'
       
-        #9#9#9#9'<xsl:for-each select="$TipoFattura/FatturaElettronicaBody[$I' +
-        'ndiceBody]/DatiGenerali/DatiFattureCollegate[ number(./Riferimen' +
-        'toNumeroLinea) = $valNumeroLinea] ">'
-      #9#9#9#9#9'<xsl:call-template name="DatiCorrelati">'
+        #9#9'<xsl:for-each select="$TipoFattura/FatturaElettronicaBody[$Ind' +
+        'iceBody]/DatiGenerali/DatiContratto[ number(./RiferimentoNumeroL' +
+        'inea) = $valNumeroLinea] ">'
+      #9'    <xsl:call-template name="DatiCorrelati" >'
       
-        #9#9#9#9#9#9'<xsl:with-param name="Prefix" select="&quot;Fatt.coll. &qu' +
-        'ot;"/>'
-      #9#9#9#9#9#9'<xsl:with-param name="IdDocumento" select="IdDocumento"/>'
-      #9#9#9#9#9#9'<xsl:with-param name="Data" select="Data"/>'
-      #9#9#9#9#9#9'<xsl:with-param name="CodiceCUP" select="CodiceCUP"/>'
-      #9#9#9#9#9#9'<xsl:with-param name="CodiceCIG" select="CodiceCIG"/>'
-      #9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9'</xsl:for-each>'
-      #9#9#9'</xsl:otherwise>'
-      #9#9'</xsl:choose>'
-      #9#9'<!--DETTAGLIO LINEE -->'
-      #9#9'<xsl:choose>'
-      #9#9#9'<xsl:when test="$posASWRELSTD = $r">'
-      #9#9#9#9'<xsl:call-template name="DettaglioLineeASW"/>'
-      #9#9#9'</xsl:when>'
-      #9#9#9'<xsl:otherwise>'
-      #9#9#9#9'<tr>'
-      #9#9#9#9#9'<td>'
-      #9#9#9#9#9#9'<xsl:for-each select="CodiceArticolo">'
-      #9#9#9#9#9#9#9'<div class="tx-xsmall">'
-      #9#9#9#9#9#9#9#9'<xsl:if test="CodiceValore">'
-      #9#9#9#9#9#9#9#9#9'<xsl:text>'
-      #9#9#9#9#9#9#9#9#9'</xsl:text>'
-      #9#9#9#9#9#9#9#9#9'<xsl:value-of select="CodiceValore"/>'
-      #9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9'<xsl:if test="CodiceTipo">'
-      '                  (<xsl:value-of select="CodiceTipo"/>)'
+        '            <xsl:with-param name="Prefix"  select='#39'"Contratto "'#39 +
+        '/>'
+      
+        '            <xsl:with-param name="IdDocumento" select="IdDocumen' +
+        'to"/>'
+      '            <xsl:with-param name="Data" select="Data"/>'
+      
+        '            <xsl:with-param name="CodiceCUP" select="CodiceCUP"/' +
+        '>'
+      
+        '            <xsl:with-param name="CodiceCIG" select="CodiceCIG"/' +
+        '>'
+      '          </xsl:call-template >'
+      #9'    </xsl:for-each>'
+      ''
+      #9'  </xsl:otherwise>'
+      '    </xsl:choose>'
+      ''
+      '    <!--DatiConvenzione -->'
+      '    <xsl:choose>'
+      '      <!--Pre LINEA OpzPreLineaDatiConvenzione -->'
+      '      <xsl:when test="OpzPreLineaDatiConvenzione ">'
+      '        <xsl:for-each select="OpzPreLineaDatiConvenzione"  >'
+      '          <xsl:call-template name="AltraDescrizioneLinea">'
+      
+        '            <xsl:with-param name="textDescrizione" select = "." ' +
+        '/>'
+      '          </xsl:call-template>'
+      '        </xsl:for-each>'
+      '      </xsl:when>'
+      ''
+      '      <xsl:otherwise>'
+      ''
+      
+        #9'  <xsl:for-each select="$TipoFattura/FatturaElettronicaBody[$In' +
+        'diceBody]/DatiGenerali/DatiConvenzione[ number(./RiferimentoNume' +
+        'roLinea) = $valNumeroLinea] ">'
+      '          <xsl:call-template name="DatiCorrelati" >'
+      
+        '            <xsl:with-param name="Prefix"  select='#39'"Convenzione ' +
+        '"'#39'/>'
+      
+        '            <xsl:with-param name="IdDocumento" select="IdDocumen' +
+        'to"/>'
+      '            <xsl:with-param name="Data" select="Data"/>'
+      
+        '            <xsl:with-param name="CodiceCUP" select="CodiceCUP"/' +
+        '>'
+      
+        '            <xsl:with-param name="CodiceCIG" select="CodiceCIG"/' +
+        '>'
+      '          </xsl:call-template >'
+      '        </xsl:for-each>'
+      ''
+      #9'  </xsl:otherwise>'
+      '    </xsl:choose>'
+      ''
+      '    <!--DatiRicezione -->'
+      '    <xsl:choose>'
+      '      <!--Pre LINEA OpzPreLineaDatiRicezione -->'
+      '      <xsl:when test="OpzPreLineaDatiRicezione ">'
+      '        <xsl:for-each select="OpzPreLineaDatiRicezione"  >'
+      '          <xsl:call-template name="AltraDescrizioneLinea">'
+      
+        '            <xsl:with-param name="textDescrizione" select = "." ' +
+        '/>'
+      '          </xsl:call-template>'
+      '        </xsl:for-each>'
+      '      </xsl:when>'
+      ''
+      '      <xsl:otherwise>'
+      ''
+      
+        #9' <xsl:for-each select="$TipoFattura/FatturaElettronicaBody[$Ind' +
+        'iceBody]/DatiGenerali/DatiRicezione[ number(./RiferimentoNumeroL' +
+        'inea) = $valNumeroLinea] ">'
+      '          <xsl:call-template name="DatiCorrelati" >'
+      
+        '            <xsl:with-param name="Prefix"  select='#39'"Ricezione "'#39 +
+        '/>'
+      
+        '            <xsl:with-param name="IdDocumento" select="IdDocumen' +
+        'to"/>'
+      '            <xsl:with-param name="Data" select="Data"/>'
+      
+        '            <xsl:with-param name="CodiceCUP" select="CodiceCUP"/' +
+        '>'
+      
+        '            <xsl:with-param name="CodiceCIG" select="CodiceCIG"/' +
+        '>'
+      '          </xsl:call-template >'
+      '        </xsl:for-each>'
+      ''
+      #9'  </xsl:otherwise>'
+      '    </xsl:choose>'
+      ''
+      '    <!--DatiFattureCollegate-->'
+      '    <xsl:choose>'
+      '      <!--Pre LINEA OpzPreLineaDatiFattureCollegate-->'
+      '      <xsl:when test="OpzPreLineaDatiFattureCollegate ">'
+      
+        '        <xsl:for-each select="OpzPreLineaDatiFattureCollegate"  ' +
+        '>'
+      '          <xsl:call-template name="AltraDescrizioneLinea">'
+      
+        '            <xsl:with-param name="textDescrizione" select = "." ' +
+        '/>'
+      '          </xsl:call-template>'
+      '        </xsl:for-each>'
+      '      </xsl:when>'
+      '      <xsl:otherwise>'
+      ''
+      
+        '     <xsl:for-each select="$TipoFattura/FatturaElettronicaBody[$' +
+        'IndiceBody]/DatiGenerali/DatiFattureCollegate[ number(./Riferime' +
+        'ntoNumeroLinea) = $valNumeroLinea] ">'
+      '          <xsl:call-template name="DatiCorrelati" >'
+      
+        '            <xsl:with-param name="Prefix"  select='#39'"Fatt.coll. "' +
+        #39'/>'
+      
+        '            <xsl:with-param name="IdDocumento" select="IdDocumen' +
+        'to"/>'
+      '            <xsl:with-param name="Data" select="Data"/>'
+      
+        '            <xsl:with-param name="CodiceCUP" select="CodiceCUP"/' +
+        '>'
+      
+        '            <xsl:with-param name="CodiceCIG" select="CodiceCIG"/' +
+        '>'
+      '          </xsl:call-template >'
+      '        </xsl:for-each>'
+      ''
+      #9'  </xsl:otherwise>'
+      '    </xsl:choose>'
+      ''
+      '    <!--DETTAGLIO LINEE -->'
+      ''
+      '    <xsl:choose>'
+      '      <xsl:when test="$posASWRELSTD = $r">'
+      '        <xsl:call-template name="DettaglioLineeASW"/>'
+      '      </xsl:when>'
+      ''
+      '      <xsl:otherwise>'
+      ''
+      '        <tr>'
+      '          <td>'
+      '            <xsl:for-each select="CodiceArticolo"  >'
+      '              <div class="tx-xsmall">'
+      '                <xsl:if test="CodiceValore">'
+      '                  <xsl:text> </xsl:text>'
+      '                  <xsl:value-of select="CodiceValore" />'
       '                </xsl:if>'
-      #9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9'</td>'
-      #9#9#9#9#9'<td>'
-      #9#9#9#9#9#9'<xsl:if test="Descrizione">'
-      #9#9#9#9#9#9#9'<xsl:value-of select="Descrizione"/>'
-      #9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9'<xsl:if test="TipoCessionePrestazione">'
-      '              (<xsl:value-of select="TipoCessionePrestazione"/>)'
+      '                <xsl:if test="CodiceTipo">'
+      '                  (<xsl:value-of select="CodiceTipo" />)'
+      '                </xsl:if>'
+      '              </div>'
+      '            </xsl:for-each>'
+      '          </td>'
+      '          <td>'
+      ''
+      '            <xsl:if test="Descrizione">'
+      '              <xsl:value-of select="Descrizione" />'
       '            </xsl:if>'
-      #9#9#9#9#9#9'<xsl:if test="DataInizioPeriodo or DataFinePeriodo">'
-      #9#9#9#9#9#9#9'<div class="tx-xsmall">'
-      #9#9#9#9#9#9#9#9'<xsl:text>Periodo</xsl:text>'
-      #9#9#9#9#9#9#9#9'<xsl:if test="DataInizioPeriodo">'
-      #9#9#9#9#9#9#9#9#9'<xsl:text> da </xsl:text>'
-      #9#9#9#9#9#9#9#9#9'<xsl:call-template name="FormatDateIta">'
+      ''
+      '            <xsl:if test="TipoCessionePrestazione">'
       
-        #9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="DateTime" select="DataInizioPeri' +
-        'odo"/>'
-      #9#9#9#9#9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9'<xsl:if test="DataFinePeriodo">'
-      #9#9#9#9#9#9#9#9#9'<xsl:text> a </xsl:text>'
-      #9#9#9#9#9#9#9#9#9'<xsl:call-template name="FormatDateIta">'
+        '              (<xsl:value-of select="TipoCessionePrestazione" />' +
+        ')'
+      '            </xsl:if>'
+      ''
+      '            <xsl:if test="DataInizioPeriodo or DataFinePeriodo">'
+      '              <div class="tx-xsmall">'
+      '                <xsl:text>Periodo</xsl:text>'
+      '                <xsl:if test="DataInizioPeriodo">'
+      '                  <xsl:text> da </xsl:text>'
+      '                  <xsl:call-template name="FormatDateIta">'
       
-        #9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="DateTime" select="DataFinePeriod' +
-        'o"/>'
-      #9#9#9#9#9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9'<xsl:for-each select="AltriDatiGestionali">'
+        '                    <xsl:with-param name="DateTime" select="Data' +
+        'InizioPeriodo" />'
+      '                  </xsl:call-template>'
+      '                </xsl:if>'
+      '                <xsl:if test="DataFinePeriodo">'
+      '                  <xsl:text> a </xsl:text>'
+      '                  <xsl:call-template name="FormatDateIta">'
       
-        #9#9#9#9#9#9#9'<xsl:if test=" translate( TipoDato,&#xA;                 ' +
-        '                    '#39'ABCDEFGHIJKLMNOPQRSTUVWXYZ'#39',&#xA;          ' +
-        '                           '#39'abcdefghijklmnopqrstuvwxyz'#39'&#xA;    ' +
-        '                                ) != '#39'aswrelstd'#39'&#xA;'#9#9#9#9#9#9#9#9#9'an' +
-        'd&#xA;'#9#9#9#9#9#9#9#9#9'translate( TipoDato,&#xA;                        ' +
-        '             '#39'ABCDEFGHIJKLMNOPQRSTUVWXYZ'#39',&#xA;                 ' +
-        '                    '#39'abcdefghijklmnopqrstuvwxyz'#39'&#xA;           ' +
-        '                         ) != '#39'aswswhouse'#39'&#xA;         and&#xA;' +
-        #9#9#9#9#9#9#9#9#9'translate( TipoDato,&#xA;                              ' +
-        '       '#39'ABCDEFGHIJKLMNOPQRSTUVWXYZ'#39',&#xA;                       ' +
-        '              '#39'abcdefghijklmnopqrstuvwxyz'#39'&#xA;                 ' +
-        '                   ) != '#39'aswtriga'#39'   ">'
-      #9#9#9#9#9#9#9#9'<div class="tx-xsmall">'
-      #9#9#9#9#9#9#9#9#9'<xsl:text>Tipo dato: </xsl:text>'
-      #9#9#9#9#9#9#9#9#9'<xsl:value-of select="TipoDato"/>'
+        '                    <xsl:with-param name="DateTime" select="Data' +
+        'FinePeriodo" />'
+      '                  </xsl:call-template>'
+      '                </xsl:if>'
+      '              </div>'
+      ''
+      '            </xsl:if>'
+      ''
+      ''
+      '            <xsl:for-each select="AltriDatiGestionali"  >'
+      ''
+      '              <xsl:if test=" translate( TipoDato,'
       
-        #9#9#9#9#9#9#9#9#9'<xsl:if test=" translate( TipoDato,&#xA;               ' +
-        '                      '#39'ABCDEFGHIJKLMNOPQRSTUVWXYZ'#39',&#xA;        ' +
-        '                             '#39'abcdefghijklmnopqrstuvwxyz'#39'&#xA;  ' +
-        '                                  ) = '#39'aswlottsca'#39' ">'
+        '                                     '#39'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
+        #39','
       
-        #9#9#9#9#9#9#9#9#9#9'<xsl:text> (dati relativi a lotti e scadenze) </xsl:te' +
-        'xt>'
-      #9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9'<xsl:if test="RiferimentoTesto">'
-      #9#9#9#9#9#9#9#9#9'<div class="tx-xsmall">'
-      #9#9#9#9#9#9#9#9#9#9'<xsl:choose>'
+        '                                     '#39'abcdefghijklmnopqrstuvwxyz' +
+        #39
+      '                                    ) != '#39'aswrelstd'#39
+      #9#9#9#9#9#9#9#9#9'and'
+      #9#9#9#9#9#9#9#9#9'translate( TipoDato,'
       
-        #9#9#9#9#9#9#9#9#9#9#9'<xsl:when test=" translate( TipoDato,&#xA;           ' +
-        '                          '#39'ABCDEFGHIJKLMNOPQRSTUVWXYZ'#39',&#xA;    ' +
-        '                                 '#39'abcdefghijklmnopqrstuvwxyz'#39'&#x' +
-        'A;                                    ) = '#39'aswlottsca'#39' ">'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:text>Lotto: </xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:text>Rif. testo: </xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9'</xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="RiferimentoTesto"/>'
-      #9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9'<xsl:if test="RiferimentoData">'
-      #9#9#9#9#9#9#9#9#9'<div class="tx-xsmall">'
-      #9#9#9#9#9#9#9#9#9#9'<xsl:choose>'
+        '                                     '#39'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
+        #39','
       
-        #9#9#9#9#9#9#9#9#9#9#9'<xsl:when test=" translate( TipoDato,&#xA;           ' +
-        '                          '#39'ABCDEFGHIJKLMNOPQRSTUVWXYZ'#39',&#xA;    ' +
-        '                                 '#39'abcdefghijklmnopqrstuvwxyz'#39'&#x' +
-        'A;                                    ) = '#39'aswlottsca'#39' ">'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:text>Scadenza: </xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:text>Rif. data: </xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9'</xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9'<xsl:call-template name="FormatDateIta">'
+        '                                     '#39'abcdefghijklmnopqrstuvwxyz' +
+        #39
+      '                                    ) != '#39'aswswhouse'#39'   ">'
+      ''
+      ''
+      '                <div class="tx-xsmall">'
+      '                  <xsl:text>Tipo dato: </xsl:text>'
+      '                  <xsl:value-of select="TipoDato" />'
+      '                  <xsl:if test=" translate( TipoDato,'
       
-        #9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="DateTime" select="RiferimentoDa' +
-        'ta"/>'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9'<xsl:if test="RiferimentoNumero">'
-      #9#9#9#9#9#9#9#9#9'<div class="tx-xsmall">'
-      #9#9#9#9#9#9#9#9#9#9'<xsl:choose>'
+        '                                     '#39'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
+        #39','
       
-        #9#9#9#9#9#9#9#9#9#9#9'<xsl:when test=" translate( TipoDato,&#xA;           ' +
-        '                          '#39'ABCDEFGHIJKLMNOPQRSTUVWXYZ'#39',&#xA;    ' +
-        '                                 '#39'abcdefghijklmnopqrstuvwxyz'#39'&#x' +
-        'A;                                    ) = '#39'aswlottsca'#39' ">'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:text>Quantit'#224' del suddetto lotto: </xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:text>Rif. numero: </xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9'</xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:choose>'
+        '                                     '#39'abcdefghijklmnopqrstuvwxyz' +
+        #39
+      '                                    ) = '#39'aswlottsca'#39' ">'
       
-        #9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="format-number(RiferimentoNumero,' +
-        '  '#39'###.###.##0,00######'#39', '#39'euro'#39')"/>'
-      #9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9'<xsl:if test="RiferimentoAmministrazione">'
-      #9#9#9#9#9#9#9'<div class="tx-xsmall">'
+        '                    <xsl:text> (dati relativi a lotti e scadenze' +
+        ') </xsl:text>'
+      '                  </xsl:if>'
+      ''
+      '                </div>'
+      ''
+      '                <xsl:if test="RiferimentoTesto">'
+      '                  <div class="tx-xsmall">'
+      '                    <xsl:choose>'
+      '                      <xsl:when test=" translate( TipoDato,'
+      
+        '                                     '#39'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
+        #39','
+      
+        '                                     '#39'abcdefghijklmnopqrstuvwxyz' +
+        #39
+      '                                    ) = '#39'aswlottsca'#39' ">'
+      ''
+      '                        <xsl:text>Lotto: </xsl:text>'
+      '                      </xsl:when>'
+      '                      <xsl:otherwise>'
+      '                        <xsl:text>Rif. testo: </xsl:text>'
+      '                      </xsl:otherwise>'
+      '                    </xsl:choose>'
+      '                    <xsl:value-of select="RiferimentoTesto" />'
+      '                  </div>'
+      '                </xsl:if>'
+      ''
+      ''
+      ''
+      '                <xsl:if test="RiferimentoData">'
+      '                  <div class="tx-xsmall">'
+      '                    <xsl:choose>'
+      '                      <xsl:when test=" translate( TipoDato,'
+      
+        '                                     '#39'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
+        #39','
+      
+        '                                     '#39'abcdefghijklmnopqrstuvwxyz' +
+        #39
+      '                                    ) = '#39'aswlottsca'#39' ">'
+      ''
+      '                        <xsl:text>Scadenza: </xsl:text>'
+      '                      </xsl:when>'
+      '                      <xsl:otherwise>'
+      '                        <xsl:text>Rif. data: </xsl:text>'
+      '                      </xsl:otherwise>'
+      '                    </xsl:choose>'
+      ''
+      '                    <xsl:call-template name="FormatDateIta">'
+      
+        '                      <xsl:with-param name="DateTime" select="Ri' +
+        'ferimentoData" />'
+      '                    </xsl:call-template>'
+      ''
+      '                  </div>'
+      '                </xsl:if>'
+      ''
+      '                <xsl:if test="RiferimentoNumero">'
+      '                  <div class="tx-xsmall">'
+      '                    <xsl:choose>'
+      '                      <xsl:when test=" translate( TipoDato,'
+      
+        '                                     '#39'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
+        #39','
+      
+        '                                     '#39'abcdefghijklmnopqrstuvwxyz' +
+        #39
+      '                                    ) = '#39'aswlottsca'#39' ">'
+      ''
+      
+        '                        <xsl:text>Quantit'#224' del suddetto lotto: <' +
+        '/xsl:text>'
+      '                      </xsl:when>'
+      '                      <xsl:otherwise>'
+      '                        <xsl:text>Rif. numero: </xsl:text>'
+      '                      </xsl:otherwise>'
+      '                    </xsl:choose>'
+      
+        '                    <xsl:value-of select="format-number(Riferime' +
+        'ntoNumero,  '#39'###.###.##0,00######'#39', '#39'euro'#39')" />'
+      '                  </div>'
+      '                </xsl:if>'
+      ''
+      ''
+      ''
+      '              </xsl:if>'
+      ''
+      '            </xsl:for-each>'
+      ''
+      '            <xsl:if test="RiferimentoAmministrazione">'
+      '              <div class="tx-xsmall">'
       
         '                RIF.AMM. <xsl:value-of select="RiferimentoAmmini' +
-        'strazione"/>'
-      #9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9'</td>'
-      #9#9#9#9#9'<td class="import2">'
-      #9#9#9#9#9#9'<xsl:if test="Quantita">'
-      #9#9#9#9#9#9#9'<xsl:if test="number(Quantita)">'
+        'strazione" />'
+      '              </div>'
+      '            </xsl:if>'
+      ''
+      '          </td>'
+      ''
+      ''
+      ''
+      '          <td class="import2" >'
+      '            <xsl:if test="Quantita">'
+      '              <xsl:if test="number(Quantita)">'
       
-        #9#9#9#9#9#9#9#9'<xsl:value-of select="format-number(Quantita,  '#39'###.###.' +
-        '##0,00######'#39', '#39'euro'#39')"/>'
-      #9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9'</td>'
-      #9#9#9#9#9'<td class="import">'
-      #9#9#9#9#9#9'<xsl:if test="PrezzoUnitario">'
-      #9#9#9#9#9#9#9'<xsl:if test="number(PrezzoTotale)">'
-      
-        #9#9#9#9#9#9#9#9'<xsl:value-of select="format-number(PrezzoUnitario,  '#39'##' +
-        '#.###.##0,00######'#39', '#39'euro'#39')"/>'
-      #9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9'</td>'
-      #9#9#9#9#9'<td class="textCenter">'
-      #9#9#9#9#9#9'<xsl:if test="UnitaMisura">'
-      #9#9#9#9#9#9#9'<xsl:value-of select="UnitaMisura"/>'
-      #9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9'</td>'
-      #9#9#9#9#9'<td class="import">'
-      #9#9#9#9#9#9'<xsl:for-each select="ScontoMaggiorazione">'
-      #9#9#9#9#9#9#9'<div>'
-      #9#9#9#9#9#9#9#9'<xsl:call-template name="FormatColSconto">'
-      #9#9#9#9#9#9#9#9#9'<xsl:with-param name="tipo" select="Tipo"/>'
-      
-        #9#9#9#9#9#9#9#9#9'<xsl:with-param name="percentuale" select="Percentuale"' +
-        '/>'
-      #9#9#9#9#9#9#9#9#9'<xsl:with-param name="importo" select="Importo"/>'
-      #9#9#9#9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9'</td>'
-      #9#9#9#9#9'<td class="import">'
-      #9#9#9#9#9#9'<xsl:if test="number(PrezzoTotale)">'
-      #9#9#9#9#9#9#9'<xsl:call-template name="FormatIVA">'
-      #9#9#9#9#9#9#9#9'<xsl:with-param name="Natura" select="Natura"/>'
-      #9#9#9#9#9#9#9#9'<xsl:with-param name="IVA" select="AliquotaIVA"/>'
-      #9#9#9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9'</td>'
-      #9#9#9#9#9'<td>'
-      #9#9#9#9#9#9'<xsl:if test="PrezzoTotale">'
-      #9#9#9#9#9#9#9'<xsl:if test="number(PrezzoTotale)">'
-      #9#9#9#9#9#9#9#9'<div class="import">'
-      
-        #9#9#9#9#9#9#9#9#9'<xsl:value-of select="format-number(PrezzoTotale,  '#39'###' +
-        '.###.##0,00######'#39', '#39'euro'#39')"/>'
-      #9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9'<xsl:if test="OpzPrezzoTotale">'
-      #9#9#9#9#9#9#9#9'<div class="tx-xsmall">'
-      #9#9#9#9#9#9#9#9#9'<xsl:value-of select="OpzPrezzoTotale"/>'
-      #9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9'</td>'
-      #9#9#9#9'</tr>'
-      #9#9#9'</xsl:otherwise>'
-      #9#9'</xsl:choose>'
-      #9#9'<!--POST LINEA -->'
-      #9#9'<xsl:for-each select="OpzPostLinea">'
-      #9#9#9'<xsl:call-template name="AltraDescrizioneLinea">'
-      #9#9#9#9'<xsl:with-param name="textDescrizione" select="."/>'
-      #9#9#9'</xsl:call-template>'
-      #9#9'</xsl:for-each>'
-      #9'</xsl:template>'
-      
-        #9'<!-- Nel caso in cui ho un AltriDatiGestionali con aswrelstd o ' +
-        'aswswhouse, mi permette'
-      '  di stampare tutti alti dati ma non aswrelstd e aswswhouse -->'
-      #9'<xsl:template name="DettaglioLineeASW">'
-      #9#9'<tr>'
-      #9#9#9'<td>'
-      #9#9#9'</td>'
-      #9#9#9'<td>'
-      #9#9#9#9'<xsl:text>------------------------</xsl:text>'
-      #9#9#9#9'<xsl:for-each select="AltriDatiGestionali">'
-      
-        #9#9#9#9#9'<xsl:if test=" translate( TipoDato,&#xA;'#9#9#9#9#9#9#9#9#9#9#9#9#9#9' '#39'ABC' +
-        'DEFGHIJKLMNOPQRSTUVWXYZ'#39',&#xA;'#9#9#9#9#9#9#9#9#9#9#9#9#9#9' '#39'abcdefghijklmnopqr' +
-        'stuvwxyz'#39'&#xA;'#9#9#9#9#9#9#9#9#9#9#9#9#9#9') != '#39'aswrelstd'#39'&#xA;'#9#9#9#9#9#9#9#9#9#9#9#9#9#9'a' +
-        'nd&#xA;'#9#9#9#9#9#9#9#9#9#9#9#9#9#9'translate( TipoDato,&#xA;'#9#9#9#9#9#9#9#9#9#9#9#9#9#9' '#39'AB' +
-        'CDEFGHIJKLMNOPQRSTUVWXYZ'#39',&#xA;'#9#9#9#9#9#9#9#9#9#9#9#9#9#9' '#39'abcdefghijklmnopq' +
-        'rstuvwxyz'#39'&#xA;'#9#9#9#9#9#9#9#9#9#9#9#9#9#9') != '#39'aswswhouse'#39'   ">'
-      #9#9#9#9#9#9'<div class="tx-xsmall">'
-      #9#9#9#9#9#9#9'<xsl:value-of select="RiferimentoTesto"/>'
-      #9#9#9#9#9#9#9'<xsl:text>'
-      #9#9#9#9#9#9#9'</xsl:text>'
-      #9#9#9#9#9#9#9'<xsl:value-of select="TipoDato"/>'
-      #9#9#9#9#9#9'</div>'
-      #9#9#9#9#9'</xsl:if>'
-      #9#9#9#9'</xsl:for-each>'
-      #9#9#9'</td>'
-      #9#9#9'<td>'
-      #9#9#9'</td>'
-      #9#9#9'<td>'
-      #9#9#9'</td>'
-      #9#9#9'<td>'
-      #9#9#9'</td>'
-      #9#9#9'<td>'
-      #9#9#9'</td>'
-      #9#9#9'<td>'
-      #9#9#9'</td>'
-      #9#9#9'<td>'
-      #9#9#9'</td>'
-      #9#9'</tr>'
-      #9'</xsl:template>'
-      #9'<xsl:template name="AltraDescrizioneLinea">'
-      #9#9'<xsl:param name="textDescrizione"/>'
-      #9#9'<!-- testo della descrizione -->'
-      #9#9'<tr>'
-      #9#9#9'<td>'
-      #9#9#9'</td>'
-      #9#9#9'<td>'
-      #9#9#9#9'<div class="tx-xsmall">'
-      #9#9#9#9#9'<xsl:value-of select="$textDescrizione"/>'
-      #9#9#9#9'</div>'
-      #9#9#9'</td>'
-      #9#9#9'<td>'
-      #9#9#9'</td>'
-      #9#9#9'<td>'
-      #9#9#9'</td>'
-      #9#9#9'<td>'
-      #9#9#9'</td>'
-      #9#9#9'<td>'
-      #9#9#9'</td>'
-      #9#9#9'<td>'
-      #9#9#9'</td>'
-      #9#9#9'<td>'
-      #9#9#9'</td>'
-      #9#9'</tr>'
-      #9'</xsl:template>'
-      #9'<xsl:template match="DatiRitenuta">'
-      #9#9'<table class="tbFoglio">'
-      #9#9#9'<thead>'
-      #9#9#9#9'<tr>'
-      #9#9#9#9#9'<th class="title"> Dati ritenuta d'#39'acconto</th>'
-      #9#9#9#9#9'<th class="perc">Aliquota ritenuta</th>'
-      #9#9#9#9#9'<th>Causale'#9'</th>'
-      #9#9#9#9#9'<th width="15%">Importo </th>'
-      #9#9#9#9'</tr>'
-      #9#9#9'</thead>'
-      #9#9#9'<tbody>'
-      #9#9#9#9'<tr>'
-      #9#9#9#9#9'<td>'
-      #9#9#9#9#9#9'<xsl:if test="TipoRitenuta">'
-      #9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9'<xsl:value-of select="TipoRitenuta"/>'
-      #9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9'<xsl:variable name="TR">'
-      #9#9#9#9#9#9#9#9'<xsl:value-of select="TipoRitenuta"/>'
-      #9#9#9#9#9#9#9'</xsl:variable>'
-      #9#9#9#9#9#9#9'<xsl:choose>'
-      #9#9#9#9#9#9#9#9'<xsl:when test="$TR='#39'RT01'#39'">'
-      '                  (ritenuta persone fisiche)'
-      '                </xsl:when>'
-      #9#9#9#9#9#9#9#9'<xsl:when test="$TR='#39'RT02'#39'">'
-      '                  (ritenuta persone giuridiche)'
-      '                </xsl:when>'
-      #9#9#9#9#9#9#9#9'<xsl:when test="$TR='#39#39'">'
-      #9#9#9#9#9#9#9#9'</xsl:when>'
-      #9#9#9#9#9#9#9#9'<xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9'<span>(!!! codice non previsto !!!)</span>'
-      #9#9#9#9#9#9#9#9'</xsl:otherwise>'
-      #9#9#9#9#9#9#9'</xsl:choose>'
-      #9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9'</td>'
-      #9#9#9#9#9'<td class="import">'
-      #9#9#9#9#9#9'<xsl:if test="AliquotaRitenuta">'
-      
-        #9#9#9#9#9#9#9'<xsl:value-of select="format-number(AliquotaRitenuta,  '#39'#' +
-        '##.###.##0,00'#39', '#39'euro'#39')"/>'
-      #9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9'</td>'
-      #9#9#9#9#9'<td>'
-      #9#9#9#9#9#9'<xsl:if test="CausalePagamento">'
-      #9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9'<xsl:value-of select="CausalePagamento"/>'
-      #9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9'<xsl:variable name="CP">'
-      #9#9#9#9#9#9#9#9'<xsl:value-of select="CausalePagamento"/>'
-      #9#9#9#9#9#9#9'</xsl:variable>'
-      #9#9#9#9#9#9#9'<xsl:if test="$CP!='#39#39'">'
-      '                (decodifica come da modello 770S)'
+        '                <xsl:value-of select="format-number(Quantita,  '#39 +
+        '###.###.##0,00######'#39', '#39'euro'#39')" />'
       '              </xsl:if>'
-      #9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9'</td>'
-      #9#9#9#9#9'<td class="import">'
-      #9#9#9#9#9#9'<xsl:if test="ImportoRitenuta">'
+      '            </xsl:if>'
+      '          </td>'
+      ''
+      ''
+      ''
+      '          <td class="import" >'
+      '            <xsl:if test="PrezzoUnitario">'
+      '              <xsl:if test="number(PrezzoUnitario)">'
+      ''
       
-        #9#9#9#9#9#9#9'<xsl:value-of select="format-number(ImportoRitenuta,  '#39'##' +
-        '#.###.##0,00'#39', '#39'euro'#39')"/>'
-      #9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9'</td>'
-      #9#9#9#9'</tr>'
-      #9#9#9'</tbody>'
-      #9#9'</table>'
-      #9'</xsl:template>'
-      #9'<xsl:template name="FatturaElettronica">'
-      #9#9'<xsl:param name="TipoFattura"/>'
-      #9#9'<xsl:param name="IsFPRS"/>'
-      #9#9'<xsl:if test="$TipoFattura">'
+        '                <xsl:value-of select="format-number(PrezzoUnitar' +
+        'io,  '#39'###.###.##0,00######'#39', '#39'euro'#39')" />'
+      '              </xsl:if>'
+      '            </xsl:if>'
+      '          </td>'
+      ''
+      '          <td class="textCenter" >'
+      '            <xsl:if test="UnitaMisura">'
+      '              <xsl:value-of select="UnitaMisura" />'
+      '            </xsl:if>'
+      ''
+      '          </td>'
+      '          <td class="import" >'
+      ''
+      '            <xsl:for-each select="ScontoMaggiorazione" >'
+      ''
+      '              <div>'
+      ''
+      '                <xsl:call-template name="FormatColSconto" >'
+      '                  <xsl:with-param name="tipo" select="Tipo" />'
       
-        #9#9#9'<!--Variabile che contiene il codice destinatario dall'#39'HEADER' +
-        ' perch'#232' viene visualizzato nella sezione BODY -->'
+        '                  <xsl:with-param name="percentuale" select="Per' +
+        'centuale" />'
       
-        #9#9#9'<!--<xsl:variable name="CodiceDestinatario" select="$TipoFatt' +
-        'ura/FatturaElettronicaHeader/DatiTrasmissione/CodiceDestinatario' +
-        '"/>-->'
+        '                  <xsl:with-param name="importo" select="Importo' +
+        '" />'
+      '                </xsl:call-template>'
+      ''
+      ''
+      '              </div>'
+      '            </xsl:for-each>'
+      ''
+      '          </td>'
+      ''
+      '          <td class="import" >'
+      ''
+      '            <xsl:if test="number(PrezzoTotale)">'
+      ''
+      '              <xsl:call-template name="FormatIVA">'
+      '                <xsl:with-param name="Natura" select="Natura" />'
       
-        #9#9#9'<xsl:variable name="PecDestinatario" select="$TipoFattura/Fat' +
-        'turaElettronicaHeader/DatiTrasmissione/PECDestinatario"/>'
+        '                <xsl:with-param name="IVA" select="AliquotaIVA" ' +
+        '/>'
+      '              </xsl:call-template>'
+      '            </xsl:if>'
+      ''
+      '          </td>'
+      '          <td>'
+      '            <xsl:if test="PrezzoTotale">'
+      '              <xsl:if test="number(PrezzoTotale)">'
+      ''
+      '                <div class="import">'
       
-        #9#9#9'<!--Variabile che contiene il codice destinatario dall'#39'HEADER' +
-        ' perch'#232' viene visualizzato nella sezione BODY -->'
-      #9#9#9'<xsl:variable name="CodiceDestinatario">'
-      #9#9#9#9'<xsl:choose>'
+        '                  <xsl:value-of select="format-number(PrezzoTota' +
+        'le,  '#39'###.###.##0,00######'#39', '#39'euro'#39')" />'
+      '                </div>'
+      '              </xsl:if>'
+      ''
+      ''
+      '              <xsl:if test="OpzPrezzoTotale">'
+      '                <div class="tx-xsmall">'
+      '                  <xsl:value-of select="OpzPrezzoTotale" />'
+      '                </div>'
+      '              </xsl:if>'
+      '            </xsl:if>'
+      '          </td>'
+      ''
+      '        </tr>'
+      ''
+      '      </xsl:otherwise>'
+      '    </xsl:choose>'
+      ''
+      '    <!--POST LINEA -->'
+      '    <xsl:for-each select="OpzPostLinea"  >'
+      '      <xsl:call-template name="AltraDescrizioneLinea">'
+      '        <xsl:with-param name="textDescrizione" select = "." />'
+      '      </xsl:call-template>'
+      '    </xsl:for-each>'
+      ''
+      '  </xsl:template>'
+      ''
+      ''
       
-        #9#9#9#9#9'<xsl:when test="$TipoFattura/FatturaElettronicaHeader/DatiT' +
-        'rasmissione/CodiceDestinatario='#39'0000000'#39'">'
+        '  <!-- Nel caso in cui ho un AltriDatiGestionali con aswrelstd o' +
+        ' aswswhouse, mi permette'
+      '  di stampare tutti alti dati ma non aswrelstd e aswswhouse -->'
+      '  <xsl:template name="DettaglioLineeASW">'
+      '    <tr >'
+      '      <td>'
+      '      </td>'
+      ''
+      '      <td >'
+      '        <xsl:text>------------------------</xsl:text>'
+      '        <xsl:for-each select="AltriDatiGestionali"  >'
+      ''
+      '          <xsl:if test=" translate( TipoDato,'
+      #9#9#9#9#9#9#9#9#9#9#9#9#9#9' '#39'ABCDEFGHIJKLMNOPQRSTUVWXYZ'#39','
+      #9#9#9#9#9#9#9#9#9#9#9#9#9#9' '#39'abcdefghijklmnopqrstuvwxyz'#39
+      #9#9#9#9#9#9#9#9#9#9#9#9#9#9') != '#39'aswrelstd'#39
+      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'and'
+      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'translate( TipoDato,'
+      #9#9#9#9#9#9#9#9#9#9#9#9#9#9' '#39'ABCDEFGHIJKLMNOPQRSTUVWXYZ'#39','
+      #9#9#9#9#9#9#9#9#9#9#9#9#9#9' '#39'abcdefghijklmnopqrstuvwxyz'#39
+      #9#9#9#9#9#9#9#9#9#9#9#9#9#9') != '#39'aswswhouse'#39'   ">'
+      ''
+      '            <div class="tx-xsmall">'
+      '              <xsl:value-of select="RiferimentoTesto" />'
+      '              <xsl:text> </xsl:text>'
+      '              <xsl:value-of select="TipoDato" />'
+      '            </div>'
+      ''
+      '          </xsl:if>'
+      ''
+      '        </xsl:for-each>'
+      '      </td>'
+      ''
+      '      <td >'
+      '      </td>'
+      ''
+      ''
+      '      <td  >'
+      '      </td>'
+      '      <td >'
+      '      </td>'
+      '      <td  >'
+      '      </td>'
+      ''
+      '      <td  >'
+      '      </td>'
+      '      <td  >'
+      '      </td>'
+      '    </tr>'
+      ''
+      '  </xsl:template>'
+      ''
+      '  <xsl:template name="AltraDescrizioneLinea">'
+      '    <xsl:param name = "textDescrizione" />'
+      '    <!-- testo della descrizione -->'
+      '    <tr>'
+      '      <td >'
+      '      </td>'
+      ''
+      '      <td >'
+      '        <div class="tx-xsmall">'
+      '          <xsl:value-of select="$textDescrizione" />'
+      '        </div>'
+      '      </td>'
+      ''
+      '      <td>'
+      '      </td>'
+      ''
+      ''
+      '      <td>'
+      '      </td>'
+      '      <td>'
+      '      </td>'
+      '      <td>'
+      '      </td>'
+      ''
+      '      <td>'
+      '      </td>'
+      '      <td>'
+      '      </td>'
+      '    </tr>'
+      ''
+      '  </xsl:template>'
+      ''
+      '  <xsl:template match="DatiRitenuta">'
+      ''
+      ''
+      '        <tr>'
+      '          <td >'
+      ''
+      '            <xsl:if test="TipoRitenuta">'
+      ''
+      '              <span>'
+      '                <xsl:value-of select="TipoRitenuta" />'
+      '              </span>'
+      '              <xsl:variable name="TR">'
+      '                <xsl:value-of select="TipoRitenuta" />'
+      '              </xsl:variable>'
+      '              <xsl:choose>'
+      '                <xsl:when test="$TR='#39'RT01'#39'">'
+      '                  Ritenuta persone fisiche'
+      '                </xsl:when>'
+      '                <xsl:when test="$TR='#39'RT02'#39'">'
+      '                  Ritenuta persone giuridiche'
+      '                </xsl:when>'
+      #9#9#9#9'<xsl:when test="$TR='#39'RT03'#39'">'
+      #9#9#9#9#9'Contributo INPS'
+      #9#9#9#9'</xsl:when>'
+      #9#9#9#9'<xsl:when test="$TR='#39'RT04'#39'">'
+      #9#9#9#9#9'Contributo ENASARCO'
+      #9#9#9#9'</xsl:when>'
+      #9#9#9#9'<xsl:when test="$TR='#39'RT05'#39'">'
+      #9#9#9#9#9'Contributo ENPAM'
+      #9#9#9#9'</xsl:when>'
+      #9#9#9#9'<xsl:when test="$TR='#39'RT06'#39'">'
+      #9#9#9#9#9'Altro contributo previdenziale'
+      #9#9#9#9'</xsl:when>'
+      '                <xsl:when test="$TR='#39#39'">'
+      '                </xsl:when>'
+      '                <xsl:otherwise>'
+      '                  <span>(!!! codice non previsto !!!)</span>'
+      '                </xsl:otherwise>'
+      '              </xsl:choose>'
+      ''
+      '            </xsl:if>'
+      '          </td>'
+      ''
+      '          <td class="import" >'
+      '            <xsl:if test="AliquotaRitenuta">'
       
-        #9#9#9#9#9#9'<xsl:value-of select="$TipoFattura/FatturaElettronicaHeade' +
-        'r/DatiTrasmissione/PECDestinatario"/>'
-      #9#9#9#9#9'</xsl:when>'
-      #9#9#9#9#9'<xsl:otherwise>'
+        '              <xsl:value-of select="format-number(AliquotaRitenu' +
+        'ta,  '#39'###.###.##0,00'#39', '#39'euro'#39')" />'
+      '            </xsl:if>'
+      ''
+      '          </td>'
+      ''
+      '          <td >'
+      '            <xsl:if test="CausalePagamento">'
+      ''
+      '              <span>'
+      '                <xsl:value-of select="CausalePagamento" />'
+      '              </span>'
+      '              <xsl:variable name="CP">'
+      '                <xsl:value-of select="CausalePagamento" />'
+      '              </xsl:variable>'
+      '              <xsl:if test="$CP!='#39#39'">'
+      '                (decodifica come da modello CU)'
+      '              </xsl:if>'
+      ''
+      '            </xsl:if>'
+      '          </td>'
+      ''
+      '          <td class="import" >'
+      '            <xsl:if test="ImportoRitenuta">'
+      ''
       
-        #9#9#9#9#9#9'<xsl:value-of select="$TipoFattura/FatturaElettronicaHeade' +
-        'r/DatiTrasmissione/CodiceDestinatario"/>'
-      #9#9#9#9#9'</xsl:otherwise>'
-      #9#9#9#9'</xsl:choose>'
-      #9#9#9'</xsl:variable>'
-      #9#9#9'<div id="fattura-elettronica" class="page">'
-      #9#9#9#9'<!-- FatturaElettronicaHeader -->'
-      #9#9#9#9'<xsl:if test="$TipoFattura/FatturaElettronicaHeader">'
-      #9#9#9#9#9'<table id="tbHeader" class="tbHeader">'
-      #9#9#9#9#9#9'<tr>'
-      #9#9#9#9#9#9#9'<td class="tdHead">'
-      #9#9#9#9#9#9#9#9'<table class="tableHead">'
-      #9#9#9#9#9#9#9#9#9'<tr>'
-      #9#9#9#9#9#9#9#9#9#9'<td>'
-      #9#9#9#9#9#9#9#9#9#9#9'<!--INIZIO CEDENTE PRESTATORE-->'
-      #9#9#9#9#9#9#9#9#9#9#9'<div class="headBorder">'
+        '              <xsl:value-of select="format-number(ImportoRitenut' +
+        'a,  '#39'###.###.##0,00'#39', '#39'euro'#39')" />'
+      ''
+      '            </xsl:if>'
+      '          </td>'
+      ''
+      '        </tr>'
+      ''
+      '  </xsl:template>'
+      ''
+      '  <xsl:template match="DettaglioPagamento">'
+      ''
+      '    <xsl:if test="Beneficiario">'
+      '      Beneficiario  <xsl:value-of select="Beneficiario" /> <br/>'
+      '    </xsl:if>'
+      ''
+      '    <xsl:if test="IBAN">'
+      '      IBAN'
+      '      <xsl:value-of select="IBAN" /> <br/>'
+      '    </xsl:if>'
+      ''
+      '    <xsl:if test="ABI or CAB or BIC ">'
+      ''
+      '      <xsl:if test="ABI">'
+      '        ABI  <xsl:value-of select="ABI" />'
+      '      </xsl:if>'
+      ''
+      '      <xsl:if test="CAB">'
+      '        CAB  <xsl:value-of select="CAB" />'
+      '      </xsl:if>'
+      ''
+      '      <xsl:if test="BIC">'
+      '        BIC  <xsl:value-of select="BIC" />'
+      '      </xsl:if>'
+      '      <br/>'
+      '    </xsl:if>'
+      ''
+      '    <xsl:if test="IstitutoFinanziario">'
+      '      <xsl:value-of select="IstitutoFinanziario" />'
+      '      <br/>'
+      '    </xsl:if>'
+      ''
+      '    <xsl:if test="CodUfficioPostale">'
+      '      Codice ufficio postale'
+      '      <xsl:value-of select="CodUfficioPostale" />'
+      '      <br/>'
+      '    </xsl:if>'
+      ''
       
-        #9#9#9#9#9#9#9#9#9#9#9#9'<label class="headerLabel">Cedente/prestatore (forni' +
-        'tore) </label>'
+        '    <xsl:if test="TitoloQuietanzante or CognomeQuietanzante or N' +
+        'omeQuietanzante or CFQuietanzante">'
+      '      Quietanzante'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:for-each select="$TipoFattura/FatturaElettronic' +
-        'aHeader/CedentePrestatore">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="DatiAnagrafici">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<!--DatiAnagrafici FPA\FPR-->'
+        '      <xsl:value-of select="concat(TitoloQuietanzante , '#39' '#39',Cogn' +
+        'omeQuietanzante, '#39' '#39', NomeQuietanzante, '#39' '#39', CFQuietanzante )"/>'
+      '      <br/>'
+      '    </xsl:if>'
+      ''
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:for-each select="$TipoFattura/FatturaElettro' +
-        'nicaHeader/CedentePrestatore/DatiAnagrafici">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent mt5">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="IdFiscaleIVA">'
+        '    <xsl:if test="DataLimitePagamentoAnticipato or ScontoPagamen' +
+        'toAnticipato">'
+      ''
+      '      <xsl:if test="DataLimitePagamentoAnticipato">'
+      
+        '        Data limite pagamento anticipato <xsl:call-template name' +
+        '="FormatDateIta">'
+      
+        '          <xsl:with-param name="DateTime" select="DataLimitePaga' +
+        'mentoAnticipato" />'
+      '        </xsl:call-template>'
+      '      </xsl:if>'
+      ''
+      '      <xsl:if test="ScontoPagamentoAnticipato">'
+      '        Sconto anticipato'
+      
+        '        <xsl:value-of select="format-number(ScontoPagamentoAntic' +
+        'ipato,  '#39'###.###.##0,00'#39', '#39'euro'#39')" />'
+      '      </xsl:if>'
+      '      <br/>'
+      '    </xsl:if>'
+      ''
+      
+        '    <xsl:if test="DataDecorrenzaPenale or PenalitaPagamentiRitar' +
+        'dati">'
+      ''
+      '      <xsl:if test="DataDecorrenzaPenale">'
+      '        Data penale <xsl:call-template name="FormatDateIta">'
+      
+        '          <xsl:with-param name="DateTime" select="DataDecorrenza' +
+        'Penale" />'
+      '        </xsl:call-template>'
+      '      </xsl:if>'
+      ''
+      '      <xsl:if test="PenalitaPagamentiRitardati">'
+      '        Importo penale'
+      
+        '        <xsl:value-of select="format-number(PenalitaPagamentiRit' +
+        'ardati,  '#39'###.###.##0,00'#39', '#39'euro'#39')" />'
+      '      </xsl:if>'
+      ''
+      '      <br/>'
+      '    </xsl:if>'
+      ''
+      '    <xsl:if test="CodicePagamento">'
+      
+        '      Codice pagamento  <xsl:value-of select="CodicePagamento" /' +
+        '>'
+      '    </xsl:if>'
+      ''
+      '  </xsl:template>'
+      ''
+      '  <xsl:template name="FatturaElettronica">'
+      ''
+      '    <xsl:param name="TipoFattura" />'
+      '    <xsl:param name="IsFPRS" />'
+      ''
+      '    <xsl:if test="$TipoFattura">'
+      ''
+      ''
+      
+        '      <!--Variabile che contiene il codice destinatario dall'#39'HEA' +
+        'DER perch'#232' viene visualizzato nella sezione BODY -->'
+      
+        '      <!--<xsl:variable name="CodiceDestinatario" select="$TipoF' +
+        'attura/FatturaElettronicaHeader/DatiTrasmissione/CodiceDestinata' +
+        'rio"/>-->'
+      
+        '      <xsl:variable name="PecDestinatario" select="$TipoFattura/' +
+        'FatturaElettronicaHeader/DatiTrasmissione/PECDestinatario"/>'
+      ''
+      
+        '      <!--Variabile che contiene il codice destinatario dall'#39'HEA' +
+        'DER perch'#232' viene visualizzato nella sezione BODY -->'
+      '      <xsl:variable name="CodiceDestinatario" >'
+      ''
+      '        <xsl:choose>'
+      
+        '          <xsl:when test="$TipoFattura/FatturaElettronicaHeader/' +
+        'DatiTrasmissione/CodiceDestinatario='#39'0000000'#39'">'
+      
+        '            <xsl:value-of select="$TipoFattura/FatturaElettronic' +
+        'aHeader/DatiTrasmissione/PECDestinatario" />'
+      '          </xsl:when>'
+      '          <xsl:otherwise>'
+      
+        '            <xsl:value-of select="$TipoFattura/FatturaElettronic' +
+        'aHeader/DatiTrasmissione/CodiceDestinatario" />'
+      '          </xsl:otherwise>'
+      '        </xsl:choose>'
+      '      </xsl:variable>'
+      ''
+      '      <div id="fattura-elettronica" class="page">'
+      ''
+      '        <!-- FatturaElettronicaHeader -->'
+      '        <xsl:if test="$TipoFattura/FatturaElettronicaHeader">'
+      ''
+      
+        #9#9#9'  <xsl:if test="$TipoFattura/FatturaElettronicaHeader/NomeDoc' +
+        'umento">'
+      #9#9#9'      <table class="tbNoBorder">'
+      #9#9#9#9'  <tr >'
+      #9#9#9#9#9#9'<td>'
+      
+        '                       <xsl:value-of select="$TipoFattura/Fattur' +
+        'aElettronicaHeader/NomeDocumento"/>'
+      #9#9#9#9'  </td>'
+      #9#9#9#9'  </tr>'
+      #9#9#9#9'  </table>'
+      '                </xsl:if>'
+      ''
+      '          <table id="tbHeader" class="tbHeader">'
+      ''
+      '            <tr >'
+      '              <td class="tdHead">'
+      ''
+      '                <table class="tableHead">'
+      '                  <tr>'
+      ''
+      '                    <td >'
+      ''
+      '                      <!--INIZIO CEDENTE PRESTATORE-->'
+      '                      <div class="headBorder" >'
+      ''
+      
+        '                        <label class= "headerLabel">Cedente/pres' +
+        'tatore (fornitore) </label>'
+      
+        '                        <xsl:for-each select="$TipoFattura/Fattu' +
+        'raElettronicaHeader/CedentePrestatore">'
+      ''
+      '                          <xsl:choose>'
+      '                            <xsl:when test="DatiAnagrafici">'
+      '                              <!--DatiAnagrafici FPA\FPR-->'
+      ''
+      
+        '                              <xsl:for-each select="$TipoFattura' +
+        '/FatturaElettronicaHeader/CedentePrestatore/DatiAnagrafici">'
+      ''
+      '                                <div class="headContent mt5">'
+      '                                  <xsl:if test="IdFiscaleIVA">'
       ''
       
         '                                    Identificativo fiscale ai fi' +
         'ni IVA:'
       '                                    <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="IdFiscaleIVA/IdPaese"/>'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="IdFiscaleIVA/IdCodice"/' +
-        '>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="CodiceFiscale">'
+        '                                      <xsl:value-of select="IdFi' +
+        'scaleIVA/IdPaese" />'
+      
+        '                                      <xsl:value-of select="IdFi' +
+        'scaleIVA/IdCodice" />'
+      '                                    </span>'
+      ''
+      '                                  </xsl:if>'
+      '                                </div>'
+      ''
+      '                                <div class="headContent" >'
+      ''
+      '                                  <xsl:if test="CodiceFiscale">'
       ''
       '                                    Codice fiscale:'
       '                                    <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="CodiceFiscale"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Anagrafica/Denominazione">'
+      
+        '                                      <xsl:value-of select="Codi' +
+        'ceFiscale" />'
+      '                                    </span>'
+      ''
+      '                                  </xsl:if>'
+      ''
+      '                                </div>'
+      ''
+      '                                <div class="headContent" >'
+      ''
+      
+        '                                  <xsl:if test="Anagrafica/Denom' +
+        'inazione">'
       ''
       '                                    Denominazione:'
       '                                    <span>'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Anagrafica/Denominazion' +
-        'e"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
+        '                                      <xsl:value-of select="Anag' +
+        'rafica/Denominazione" />'
+      '                                    </span>'
+      ''
+      '                                  </xsl:if>'
+      ''
+      '                                </div>'
+      ''
+      '                                <div class="headContent" >'
+      ''
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Anagrafica/Nome | Anagrafica/Cogn' +
-        'ome">'
+        '                                  <xsl:if test="Anagrafica/Nome ' +
+        '| Anagrafica/Cognome">'
       ''
       '                                    Cognome nome:'
       ''
       
         '                                    <xsl:if test="Anagrafica/Cog' +
         'nome">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Anagrafica/Cognome"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Anagrafica/Nome">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Anagrafica/Nome"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="RegimeFiscale">'
+      '                                      <span>'
+      
+        '                                        <xsl:value-of select="An' +
+        'agrafica/Cognome" />'
+      '                                        <xsl:text> </xsl:text>'
+      '                                      </span>'
+      '                                    </xsl:if>'
+      
+        '                                    <xsl:if test="Anagrafica/Nom' +
+        'e">'
+      '                                      <span>'
+      
+        '                                        <xsl:value-of select="An' +
+        'agrafica/Nome" />'
+      '                                      </span>'
+      '                                    </xsl:if>'
+      ''
+      '                                  </xsl:if>'
+      ''
+      '                                </div>'
+      ''
+      ''
+      '                                <div class="headContent" >'
+      ''
+      '                                  <xsl:if test="RegimeFiscale">'
       ''
       '                                    Regime fiscale:'
       '                                    <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="RegimeFiscale"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:variable name="RF">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="RegimeFiscale"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:variable>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF01'#39'">'
-      '                                        (ordinario)'
-      '                                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF02'#39'">'
-      '                                        (contribuenti minimi)'
-      '                                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF03'#39'">'
       
-        '                                        (nuove iniziative produt' +
-        'tive)'
-      '                                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF04'#39'">'
+        '                                      <xsl:value-of select="Regi' +
+        'meFiscale" />'
+      '                                    </span>'
+      ''
+      '                                    <xsl:variable name="RF">'
       
-        '                                        (agricoltura e attivit'#224' ' +
-        'connesse e pesca)'
-      '                                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF05'#39'">'
+        '                                      <xsl:value-of select="Regi' +
+        'meFiscale" />'
+      '                                    </xsl:variable>'
+      '                                    <xsl:choose>'
       
-        '                                        (vendita sali e tabacchi' +
-        ')'
+        '                                      <xsl:when test="$RF='#39'RF01'#39 +
+        '">'
+      '                                        ordinario'
       '                                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF06'#39'">'
-      '                                        (commercio fiammiferi)'
-      '                                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF07'#39'">'
-      '                                        (editoria)'
-      '                                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF08'#39'">'
       
-        '                                        (gestione servizi telefo' +
-        'nia pubblica)'
+        '                                      <xsl:when test="$RF='#39'RF02'#39 +
+        '">'
+      '                                        contribuenti minimi'
       '                                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF09'#39'">'
       
-        '                                        (rivendita documenti di ' +
-        'trasporto pubblico e di sosta)'
-      '                                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF10'#39'">'
+        '                                      <xsl:when test="$RF='#39'RF03'#39 +
+        '">'
       
-        '                                        (intrattenimenti, giochi' +
-        ' e altre attivit'#224' di cui alla tariffa allegata al DPR 640/72)'
+        '                                        nuove iniziative produtt' +
+        'ive - Non pi'#249' valido in quanto abrogato dalla legge di stabilit'#224 +
+        ' 2015'
       '                                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF11'#39'">'
       
-        '                                        (agenzie viaggi e turism' +
-        'o)'
-      '                                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF12'#39'">'
-      '                                        (agriturismo)'
-      '                                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF13'#39'">'
-      '                                        (vendite a domicilio)'
-      '                                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF14'#39'">'
+        '                                      <xsl:when test="$RF='#39'RF04'#39 +
+        '">'
       
-        '                                        (rivendita beni usati, o' +
-        'ggetti d'#8217'arte,'
+        '                                        agricoltura e attivit'#224' c' +
+        'onnesse e pesca'
+      '                                      </xsl:when>'
       
-        '                                        d'#8217'antiquariato o da coll' +
-        'ezione)'
+        '                                      <xsl:when test="$RF='#39'RF05'#39 +
+        '">'
+      '                                        vendita sali e tabacchi'
       '                                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF15'#39'">'
       
-        '                                        (agenzie di vendite all'#8217 +
-        'asta di oggetti d'#8217'arte,'
+        '                                      <xsl:when test="$RF='#39'RF06'#39 +
+        '">'
+      '                                        commercio fiammiferi'
+      '                                      </xsl:when>'
       
-        '                                        antiquariato o da collez' +
-        'ione)'
+        '                                      <xsl:when test="$RF='#39'RF07'#39 +
+        '">'
+      '                                        editoria'
       '                                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF16'#39'">'
-      '                                        (IVA per cassa P.A.)'
-      '                                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF17'#39'">'
       
-        '                                        (IVA per cassa - art. 32' +
-        '-bis, D.L. 83/2012)'
-      '                                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF19'#39'">'
-      '                                        (Regime forfettario)'
-      '                                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF18'#39'">'
-      '                                        (altro)'
-      '                                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39#39'">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>(!!! codice non previsto !!!)</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:for-each>'
+        '                                      <xsl:when test="$RF='#39'RF08'#39 +
+        '">'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:for-each select="$TipoFattura/FatturaElettro' +
-        'nicaHeader/CedentePrestatore/Sede">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Indirizzo">'
+        '                                        gestione servizi telefon' +
+        'ia pubblica'
+      '                                      </xsl:when>'
+      
+        '                                      <xsl:when test="$RF='#39'RF09'#39 +
+        '">'
+      
+        '                                        rivendita documenti di t' +
+        'rasporto pubblico e di sosta'
+      '                                      </xsl:when>'
+      
+        '                                      <xsl:when test="$RF='#39'RF10'#39 +
+        '">'
+      
+        '                                        intrattenimenti, giochi ' +
+        'e altre attivit'#224' di cui alla tariffa allegata al DPR 640/72'
+      '                                      </xsl:when>'
+      
+        '                                      <xsl:when test="$RF='#39'RF11'#39 +
+        '">'
+      '                                        agenzie viaggi e turismo'
+      '                                      </xsl:when>'
+      
+        '                                      <xsl:when test="$RF='#39'RF12'#39 +
+        '">'
+      '                                        agriturismo'
+      '                                      </xsl:when>'
+      
+        '                                      <xsl:when test="$RF='#39'RF13'#39 +
+        '">'
+      '                                        vendite a domicilio'
+      '                                      </xsl:when>'
+      
+        '                                      <xsl:when test="$RF='#39'RF14'#39 +
+        '">'
+      
+        '                                        rivendita beni usati, og' +
+        'getti d'#8217'arte, d'#8217'antiquariato o da collezione'
+      '                                      </xsl:when>'
+      
+        '                                      <xsl:when test="$RF='#39'RF15'#39 +
+        '">'
+      
+        '                                        agenzie di vendite all'#8217'a' +
+        'sta di oggetti d'#8217'arte, antiquariato o da collezione'
+      '                                      </xsl:when>'
+      
+        '                                      <xsl:when test="$RF='#39'RF16'#39 +
+        '">'
+      '                                        IVA per cassa P.A.'
+      '                                      </xsl:when>'
+      
+        '                                      <xsl:when test="$RF='#39'RF17'#39 +
+        '">'
+      
+        '                                        IVA per cassa - art. 32-' +
+        'bis, D.L. 83/2012'
+      '                                      </xsl:when>'
+      
+        '                                      <xsl:when test="$RF='#39'RF19'#39 +
+        '">'
+      '                                        Regime forfettario'
+      '                                      </xsl:when>'
+      
+        '                                      <xsl:when test="$RF='#39'RF18'#39 +
+        '">'
+      '                                        altro'
+      '                                      </xsl:when>'
+      '                                      <xsl:when test="$RF='#39#39'">'
+      '                                      </xsl:when>'
+      '                                      <xsl:otherwise>'
+      
+        '                                        <span>(!!! codice non pr' +
+        'evisto !!!)</span>'
+      '                                      </xsl:otherwise>'
+      '                                    </xsl:choose>'
+      ''
+      '                                  </xsl:if>'
+      ''
+      '                                </div>'
+      ''
+      '                              </xsl:for-each>'
+      ''
+      
+        '                              <xsl:for-each select="$TipoFattura' +
+        '/FatturaElettronicaHeader/CedentePrestatore/Sede">'
+      ''
+      '                                <div class="headContent" >'
+      ''
+      '                                  <xsl:if test="Indirizzo">'
       ''
       '                                    Indirizzo:'
       '                                    <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Indirizzo"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="NumeroCivico"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Comune">'
+      
+        '                                      <xsl:value-of select="Indi' +
+        'rizzo" />'
+      '                                      <xsl:text> </xsl:text>'
+      
+        '                                      <xsl:value-of select="Nume' +
+        'roCivico" />'
+      '                                    </span>'
+      ''
+      '                                  </xsl:if>'
+      ''
+      '                                </div>'
+      ''
+      '                                <div class="headContent" >'
+      '                                  <span>'
+      '                                    <xsl:if test="Comune">'
       ''
       '                                      Comune:'
       '                                      <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Comune"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Provincia">'
+      
+        '                                        <xsl:value-of select="Co' +
+        'mune" />'
+      ''
+      '                                      </span>'
+      ''
+      '                                    </xsl:if>'
+      '                                    <xsl:if test="Provincia">'
       ''
       '                                      Provincia:'
       '                                      <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Provincia"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="CAP">'
+      
+        '                                        <xsl:value-of select="Pr' +
+        'ovincia" />'
+      ''
+      '                                      </span>'
+      ''
+      '                                    </xsl:if>'
+      '                                  </span>'
+      ''
+      ''
+      '                                </div>'
+      '                                <div class="headContent" >'
+      ''
+      '                                  <span>'
+      '                                    <xsl:if test="CAP">'
       '                                      Cap:'
       '                                      <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="CAP"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Nazione">'
+      
+        '                                        <xsl:value-of select="CA' +
+        'P" />'
+      ''
+      '                                      </span>'
+      '                                    </xsl:if>'
+      ''
+      '                                    <xsl:if test="Nazione">'
       ''
       '                                      Nazione:'
       '                                      <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Nazione"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="$TipoFattura/FatturaElettronicaHea' +
-        'der/CedentePrestatore/Contatti/Telefono">'
+        '                                        <xsl:value-of select="Na' +
+        'zione" />'
+      ''
+      '                                      </span>'
+      ''
+      '                                    </xsl:if>'
+      '                                  </span>'
+      ''
+      '                                </div>'
+      '                              </xsl:for-each>'
+      '                              <div class="headContent" >'
+      ''
+      
+        '                                <xsl:if test="$TipoFattura/Fattu' +
+        'raElettronicaHeader/CedentePrestatore/Contatti/Telefono">'
       ''
       '                                  Telefono:'
       '                                  <span>'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="$TipoFattura/FatturaElet' +
-        'tronicaHeader/CedentePrestatore/Contatti/Telefono"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
+        '                                    <xsl:value-of select="$TipoF' +
+        'attura/FatturaElettronicaHeader/CedentePrestatore/Contatti/Telef' +
+        'ono" />'
+      ''
+      '                                  </span>'
+      ''
+      '                                </xsl:if>'
+      ''
+      ''
+      '                              </div>'
+      ''
+      '                              <div class="headContent" >'
+      ''
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="$TipoFattura/FatturaElettronicaHea' +
-        'der/CedentePrestatore/Contatti/Email">'
+        '                                <xsl:if test="$TipoFattura/Fattu' +
+        'raElettronicaHeader/CedentePrestatore/Contatti/Email">'
       ''
       '                                  Email:'
       '                                  <span>'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="$TipoFattura/FatturaElet' +
-        'tronicaHeader/CedentePrestatore/Contatti/Email"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
+        '                                    <xsl:value-of select="$TipoF' +
+        'attura/FatturaElettronicaHeader/CedentePrestatore/Contatti/Email' +
+        '" />'
+      ''
+      '                                  </span>'
+      ''
+      '                                </xsl:if>'
+      ''
+      ''
+      ''
+      '                              </div>'
+      ''
+      '                              <div class="headContent" >'
+      ''
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="$TipoFattura/FatturaElettronicaHea' +
-        'der/CedentePrestatore/RiferimentoAmministrazione">'
+        '                                <xsl:if test="$TipoFattura/Fattu' +
+        'raElettronicaHeader/CedentePrestatore/RiferimentoAmministrazione' +
+        '">'
       ''
       '                                  Riferimento Amministrazione:'
       '                                  <span>'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="$TipoFattura/FatturaElet' +
-        'tronicaHeader/CedentePrestatore/RiferimentoAmministrazione"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<!--Anagrafica FPRS-->'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent mt5">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="IdFiscaleIVA">'
+        '                                    <xsl:value-of select="$TipoF' +
+        'attura/FatturaElettronicaHeader/CedentePrestatore/RiferimentoAmm' +
+        'inistrazione" />'
+      ''
+      '                                  </span>'
+      ''
+      '                                </xsl:if>'
+      ''
+      ''
+      ''
+      '                              </div>'
+      ''
+      '                            </xsl:when>'
+      '                            <xsl:otherwise>'
+      '                              <!--Anagrafica FPRS-->'
+      '                              <div class="headContent mt5">'
+      '                                <xsl:if test="IdFiscaleIVA">'
       ''
       
         '                                  Identificativo fiscale ai fini' +
         ' IVA:'
       '                                  <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="IdFiscaleIVA/IdPaese"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="IdFiscaleIVA/IdCodice"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="CodiceFiscale">'
+      
+        '                                    <xsl:value-of select="IdFisc' +
+        'aleIVA/IdPaese" />'
+      
+        '                                    <xsl:value-of select="IdFisc' +
+        'aleIVA/IdCodice" />'
+      '                                  </span>'
+      ''
+      '                                </xsl:if>'
+      '                              </div>'
+      ''
+      '                              <div class="headContent" >'
+      ''
+      '                                <xsl:if test="CodiceFiscale">'
       ''
       '                                  Codice fiscale:'
       '                                  <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="CodiceFiscale"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Denominazione">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
+      
+        '                                    <xsl:value-of select="Codice' +
+        'Fiscale" />'
+      '                                  </span>'
+      ''
+      '                                </xsl:if>'
+      ''
+      '                              </div>'
+      ''
+      '                              <xsl:if test="Denominazione">'
+      '                                <div class="headContent">'
       ''
       '                                  Denominazione:'
       '                                  <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Denominazione"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Nome | Cognome">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
+      
+        '                                    <xsl:value-of select="Denomi' +
+        'nazione" />'
+      '                                  </span>'
+      '                                </div>'
+      '                              </xsl:if>'
+      ''
+      '                              <xsl:if test="Nome | Cognome">'
+      '                              <div class="headContent" >'
       ''
       '                                  Cognome nome:'
       ''
       '                                  <xsl:if test="Cognome">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Cognome"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Nome">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Nome"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="RegimeFiscale">'
+      '                                    <span>'
+      
+        '                                      <xsl:value-of select="Cogn' +
+        'ome" />'
+      '                                      <xsl:text> </xsl:text>'
+      '                                    </span>'
+      '                                  </xsl:if>'
+      '                                  <xsl:if test="Nome">'
+      '                                    <span>'
+      
+        '                                      <xsl:value-of select="Nome' +
+        '" />'
+      '                                    </span>'
+      '                                  </xsl:if>'
+      '                              </div>'
+      '                              </xsl:if>'
+      ''
+      '                              <div class="headContent" >'
+      ''
+      '                                <xsl:if test="RegimeFiscale">'
       ''
       '                                  Regime fiscale:'
       '                                  <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="RegimeFiscale"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:variable name="RF">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="RegimeFiscale"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:variable>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF01'#39'">'
-      '                                      (ordinario)'
-      '                                    </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF02'#39'">'
-      '                                      (contribuenti minimi)'
-      '                                    </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF03'#39'">'
       
-        '                                      (nuove iniziative produtti' +
-        've)'
-      '                                    </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF04'#39'">'
+        '                                    <xsl:value-of select="Regime' +
+        'Fiscale" />'
+      '                                  </span>'
+      ''
+      '                                  <xsl:variable name="RF">'
       
-        '                                      (agricoltura e attivit'#224' co' +
-        'nnesse e pesca)'
+        '                                    <xsl:value-of select="Regime' +
+        'Fiscale" />'
+      '                                  </xsl:variable>'
+      '                                  <xsl:choose>'
+      '                                    <xsl:when test="$RF='#39'RF01'#39'">'
+      '                                      ordinario'
       '                                    </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF05'#39'">'
-      '                                      (vendita sali e tabacchi)'
+      '                                    <xsl:when test="$RF='#39'RF02'#39'">'
+      '                                      contribuenti minimi'
       '                                    </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF06'#39'">'
-      '                                      (commercio fiammiferi)'
-      '                                    </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF07'#39'">'
-      '                                      (editoria)'
-      '                                    </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF08'#39'">'
+      '                                    <xsl:when test="$RF='#39'RF03'#39'">'
       
-        '                                      (gestione servizi telefoni' +
-        'a pubblica)'
+        '                                      nuove iniziative produttiv' +
+        'e - Non pi'#249' valido in quanto abrogato dalla legge di stabilit'#224' 2' +
+        '015'
       '                                    </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF09'#39'">'
+      '                                    <xsl:when test="$RF='#39'RF04'#39'">'
       
-        '                                      (rivendita documenti di tr' +
-        'asporto pubblico e di sosta)'
+        '                                      agricoltura e attivit'#224' con' +
+        'nesse e pesca'
       '                                    </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF10'#39'">'
+      '                                    <xsl:when test="$RF='#39'RF05'#39'">'
+      '                                      vendita sali e tabacchi'
+      '                                    </xsl:when>'
+      '                                    <xsl:when test="$RF='#39'RF06'#39'">'
+      '                                      commercio fiammiferi'
+      '                                    </xsl:when>'
+      '                                    <xsl:when test="$RF='#39'RF07'#39'">'
+      '                                      editoria'
+      '                                    </xsl:when>'
+      '                                    <xsl:when test="$RF='#39'RF08'#39'">'
       
-        '                                      (intrattenimenti, giochi e' +
-        ' altre attivit'#224' di cui alla tariffa allegata al DPR 640/72)'
+        '                                      gestione servizi telefonia' +
+        ' pubblica'
       '                                    </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF11'#39'">'
-      '                                      (agenzie viaggi e turismo)'
-      '                                    </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF12'#39'">'
-      '                                      (agriturismo)'
-      '                                    </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF13'#39'">'
-      '                                      (vendite a domicilio)'
-      '                                    </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF14'#39'">'
+      '                                    <xsl:when test="$RF='#39'RF09'#39'">'
       
-        '                                      (rivendita beni usati, ogg' +
-        'etti d'#8217'arte,'
+        '                                      rivendita documenti di tra' +
+        'sporto pubblico e di sosta'
+      '                                    </xsl:when>'
+      '                                    <xsl:when test="$RF='#39'RF10'#39'">'
       
-        '                                      d'#8217'antiquariato o da collez' +
-        'ione)'
+        '                                      intrattenimenti, giochi e ' +
+        'altre attivit'#224' di cui alla tariffa allegata al DPR 640/72'
       '                                    </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF15'#39'">'
+      '                                    <xsl:when test="$RF='#39'RF11'#39'">'
+      '                                      agenzie viaggi e turismo'
+      '                                    </xsl:when>'
+      '                                    <xsl:when test="$RF='#39'RF12'#39'">'
+      '                                      agriturismo'
+      '                                    </xsl:when>'
+      '                                    <xsl:when test="$RF='#39'RF13'#39'">'
+      '                                      vendite a domicilio'
+      '                                    </xsl:when>'
+      '                                    <xsl:when test="$RF='#39'RF14'#39'">'
       
-        '                                      (agenzie di vendite all'#8217'as' +
-        'ta di oggetti d'#8217'arte,'
+        '                                      rivendita beni usati, ogge' +
+        'tti d'#8217'arte, d'#8217'antiquariato o da collezione'
+      '                                    </xsl:when>'
+      '                                    <xsl:when test="$RF='#39'RF15'#39'">'
       
-        '                                      antiquariato o da collezio' +
-        'ne)'
+        '                                      agenzie di vendite all'#8217'ast' +
+        'a di oggetti d'#8217'arte, antiquariato o da collezione'
       '                                    </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF16'#39'">'
-      '                                      (IVA per cassa P.A.)'
+      '                                    <xsl:when test="$RF='#39'RF16'#39'">'
+      '                                      IVA per cassa P.A.'
       '                                    </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF17'#39'">'
+      '                                    <xsl:when test="$RF='#39'RF17'#39'">'
       
-        '                                      (IVA per cassa - art. 32-b' +
-        'is, D.L. 83/2012)'
+        '                                      IVA per cassa - art. 32-bi' +
+        's, D.L. 83/2012'
       '                                    </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF19'#39'">'
-      '                                      (Regime forfettario)'
+      '                                    <xsl:when test="$RF='#39'RF19'#39'">'
+      '                                      Regime forfettario'
       '                                    </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF18'#39'">'
-      '                                      (altro)'
+      '                                    <xsl:when test="$RF='#39'RF18'#39'">'
+      '                                      altro'
       '                                    </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39#39'">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>(!!! codice non previsto !!!)</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
+      '                                    <xsl:when test="$RF='#39#39'">'
+      '                                    </xsl:when>'
+      '                                    <xsl:otherwise>'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:for-each select="$TipoFattura/FatturaElettro' +
-        'nicaHeader/CedentePrestatore/Sede">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Indirizzo">'
+        '                                      <span>!!! codice non previ' +
+        'sto !!!</span>'
+      '                                    </xsl:otherwise>'
+      '                                  </xsl:choose>'
+      ''
+      '                                </xsl:if>'
+      ''
+      '                              </div>'
+      ''
+      
+        '                              <xsl:for-each select="$TipoFattura' +
+        '/FatturaElettronicaHeader/CedentePrestatore/Sede">'
+      ''
+      '                                <div class="headContent" >'
+      ''
+      '                                  <xsl:if test="Indirizzo">'
       ''
       '                                    Indirizzo:'
       '                                    <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Indirizzo"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="NumeroCivico"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Comune">'
+      
+        '                                      <xsl:value-of select="Indi' +
+        'rizzo" />'
+      '                                      <xsl:text> </xsl:text>'
+      
+        '                                      <xsl:value-of select="Nume' +
+        'roCivico" />'
+      '                                    </span>'
+      ''
+      '                                  </xsl:if>'
+      ''
+      '                                </div>'
+      ''
+      '                                <div class="headContent" >'
+      '                                  <span>'
+      '                                    <xsl:if test="Comune">'
       ''
       '                                      Comune:'
       '                                      <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Comune"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Provincia">'
+      
+        '                                        <xsl:value-of select="Co' +
+        'mune" />'
+      ''
+      '                                      </span>'
+      ''
+      '                                    </xsl:if>'
+      '                                    <xsl:if test="Provincia">'
       ''
       '                                      Provincia:'
       '                                      <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Provincia"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="CAP">'
+      
+        '                                        <xsl:value-of select="Pr' +
+        'ovincia" />'
+      ''
+      '                                      </span>'
+      ''
+      '                                    </xsl:if>'
+      '                                  </span>'
+      ''
+      ''
+      '                                </div>'
+      '                                <div class="headContent" >'
+      ''
+      '                                  <span>'
+      '                                    <xsl:if test="CAP">'
       '                                      Cap:'
       '                                      <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="CAP"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Nazione">'
+      
+        '                                        <xsl:value-of select="CA' +
+        'P" />'
+      ''
+      '                                      </span>'
+      '                                    </xsl:if>'
+      ''
+      '                                    <xsl:if test="Nazione">'
       ''
       '                                      Nazione:'
       '                                      <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Nazione"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9'<!--FINE CEDENTE PRESTATORE-->'
-      #9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9'</tr>'
-      #9#9#9#9#9#9#9#9'</table>'
-      #9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9'<td class="tdHead">'
-      #9#9#9#9#9#9#9#9'<table class="tableHead">'
-      #9#9#9#9#9#9#9#9#9'<tr>'
-      #9#9#9#9#9#9#9#9#9#9'<td>'
-      #9#9#9#9#9#9#9#9#9#9#9'<!--INIZIO CESSIONARIO COMMITTENTE-->'
-      #9#9#9#9#9#9#9#9#9#9#9'<div class="headBorder">'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9'<label class="headerLabel">Cessionario/committente (' +
-        'cliente) </label>'
+        '                                        <xsl:value-of select="Na' +
+        'zione" />'
+      ''
+      '                                      </span>'
+      ''
+      '                                    </xsl:if>'
+      '                                  </span>'
+      ''
+      '                                </div>'
+      '                              </xsl:for-each>'
+      '                            </xsl:otherwise>'
+      '                          </xsl:choose>'
+      ''
+      '                        </xsl:for-each>'
+      ''
       
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:for-each select="$TipoFattura/FatturaElettronic' +
-        'aHeader/CessionarioCommittente">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="DatiAnagrafici">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<!--DatiAnagrafici FPA\FPR-->'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:for-each select="DatiAnagrafici">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent mt5">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="IdFiscaleIVA">'
+        '                        <!--INIZIO TerzoIntermediarioOSoggettoEm' +
+        'ittente-->'
+      
+        '                        <xsl:if test="$TipoFattura/FatturaElettr' +
+        'onicaHeader/TerzoIntermediarioOSoggettoEmittente">'
+      '                          <br/>'
+      ''
+      '                          <xsl:choose>'
+      
+        '                            <xsl:when test="$TipoFattura/Fattura' +
+        'ElettronicaHeader/SoggettoEmittente='#39'CC'#39'">'
+      
+        '                              <label class= "headerLabel">Sogget' +
+        'to Emittente (cessionario committente)  </label>'
+      ''
+      '                            </xsl:when>'
+      
+        '                            <xsl:when test="$TipoFattura/Fattura' +
+        'ElettronicaHeader/SoggettoEmittente='#39'TZ'#39'">'
+      
+        '                              <label class= "headerLabel">Terzo ' +
+        'Intermediario  </label>'
+      '                            </xsl:when>'
+      ''
+      '                            <xsl:otherwise>'
+      
+        '                              <label class= "headerLabel">Terzo ' +
+        'Intermediario o Soggetto Emittente </label>'
+      '                            </xsl:otherwise>'
+      '                          </xsl:choose>'
+      ''
+      
+        '                          <xsl:for-each select="$TipoFattura/Fat' +
+        'turaElettronicaHeader/TerzoIntermediarioOSoggettoEmittente/DatiA' +
+        'nagrafici">'
+      ''
+      '                            <div class="headContent mt5">'
+      '                              <xsl:if test="IdFiscaleIVA">'
+      ''
+      
+        '                                Identificativo fiscale ai fini I' +
+        'VA:'
+      '                                <span>'
+      
+        '                                  <xsl:value-of select="IdFiscal' +
+        'eIVA/IdPaese" />'
+      
+        '                                  <xsl:value-of select="IdFiscal' +
+        'eIVA/IdCodice" />'
+      '                                </span>'
+      ''
+      '                              </xsl:if>'
+      '                            </div>'
+      ''
+      '                            <div class="headContent" >'
+      ''
+      '                              <xsl:if test="CodiceFiscale">'
+      ''
+      '                                Codice fiscale:'
+      '                                <span>'
+      
+        '                                  <xsl:value-of select="CodiceFi' +
+        'scale" />'
+      '                                </span>'
+      ''
+      '                              </xsl:if>'
+      ''
+      '                            </div>'
+      ''
+      '                            <div class="headContent" >'
+      ''
+      
+        '                              <xsl:if test="Anagrafica/Denominaz' +
+        'ione">'
+      ''
+      '                                Denominazione:'
+      '                                <span>'
+      
+        '                                  <xsl:value-of select="Anagrafi' +
+        'ca/Denominazione" />'
+      '                                </span>'
+      ''
+      '                              </xsl:if>'
+      ''
+      '                            </div>'
+      ''
+      '                            <div class="headContent" >'
+      ''
+      
+        '                              <xsl:if test="Anagrafica/Nome | An' +
+        'agrafica/Cognome">'
+      ''
+      '                                Cognome nome:'
+      ''
+      
+        '                                <xsl:if test="Anagrafica/Cognome' +
+        '">'
+      '                                  <span>'
+      
+        '                                    <xsl:value-of select="Anagra' +
+        'fica/Cognome" />'
+      '                                    <xsl:text> </xsl:text>'
+      '                                  </span>'
+      '                                </xsl:if>'
+      '                                <xsl:if test="Anagrafica/Nome">'
+      '                                  <span>'
+      
+        '                                    <xsl:value-of select="Anagra' +
+        'fica/Nome" />'
+      '                                  </span>'
+      '                                </xsl:if>'
+      ''
+      '                              </xsl:if>'
+      ''
+      '                            </div>'
+      ''
+      ''
+      '                             </xsl:for-each>'
+      ''
+      ''
+      ''
+      '                        </xsl:if>'
+      
+        '                        <!--FINE TerzoIntermediarioOSoggettoEmit' +
+        'tente-->'
+      ''
+      '                      </div>'
+      '                      <!--FINE CEDENTE PRESTATORE-->'
+      ''
+      '                    </td>'
+      '                  </tr>'
+      ''
+      '                </table>'
+      ''
+      ''
+      ''
+      '              </td>'
+      '              <td class="tdHead">'
+      ''
+      '                <!--INIZIO CESSIONARIO COMMITTENTE-->'
+      '                <table class="tableHead">'
+      '                  <tr>'
+      '                    <td >'
+      ''
+      '                      <div class="headBorder" >'
+      
+        '                        <label class= "headerLabel"  >Cessionari' +
+        'o/committente (cliente) </label>'
+      
+        '                        <xsl:for-each select="$TipoFattura/Fattu' +
+        'raElettronicaHeader/CessionarioCommittente">'
+      '                          <xsl:choose>'
+      '                            <xsl:when test="DatiAnagrafici">'
+      '                              <!--DatiAnagrafici FPA\FPR-->'
+      
+        '                              <xsl:for-each select="DatiAnagrafi' +
+        'ci">'
+      ''
+      '                                <div class="headContent mt5" >'
+      '                                  <xsl:if test="IdFiscaleIVA">'
       ''
       
         '                                    Identificativo fiscale ai fi' +
         'ni IVA:'
       '                                    <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="IdFiscaleIVA/IdPaese"/>'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="IdFiscaleIVA/IdCodice"/' +
-        '>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="CodiceFiscale">'
+        '                                      <xsl:value-of select="IdFi' +
+        'scaleIVA/IdPaese" />'
+      
+        '                                      <xsl:value-of select="IdFi' +
+        'scaleIVA/IdCodice" />'
+      '                                    </span>'
+      ''
+      '                                  </xsl:if>'
+      '                                </div>'
+      ''
+      '                                <div class="headContent" >'
+      ''
+      '                                  <xsl:if test="CodiceFiscale">'
       ''
       '                                    Codice fiscale:'
       '                                    <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="CodiceFiscale"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Anagrafica/Denominazione">'
+      
+        '                                      <xsl:value-of select="Codi' +
+        'ceFiscale" />'
+      '                                    </span>'
+      ''
+      '                                  </xsl:if>'
+      ''
+      '                                </div>'
+      ''
+      '                                <div class="headContent" >'
+      ''
+      
+        '                                  <xsl:if test="Anagrafica/Denom' +
+        'inazione">'
       ''
       '                                    Denominazione:'
       '                                    <span>'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Anagrafica/Denominazion' +
-        'e"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
+        '                                      <xsl:value-of select="Anag' +
+        'rafica/Denominazione" />'
+      '                                    </span>'
+      ''
+      '                                  </xsl:if>'
+      ''
+      '                                </div>'
+      ''
+      '                                <div class="headContent" >'
+      ''
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Anagrafica/Nome | Anagrafica/Cogn' +
-        'ome">'
+        '                                  <xsl:if test="Anagrafica/Nome ' +
+        '| Anagrafica/Cognome">'
       ''
       '                                    Cognome nome:'
       ''
       
         '                                    <xsl:if test="Anagrafica/Cog' +
         'nome">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Anagrafica/Cognome"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Anagrafica/Nome">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Anagrafica/Nome"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:for-each select="Sede">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Indirizzo">'
+      '                                      <span>'
+      
+        '                                        <xsl:value-of select="An' +
+        'agrafica/Cognome" />'
+      '                                        <xsl:text> </xsl:text>'
+      '                                      </span>'
+      '                                    </xsl:if>'
+      
+        '                                    <xsl:if test="Anagrafica/Nom' +
+        'e">'
+      '                                      <span>'
+      
+        '                                        <xsl:value-of select="An' +
+        'agrafica/Nome" />'
+      '                                      </span>'
+      '                                    </xsl:if>'
+      ''
+      '                                  </xsl:if>'
+      ''
+      '                                </div>'
+      ''
+      ''
+      '                              </xsl:for-each>'
+      ''
+      '                              <xsl:for-each select="Sede">'
+      ''
+      '                                <div class="headContent" >'
+      ''
+      '                                  <xsl:if test="Indirizzo">'
       ''
       '                                    Indirizzo:'
       '                                    <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Indirizzo"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="NumeroCivico"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Comune">'
+      
+        '                                      <xsl:value-of select="Indi' +
+        'rizzo" />'
+      '                                      <xsl:text> </xsl:text>'
+      
+        '                                      <xsl:value-of select="Nume' +
+        'roCivico" />'
+      '                                    </span>'
+      ''
+      '                                  </xsl:if>'
+      ''
+      '                                </div>'
+      ''
+      ''
+      ''
+      '                                <div class="headContent" >'
+      '                                  <span>'
+      '                                    <xsl:if test="Comune">'
       ''
       '                                      Comune:'
       '                                      <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Comune"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Provincia">'
+      
+        '                                        <xsl:value-of select="Co' +
+        'mune" />'
+      ''
+      '                                      </span>'
+      ''
+      '                                    </xsl:if>'
+      '                                    <xsl:if test="Provincia">'
       ''
       '                                      Provincia:'
       '                                      <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Provincia"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="CAP">'
+      
+        '                                        <xsl:value-of select="Pr' +
+        'ovincia" />'
+      ''
+      '                                      </span>'
+      ''
+      '                                    </xsl:if>'
+      '                                  </span>'
+      ''
+      ''
+      '                                </div>'
+      '                                <div class="headContent" >'
+      ''
+      '                                  <span>'
+      '                                    <xsl:if test="CAP">'
       '                                      Cap:'
       '                                      <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="CAP"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Nazione">'
+      
+        '                                        <xsl:value-of select="CA' +
+        'P" />'
+      ''
+      '                                      </span>'
+      '                                    </xsl:if>'
+      ''
+      '                                    <xsl:if test="Nazione">'
       ''
       '                                      Nazione:'
       '                                      <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Nazione"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="$PecDestinatario">'
+      
+        '                                        <xsl:value-of select="Na' +
+        'zione" />'
+      ''
+      '                                      </span>'
+      ''
+      '                                    </xsl:if>'
+      '                                  </span>'
+      ''
+      '                                </div>'
+      '                                <div class="headContent" >'
+      ''
+      
+        '                                  <xsl:if test="$PecDestinatario' +
+        '">'
       ''
       '                                    Pec: <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="$PecDestinatario"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<!--Anagrafica FPRS-->'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:for-each select="$TipoFattura/FatturaElettro' +
-        'nicaHeader/CessionarioCommittente/IdentificativiFiscali">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent mt5">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="IdFiscaleIVA">'
+        '                                      <xsl:value-of select="$Pec' +
+        'Destinatario" />'
+      '                                    </span>'
+      ''
+      '                                  </xsl:if>'
+      ''
+      '                                </div>'
+      ''
+      ''
+      '                              </xsl:for-each>'
+      '                            </xsl:when>'
+      '                            <xsl:otherwise>'
+      '                              <!--Anagrafica FPRS-->'
+      
+        '                              <xsl:for-each select="$TipoFattura' +
+        '/FatturaElettronicaHeader/CessionarioCommittente/IdentificativiF' +
+        'iscali">'
+      '                                <div class="headContent mt5" >'
+      '                                  <xsl:if test="IdFiscaleIVA">'
       ''
       
         '                                    Identificativo fiscale ai fi' +
         'ni IVA:'
       '                                    <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="IdFiscaleIVA/IdPaese"/>'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="IdFiscaleIVA/IdCodice"/' +
-        '>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="CodiceFiscale">'
+        '                                      <xsl:value-of select="IdFi' +
+        'scaleIVA/IdPaese" />'
+      
+        '                                      <xsl:value-of select="IdFi' +
+        'scaleIVA/IdCodice" />'
+      '                                    </span>'
+      ''
+      '                                  </xsl:if>'
+      '                                </div>'
+      ''
+      '                                <div class="headContent" >'
+      ''
+      '                                  <xsl:if test="CodiceFiscale">'
       ''
       '                                    Codice fiscale:'
       '                                    <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="CodiceFiscale"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:for-each>'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:for-each select="$TipoFattura/FatturaElettro' +
-        'nicaHeader/CessionarioCommittente/AltriDatiIdentificativi">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Denominazione">'
+        '                                      <xsl:value-of select="Codi' +
+        'ceFiscale" />'
+      '                                    </span>'
+      ''
+      '                                  </xsl:if>'
+      ''
+      '                                </div>'
+      '                              </xsl:for-each>'
+      
+        '                              <xsl:for-each select="$TipoFattura' +
+        '/FatturaElettronicaHeader/CessionarioCommittente/AltriDatiIdenti' +
+        'ficativi">'
+      '                                <div class="headContent" >'
+      ''
+      '                                  <xsl:if test="Denominazione">'
       ''
       '                                    Denominazione:'
       '                                    <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Denominazione"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Nome | Cognome">'
+      
+        '                                      <xsl:value-of select="Deno' +
+        'minazione" />'
+      '                                    </span>'
+      ''
+      '                                  </xsl:if>'
+      ''
+      '                                </div>'
+      ''
+      '                                <div class="headContent" >'
+      ''
+      '                                  <xsl:if test="Nome | Cognome">'
       ''
       '                                    Cognome nome:'
       ''
       '                                    <xsl:if test="Cognome">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Cognome"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Nome">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Nome"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
+      '                                      <span>'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:for-each select="$TipoFattura/FatturaElettr' +
-        'onicaHeader/CessionarioCommittente/AltriDatiIdentificativi/Sede"' +
-        '>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Indirizzo">'
+        '                                        <xsl:value-of select="Co' +
+        'gnome" />'
+      '                                        <xsl:text> </xsl:text>'
+      '                                      </span>'
+      '                                    </xsl:if>'
+      '                                    <xsl:if test="Nome">'
+      '                                      <span>'
+      
+        '                                        <xsl:value-of select="No' +
+        'me" />'
+      '                                      </span>'
+      '                                    </xsl:if>'
+      ''
+      '                                  </xsl:if>'
+      ''
+      '                                </div>'
+      ''
+      
+        '                                <xsl:for-each select="$TipoFattu' +
+        'ra/FatturaElettronicaHeader/CessionarioCommittente/AltriDatiIden' +
+        'tificativi/Sede">'
+      ''
+      '                                  <div class="headContent" >'
+      ''
+      '                                    <xsl:if test="Indirizzo">'
       ''
       '                                      Indirizzo:'
       '                                      <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Indirizzo"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="NumeroCivico"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Comune">'
+      
+        '                                        <xsl:value-of select="In' +
+        'dirizzo" />'
+      '                                        <xsl:text> </xsl:text>'
+      
+        '                                        <xsl:value-of select="Nu' +
+        'meroCivico" />'
+      '                                      </span>'
+      ''
+      '                                    </xsl:if>'
+      ''
+      '                                  </div>'
+      ''
+      ''
+      ''
+      '                                  <div class="headContent" >'
+      '                                    <span>'
+      '                                      <xsl:if test="Comune">'
       ''
       '                                        Comune:'
       '                                        <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Comune"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Provincia">'
+      
+        '                                          <xsl:value-of select="' +
+        'Comune" />'
+      ''
+      '                                        </span>'
+      ''
+      '                                      </xsl:if>'
+      '                                      <xsl:if test="Provincia">'
       ''
       '                                        Provincia:'
       '                                        <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Provincia"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="CAP">'
+      
+        '                                          <xsl:value-of select="' +
+        'Provincia" />'
+      ''
+      '                                        </span>'
+      ''
+      '                                      </xsl:if>'
+      '                                    </span>'
+      ''
+      ''
+      '                                  </div>'
+      '                                  <div class="headContent" >'
+      ''
+      '                                    <span>'
+      '                                      <xsl:if test="CAP">'
       '                                        Cap:'
       '                                        <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="CAP"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Nazione">'
+      
+        '                                          <xsl:value-of select="' +
+        'CAP" />'
+      ''
+      '                                        </span>'
+      '                                      </xsl:if>'
+      ''
+      '                                      <xsl:if test="Nazione">'
       ''
       '                                        Nazione:'
       '                                        <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Nazione"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="$PecDestinatario">'
+      
+        '                                          <xsl:value-of select="' +
+        'Nazione" />'
+      ''
+      '                                        </span>'
+      ''
+      '                                      </xsl:if>'
+      '                                    </span>'
+      ''
+      '                                  </div>'
+      '                                  <div class="headContent" >'
+      ''
+      
+        '                                    <xsl:if test="$PecDestinatar' +
+        'io">'
       ''
       '                                      Pec: <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="$PecDestinatario"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9'<!--FINE CESSIONARIO COMMITTENTE-->'
-      #9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9'</tr>'
-      #9#9#9#9#9#9#9#9'</table>'
-      #9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9'</tr>'
-      #9#9#9#9#9'</table>'
-      #9#9#9#9'</xsl:if>'
-      #9#9#9#9'<div style="height:10px">'
-      #9#9#9#9'</div>'
-      #9#9#9#9'<!-- FINE FatturaElettronicaHeader -->'
-      #9#9#9#9'<!--INIZIO BODY-->'
-      #9#9#9#9'<xsl:for-each select="$TipoFattura/FatturaElettronicaBody">'
-      #9#9#9#9#9'<xsl:variable name="BodyIndex" select="position()"/>'
       
-        #9#9#9#9#9'<!-- Conforme Standard AssoSoftware se altridatigestionali ' +
-        'presenta ASWRELSTD   -->'
-      #9#9#9#9#9'<xsl:variable name="posASWRELSTD">'
-      #9#9#9#9#9#9'<xsl:for-each select="DatiBeniServizi/DettaglioLinee">'
-      #9#9#9#9#9#9#9'<xsl:variable name="DettaglioLinee" select="."/>'
+        '                                        <xsl:value-of select="$P' +
+        'ecDestinatario" />'
+      '                                      </span>'
+      ''
+      '                                    </xsl:if>'
+      ''
+      '                                  </div>'
+      ''
+      ''
+      '                                </xsl:for-each>'
+      ''
+      '                              </xsl:for-each>'
+      '                            </xsl:otherwise>'
+      '                          </xsl:choose>'
+      '                        </xsl:for-each>'
+      '                      </div>'
+      ''
+      '                    </td>'
+      '                  </tr>'
+      ''
+      '                </table>'
+      '                <!--FINE CESSIONARIO COMMITTENTE-->'
+      '              </td>'
+      '            </tr>'
+      ''
+      ''
+      '          </table>'
+      ''
+      ''
+      '        </xsl:if>'
+      '        <div style="height:10px" > </div>'
+      ''
+      '        <!-- FINE FatturaElettronicaHeader -->'
+      ''
+      '        <!--INIZIO BODY-->'
+      ''
       
-        #9#9#9#9#9#9#9'<xsl:variable name="posDettaglioLinee" select="position()' +
-        '"/>'
-      #9#9#9#9#9#9#9'<xsl:for-each select="AltriDatiGestionali">'
+        '        <xsl:for-each select="$TipoFattura/FatturaElettronicaBod' +
+        'y" >'
+      ''
+      ''
+      '          <xsl:variable name="BodyIndex" select="position()"/>'
+      ''
       
-        #9#9#9#9#9#9#9#9'<xsl:if test=" translate( TipoDato,&#xA;                ' +
-        '                     '#39'ABCDEFGHIJKLMNOPQRSTUVWXYZ'#39',&#xA;         ' +
-        '                            '#39'abcdefghijklmnopqrstuvwxyz'#39'&#xA;   ' +
-        '                                 ) = '#39'aswrelstd'#39'">'
-      #9#9#9#9#9#9#9#9#9'<xsl:value-of select="number($posDettaglioLinee)"/>'
-      #9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9'</xsl:variable>'
-      #9#9#9#9#9'<!-- FINE conforme AssoSoftware -->'
-      #9#9#9#9#9'<table class="tbFoglio">'
-      #9#9#9#9#9#9'<!-- TIPOLOGIA DOCUMENTO TESTATA-->'
-      #9#9#9#9#9#9'<thead>'
-      #9#9#9#9#9#9#9'<tr>'
-      #9#9#9#9#9#9#9#9'<th>Tipologia documento</th>'
-      #9#9#9#9#9#9#9#9'<th class="perc">Art. 73</th>'
-      #9#9#9#9#9#9#9#9'<th>Numero documento</th>'
-      #9#9#9#9#9#9#9#9'<th class="data">Data documento</th>'
-      #9#9#9#9#9#9#9#9'<th>Codice destinatario</th>'
-      #9#9#9#9#9#9#9'</tr>'
-      #9#9#9#9#9#9'</thead>'
-      #9#9#9#9#9#9'<tbody>'
-      #9#9#9#9#9#9#9'<tr>'
-      #9#9#9#9#9#9#9#9'<td>'
+        '          <!-- Conforme Standard AssoSoftware se altridatigestio' +
+        'nali presenta ASWRELSTD   -->'
+      '          <xsl:variable name="posASWRELSTD" >'
       
-        #9#9#9#9#9#9#9#9#9'<xsl:if test="DatiGenerali/DatiGeneraliDocumento/TipoDo' +
-        'cumento">'
-      
-        #9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="DatiGenerali/DatiGeneraliDocumen' +
-        'to/TipoDocumento"/>'
-      #9#9#9#9#9#9#9#9#9#9'<xsl:variable name="TD">'
-      
-        #9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="DatiGenerali/DatiGeneraliDocume' +
-        'nto/TipoDocumento"/>'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:variable>'
-      #9#9#9#9#9#9#9#9#9#9'<xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TD='#39'TD01'#39'">'
-      '                        (fattura)'
-      '                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TD='#39'TD02'#39'">'
-      '                        (acconto/anticipo su fattura)'
-      '                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TD='#39'TD03'#39'">'
-      '                        (acconto/anticipo su parcella)'
-      '                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TD='#39'TD04'#39'">'
-      '                        (nota di credito)'
-      '                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TD='#39'TD05'#39'">'
-      '                        (nota di debito)'
-      '                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TD='#39'TD06'#39'">'
-      '                        (parcella)'
-      '                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TD='#39'TD20'#39'">'
-      '                        (autofattura)'
-      '                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9'<!--FPRS-->'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TD='#39'TD07'#39'">'
-      '                        (fattura semplificata)'
-      '                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TD='#39'TD08'#39'">'
-      '                        (nota di credito semplificata)'
-      '                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TD='#39'TD09'#39'">'
-      '                        (nota di debito semplificata)'
-      '                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TD='#39#39'">'
-      #9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<span>(!!! codice non previsto !!!)</span>'
-      #9#9#9#9#9#9#9#9#9#9#9'</xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:choose>'
-      #9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9'<td class="ritenuta">'
-      
-        #9#9#9#9#9#9#9#9#9'<xsl:if test="DatiGenerali/DatiGeneraliDocumento/Art73"' +
-        '>'
-      
-        #9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="DatiGenerali/DatiGeneraliDocumen' +
-        'to/Art73"/>'
-      #9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9'<td class="textCenter">'
-      
-        #9#9#9#9#9#9#9#9#9'<xsl:if test="DatiGenerali/DatiGeneraliDocumento/Numero' +
+        '            <xsl:for-each select="DatiBeniServizi/DettaglioLinee' +
         '">'
+      '              <xsl:variable name="DettaglioLinee" select="."/>'
+      ''
       
-        #9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="DatiGenerali/DatiGeneraliDocumen' +
-        'to/Numero"/>'
-      #9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9'<td class="data">'
-      #9#9#9#9#9#9#9#9#9'<xsl:if test="DatiGenerali/DatiGeneraliDocumento/Data">'
-      #9#9#9#9#9#9#9#9#9#9'<xsl:call-template name="FormatDateIta">'
+        '              <xsl:variable name="posDettaglioLinee" select="pos' +
+        'ition()"/>'
+      '              <xsl:for-each select="AltriDatiGestionali">'
+      ''
+      '                <xsl:if test=" translate( TipoDato,'
       
-        #9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="DateTime" select="DatiGenerali/' +
-        'DatiGeneraliDocumento/Data"/>'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9'<td class="textCenter">'
-      #9#9#9#9#9#9#9#9#9'<xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9'<xsl:when test="$PecDestinatario">'
+        '                                     '#39'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
+        #39','
+      
+        '                                     '#39'abcdefghijklmnopqrstuvwxyz' +
+        #39
+      '                                    ) = '#39'aswrelstd'#39'">'
+      ''
+      
+        '                  <xsl:value-of select="number($posDettaglioLine' +
+        'e)"/>'
+      ''
+      '                </xsl:if>'
+      '              </xsl:for-each>'
+      ''
+      '            </xsl:for-each>'
+      '          </xsl:variable>'
+      '          <!-- FINE conforme AssoSoftware -->'
+      ''
+      ''
+      '          <table class="tbFoglio">'
+      ''
+      '            <!-- TIPOLOGIA DOCUMENTO TESTATA-->'
+      '            <thead>'
+      '              <tr>'
+      ''
+      '                <th>Tipologia documento</th>'
+      '                <th class="perc">Art. 73</th>'
+      '                <th >Numero documento</th>'
+      '                <th class="data">Data documento</th>'
+      '                <th >Codice destinatario</th>'
+      ''
+      '              </tr>'
+      '            </thead>'
+      '            <tbody>'
+      '              <tr>'
+      '                <td>'
+      
+        '                  <xsl:if test="DatiGenerali/DatiGeneraliDocumen' +
+        'to/TipoDocumento">'
+      ''
+      
+        '                    <xsl:value-of select="DatiGenerali/DatiGener' +
+        'aliDocumento/TipoDocumento" />'
+      ''
+      ''
+      '                    <xsl:variable name="TD">'
+      
+        '                      <xsl:value-of select="DatiGenerali/DatiGen' +
+        'eraliDocumento/TipoDocumento" />'
+      '                    </xsl:variable>'
+      '                    <xsl:choose>'
+      '                      <xsl:when test="$TD='#39'TD01'#39'">'
+      '                        fattura'
+      '                      </xsl:when>'
+      '                      <xsl:when test="$TD='#39'TD02'#39'">'
+      '                        acconto / anticipo su fattura'
+      '                      </xsl:when>'
+      '                      <xsl:when test="$TD='#39'TD03'#39'">'
+      '                        acconto / anticipo su parcella'
+      '                      </xsl:when>'
+      '                      <xsl:when test="$TD='#39'TD04'#39'">'
+      '                        nota di credito'
+      '                      </xsl:when>'
+      '                      <xsl:when test="$TD='#39'TD05'#39'">'
+      '                        nota di debito'
+      '                      </xsl:when>'
+      '                      <xsl:when test="$TD='#39'TD06'#39'">'
+      '                        parcella'
+      '                      </xsl:when>'
+      '                     <xsl:when test="$TD='#39'TD16'#39'">'
+      #9#9#9#9#9#9#9'integrazione fattura reverse charge interno'
+      #9#9#9#9#9#9'</xsl:when>'
+      #9#9#9#9#9#9'<xsl:when test="$TD='#39'TD17'#39'">'
+      #9#9#9#9#9#9#9'integrazione/autofattura per acquisto servizi dall'#39'estero'
+      #9#9#9#9#9#9'</xsl:when>'
+      #9#9#9#9#9#9'<xsl:when test="$TD='#39'TD18'#39'">'
+      #9#9#9#9#9#9#9'integrazione per acquisto di beni intracomunitari'
+      #9#9#9#9#9#9'</xsl:when>'
+      #9#9#9#9#9#9'<xsl:when test="$TD='#39'TD19'#39'">'
+      
+        #9#9#9#9#9#9#9'integrazione/autofattura per acquisto di beni ex art.17 c' +
+        '.2 DPR 633/72'
+      #9#9#9#9#9#9'</xsl:when>'
+      #9#9#9#9#9#9'<xsl:when test="$TD='#39'TD20'#39'">'
+      
+        #9#9#9#9#9#9#9'autofattura per regolarizzazione e integrazione delle fat' +
+        'ture (ex art.6 c.8 e 9-bis d.lgs.471/97 o art.46 c.5 D.L. 331/93'
+      #9#9#9#9#9#9'</xsl:when>'
+      #9#9#9#9#9#9'<xsl:when test="$TD='#39'TD21'#39'">'
+      #9#9#9#9#9#9#9'autofattura per splafonamento'
+      #9#9#9#9#9#9'</xsl:when>'
+      #9#9#9#9#9#9'<xsl:when test="$TD='#39'TD22'#39'">'
+      #9#9#9#9#9#9#9'estrazione beni da Deposito IVA'
+      #9#9#9#9#9#9'</xsl:when>'
+      #9#9#9#9#9#9'<xsl:when test="$TD='#39'TD23'#39'">'
+      #9#9#9#9#9#9#9'estrazione beni da Deposito IVA con versamento dell'#39'IVA'
+      #9#9#9#9#9#9'</xsl:when>'
+      #9#9#9#9#9#9'<xsl:when test="$TD='#39'TD24'#39'">'
+      
+        #9#9#9#9#9#9#9'fattura differita di cui all'#39'art.21, comma 4, terzo perio' +
+        'do lett. a) DPR 633/72'
+      #9#9#9#9#9#9'</xsl:when>'
+      #9#9#9#9#9#9'<xsl:when test="$TD='#39'TD25'#39'">'
+      
+        #9#9#9#9#9#9#9'fattura differita di cui all'#39'art.21, comma 4, terzo perio' +
+        'do lett. b) DPR 633/72'
+      #9#9#9#9#9#9'</xsl:when>'
+      #9#9#9#9#9#9'<xsl:when test="$TD='#39'TD26'#39'">'
+      
+        #9#9#9#9#9#9#9'cessione di beni ammortizzabili e per passaggi interni (e' +
+        'x art.36 DPR 633/72)'
+      #9#9#9#9#9#9'</xsl:when>'
+      #9#9#9#9#9#9'<xsl:when test="$TD='#39'TD27'#39'">'
+      
+        #9#9#9#9#9#9#9'fattura per autoconsumo o per cessioni gratuite senza riv' +
+        'alsa'
+      #9#9#9#9#9#9'</xsl:when>'
+      #9#9#9#9#9#9'<xsl:when test="$TD='#39'TD28'#39'">'
+      #9#9#9#9#9#9#9'acquisti da San Marino con IVA (fattura cartacea)'
+      #9#9#9#9#9#9'</xsl:when>'
+      ''
+      '                      <!--FPRS-->'
+      '                      <xsl:when test="$TD='#39'TD07'#39'">'
+      '                        fattura semplificata'
+      '                      </xsl:when>'
+      '                      <xsl:when test="$TD='#39'TD08'#39'">'
+      '                        nota di credito semplificata'
+      '                      </xsl:when>'
+      '                      <xsl:when test="$TD='#39'TD09'#39'">'
+      '                        nota di debito semplificata'
+      '                      </xsl:when>'
+      '                      <xsl:when test="$TD='#39#39'">'
+      '                      </xsl:when>'
+      '                      <!--<xsl:otherwise>'
+      
+        '                        <span>(!!! codice non previsto !!!)</spa' +
+        'n>'
+      '                      </xsl:otherwise>-->'
+      '                    </xsl:choose>'
+      ''
+      '                  </xsl:if>'
+      '                </td>'
+      ''
+      '                <td class="ritenuta"  >'
+      
+        '                  <xsl:if test="DatiGenerali/DatiGeneraliDocumen' +
+        'to/Art73">'
+      
+        '                    <xsl:value-of select="DatiGenerali/DatiGener' +
+        'aliDocumento/Art73" />'
+      '                  </xsl:if>'
+      '                </td>'
+      ''
+      '                <td class="textCenter" >'
+      ''
+      
+        '                  <xsl:if test="DatiGenerali/DatiGeneraliDocumen' +
+        'to/Numero">'
+      
+        '                    <xsl:value-of select="DatiGenerali/DatiGener' +
+        'aliDocumento/Numero" />'
+      '                  </xsl:if>'
+      '                </td>'
+      '                <td class="data" >'
+      ''
+      
+        '                  <xsl:if test="DatiGenerali/DatiGeneraliDocumen' +
+        'to/Data">'
+      '                    <xsl:call-template name="FormatDateIta">'
+      
+        '                      <xsl:with-param name="DateTime" select="Da' +
+        'tiGenerali/DatiGeneraliDocumento/Data" />'
+      '                    </xsl:call-template>'
+      '                  </xsl:if>'
+      ''
+      '                </td>'
+      ''
+      '                <td class="textCenter" >'
+      '                  <xsl:choose>'
+      '                    <xsl:when test="$PecDestinatario">'
       '                      Indicata PEC'
       '                    </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9'<xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="$CodiceDestinatario">'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="$CodiceDestinatario"/>'
-      #9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9'</xsl:choose>'
-      #9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9'</tr>'
-      #9#9#9#9#9#9#9'<!--FINE TIPOLOGIA Documento TESTATA-->'
-      #9#9#9#9#9#9'</tbody>'
-      #9#9#9#9#9'</table>'
-      #9#9#9#9#9'<xsl:if test="DatiGenerali/DatiGeneraliDocumento/Causale">'
-      #9#9#9#9#9#9'<div class="separa">'
-      #9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9'<table class="tbFoglio">'
-      #9#9#9#9#9#9#9'<!-- TIPOLOGIA DOCUMENTO TESTATA - parte causale-->'
-      #9#9#9#9#9#9#9'<thead>'
-      #9#9#9#9#9#9#9#9'<tr>'
-      #9#9#9#9#9#9#9#9#9'<th>Causale</th>'
-      #9#9#9#9#9#9#9#9'</tr>'
-      #9#9#9#9#9#9#9'</thead>'
-      #9#9#9#9#9#9#9'<tbody>'
-      #9#9#9#9#9#9#9#9'<tr>'
-      #9#9#9#9#9#9#9#9#9'<td>'
+      ''
+      '                    <xsl:otherwise>'
+      '                      <xsl:if test="$CodiceDestinatario">'
       
-        #9#9#9#9#9#9#9#9#9#9'<xsl:if test="DatiGenerali/DatiGeneraliDocumento/Causa' +
+        '                        <xsl:value-of select="$CodiceDestinatari' +
+        'o" />'
+      '                      </xsl:if>'
+      '                    </xsl:otherwise>'
+      '                  </xsl:choose>'
+      '                </td>'
+      ''
+      '              </tr>'
+      ''
+      '              <!--FINE TIPOLOGIA Documento TESTATA-->'
+      '            </tbody>'
+      '          </table>'
+      ''
+      
+        '          <xsl:if test="DatiGenerali/DatiGeneraliDocumento/Causa' +
         'le">'
+      '            <div class="separa"> </div>'
+      '            <table class="tbFoglio">'
+      ''
       
-        #9#9#9#9#9#9#9#9#9#9#9'<xsl:for-each select="DatiGenerali/DatiGeneraliDocume' +
-        'nto/Causale">'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="."/>'
-      #9#9#9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9'</tr>'
-      #9#9#9#9#9#9#9#9'<!--FINE TIPOLOGIA Documento TESTATA - parte causale -->'
-      #9#9#9#9#9#9#9'</tbody>'
-      #9#9#9#9#9#9'</table>'
-      #9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9'<div class="separa">'
-      #9#9#9#9#9'</div>'
-      #9#9#9#9#9'<xsl:choose>'
-      #9#9#9#9#9#9'<xsl:when test="$IsFPRS='#39'1'#39'">'
-      #9#9#9#9#9#9#9'<!--  Dettaglio Linee   -->'
-      #9#9#9#9#9#9#9'<table class="tbFoglio">'
-      #9#9#9#9#9#9#9#9'<thead>'
-      #9#9#9#9#9#9#9#9#9'<tr>'
-      #9#9#9#9#9#9#9#9#9#9'<th>Descrizione</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th class="perc">Imposta</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th class="perc2">%IVA</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th class="ximport">Prezzo totale</th>'
-      #9#9#9#9#9#9#9#9#9'</tr>'
-      #9#9#9#9#9#9#9#9'</thead>'
-      #9#9#9#9#9#9#9#9'<tbody>'
-      #9#9#9#9#9#9#9#9#9'<xsl:for-each select="DatiBeniServizi">'
-      #9#9#9#9#9#9#9#9#9#9'<tr>'
-      #9#9#9#9#9#9#9#9#9#9#9'<td>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Descrizione">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Descrizione"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="RiferimentoNormativo">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="tx-xsmall">'
+        '              <!-- TIPOLOGIA DOCUMENTO TESTATA - parte causale--' +
+        '>'
+      '              <thead>'
+      '                <tr>'
+      '                  <th>Causale</th>'
+      '                </tr>'
+      '              </thead>'
+      '              <tbody>'
+      '                <tr>'
+      ''
+      '                  <td >'
+      
+        '                    <xsl:if test="DatiGenerali/DatiGeneraliDocum' +
+        'ento/Causale">'
+      ''
+      
+        '                      <xsl:for-each select="DatiGenerali/DatiGen' +
+        'eraliDocumento/Causale"  >'
+      '                        <xsl:value-of select="." /><br/>'
+      '                      </xsl:for-each>'
+      ''
+      '                    </xsl:if>'
+      '                  </td>'
+      ''
+      '                </tr>'
+      ''
+      
+        '                <!--FINE TIPOLOGIA Documento TESTATA - parte cau' +
+        'sale -->'
+      '              </tbody>'
+      '            </table>'
+      '          </xsl:if>'
+      ''
+      '          <div class="separa"> </div>'
+      ''
+      '          <xsl:choose>'
+      '            <xsl:when test="$IsFPRS='#39'1'#39'">'
+      ''
+      '              <!--  Dettaglio Linee   -->'
+      '              <table class="tbFoglio"  >'
+      ''
+      '                <thead>'
+      '                  <tr>'
+      '                    <th>Descrizione</th>'
+      '                    <th class="perc">Imposta</th>'
+      '                    <th class="perc2">%IVA</th>'
+      '                    <th class="ximport">Prezzo totale</th>'
+      ''
+      '                  </tr>'
+      '                </thead>'
+      '                <tbody>'
+      ''
+      '                  <xsl:for-each select="DatiBeniServizi" >'
+      ''
+      '                    <tr>'
+      '                      <td>'
+      ''
+      '                        <xsl:if test="Descrizione">'
+      '                          <xsl:value-of select="Descrizione" />'
+      '                        </xsl:if>'
+      ''
+      '                        <xsl:if test="RiferimentoNormativo">'
+      '                          <div class="tx-xsmall">'
       
         '                            RIF.NORM. <xsl:value-of select="Rife' +
-        'rimentoNormativo"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9#9'<td class="import">'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="DatiIVA/Imposta">'
+        'rimentoNormativo" />'
+      '                          </div>'
+      '                        </xsl:if>'
+      ''
+      '                      </td>'
+      '                      <td class="import" >'
+      ''
+      '                        <xsl:if test="DatiIVA/Imposta">'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="format-number(DatiIVA/Imposta' +
-        ',  '#39'###.###.##0,00'#39', '#39'euro'#39')"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9#9'<td class="import">'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:call-template name="FormatIVA">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="Natura" select="Natura"/>'
+        '                          <xsl:value-of select="format-number(Da' +
+        'tiIVA/Imposta,  '#39'###.###.##0,00'#39', '#39'euro'#39')" />'
+      '                        </xsl:if>'
+      '                      </td>'
+      '                      <td class="import" >'
+      ''
+      '                        <xsl:call-template name="FormatIVA">'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="IVA" select="DatiIVA/Aliquota' +
+        '                          <xsl:with-param name="Natura" select="' +
+        'Natura" />'
+      
+        '                          <xsl:with-param name="IVA" select="Dat' +
+        'iIVA/Aliquota" />'
+      '                        </xsl:call-template>'
+      ''
+      '                      </td>'
+      '                      <td class="import" >'
+      '                        <xsl:if test="Importo">'
+      
+        '                          <xsl:value-of select="format-number(Im' +
+        'porto,  '#39'###.###.##0,00'#39', '#39'euro'#39')" />'
+      '                        </xsl:if>'
+      '                      </td>'
+      '                    </tr>'
+      ''
+      '                  </xsl:for-each>'
+      ''
+      ''
+      '                </tbody>'
+      ''
+      '              </table>'
+      ''
+      '            </xsl:when>'
+      '            <xsl:otherwise>'
+      ''
+      '              <!--  Dettaglio Linee   -->'
+      '              <table class="tbFoglio"  >'
+      ''
+      '                <thead>'
+      '                  <tr>'
+      '                    <th width="80px">Cod. articolo</th>'
+      '                    <th>Descrizione</th>'
+      '                    <th class="import2" >Quantit'#224'</th>'
+      '                    <th class="import2">Prezzo unitario</th>'
+      '                    <th class="perc2">UM</th>'
+      '                    <th class="perc">Sconto o magg.</th>'
+      '                    <th class="perc2">%IVA</th>'
+      '                    <th class="ximport">Prezzo totale</th>'
+      ''
+      '                  </tr>'
+      '                </thead>'
+      '                <tbody>'
+      ''
+      ''
+      
+        '                  <xsl:if test="count(DatiGenerali/DatiOrdineAcq' +
+        'uisto[not(./RiferimentoNumeroLinea) or normalize-space(./Riferim' +
+        'entoNumeroLinea)='#39#39']) +'
+      
+        #9#9#9#9'  count(DatiGenerali/DatiContratto[not(./RiferimentoNumeroLi' +
+        'nea) or normalize-space(./RiferimentoNumeroLinea)='#39#39']) +'
+      
+        #9#9#9#9'  count(DatiGenerali/DatiDDT[not(./RiferimentoNumeroLinea) o' +
+        'r normalize-space(./RiferimentoNumeroLinea)='#39#39']) +'
+      
+        #9#9#9#9'  count(DatiGenerali/DatiFattureCollegate[not(./RiferimentoN' +
+        'umeroLinea) or  normalize-space(./RiferimentoNumeroLinea)='#39#39']) +'
+      
+        #9#9#9#9'  count(DatiGenerali/DatiConvenzione[not(./RiferimentoNumero' +
+        'Linea) or  normalize-space(./RiferimentoNumeroLinea)='#39#39'])+'
+      
+        #9#9#9#9'  count(DatiGenerali/DatiRicezione[not(./RiferimentoNumeroLi' +
+        'nea) or  normalize-space(./RiferimentoNumeroLinea)='#39#39'])  > 0 " >'
+      ''
+      ''
+      
+        '                    <!-- Verifica che DatiOrdineAcquisto non sia' +
+        'no senza riferimento numero linea in questo modo bisogna creare ' +
+        'la linea di info '#9'  -->'
+      
+        '                    <xsl:for-each select="DatiGenerali/DatiOrdin' +
+        'eAcquisto[not(./RiferimentoNumeroLinea) or  normalize-space(./Ri' +
+        'ferimentoNumeroLinea)='#39#39'] " >'
+      ''
+      '                      <xsl:call-template name="DatiCorrelati" >'
+      
+        '                        <xsl:with-param name="Prefix"   select='#39 +
+        '"Vs.Ord. "'#39'/>'
+      
+        '                        <xsl:with-param name="IdDocumento" selec' +
+        't="IdDocumento"/>'
+      
+        '                        <xsl:with-param name="Data" select="Data' +
         '"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9#9'<td class="import">'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Importo">'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="format-number(Importo,  '#39'###.' +
-        '###.##0,00'#39', '#39'euro'#39')"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9'</tr>'
-      #9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9#9#9'</tbody>'
-      #9#9#9#9#9#9#9'</table>'
-      #9#9#9#9#9#9'</xsl:when>'
-      #9#9#9#9#9#9'<xsl:otherwise>'
-      #9#9#9#9#9#9#9'<!--  Dettaglio Linee   -->'
-      #9#9#9#9#9#9#9'<table class="tbFoglio">'
-      #9#9#9#9#9#9#9#9'<thead>'
-      #9#9#9#9#9#9#9#9#9'<tr>'
-      #9#9#9#9#9#9#9#9#9#9'<th width="80px">Cod. articolo</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th>Descrizione</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th class="import2">Quantit'#224'</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th class="import2">Prezzo unitario</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th class="perc2">UM</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th class="perc">Sconto o magg.</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th class="perc2">%IVA</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th class="ximport">Prezzo totale</th>'
-      #9#9#9#9#9#9#9#9#9'</tr>'
-      #9#9#9#9#9#9#9#9'</thead>'
-      #9#9#9#9#9#9#9#9'<tbody>'
+        '                        <xsl:with-param name="CodiceCUP" select=' +
+        '"CodiceCUP"/>'
       
-        #9#9#9#9#9#9#9#9#9'<xsl:if test="count(DatiGenerali/DatiOrdineAcquisto[not' +
-        '(./RiferimentoNumeroLinea) or normalize-space(./RiferimentoNumer' +
-        'oLinea)='#39#39']) +&#xA;'#9#9#9#9'  count(DatiGenerali/DatiContratto[not(./' +
-        'RiferimentoNumeroLinea) or normalize-space(./RiferimentoNumeroLi' +
-        'nea)='#39#39']) +&#xA;'#9#9#9#9'  count(DatiGenerali/DatiDDT[not(./Riferimen' +
-        'toNumeroLinea) or normalize-space(./RiferimentoNumeroLinea)='#39#39'])' +
-        ' +&#xA;'#9#9#9#9'  count(DatiGenerali/DatiFattureCollegate[not(./Rifer' +
-        'imentoNumeroLinea) or  normalize-space(./RiferimentoNumeroLinea)' +
-        '='#39#39']) +&#xA;'#9#9#9#9'  count(DatiGenerali/DatiConvenzione[not(./Rifer' +
-        'imentoNumeroLinea) or  normalize-space(./RiferimentoNumeroLinea)' +
-        '='#39#39'])+&#xA;'#9#9#9#9'  count(DatiGenerali/DatiRicezione[not(./Riferime' +
-        'ntoNumeroLinea) or  normalize-space(./RiferimentoNumeroLinea)='#39#39 +
-        '])  &gt; 0 ">'
+        '                        <xsl:with-param name="CodiceCIG" select=' +
+        '"CodiceCIG"/>'
+      '                      </xsl:call-template >'
+      '                    </xsl:for-each>'
+      ''
       
-        #9#9#9#9#9#9#9#9#9#9'<!-- Verifica che DatiOrdineAcquisto non siano senza r' +
-        'iferimento numero linea in questo modo bisogna creare la linea d' +
-        'i info '#9'  -->'
+        '                    <!-- Verifica che DatiContratto non siano se' +
+        'nza riferimento numero linea in questo modo bisogna creare la li' +
+        'nea di info '#9'  -->'
+      ''
       
-        #9#9#9#9#9#9#9#9#9#9'<xsl:for-each select="DatiGenerali/DatiOrdineAcquisto[' +
-        'not(./RiferimentoNumeroLinea) or  normalize-space(./RiferimentoN' +
-        'umeroLinea)='#39#39'] ">'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:call-template name="DatiCorrelati">'
+        '                    <xsl:for-each select="DatiGenerali/DatiContr' +
+        'atto[not(./RiferimentoNumeroLinea) or  normalize-space(./Riferim' +
+        'entoNumeroLinea)='#39#39'] " >'
+      '                      <xsl:call-template name="DatiCorrelati" >'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="Prefix" select="&quot;Vs.Ord. ' +
-        '&quot;"/>'
+        '                        <xsl:with-param name="Prefix"   select='#39 +
+        '"Contratto "'#39'/>'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="IdDocumento" select="IdDocumen' +
-        'to"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="Data" select="Data"/>'
+        '                        <xsl:with-param name="IdDocumento" selec' +
+        't="IdDocumento"/>'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="CodiceCUP" select="CodiceCUP"/' +
+        '                        <xsl:with-param name="Data" select="Data' +
+        '"/>'
+      
+        '                        <xsl:with-param name="CodiceCUP" select=' +
+        '"CodiceCUP"/>'
+      
+        '                        <xsl:with-param name="CodiceCIG" select=' +
+        '"CodiceCIG"/>'
+      '                      </xsl:call-template >'
+      ''
+      '                    </xsl:for-each>'
+      ''
+      
+        '                    <!-- Verifica che DatiConvenzione non siano ' +
+        'senza riferimento numero linea in questo modo bisogna creare la ' +
+        'linea di info '#9'  -->'
+      ''
+      
+        '                    <xsl:for-each select="DatiGenerali/DatiConve' +
+        'nzione[not(./RiferimentoNumeroLinea) or  normalize-space(./Rifer' +
+        'imentoNumeroLinea)='#39#39'] " >'
+      '                      <xsl:call-template name="DatiCorrelati" >'
+      
+        '                        <xsl:with-param name="Prefix"   select='#39 +
+        '"Convenzione "'#39'/>'
+      
+        '                        <xsl:with-param name="IdDocumento" selec' +
+        't="IdDocumento"/>'
+      
+        '                        <xsl:with-param name="Data" select="Data' +
+        '"/>'
+      
+        '                        <xsl:with-param name="CodiceCUP" select=' +
+        '"CodiceCUP"/>'
+      
+        '                        <xsl:with-param name="CodiceCIG" select=' +
+        '"CodiceCIG"/>'
+      '                      </xsl:call-template >'
+      ''
+      '                    </xsl:for-each>'
+      ''
+      
+        '                    <!-- Verifica che DatiRicezione non siano se' +
+        'nza riferimento numero linea in questo modo bisogna creare la li' +
+        'nea di info '#9'  -->'
+      
+        '                    <xsl:for-each select="DatiGenerali/DatiRicez' +
+        'ione[not(./RiferimentoNumeroLinea) or  normalize-space(./Riferim' +
+        'entoNumeroLinea)='#39#39'] " >'
+      '                      <xsl:call-template name="DatiCorrelati" >'
+      
+        '                        <xsl:with-param name="Prefix"   select='#39 +
+        '"Ricezione "'#39'/>'
+      
+        '                        <xsl:with-param name="IdDocumento" selec' +
+        't="IdDocumento"/>'
+      
+        '                        <xsl:with-param name="Data" select="Data' +
+        '"/>'
+      
+        '                        <xsl:with-param name="CodiceCUP" select=' +
+        '"CodiceCUP"/>'
+      
+        '                        <xsl:with-param name="CodiceCIG" select=' +
+        '"CodiceCIG"/>'
+      '                      </xsl:call-template >'
+      ''
+      '                    </xsl:for-each>'
+      ''
+      
+        '                    <!-- Verifica che DatiFattureCollegate non s' +
+        'iano senza riferimento numero linea in questo modo bisogna crear' +
+        'e la linea di info '#9'  -->'
+      ''
+      
+        '                    <xsl:for-each select="DatiGenerali/DatiFattu' +
+        'reCollegate[not(./RiferimentoNumeroLinea) or normalize-space(./R' +
+        'iferimentoNumeroLinea)='#39#39'] " >'
+      ''
+      '                      <xsl:call-template name="DatiCorrelati" >'
+      
+        '                        <xsl:with-param name="Prefix"   select='#39 +
+        '"Fatt.Coll. "'#39'/>'
+      
+        '                        <xsl:with-param name="IdDocumento" selec' +
+        't="IdDocumento"/>'
+      
+        '                        <xsl:with-param name="Data" select="Data' +
+        '"/>'
+      
+        '                        <xsl:with-param name="CodiceCUP" select=' +
+        '"CodiceCUP"/>'
+      
+        '                        <xsl:with-param name="CodiceCIG" select=' +
+        '"CodiceCIG"/>'
+      '                      </xsl:call-template >'
+      ''
+      '                    </xsl:for-each>'
+      ''
+      
+        '                    <xsl:for-each select="DatiGenerali/DatiDDT[n' +
+        'ot(./RiferimentoNumeroLinea) or normalize-space(./RiferimentoNum' +
+        'eroLinea)='#39#39'] ">'
+      
+        '                      <xsl:apply-templates select="."/>'#9'<!-- app' +
+        'ly DatiDDT template -->'
+      '                    </xsl:for-each>'
+      ''
+      
+        '                    <xsl:call-template name="AltraDescrizioneLin' +
+        'ea">'
+      
+        '                      <xsl:with-param name="textDescrizione" sel' +
+        'ect = '#39'"------------------------"'#39' />'
+      '                    </xsl:call-template>'
+      '                  </xsl:if>'
+      ''
+      ''
+      ''
+      
+        '                  <xsl:for-each select="DatiBeniServizi/Dettagli' +
+        'oLinee" >'
+      '                    <xsl:apply-templates select=".">'
+      
+        '                      <xsl:with-param name="r" select="position(' +
+        ')"/>'
+      
+        '                      <xsl:with-param name="posASWRELSTD" select' +
+        '="$posASWRELSTD"/>'
+      
+        '                      <xsl:with-param name="TipoFattura" select=' +
+        '"$TipoFattura"/>'
+      
+        '                      <xsl:with-param name="IndiceBody" select="' +
+        '$BodyIndex"/>'
+      '                    </xsl:apply-templates>'
+      '                  </xsl:for-each>'
+      ''
+      ''
+      '                </tbody>'
+      ''
+      '              </table>'
+      ''
+      '              <!--   Dati Cassa Prevvidenziale    -->'
+      
+        '              <xsl:if test="DatiGenerali/DatiGeneraliDocumento/D' +
+        'atiCassaPrevidenziale">'
+      '                <div class="separa"> </div>'
+      ''
+      '                <table class="tbFoglio">'
+      ''
+      '                  <thead>'
+      '                    <tr>'
+      
+        '                      <th class="title">Dati Cassa Previdenziale' +
+        '</th>'
+      '                      <th>Imponibile</th>'
+      '                      <th class="perc">%Contr.</th>'
+      '                      <th class="perc">Ritenuta</th>'
+      '                      <th class="perc">%IVA</th>'
+      '                      <th >Importo</th>'
+      '                    </tr>'
+      '                  </thead>'
+      '                  <tbody>'
+      
+        '                    <xsl:for-each select="DatiGenerali/DatiGener' +
+        'aliDocumento/DatiCassaPrevidenziale"  >'
+      ''
+      '                      <tr>'
+      '                        <td>'
+      '                          <xsl:if test="TipoCassa">'
+      ''
+      '                            <span>'
+      
+        '                              <xsl:value-of select="TipoCassa" /' +
         '>'
+      '                            </span>'
+      '                            <xsl:variable name="TC">'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="CodiceCIG" select="CodiceCIG"/' +
+        '                              <xsl:value-of select="TipoCassa" /' +
         '>'
-      #9#9#9#9#9#9#9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      
-        #9#9#9#9#9#9#9#9#9#9'<!-- Verifica che DatiContratto non siano senza riferi' +
-        'mento numero linea in questo modo bisogna creare la linea di inf' +
-        'o '#9'  -->'
-      
-        #9#9#9#9#9#9#9#9#9#9'<xsl:for-each select="DatiGenerali/DatiContratto[not(.' +
-        '/RiferimentoNumeroLinea) or  normalize-space(./RiferimentoNumero' +
-        'Linea)='#39#39'] ">'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:call-template name="DatiCorrelati">'
-      
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="Prefix" select="&quot;Contratt' +
-        'o &quot;"/>'
-      
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="IdDocumento" select="IdDocumen' +
-        'to"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="Data" select="Data"/>'
-      
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="CodiceCUP" select="CodiceCUP"/' +
-        '>'
-      
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="CodiceCIG" select="CodiceCIG"/' +
-        '>'
-      #9#9#9#9#9#9#9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      
-        #9#9#9#9#9#9#9#9#9#9'<!-- Verifica che DatiConvenzione non siano senza rife' +
-        'rimento numero linea in questo modo bisogna creare la linea di i' +
-        'nfo '#9'  -->'
-      
-        #9#9#9#9#9#9#9#9#9#9'<xsl:for-each select="DatiGenerali/DatiConvenzione[not' +
-        '(./RiferimentoNumeroLinea) or  normalize-space(./RiferimentoNume' +
-        'roLinea)='#39#39'] ">'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:call-template name="DatiCorrelati">'
-      
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="Prefix" select="&quot;Convenzi' +
-        'one &quot;"/>'
-      
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="IdDocumento" select="IdDocumen' +
-        'to"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="Data" select="Data"/>'
-      
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="CodiceCUP" select="CodiceCUP"/' +
-        '>'
-      
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="CodiceCIG" select="CodiceCIG"/' +
-        '>'
-      #9#9#9#9#9#9#9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      
-        #9#9#9#9#9#9#9#9#9#9'<!-- Verifica che DatiRicezione non siano senza riferi' +
-        'mento numero linea in questo modo bisogna creare la linea di inf' +
-        'o '#9'  -->'
-      
-        #9#9#9#9#9#9#9#9#9#9'<xsl:for-each select="DatiGenerali/DatiRicezione[not(.' +
-        '/RiferimentoNumeroLinea) or  normalize-space(./RiferimentoNumero' +
-        'Linea)='#39#39'] ">'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:call-template name="DatiCorrelati">'
-      
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="Prefix" select="&quot;Ricezion' +
-        'e &quot;"/>'
-      
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="IdDocumento" select="IdDocumen' +
-        'to"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="Data" select="Data"/>'
-      
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="CodiceCUP" select="CodiceCUP"/' +
-        '>'
-      
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="CodiceCIG" select="CodiceCIG"/' +
-        '>'
-      #9#9#9#9#9#9#9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      
-        #9#9#9#9#9#9#9#9#9#9'<!-- Verifica che DatiFattureCollegate non siano senza' +
-        ' riferimento numero linea in questo modo bisogna creare la linea' +
-        ' di info '#9'  -->'
-      
-        #9#9#9#9#9#9#9#9#9#9'<xsl:for-each select="DatiGenerali/DatiFattureCollegat' +
-        'e[not(./RiferimentoNumeroLinea) or normalize-space(./Riferimento' +
-        'NumeroLinea)='#39#39'] ">'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:call-template name="DatiCorrelati">'
-      
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="Prefix" select="&quot;Fatt.Col' +
-        'l. &quot;"/>'
-      
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="IdDocumento" select="IdDocumen' +
-        'to"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="Data" select="Data"/>'
-      
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="CodiceCUP" select="CodiceCUP"/' +
-        '>'
-      
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="CodiceCIG" select="CodiceCIG"/' +
-        '>'
-      #9#9#9#9#9#9#9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      
-        #9#9#9#9#9#9#9#9#9#9'<xsl:for-each select="DatiGenerali/DatiDDT[not(./Rifer' +
-        'imentoNumeroLinea) or normalize-space(./RiferimentoNumeroLinea)=' +
-        #39#39'] ">'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:apply-templates select="."/>'
-      #9#9#9#9#9#9#9#9#9#9#9'<!-- apply DatiDDT template -->'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9#9#9#9#9'<xsl:call-template name="AltraDescrizioneLinea">'
-      
-        #9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="textDescrizione" select="&quot;' +
-        '------------------------&quot;"/>'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9'<xsl:for-each select="DatiBeniServizi/DettaglioLinee">'
-      #9#9#9#9#9#9#9#9#9#9'<xsl:apply-templates select=".">'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="r" select="position()"/>'
-      
-        #9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="posASWRELSTD" select="$posASWRE' +
-        'LSTD"/>'
-      
-        #9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="TipoFattura" select="$TipoFattu' +
-        'ra"/>'
-      
-        #9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="IndiceBody" select="$BodyIndex"' +
-        '/>'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:apply-templates>'
-      #9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9#9#9'</tbody>'
-      #9#9#9#9#9#9#9'</table>'
-      #9#9#9#9#9#9#9'<!--   Dati Cassa Prevvidenziale    -->'
-      
-        #9#9#9#9#9#9#9'<xsl:if test="DatiGenerali/DatiGeneraliDocumento/DatiCass' +
-        'aPrevidenziale">'
-      #9#9#9#9#9#9#9#9'<div class="separa">'
-      #9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9'<table class="tbFoglio">'
-      #9#9#9#9#9#9#9#9#9'<thead>'
-      #9#9#9#9#9#9#9#9#9#9'<tr>'
-      #9#9#9#9#9#9#9#9#9#9#9'<th class="title">Dati Cassa Previdenziale</th>'
-      #9#9#9#9#9#9#9#9#9#9#9'<th>Imponibile</th>'
-      #9#9#9#9#9#9#9#9#9#9#9'<th class="perc">%Contr.</th>'
-      #9#9#9#9#9#9#9#9#9#9#9'<th class="perc">Ritenuta</th>'
-      #9#9#9#9#9#9#9#9#9#9#9'<th class="perc">%IVA</th>'
-      #9#9#9#9#9#9#9#9#9#9#9'<th>Importo</th>'
-      #9#9#9#9#9#9#9#9#9#9'</tr>'
-      #9#9#9#9#9#9#9#9#9'</thead>'
-      #9#9#9#9#9#9#9#9#9'<tbody>'
-      
-        #9#9#9#9#9#9#9#9#9#9'<xsl:for-each select="DatiGenerali/DatiGeneraliDocumen' +
-        'to/DatiCassaPrevidenziale">'
-      #9#9#9#9#9#9#9#9#9#9#9'<tr>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<td>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="TipoCassa">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="TipoCassa"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:variable name="TC">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="TipoCassa"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:variable>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC01'#39'">'
+      '                            </xsl:variable>'
+      '                            <xsl:choose>'
+      '                              <xsl:when test="$TC='#39'TC01'#39'">'
       
         '                                (Cassa Nazionale Previdenza e As' +
         'sistenza Avvocati'
       '                                e Procuratori legali)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC02'#39'">'
+      '                              <xsl:when test="$TC='#39'TC02'#39'">'
       
         '                                (Cassa Previdenza Dottori Commer' +
         'cialisti)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC03'#39'">'
+      '                              <xsl:when test="$TC='#39'TC03'#39'">'
       
         '                                (Cassa Previdenza e Assistenza G' +
         'eometri)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC04'#39'">'
+      '                              <xsl:when test="$TC='#39'TC04'#39'">'
       
         '                                (Cassa Nazionale Previdenza e As' +
         'sistenza'
@@ -3633,92 +4637,92 @@ object dmResources: TdmResources
         '                                Ingegneri e Architetti liberi pr' +
         'ofess.)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC05'#39'">'
+      '                              <xsl:when test="$TC='#39'TC05'#39'">'
       '                                (Cassa Nazionale del Notariato)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC06'#39'">'
+      '                              <xsl:when test="$TC='#39'TC06'#39'">'
       
         '                                (Cassa Nazionale Previdenza e As' +
         'sistenza'
       '                                Ragionieri e Periti commerciali)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC07'#39'">'
+      '                              <xsl:when test="$TC='#39'TC07'#39'">'
       
         '                                (Ente Nazionale Assistenza Agent' +
         'i e Rappresentanti'
       '                                di Commercio-ENASARCO)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC08'#39'">'
+      '                              <xsl:when test="$TC='#39'TC08'#39'">'
       
         '                                (Ente Nazionale Previdenza e Ass' +
         'istenza Consulenti'
       '                                del Lavoro-ENPACL)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC09'#39'">'
+      '                              <xsl:when test="$TC='#39'TC09'#39'">'
       
         '                                (Ente Nazionale Previdenza e Ass' +
         'istenza'
       '                                Medici-ENPAM)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC10'#39'">'
+      '                              <xsl:when test="$TC='#39'TC10'#39'">'
       
         '                                (Ente Nazionale Previdenza e Ass' +
         'istenza'
       '                                Farmacisti-ENPAF)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC11'#39'">'
+      '                              <xsl:when test="$TC='#39'TC11'#39'">'
       
         '                                (Ente Nazionale Previdenza e Ass' +
         'istenza'
       '                                Veterinari-ENPAV)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC12'#39'">'
+      '                              <xsl:when test="$TC='#39'TC12'#39'">'
       
         '                                (Ente Nazionale Previdenza e Ass' +
         'istenza Impiegati'
       '                                dell'#39'Agricoltura-ENPAIA)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC13'#39'">'
+      '                              <xsl:when test="$TC='#39'TC13'#39'">'
       
         '                                (Fondo Previdenza Impiegati Impr' +
         'ese di Spedizione'
       '                                e Agenzie Marittime)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC14'#39'">'
+      '                              <xsl:when test="$TC='#39'TC14'#39'">'
       
         '                                (Istituto Nazionale Previdenza G' +
         'iornalisti'
       '                                Italiani-INPGI)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC15'#39'">'
+      '                              <xsl:when test="$TC='#39'TC15'#39'">'
       
         '                                (Opera Nazionale Assistenza Orfa' +
         'ni Sanitari'
       '                                Italiani-ONAOSI)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC16'#39'">'
+      '                              <xsl:when test="$TC='#39'TC16'#39'">'
       
         '                                (Cassa Autonoma Assistenza Integ' +
         'rativa'
       '                                Giornalisti Italiani-CASAGIT)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC17'#39'">'
+      '                              <xsl:when test="$TC='#39'TC17'#39'">'
       
         '                                (Ente Previdenza Periti Industri' +
         'ali e Periti'
       '                                Industriali Laureati-EPPI)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC18'#39'">'
+      '                              <xsl:when test="$TC='#39'TC18'#39'">'
       '                                (Ente Previdenza e Assistenza'
       '                                Pluricategoriale-EPAP)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC19'#39'">'
+      '                              <xsl:when test="$TC='#39'TC19'#39'">'
       
         '                                (Ente Nazionale Previdenza e Ass' +
         'istenza'
       '                                Biologi-ENPAB)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC20'#39'">'
+      '                              <xsl:when test="$TC='#39'TC20'#39'">'
       
         '                                (Ente Nazionale Previdenza e Ass' +
         'istenza'
@@ -3726,433 +4730,687 @@ object dmResources: TdmResources
         '                                Professione Infermieristica-ENPA' +
         'PI)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC21'#39'">'
+      '                              <xsl:when test="$TC='#39'TC21'#39'">'
       
         '                                (Ente Nazionale Previdenza e Ass' +
         'istenza'
       '                                Psicologi-ENPAP)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC22'#39'">'
+      '                              <xsl:when test="$TC='#39'TC22'#39'">'
       '                                (INPS)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39#39'">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>(!!! codice non previsto !!!)</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<td class="import">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="ImponibileCassa">'
+      '                              <xsl:when test="$TC='#39#39'">'
+      '                              </xsl:when>'
+      '                              <xsl:otherwise>'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="format-number(ImponibileCass' +
-        'a,  '#39'###.###.##0,00'#39', '#39'euro'#39')"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<td class="import">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="AlCassa">'
+        '                                <span>(!!! codice non previsto !' +
+        '!!)</span>'
+      '                              </xsl:otherwise>'
+      '                            </xsl:choose>'
+      ''
+      '                          </xsl:if>'
+      '                        </td>'
+      '                        <td class="import">'
+      '                          <xsl:if test="ImponibileCassa">'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="format-number(AlCassa,  '#39'###' +
-        '.###.##0,00'#39', '#39'euro'#39')"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<td class="Ritenuta">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Ritenuta">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Ritenuta"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<td class="import">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="Natura">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Natura"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="AliquotaIVA">'
+        '                            <xsl:value-of select="format-number(' +
+        'ImponibileCassa,  '#39'###.###.##0,00'#39', '#39'euro'#39')" />'
+      '                          </xsl:if>'
+      '                        </td>'
+      ''
+      '                        <td class="import">'
+      '                          <xsl:if test="AlCassa">'
+      ''
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="format-number(AliquotaIVA,' +
-        '  '#39'###.###.##0,00'#39', '#39'euro'#39')"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<td class="import">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="ImportoContributoCassa">'
+        '                            <xsl:value-of select="format-number(' +
+        'AlCassa,  '#39'###.###.##0,00'#39', '#39'euro'#39')" />'
+      ''
+      '                          </xsl:if>'
+      ''
+      '                        </td>'
+      ''
+      '                        <td  class="Ritenuta" >'
+      '                          <xsl:if test="Ritenuta">'
+      ''
+      '                            <xsl:value-of select="Ritenuta" />'
+      ''
+      '                          </xsl:if>'
+      '                        </td>'
+      ''
+      '                        <td class="import" >'
+      ''
+      '                          <xsl:choose>'
+      '                            <xsl:when test="Natura">'
+      ''
+      '                              <xsl:value-of select="Natura" />'
+      ''
+      '                            </xsl:when>'
+      '                            <xsl:otherwise>'
+      '                              <xsl:if test="AliquotaIVA">'
+      ''
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="format-number(ImportoContrib' +
-        'utoCassa,  '#39'###.###.##0,00'#39', '#39'euro'#39')"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9#9'</tr>'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9#9#9#9'</tbody>'
-      #9#9#9#9#9#9#9#9'</table>'
-      #9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9'<!--  Fine Cassa Prevvidenziale    -->'
-      #9#9#9#9#9#9#9'<div class="separa">'
-      #9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9'<!-- Dati RIEPILOGO-->'
-      #9#9#9#9#9#9#9'<table class="tbTitolo">'
-      #9#9#9#9#9#9#9#9'<thead>'
-      #9#9#9#9#9#9#9#9#9'<tr>'
-      #9#9#9#9#9#9#9#9#9#9'<th>RIEPILOGHI IVA E TOTALI</th>'
-      #9#9#9#9#9#9#9#9#9'</tr>'
-      #9#9#9#9#9#9#9#9'</thead>'
-      #9#9#9#9#9#9#9'</table>'
-      #9#9#9#9#9#9#9'<table class="tbFoglio">'
-      #9#9#9#9#9#9#9#9'<thead>'
-      #9#9#9#9#9#9#9#9#9'<tr>'
+        '                                <xsl:value-of select="format-num' +
+        'ber(AliquotaIVA,  '#39'###.###.##0,00'#39', '#39'euro'#39')" />'
+      ''
+      '                              </xsl:if>'
+      '                            </xsl:otherwise>'
+      '                          </xsl:choose>'
+      ''
+      '                        </td>'
+      ''
+      '                        <td class="import">'
+      '                          <xsl:if test="ImportoContributoCassa">'
+      ''
       
-        #9#9#9#9#9#9#9#9#9#9'<th colspan="3">esigibilit'#224' iva / riferimenti normativ' +
-        'i</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th class="perc">%IVA</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th>Spese accessorie</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th class="perc">Arr.</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th colspan="2">Totale imponibile</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th colspan="2">Totale imposta</th>'
-      #9#9#9#9#9#9#9#9#9'</tr>'
-      #9#9#9#9#9#9#9#9'</thead>'
-      #9#9#9#9#9#9#9#9'<tbody>'
-      #9#9#9#9#9#9#9#9#9'<xsl:for-each select="DatiBeniServizi/DatiRiepilogo">'
-      #9#9#9#9#9#9#9#9#9#9'<xsl:if test="number(ImponibileImporto)">'
-      #9#9#9#9#9#9#9#9#9#9#9'<tr>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<td colspan="3">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="EsigibilitaIVA">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="EsigibilitaIVA"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:variable name="EI">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="EsigibilitaIVA"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:variable>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$EI='#39'I'#39'">'
+        '                            <xsl:value-of select="format-number(' +
+        'ImportoContributoCassa,  '#39'###.###.##0,00'#39', '#39'euro'#39')" />'
+      ''
+      '                          </xsl:if>'
+      ''
+      '                        </td>'
+      ''
+      '                      </tr>'
+      ''
+      '                    </xsl:for-each>'
+      ''
+      ''
+      '                  </tbody>'
+      '                </table>'
+      ''
+      ''
+      '              </xsl:if>'
+      '              <!--  Fine Cassa Prevvidenziale    -->'
+      ''
+      ''
+      '              <div class="separa" > </div>'
+      '              <!-- Dati RIEPILOGO-->'
+      ''
+      '              <table class="tbTitolo">'
+      '                <thead>'
+      '                  <tr>'
+      '                    <th>RIEPILOGHI IVA E TOTALI</th>'
+      '                  </tr>'
+      '                </thead>'
+      '              </table>'
+      ''
+      ''
+      ''
+      '              <table class="tbFoglio">'
+      '                <thead>'
+      '                  <tr >'
+      ''
+      
+        '                    <th colspan="3" >esigibilit'#224' iva / riferimen' +
+        'ti normativi</th>'
+      '                    <th class="perc">%IVA</th>'
+      '                    <th>Spese accessorie</th>'
+      #9#9#9#9#9' <th class="perc">Arr.</th>'
+      '                    <th colspan="2" >Totale imponibile</th>'
+      '                    <th colspan="2" >Totale imposta</th>'
+      '                  </tr>'
+      '                </thead>'
+      '                <tbody>'
+      ''
+      
+        '                  <xsl:for-each select="DatiBeniServizi/DatiRiep' +
+        'ilogo" >'
+      ''
+      '                    <xsl:if test="number(ImponibileImporto)">'
+      ''
+      '                      <tr>'
+      '                        <td colspan="3" >'
+      '                          <xsl:choose>'
+      '                            <xsl:when test="EsigibilitaIVA">'
+      ''
+      '                              <span>'
+      
+        '                                <xsl:value-of select="Esigibilit' +
+        'aIVA" />'
+      '                              </span>'
+      '                              <xsl:variable name="EI">'
+      
+        '                                <xsl:value-of select="Esigibilit' +
+        'aIVA" />'
+      '                              </xsl:variable>'
+      '                              <xsl:choose>'
+      '                                <xsl:when test="$EI='#39'I'#39'">'
       '                                  (esigibilit'#224' immediata)'
       '                                </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$EI='#39'D'#39'">'
+      '                                <xsl:when test="$EI='#39'D'#39'">'
       '                                  (esigibilit'#224' differita)'
       '                                </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$EI='#39'S'#39'">'
+      '                                <xsl:when test="$EI='#39'S'#39'">'
       '                                  (scissione dei pagamenti)'
       '                                </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>(!!! codice non previsto !!!)</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:otherwise>'
+      '                                <xsl:otherwise>'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>Esigib. non dich. (si presume immediata)</s' +
-        'pan>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="RiferimentoNormativo">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="tx-xsmall">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="RiferimentoNormativo"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<td class="import">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:call-template name="FormatIVA">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="Natura" select="Natura"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="IVA" select="AliquotaIVA"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<td class="import">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="SpeseAccessorie">'
+        '                                  <span>(!!! codice non previsto' +
+        ' !!!)</span>'
+      '                                </xsl:otherwise>'
+      '                              </xsl:choose>'
+      '                            </xsl:when>'
+      ''
+      '                            <xsl:otherwise>'
+      ''
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="format-number(SpeseAccessori' +
-        'e,  '#39'###.###.##0,00'#39', '#39'euro'#39')"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<td class="import">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Arrotondamento">'
+        '                              <span>Esigib. non dich. (si presum' +
+        'e immediata)</span>'
+      ''
+      '                            </xsl:otherwise>'
+      '                          </xsl:choose>'
+      ''
+      '                          <xsl:if test="RiferimentoNormativo">'
+      '                            <div class="tx-xsmall">'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="format-number(Arrotondamento' +
-        ',  '#39'###.###.##0,00'#39', '#39'euro'#39')"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<td colspan="2" class="import">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="ImponibileImporto">'
+        '                              <xsl:value-of select="RiferimentoN' +
+        'ormativo" />'
+      '                            </div>'
+      '                          </xsl:if>'
+      '                        </td>'
+      ''
+      ''
+      '                        <td class="import" >'
+      ''
+      '                          <xsl:call-template name="FormatIVA">'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="format-number(ImponibileImpo' +
-        'rto,  '#39'###.###.##0,00'#39', '#39'euro'#39')"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<td colspan="2" class="import">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Imposta">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="Imposta = 0">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:text>0</xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:otherwise>'
+        '                            <xsl:with-param name="Natura" select' +
+        '="Natura" />'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="format-number(Imposta,  '#39'#' +
-        '##.###.##0,00'#39', '#39'euro'#39')"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9#9'</tr>'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9#9#9#9'<!-- Importo Totale  -->'
-      #9#9#9#9#9#9#9#9#9'<tr>'
-      #9#9#9#9#9#9#9#9#9#9'<th colspan="2">'
+        '                            <xsl:with-param name="IVA" select="A' +
+        'liquotaIVA" />'
+      '                          </xsl:call-template>'
+      ''
+      ''
+      '                        </td>'
+      ''
+      ''
+      '                        <td class="import">'
+      ''
+      '                          <xsl:if test="SpeseAccessorie">'
+      
+        '                            <xsl:value-of select="format-number(' +
+        'SpeseAccessorie,  '#39'###.###.##0,00'#39', '#39'euro'#39')" />'
+      '                          </xsl:if>'
+      '                        </td>'
+      ''
+      ''
+      #9#9#9#9#9#9' <td class="import">'
+      ''
+      '                        <xsl:if test="Arrotondamento">'
+      
+        '                          <xsl:value-of select="format-number(Ar' +
+        'rotondamento,  '#39'###.###.##0,00'#39', '#39'euro'#39')" />'
+      '                        </xsl:if>'
+      '                      </td>'
+      '                        <td  colspan="2" class="import" >'
+      ''
+      '                          <xsl:if test="ImponibileImporto">'
+      
+        '                            <xsl:value-of select="format-number(' +
+        'ImponibileImporto,  '#39'###.###.##0,00'#39', '#39'euro'#39')" />'
+      '                          </xsl:if>'
+      '                        </td>'
+      ''
+      '                        <td colspan="2"  class="import" >'
+      ''
+      '                          <xsl:if test="Imposta">'
+      ''
+      '                            <xsl:choose>'
+      '                              <xsl:when test="Imposta = 0">'
+      '                                <xsl:text>0</xsl:text>'
+      '                              </xsl:when>'
+      '                              <xsl:otherwise>'
+      
+        '                                <xsl:value-of select="format-num' +
+        'ber(Imposta,  '#39'###.###.##0,00'#39', '#39'euro'#39')" />'
+      '                              </xsl:otherwise>'
+      '                            </xsl:choose>'
+      ''
+      ''
+      ''
+      '                          </xsl:if>'
+      '                        </td>'
+      ''
+      '                      </tr>'
+      ''
+      '                    </xsl:if>'
+      ''
+      '                  </xsl:for-each>'
+      ''
+      '                  <!-- Importo Totale  -->'
+      '                  <tr >'
+      ''
+      '                    <th  colspan="2">'
       '                      Importo bollo'
       '                    </th>'
-      #9#9#9#9#9#9#9#9#9#9'<th colspan="3">'
+      '                    <th  colspan="3">'
       '                      Sconto/Maggiorazione'
       '                    </th>'
-      #9#9#9#9#9#9#9#9#9#9'<th class="perc">Arr.</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th colspan="4">'
+      ''
+      ''
+      ''
+      #9#9#9#9#9' <th class="perc">Arr.</th>'
+      '                    <th colspan="4" >'
       '                      Totale documento'
       '                    </th>'
-      #9#9#9#9#9#9#9#9#9'</tr>'
-      #9#9#9#9#9#9#9#9#9'<tr>'
-      #9#9#9#9#9#9#9#9#9#9'<td colspan="2" class="import">'
+      ''
+      ''
+      '                  </tr>'
+      ''
+      '                  <tr >'
+      '                    <td colspan="2" class="import" >'
+      ''
       
-        #9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="DatiGenerali/DatiGeneraliDocumento/Dati' +
-        'Bollo/ImportoBollo">'
+        #9#9#9#9#9' <xsl:if test="DatiGenerali/DatiGeneraliDocumento/DatiBollo' +
+        '">'
+      '                        <xsl:choose>'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="format-number(DatiGenerali/Dat' +
-        'iGeneraliDocumento/DatiBollo/ImportoBollo,  '#39'###.###.##0,00'#39', '#39'e' +
-        'uro'#39')"/>'
-      #9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9'<td colspan="3" class="import">'
+        #9#9#9#9#9#9'<xsl:when test="DatiGenerali/DatiGeneraliDocumento/DatiBol' +
+        'lo/ImportoBollo">'
       
-        #9#9#9#9#9#9#9#9#9#9#9'<xsl:for-each select="DatiGenerali/DatiGeneraliDocume' +
-        'nto/ScontoMaggiorazione">'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:call-template name="FormatSconto">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="tipo" select="Tipo"/>'
+        #9#9#9#9#9#9#9'<xsl:value-of select="format-number(DatiGenerali/DatiGene' +
+        'raliDocumento/DatiBollo/ImportoBollo,  '#39'###.###.##0,00'#39', '#39'euro'#39')' +
+        '" />'
+      #9#9#9#9#9#9'</xsl:when>'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="percentuale" select="Percentu' +
-        'ale"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="importo" select="Importo"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9'<td class="import">'
+        #9#9#9#9#9#9'<xsl:when test="DatiGenerali/DatiGeneraliDocumento/DatiBol' +
+        'lo/BolloVirtuale">'
       
-        #9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="DatiGenerali/DatiGeneraliDocumento/Arro' +
-        'tondamento">'
+        #9#9#9#9#9#9#9'<xsl:value-of select="DatiGenerali/DatiGeneraliDocumento/' +
+        'DatiBollo/BolloVirtuale" />'
+      #9#9#9#9#9#9'</xsl:when>'
+      #9#9#9#9#9#9'<xsl:otherwise></xsl:otherwise>'
+      #9#9#9#9#9'  </xsl:choose>'
+      '                      </xsl:if>'
+      ''
+      '                    </td>'
+      '                    <td colspan="3" class="import">'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="format-number(DatiGenerali/Dat' +
-        'iGeneraliDocumento/Arrotondamento,  '#39'###.###.##0,00'#39', '#39'euro'#39')"/>'
-      #9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9'<td colspan="4" class="import">'
+        '                      <xsl:for-each select="DatiGenerali/DatiGen' +
+        'eraliDocumento/ScontoMaggiorazione"  >'
+      ''
+      '                        <xsl:call-template name="FormatSconto" >'
       
-        #9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="DatiGenerali/DatiGeneraliDocumento/Impo' +
-        'rtoTotaleDocumento">'
+        '                          <xsl:with-param name="tipo" select="Ti' +
+        'po" />'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="format-number(DatiGenerali/Dat' +
-        'iGeneraliDocumento/ImportoTotaleDocumento,  '#39'###.###.##0,00'#39', '#39'e' +
-        'uro'#39')"/>'
-      #9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9'</tr>'
-      #9#9#9#9#9#9#9#9#9'<!-- FINE Importo Totale  -->'
-      #9#9#9#9#9#9#9#9'</tbody>'
-      #9#9#9#9#9#9#9'</table>'
-      #9#9#9#9#9#9#9'<!--  FINE Dettaglio Linee   -->'
-      #9#9#9#9#9#9#9'<!--   Dati Ritenuta Acconto   -->'
+        '                          <xsl:with-param name="percentuale" sel' +
+        'ect="Percentuale" />'
       
-        #9#9#9#9#9#9#9'<xsl:if test="DatiGenerali/DatiGeneraliDocumento/DatiRite' +
-        'nuta">'
-      #9#9#9#9#9#9#9#9'<div class="separa">'
-      #9#9#9#9#9#9#9#9'</div>'
+        '                          <xsl:with-param name="importo" select=' +
+        '"Importo" />'
+      '                        </xsl:call-template>'
+      ''
+      ''
+      '                      </xsl:for-each>'
+      '                    </td>'
+      ''
+      ''
+      ''
+      ''
+      #9#9#9#9#9'<td class="import">'
+      ''
       
-        #9#9#9#9#9#9#9#9'<xsl:apply-templates select="DatiGenerali/DatiGeneraliDo' +
-        'cumento/DatiRitenuta"/>'
-      #9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9'<!--  Fine Dati Ritenuta   -->'
-      #9#9#9#9#9#9#9'<div class="separa">'
-      #9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9'<!--   Dati Pagamento   -->'
-      #9#9#9#9#9#9#9'<table class="tbFoglio">'
-      #9#9#9#9#9#9#9#9'<thead>'
-      #9#9#9#9#9#9#9#9#9'<tr>'
-      #9#9#9#9#9#9#9#9#9#9'<th>Modalit'#224' pagamento</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th>IBAN</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th>Istituto</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th class="data">Data scadenza</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th class="ximport">Importo</th>'
-      #9#9#9#9#9#9#9#9#9'</tr>'
-      #9#9#9#9#9#9#9#9'</thead>'
-      #9#9#9#9#9#9#9#9'<tbody>'
-      #9#9#9#9#9#9#9#9#9'<xsl:for-each select="DatiPagamento">'
-      #9#9#9#9#9#9#9#9#9#9'<xsl:for-each select="DettaglioPagamento">'
-      #9#9#9#9#9#9#9#9#9#9#9'<tr>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<td>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="ModalitaPagamento">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="ModalitaPagamento"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:variable name="MP">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="ModalitaPagamento"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:variable>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP01'#39'">'
+        '                      <xsl:if test="DatiGenerali/DatiGeneraliDoc' +
+        'umento/Arrotondamento">'
+      ''
+      
+        '                        <xsl:value-of select="format-number(Dati' +
+        'Generali/DatiGeneraliDocumento/Arrotondamento,  '#39'###.###.##0,00'#39 +
+        ', '#39'euro'#39')" />'
+      ''
+      '                      </xsl:if>'
+      '                    </td>'
+      ''
+      '                    <td colspan="4" class="import">'
+      ''
+      
+        '                      <xsl:if test="DatiGenerali/DatiGeneraliDoc' +
+        'umento/ImportoTotaleDocumento">'
+      ''
+      
+        '                        <xsl:value-of select="format-number(Dati' +
+        'Generali/DatiGeneraliDocumento/ImportoTotaleDocumento,  '#39'###.###' +
+        '.##0,00'#39', '#39'euro'#39')" />'
+      ''
+      '                      </xsl:if>'
+      '                    </td>'
+      ''
+      '                  </tr>'
+      ''
+      '                  <!-- FINE Importo Totale  -->'
+      '                </tbody>'
+      '              </table>'
+      '              <!--  FINE Dettaglio Linee   -->'
+      ''
+      ''
+      '              <!--   Dati Ritenuta Acconto   -->'
+      
+        '              <xsl:if test="DatiGenerali/DatiGeneraliDocumento/D' +
+        'atiRitenuta">'
+      '                <div class="separa"> </div>'
+      ''
+      #9#9#9#9'   <table class="tbFoglio">'
+      ''
+      #9#9#9#9#9'  <thead>'
+      #9#9#9#9#9#9'<tr>'
+      #9#9#9#9#9#9'  <th class="title"> Dati ritenuta d'#39'acconto</th>'
+      #9#9#9#9#9#9'  <th class="perc">Aliquota ritenuta</th>'
+      #9#9#9#9#9#9'  <th>Causale'#9'</th>'
+      #9#9#9#9#9#9'  <th width="15%">Importo </th>'
+      #9#9#9#9#9#9'</tr>'
+      #9#9#9#9#9'  </thead>'
+      #9#9#9#9#9'  <tbody>'
+      ''
+      
+        #9#9#9#9#9'   <xsl:for-each select="DatiGenerali/DatiGeneraliDocumento' +
+        '/DatiRitenuta"  >'
+      #9#9#9#9#9#9#9'<xsl:apply-templates select="." />'
+      #9#9#9#9#9#9'</xsl:for-each>'
+      #9#9#9#9#9'  </tbody>'
+      #9#9#9#9#9'</table>'
+      ''
+      '              </xsl:if>'
+      '              <!--  Fine Dati Ritenuta   -->'
+      ''
+      ''
+      '              <div class="separa"> </div>'
+      ''
+      ''
+      '              <!--   Dati Pagamento   -->'
+      ''
+      '              <table class="tbFoglio" >'
+      '                <thead>'
+      '                  <tr>'
+      
+        '                    <th style="width:200px">Modalit'#224' pagamento</' +
+        'th>'
+      '                    <th>Dettagli</th>'
+      '                    <th  style="width:180px">Scadenze</th>'
+      '                    <th class="ximport">Importo</th>'
+      '                  </tr>'
+      '                </thead>'
+      '                <tbody>'
+      '                  <xsl:for-each select="DatiPagamento" >'
+      ''
+      
+        '                    <xsl:variable name="CountDettaglioPagamento"' +
+        '>'
+      
+        '                      <xsl:value-of select="count(DettaglioPagam' +
+        'ento)" />'
+      '                    </xsl:variable>'
+      ''
+      ''
+      '                    <xsl:for-each select="DettaglioPagamento">'
+      ''
+      '                      <tr>'
+      '                        <td>'
+      ''
+      '                          <xsl:if test="ModalitaPagamento">'
+      '                            <span>'
+      
+        '                              <xsl:value-of select="ModalitaPaga' +
+        'mento" />'
+      '                            </span>'
+      '                            <xsl:variable name="MP">'
+      
+        '                              <xsl:value-of select="ModalitaPaga' +
+        'mento" />'
+      '                            </xsl:variable>'
+      '                            <xsl:choose>'
+      '                              <xsl:when test="$MP='#39'MP01'#39'">'
       '                                Contanti'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP02'#39'">'
+      '                              <xsl:when test="$MP='#39'MP02'#39'">'
       '                                Assegno'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP03'#39'">'
+      '                              <xsl:when test="$MP='#39'MP03'#39'">'
       '                                Assegno circolare'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP04'#39'">'
+      '                              <xsl:when test="$MP='#39'MP04'#39'">'
       '                                Contanti presso Tesoreria'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP05'#39'">'
+      '                              <xsl:when test="$MP='#39'MP05'#39'">'
       '                                Bonifico'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP06'#39'">'
+      '                              <xsl:when test="$MP='#39'MP06'#39'">'
       '                                Vaglia cambiario'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP07'#39'">'
+      '                              <xsl:when test="$MP='#39'MP07'#39'">'
       '                                Bollettino bancario'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP08'#39'">'
+      '                              <xsl:when test="$MP='#39'MP08'#39'">'
       '                                Carta di pagamento'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP09'#39'">'
+      '                              <xsl:when test="$MP='#39'MP09'#39'">'
       '                                RID'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP10'#39'">'
+      '                              <xsl:when test="$MP='#39'MP10'#39'">'
       '                                RID utenze'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP11'#39'">'
+      '                              <xsl:when test="$MP='#39'MP11'#39'">'
       '                                RID veloce'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP12'#39'">'
+      '                              <xsl:when test="$MP='#39'MP12'#39'">'
       '                                RIBA'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP13'#39'">'
+      '                              <xsl:when test="$MP='#39'MP13'#39'">'
       '                                MAV'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP14'#39'">'
+      '                              <xsl:when test="$MP='#39'MP14'#39'">'
       '                                Quietanza erario'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP15'#39'">'
+      '                              <xsl:when test="$MP='#39'MP15'#39'">'
       
         '                                Giroconto su conti di contabilit' +
         #224' speciale'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP16'#39'">'
+      '                              <xsl:when test="$MP='#39'MP16'#39'">'
       '                                Domiciliazione bancaria'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP17'#39'">'
+      '                              <xsl:when test="$MP='#39'MP17'#39'">'
       '                                Domiciliazione postale'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP18'#39'">'
+      '                              <xsl:when test="$MP='#39'MP18'#39'">'
       '                                Bollettino di c/c postale'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP19'#39'">'
+      '                              <xsl:when test="$MP='#39'MP19'#39'">'
       '                                SEPA Direct Debit'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP20'#39'">'
+      '                              <xsl:when test="$MP='#39'MP20'#39'">'
       '                                SEPA Direct Debit CORE'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP21'#39'">'
+      '                              <xsl:when test="$MP='#39'MP21'#39'">'
       '                                SEPA Direct Debit B2B'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP22'#39'">'
+      '                              <xsl:when test="$MP='#39'MP22'#39'">'
       '                                Trattenuta su somme gi'#224' riscosse'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39#39'">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span></span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="OpzDescrizionePagamento"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<td>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="IBAN">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="IBAN"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<td>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="IstitutoFinanziario">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="IstitutoFinanziario"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<td class="data">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="DataScadenzaPagamento">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:call-template name="FormatDateIta">'
+      #9#9#9#9#9#9#9'  <xsl:when test="$MP='#39'MP23'#39'">'
+      #9#9#9#9#9#9#9#9'  PagoPA'
+      #9#9#9#9#9#9#9#9'</xsl:when>'
+      '                              <xsl:when test="$MP='#39#39'">'
+      '                              </xsl:when>'
+      '                              <xsl:otherwise>'
+      '                                <span></span>'
+      '                              </xsl:otherwise>'
+      '                            </xsl:choose>'
+      '                            <span>'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="DateTime" select="DataScade' +
-        'nzaPagamento"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<td class="import">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="ImportoPagamento">'
+        '                              <xsl:value-of select="OpzDescrizio' +
+        'nePagamento" />'
+      '                            </span>'
+      '                          </xsl:if>'
+      ''
+      '                        </td>'
+      ''
+      ''
+      '                          <td>'
+      '                            <xsl:apply-templates select="."/>'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="format-number(ImportoPagamen' +
-        'to,  '#39'###.###.##0,00'#39', '#39'euro'#39')"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9#9'</tr>'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9#9#9'</tbody>'
-      #9#9#9#9#9#9#9'</table>'
-      #9#9#9#9#9#9#9'<!-- FINE   Dati Pagamento   -->'
-      #9#9#9#9#9#9#9'<div style="height:10px">'
-      #9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9'<xsl:for-each select="OpzRiepilogoIVA">'
-      #9#9#9#9#9#9#9#9'<div class="tx-xsmall">'
-      '                  * <xsl:value-of select="."/>'
-      #9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9#9'<xsl:if test="OpzRiepilogoIVA">'
-      #9#9#9#9#9#9#9#9'<div style="height:10px">'
-      #9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9'</xsl:otherwise>'
-      #9#9#9#9#9'</xsl:choose>'
-      #9#9#9#9#9'<!-- Definizione degli allegati -->'
-      #9#9#9#9#9'<xsl:if test="Allegati">'
-      #9#9#9#9#9#9'<div class="tx-small">Allegati:</div>'
-      #9#9#9#9#9#9'<ul class="ulAllegati">'
-      #9#9#9#9#9#9#9'<xsl:for-each select="Allegati">'
-      #9#9#9#9#9#9#9#9'<li>'
-      #9#9#9#9#9#9#9#9#9'<div class="tx-small">'
-      #9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="NomeAttachment"/>'
-      #9#9#9#9#9#9#9#9#9#9'<xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="DescrizioneAttachment"/>'
-      #9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9'</li>'
-      #9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9'</ul>'
-      #9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9'<!--Definizione se fattura '#232' AssoSofware-->'
-      #9#9#9#9#9'<xsl:if test="$posASWRELSTD &gt; 0 ">'
-      #9#9#9#9#9#9'<div class="dtASWRELSTD">'
+        '                            <xsl:if test="(position( )) !=  $Cou' +
+        'ntDettaglioPagamento">'
       
-        #9#9#9#9#9#9#9'<label class="headerLabel">Conforme Standard AssoSoftware' +
-        '</label>'
-      #9#9#9#9#9#9'</div>'
-      #9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9'<!-- FINE    ASWRELSTD  -->'
-      #9#9#9#9'</xsl:for-each>'
-      #9#9#9#9'<!--FINE BODY-->'
-      #9#9#9'</div>'
-      #9#9'</xsl:if>'
-      #9'</xsl:template>'
-      #9'<xsl:template match="/">'
-      #9#9'<html>'
-      #9#9#9'<head>'
-      #9#9#9#9'<meta http-equiv="X-UA-Compatible" content="IE=edge"/>'
-      #9#9#9#9'<style type="text/css">'
+        '                              <xsl:if test="Beneficiario or CodU' +
+        'fficioPostale or CognomeQuietanzante or CognomeQuietanzante or C' +
+        'FQuietanzante or TitoloQuietanzante'
+      
+        #9#9#9#9#9#9#9'or IstitutoFinanziario or IBAN or ABI or CAB or BIC or Sc' +
+        'ontoPagamentoAnticipato or DataLimitePagamentoAnticipato or Pena' +
+        'litaPagamentiRitardati'
+      #9#9#9#9#9#9#9'or DataDecorrenzaPenale or CodicePagamento">'
+      
+        '                                <xsl:text>----------------------' +
+        '--</xsl:text>'
+      '                              </xsl:if>'
+      '                            </xsl:if>'
+      ''
+      '                          </td>'
+      ''
+      '                        <td>'
+      ''
+      
+        '                          <xsl:if test="DataRiferimentoTerminiPa' +
+        'gamento or GiorniTerminiPagamento">'
+      ''
+      '                            <xsl:choose>'
+      
+        '                              <xsl:when test="DataRiferimentoTer' +
+        'miniPagamento">'
+      
+        '                                <xsl:text>Data termine </xsl:tex' +
+        't>'
+      
+        '                                <xsl:call-template name="FormatD' +
+        'ateIta">'
+      
+        '                                  <xsl:with-param name="DateTime' +
+        '" select="DataRiferimentoTerminiPagamento" />'
+      '                                </xsl:call-template>'
+      ''
+      
+        '                                <xsl:if test="GiorniTerminiPagam' +
+        'ento">'
+      
+        '                                  <xsl:text> </xsl:text><xsl:val' +
+        'ue-of select="GiorniTerminiPagamento" />gg'
+      '                                </xsl:if>'
+      '                              </xsl:when>'
+      '                              <xsl:otherwise>'
+      
+        '                                <xsl:text>Giorni termine </xsl:t' +
+        'ext>'
+      
+        '                                <xsl:value-of select="GiorniTerm' +
+        'iniPagamento" />'
+      ''
+      '                              </xsl:otherwise>'
+      '                            </xsl:choose>'
+      '                            <br/>'
+      '                          </xsl:if>'
+      ''
+      '                          <xsl:if test="DataScadenzaPagamento">'
+      
+        '                            Data scadenza <xsl:call-template nam' +
+        'e="FormatDateIta">'
+      
+        '                              <xsl:with-param name="DateTime" se' +
+        'lect="DataScadenzaPagamento" />'
+      '                            </xsl:call-template>'
+      '                          </xsl:if>'
+      '                        </td>'
+      '                        <td class="import">'
+      ''
+      '                          <xsl:if test="ImportoPagamento">'
+      ''
+      
+        '                            <xsl:value-of select="format-number(' +
+        'ImportoPagamento,  '#39'###.###.##0,00'#39', '#39'euro'#39')" />'
+      ''
+      '                          </xsl:if>'
+      '                        </td>'
+      '                      </tr>'
+      '                    </xsl:for-each>'
+      ''
+      '                  </xsl:for-each>'
+      '                </tbody>'
+      '              </table>'
+      '              <!-- FINE   Dati Pagamento   -->'
+      ''
+      '              <div style="height:10px" > </div>'
+      ''
+      '              <xsl:for-each select="OpzRiepilogoIVA"  >'
+      '                <div class="tx-xsmall">'
+      '                  * <xsl:value-of select="." />'
+      '                </div>'
+      ''
+      '              </xsl:for-each>'
+      '              <xsl:if test="OpzRiepilogoIVA">'
+      '                <div style="height:10px" > </div>'
+      '              </xsl:if>'
+      ''
+      '            </xsl:otherwise>'
+      ''
+      '          </xsl:choose>'
+      ''
+      '          <!-- Definizione degli allegati -->'
+      '          <xsl:if test="Allegati">'
+      ''
+      '            <div class="tx-small" >Allegati:</div>'
+      ''
+      '            <ul class="ulAllegati">'
+      '              <xsl:for-each select="Allegati">'
+      '                <li>'
+      '                  <div class="tx-small">'
+      ''
+      '                    <xsl:value-of select="NomeAttachment" />'
+      '                    <xsl:text> </xsl:text>'
+      
+        '                    <xsl:value-of select="DescrizioneAttachment"' +
+        ' />'
+      '                  </div>'
+      '                </li>'
+      ''
+      ''
+      '              </xsl:for-each>'
+      ''
+      '            </ul>'
+      ''
+      '          </xsl:if>'
+      ''
+      '          <!--Definizione se fattura '#232' AssoSofware-->'
+      ''
+      '          <xsl:if test="$posASWRELSTD &gt; 0 ">'
+      '            <div class="dtASWRELSTD">'
+      ''
+      
+        '              <label class="headerLabel">Conforme Standard AssoS' +
+        'oftware</label>'
+      ''
+      '            </div>'
+      ''
+      '          </xsl:if>'
+      ''
+      ''
+      '          <!-- FINE    ASWRELSTD  -->'
+      ''
+      ''
+      '        </xsl:for-each>'
+      '        <!--FINE BODY-->'
+      ''
+      '      </div>'
+      ''
+      ''
+      ''
+      '    </xsl:if>'
+      '  </xsl:template>'
+      ''
+      '  <xsl:template match="/">'
+      '    <html>'
+      '      <head>'
+      '        <meta http-equiv="X-UA-Compatible" content="IE=edge" />'
+      '        <style type="text/css">'
       ''
       '          #fattura-elettronica'
       '          {'
@@ -4388,56 +5646,68 @@ object dmResources: TdmResources
       '          text-align:right;'
       '          }'
       ''
+      #9#9'  table.tbNoBorder'
+      '          {'
+      #9#9#9'  border-collapse: collapse;'
+      #9#9#9'  margin-bottom: 5px;'
+      #9#9#9'  font-size:small;'
+      #9#9#9'  text-align:center;'
+      #9#9#9'  width:800px;'
+      '          }'
       ''
       '        </style>'
-      #9#9#9'</head>'
-      #9#9#9'<body>'
-      #9#9#9#9'<div id="fattura-container">'
-      #9#9#9#9#9'<xsl:choose>'
-      #9#9#9#9#9#9'<xsl:when test="d:FatturaElettronicaSemplificata">'
-      #9#9#9#9#9#9#9'<!--versione 1.0 SEMPLIFICATA-->'
-      #9#9#9#9#9#9#9'<xsl:call-template name="FatturaElettronica">'
+      '      </head>'
+      '      <body>'
+      '        <div id="fattura-container">'
+      ''
+      '          <xsl:choose>'
+      '            <xsl:when test="d:FatturaElettronicaSemplificata">'
+      '              <!--versione 1.0 SEMPLIFICATA-->'
+      '              <xsl:call-template name="FatturaElettronica">'
       
-        #9#9#9#9#9#9#9#9'<xsl:with-param name="TipoFattura" select="d:FatturaElet' +
-        'tronicaSemplificata"/>'
-      #9#9#9#9#9#9#9#9'<xsl:with-param name="IsFPRS" select="1"/>'
-      #9#9#9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9#9#9'</xsl:when>'
-      #9#9#9#9#9#9'<xsl:when test="c:FatturaElettronica">'
-      #9#9#9#9#9#9#9'<!--versione 1.0-->'
-      #9#9#9#9#9#9#9'<xsl:call-template name="FatturaElettronica">'
+        '                <xsl:with-param name="TipoFattura" select="d:Fat' +
+        'turaElettronicaSemplificata" />'
+      '                <xsl:with-param name="IsFPRS" select="1" />'
+      '              </xsl:call-template>'
+      '            </xsl:when>'
+      '            <xsl:when test="c:FatturaElettronica">'
+      '              <!--versione 1.0-->'
+      '              <xsl:call-template name="FatturaElettronica">'
       
-        #9#9#9#9#9#9#9#9'<xsl:with-param name="TipoFattura" select="c:FatturaElet' +
-        'tronica"/>'
-      #9#9#9#9#9#9#9#9'<xsl:with-param name="IsFPRS" select="0"/>'
-      #9#9#9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9#9#9'</xsl:when>'
-      #9#9#9#9#9#9'<xsl:when test="b:FatturaElettronica">'
-      #9#9#9#9#9#9#9'<!--versione 1.1-->'
-      #9#9#9#9#9#9#9'<xsl:call-template name="FatturaElettronica">'
+        '                <xsl:with-param name="TipoFattura" select="c:Fat' +
+        'turaElettronica" />'
+      '                <xsl:with-param name="IsFPRS" select="0" />'
+      '              </xsl:call-template>'
+      '            </xsl:when>'
+      '            <xsl:when test="b:FatturaElettronica">'
+      '              <!--versione 1.1-->'
+      '              <xsl:call-template name="FatturaElettronica">'
       
-        #9#9#9#9#9#9#9#9'<xsl:with-param name="TipoFattura" select="b:FatturaElet' +
-        'tronica"/>'
-      #9#9#9#9#9#9#9#9'<xsl:with-param name="IsFPRS" select="0"/>'
-      #9#9#9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9#9#9'</xsl:when>'
-      #9#9#9#9#9#9'<xsl:otherwise>'
-      #9#9#9#9#9#9#9'<xsl:call-template name="FatturaElettronica">'
-      #9#9#9#9#9#9#9#9'<!--versione 1.2-->'
+        '                <xsl:with-param name="TipoFattura" select="b:Fat' +
+        'turaElettronica" />'
+      '                <xsl:with-param name="IsFPRS" select="0" />'
+      '              </xsl:call-template>'
+      '            </xsl:when>'
+      '            <xsl:otherwise>'
+      '              <xsl:call-template name="FatturaElettronica">'
+      '                <!--versione 1.2-->'
       
-        #9#9#9#9#9#9#9#9'<xsl:with-param name="TipoFattura" select="a:FatturaElet' +
-        'tronica"/>'
-      #9#9#9#9#9#9#9#9'<xsl:with-param name="IsFPRS" select="0"/>'
-      #9#9#9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9#9#9'</xsl:otherwise>'
-      #9#9#9#9#9'</xsl:choose>'
-      #9#9#9#9'</div>'
-      #9#9#9'</body>'
-      #9#9'</html>'
-      #9'</xsl:template>'
+        '                <xsl:with-param name="TipoFattura" select="a:Fat' +
+        'turaElettronica" />'
+      '                <xsl:with-param name="IsFPRS" select="0" />'
+      '              </xsl:call-template>'
+      '            </xsl:otherwise>'
+      '          </xsl:choose>'
+      ''
+      ''
+      ''
+      '        </div>'
+      '      </body>'
+      '    </html>'
+      '  </xsl:template>'
       '</xsl:stylesheet>')
-    Left = 38
-    Top = 47
+    Left = 62
+    Top = 79
     DOMVendorDesc = 'MSXML'
   end
   object CustomTemplate: TXMLDocument
@@ -4445,1904 +5715,2895 @@ object dmResources: TdmResources
     Options = [doNodeAutoIndent]
     XML.Strings = (
       '<?xml version="1.0"?>'
+      '<xsl:stylesheet'
+      #9'version="1.1"'
+      #9'xmlns:xsl="http://www.w3.org/1999/XSL/Transform"'
+      #9'xmlns:b="http://www.fatturapa.gov.it/sdi/fatturapa/v1.1"'
+      #9'xmlns:c="http://www.fatturapa.gov.it/sdi/fatturapa/v1.0"'
       
-        '<xsl:stylesheet version="1.1" xmlns:xsl="http://www.w3.org/1999/' +
-        'XSL/Transform" xmlns:b="http://www.fatturapa.gov.it/sdi/fatturap' +
-        'a/v1.1" xmlns:c="http://www.fatturapa.gov.it/sdi/fatturapa/v1.0"' +
-        ' xmlns:a="http://ivaservizi.agenziaentrate.gov.it/docs/xsd/fattu' +
-        're/v1.2" xmlns:d="http://ivaservizi.agenziaentrate.gov.it/docs/x' +
-        'sd/fatture/v1.0">'
-      #9'<xsl:output method="html"/>'
+        #9'xmlns:a="http://ivaservizi.agenziaentrate.gov.it/docs/xsd/fattu' +
+        're/v1.2"'
       
-        #9'<xsl:decimal-format name="euro" decimal-separator="," grouping-' +
-        'separator="."/>'
-      #9'<xsl:template name="FormatDateIta">'
-      #9#9'<xsl:param name="DateTime"/>'
-      #9#9'<xsl:variable name="year" select="substring($DateTime,1,4)"/>'
-      #9#9'<xsl:variable name="month" select="substring($DateTime,6,2)"/>'
-      #9#9'<xsl:variable name="day" select="substring($DateTime,9,2)"/>'
-      #9#9'<xsl:value-of select="$day"/>'
-      #9#9'<xsl:value-of select="'#39'-'#39'"/>'
-      #9#9'<xsl:value-of select="$month"/>'
-      #9#9'<xsl:value-of select="'#39'-'#39'"/>'
-      #9#9'<xsl:value-of select="$year"/>'
-      #9'</xsl:template>'
-      #9'<xsl:template name="FormatIVA">'
-      #9#9'<xsl:param name="Natura"/>'
-      #9#9'<xsl:param name="IVA"/>'
-      #9#9'<xsl:choose>'
-      #9#9#9'<xsl:when test="$Natura">'
-      #9#9#9#9'<xsl:value-of select="$Natura"/>'
-      #9#9#9'</xsl:when>'
-      #9#9#9'<xsl:otherwise>'
-      #9#9#9#9'<xsl:if test="$IVA">'
+        #9'xmlns:d="http://ivaservizi.agenziaentrate.gov.it/docs/xsd/fattu' +
+        're/v1.0">'
+      ''
+      '  <xsl:output method="html" />'
       
-        #9#9#9#9#9'<xsl:value-of select="format-number($IVA,  '#39'###.###.##0,00'#39 +
-        ', '#39'euro'#39')"/>'
-      #9#9#9#9'</xsl:if>'
-      #9#9#9'</xsl:otherwise>'
-      #9#9'</xsl:choose>'
-      #9'</xsl:template>'
-      #9'<xsl:template name="FormatSconto">'
-      #9#9'<xsl:param name="tipo"/>'
-      #9#9'<xsl:param name="percentuale"/>'
-      #9#9'<xsl:param name="importo"/>'
-      #9#9'<xsl:choose>'
-      #9#9#9'<xsl:when test="$tipo = '#39'SC'#39' ">'
-      #9#9#9#9'<xsl:text>-</xsl:text>'
-      #9#9#9'</xsl:when>'
-      #9#9#9'<xsl:when test="$tipo = '#39'MG'#39'">'
-      #9#9#9#9'<xsl:text>+</xsl:text>'
-      #9#9#9'</xsl:when>'
-      #9#9#9'<xsl:otherwise>'
-      #9#9#9'</xsl:otherwise>'
-      #9#9'</xsl:choose>'
-      #9#9'<xsl:choose>'
-      #9#9#9'<xsl:when test="$percentuale">'
-      #9#9#9#9'<xsl:value-of select="$percentuale"/>'
-      #9#9#9#9'<xsl:text>%</xsl:text>'
-      #9#9#9'</xsl:when>'
-      #9#9#9'<xsl:otherwise>'
-      #9#9#9#9'<xsl:if test="$importo">'
+        '  <xsl:decimal-format name="euro" decimal-separator="," grouping' +
+        '-separator="."/>'
+      ''
+      '  <xsl:template name="FormatDateIta">'
+      '    <xsl:param name="DateTime" />'
+      ''
       
-        #9#9#9#9#9'<xsl:value-of select="format-number($importo,  '#39'###.###.##0' +
-        ',00'#39', '#39'euro'#39')"/>'
-      #9#9#9#9'</xsl:if>'
-      #9#9#9'</xsl:otherwise>'
-      #9#9'</xsl:choose>'
-      #9#9'<xsl:text>'
-      #9#9'</xsl:text>'
-      #9'</xsl:template>'
-      #9'<xsl:template name="FormatColSconto">'
-      #9#9'<xsl:param name="tipo"/>'
-      #9#9'<xsl:param name="percentuale"/>'
-      #9#9'<xsl:param name="importo"/>'
-      #9#9'<xsl:choose>'
-      #9#9#9'<xsl:when test="$tipo = '#39'SC'#39' ">'
-      #9#9#9#9'<xsl:text>-</xsl:text>'
-      #9#9#9'</xsl:when>'
-      #9#9#9'<xsl:when test="$tipo = '#39'MG'#39'">'
-      #9#9#9#9'<xsl:text>+</xsl:text>'
-      #9#9#9'</xsl:when>'
-      #9#9#9'<xsl:otherwise>'
-      #9#9#9'</xsl:otherwise>'
-      #9#9'</xsl:choose>'
-      #9#9'<xsl:choose>'
-      #9#9#9'<xsl:when test="$percentuale">'
-      #9#9#9#9'<xsl:value-of select="$percentuale"/>'
-      #9#9#9#9'<xsl:text>%</xsl:text>'
-      #9#9#9'</xsl:when>'
-      #9#9#9'<xsl:otherwise>'
-      #9#9#9#9'<xsl:if test="$importo">'
-      
-        #9#9#9#9#9'<xsl:value-of select="format-number($importo,  '#39'###.###.##0' +
-        ',00'#39', '#39'euro'#39')"/>'
-      #9#9#9#9'</xsl:if>'
-      #9#9#9'</xsl:otherwise>'
-      #9#9'</xsl:choose>'
-      #9'</xsl:template>'
-      
-        #9'<!--DatiOrdineAcquisto  Vs.Ord. XXXXXX del 26/09/2018 CUP:YYYYY' +
-        'Y CIG:ZZZZZZZ-->'
-      
-        #9'<!--DatiContratto  Contratto XXXXXX del 26/09/2018 CUP:YYYYYY C' +
-        'IG:ZZZZZZZ -->'
-      
-        #9'<!--DatiConvenzione  Convenzione XXXXXX del 26/09/2018 CUP:YYYY' +
-        'YY CIG:ZZZZZZZ -->'
-      
-        #9'<!--DatiRicezione  Ricezione XXXXXX del 26/09/2018 CUP:YYYYYY C' +
-        'IG:ZZZZZZZ -->'
-      
-        #9'<!--Fatture collegate Fatt.coll. XXXXXX del 26/09/2018 CUP:YYYY' +
-        'YY CIG:ZZZZZZZ -->'
-      #9'<xsl:template name="DatiCorrelati">'
-      #9#9'<xsl:param name="Prefix"/>'
-      #9#9'<xsl:param name="IdDocumento"/>'
-      #9#9'<xsl:param name="Data"/>'
-      #9#9'<xsl:param name="CodiceCUP"/>'
-      #9#9'<xsl:param name="CodiceCIG"/>'
-      #9#9'<xsl:variable name="descrizione">'
-      #9#9#9'<xsl:value-of select="$Prefix"/>'
-      #9#9#9'<xsl:value-of select="$IdDocumento"/>'
-      #9#9#9'<xsl:if test="$Data">'
-      #9#9#9#9'<xsl:text> del </xsl:text>'
-      #9#9#9#9'<xsl:call-template name="FormatDateIta">'
-      #9#9#9#9#9'<xsl:with-param name="DateTime" select="$Data"/>'
-      #9#9#9#9'</xsl:call-template>'
-      #9#9#9'</xsl:if>'
-      #9#9#9'<xsl:if test="$CodiceCUP">'
-      #9#9#9#9'<xsl:text> CUP: </xsl:text>'
-      #9#9#9#9'<xsl:value-of select="$CodiceCUP"/>'
-      #9#9#9'</xsl:if>'
-      #9#9#9'<xsl:if test="$CodiceCIG">'
-      #9#9#9#9'<xsl:text> CIG: </xsl:text>'
-      #9#9#9#9'<xsl:value-of select="$CodiceCIG"/>'
-      #9#9#9'</xsl:if>'
-      #9#9'</xsl:variable>'
-      #9#9'<xsl:if test="$descrizione">'
-      #9#9#9'<xsl:call-template name="AltraDescrizioneLinea">'
-      
-        #9#9#9#9'<xsl:with-param name="textDescrizione" select="$descrizione"' +
+        '    <xsl:variable name="year" select="substring($DateTime,1,4)" ' +
         '/>'
-      #9#9#9'</xsl:call-template>'
-      #9#9'</xsl:if>'
-      #9'</xsl:template>'
-      #9'<xsl:template match="DatiDDT">'
-      #9#9'<xsl:variable name="descri_DAO">'
-      #9#9#9'<xsl:text>DDT </xsl:text>'
-      #9#9#9'<xsl:value-of select="NumeroDDT"/>'
-      #9#9#9'<xsl:if test="DataDDT">'
-      #9#9#9#9'<xsl:text> del </xsl:text>'
-      #9#9#9#9'<xsl:call-template name="FormatDateIta">'
-      #9#9#9#9#9'<xsl:with-param name="DateTime" select="DataDDT"/>'
-      #9#9#9#9'</xsl:call-template>'
-      #9#9#9'</xsl:if>'
-      #9#9'</xsl:variable>'
-      #9#9'<xsl:if test="$descri_DAO">'
-      #9#9#9'<xsl:call-template name="AltraDescrizioneLinea">'
       
-        #9#9#9#9'<xsl:with-param name="textDescrizione" select="$descri_DAO"/' +
+        '    <xsl:variable name="month" select="substring($DateTime,6,2)"' +
+        ' />'
+      
+        '    <xsl:variable name="day" select="substring($DateTime,9,2)" /' +
         '>'
-      #9#9#9'</xsl:call-template>'
-      #9#9'</xsl:if>'
-      #9'</xsl:template>'
-      #9'<xsl:template match="DettaglioLinee">'
-      #9#9'<xsl:param name="r"/>'
-      #9#9'<xsl:param name="posASWRELSTD"/>'
-      #9#9'<xsl:param name="TipoFattura"/>'
-      #9#9'<xsl:param name="IndiceBody"/>'
-      #9#9'<!--Numero Linea -->'
-      #9#9'<xsl:variable name="valNumeroLinea">'
-      #9#9#9'<xsl:value-of select="number(NumeroLinea)"/>'
-      #9#9'</xsl:variable>'
-      #9#9'<!--Pre LINEA OpzPreLineaDatiDDT -->'
-      #9#9'<xsl:choose>'
-      #9#9#9'<xsl:when test="OpzPreLineaDatiDDT">'
-      #9#9#9#9'<!--Pre LINEA OpzPreLineaDatiDDT -->'
-      #9#9#9#9'<xsl:for-each select="OpzPreLineaDatiDDT">'
-      #9#9#9#9#9'<xsl:call-template name="AltraDescrizioneLinea">'
-      #9#9#9#9#9#9'<xsl:with-param name="textDescrizione" select="."/>'
-      #9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9'</xsl:for-each>'
-      #9#9#9'</xsl:when>'
-      #9#9#9'<xsl:otherwise>'
+      ''
+      '    <xsl:value-of select="$day" />'
+      '    <xsl:value-of select="'#39'-'#39'" />'
+      '    <xsl:value-of select="$month" />'
+      '    <xsl:value-of select="'#39'-'#39'" />'
+      '    <xsl:value-of select="$year" />'
+      ''
+      '  </xsl:template>'
+      ''
+      '  <xsl:template name="FormatIVA">'
+      '    <xsl:param name="Natura" />'
+      '    <xsl:param name="IVA" />'
+      ''
+      #9'<xsl:choose>'
+      '      <xsl:when test="$Natura">'
+      '        <xsl:value-of select="$Natura" />'
+      #9#9'<xsl:if test="number($IVA)" >'
       
-        #9#9#9#9'<xsl:for-each select="$TipoFattura/FatturaElettronicaBody[$I' +
+        #9#9#9'<br/><xsl:value-of select="format-number($IVA,  '#39'###.###.##0,' +
+        '00'#39', '#39'euro'#39')" />'
+      #9#9'</xsl:if>'
+      '      </xsl:when>'
+      '      <xsl:otherwise>'
+      '        <xsl:if test="$IVA">'
+      
+        '          <xsl:value-of select="format-number($IVA,  '#39'###.###.##' +
+        '0,00'#39', '#39'euro'#39')" />'
+      '        </xsl:if>'
+      '      </xsl:otherwise>'
+      '    </xsl:choose>'
+      '  </xsl:template>'
+      ''
+      '  <xsl:template name="FormatSconto">'
+      '    <xsl:param name="tipo" />'
+      '    <xsl:param name="percentuale" />'
+      '    <xsl:param name="importo" />'
+      ''
+      '    <xsl:choose>'
+      '      <xsl:when test="$tipo = '#39'SC'#39' ">'
+      '        <xsl:text>-</xsl:text>'
+      '      </xsl:when>'
+      '      <xsl:when test="$tipo = '#39'MG'#39'">'
+      '        <xsl:text>+</xsl:text>'
+      ''
+      '      </xsl:when>'
+      '      <xsl:otherwise>'
+      ''
+      '      </xsl:otherwise>'
+      '    </xsl:choose>'
+      ''
+      ''
+      '    <xsl:choose>'
+      '      <xsl:when test="$percentuale">'
+      '        <xsl:value-of select="$percentuale" />'
+      '        <xsl:text>%</xsl:text>'
+      '      </xsl:when>'
+      '      <xsl:otherwise>'
+      '        <xsl:if test="$importo">'
+      
+        '          <xsl:value-of select="format-number($importo,  '#39'###.##' +
+        '#.##0,00######'#39', '#39'euro'#39')" />'
+      '        </xsl:if>'
+      '      </xsl:otherwise>'
+      '    </xsl:choose>'
+      '    <xsl:text> </xsl:text>'
+      ''
+      '  </xsl:template>'
+      ''
+      '  <xsl:template name="FormatColSconto">'
+      '    <xsl:param name="tipo" />'
+      '    <xsl:param name="percentuale" />'
+      '    <xsl:param name="importo" />'
+      ''
+      '    <xsl:choose>'
+      '      <xsl:when test="$tipo = '#39'SC'#39' ">'
+      '        <xsl:text>-</xsl:text>'
+      '      </xsl:when>'
+      '      <xsl:when test="$tipo = '#39'MG'#39'">'
+      '        <xsl:text>+</xsl:text>'
+      ''
+      '      </xsl:when>'
+      '      <xsl:otherwise>'
+      ''
+      '      </xsl:otherwise>'
+      '    </xsl:choose>'
+      ''
+      ''
+      '    <xsl:choose>'
+      '      <xsl:when test="$percentuale">'
+      '        <xsl:value-of select="$percentuale" />'
+      '        <xsl:text>%</xsl:text>'
+      '      </xsl:when>'
+      '      <xsl:otherwise>'
+      '        <xsl:if test="$importo">'
+      
+        '          <xsl:value-of select="format-number($importo,  '#39'###.##' +
+        '#.##0,00######'#39', '#39'euro'#39')" />'
+      '        </xsl:if>'
+      '      </xsl:otherwise>'
+      '    </xsl:choose>'
+      ''
+      '  </xsl:template>'
+      ''
+      
+        '  <!--DatiOrdineAcquisto  Vs.Ord. XXXXXX del 26/09/2018 CUP:YYYY' +
+        'YY CIG:ZZZZZZZ-->'
+      
+        '  <!--DatiContratto  Contratto XXXXXX del 26/09/2018 CUP:YYYYYY ' +
+        'CIG:ZZZZZZZ -->'
+      
+        '  <!--DatiConvenzione  Convenzione XXXXXX del 26/09/2018 CUP:YYY' +
+        'YYY CIG:ZZZZZZZ -->'
+      
+        '  <!--DatiRicezione  Ricezione XXXXXX del 26/09/2018 CUP:YYYYYY ' +
+        'CIG:ZZZZZZZ -->'
+      
+        '  <!--Fatture collegate Fatt.coll. XXXXXX del 26/09/2018 CUP:YYY' +
+        'YYY CIG:ZZZZZZZ -->'
+      '  <xsl:template name="DatiCorrelati">'
+      '    <xsl:param name="Prefix" />'
+      '    <xsl:param name="IdDocumento" />'
+      '    <xsl:param name="Data" />'
+      '    <xsl:param name="CodiceCUP" />'
+      '    <xsl:param name="CodiceCIG" />'
+      '    <xsl:variable name="descrizione" >'
+      '      <xsl:value-of select="$Prefix" />'
+      '      <xsl:value-of select="$IdDocumento" />'
+      '      <xsl:if test="$Data">'
+      '        <xsl:text> del </xsl:text>'
+      '        <xsl:call-template name="FormatDateIta">'
+      '          <xsl:with-param name="DateTime" select="$Data" />'
+      '        </xsl:call-template>'
+      '      </xsl:if>'
+      '      <xsl:if test="$CodiceCUP">'
+      '        <xsl:text> CUP: </xsl:text>'
+      '        <xsl:value-of select="$CodiceCUP" />'
+      '      </xsl:if>'
+      '      <xsl:if test="$CodiceCIG">'
+      '        <xsl:text> CIG: </xsl:text>'
+      '        <xsl:value-of select="$CodiceCIG" />'
+      '      </xsl:if>'
+      '    </xsl:variable>'
+      '    <xsl:if test="$descrizione">'
+      '      <xsl:call-template name="AltraDescrizioneLinea">'
+      
+        '        <xsl:with-param name="textDescrizione" select = "$descri' +
+        'zione" />'
+      '      </xsl:call-template>'
+      '    </xsl:if>'
+      '  </xsl:template>'
+      ''
+      '  <xsl:template match="DatiDDT">'
+      #9'  <xsl:variable name="descri_DAO" >'
+      ''
+      #9#9'  <xsl:text>DDT </xsl:text>'
+      #9#9'  <xsl:value-of select="NumeroDDT" />'
+      #9#9'  <xsl:if test="DataDDT">'
+      #9#9#9'<xsl:text> del </xsl:text>'
+      #9#9#9'<xsl:call-template name="FormatDateIta">'
+      #9#9#9'  <xsl:with-param name="DateTime" select="DataDDT" />'
+      #9#9#9'</xsl:call-template>'
+      #9#9'  </xsl:if>'
+      ''
+      #9'  </xsl:variable>'
+      ''
+      #9'  <xsl:if test="$descri_DAO">'
+      #9#9'<xsl:call-template name="AltraDescrizioneLinea">'
+      
+        #9#9'  <xsl:with-param name="textDescrizione" select = "$descri_DAO' +
+        '" />'
+      #9#9'</xsl:call-template>'
+      #9'  </xsl:if>'
+      '  </xsl:template>'
+      ''
+      '  <xsl:template match="DettaglioLinee">'
+      '    <xsl:param name="r" />'
+      '    <xsl:param name="posASWRELSTD" />'
+      '    <xsl:param name="TipoFattura" />'
+      '    <xsl:param name="IndiceBody" />'
+      ''
+      '    <!--Numero Linea -->'
+      '    <xsl:variable name="valNumeroLinea" >'
+      '      <xsl:value-of select="number(NumeroLinea)" />'
+      '    </xsl:variable>'
+      ''
+      '    <!--Pre LINEA OpzPreLineaDatiDDT -->'
+      ''
+      '    <xsl:choose>'
+      ''
+      '      <xsl:when test="OpzPreLineaDatiDDT">'
+      '        <!--Pre LINEA OpzPreLineaDatiDDT -->'
+      '        <xsl:for-each select="OpzPreLineaDatiDDT"  >'
+      '          <xsl:call-template name="AltraDescrizioneLinea">'
+      
+        '            <xsl:with-param name="textDescrizione" select = "." ' +
+        '/>'
+      '          </xsl:call-template>'
+      '        </xsl:for-each>'
+      ''
+      '      </xsl:when>'
+      #9'    <xsl:otherwise>'
+      ''
+      
+        #9'   <xsl:for-each select="$TipoFattura/FatturaElettronicaBody[$I' +
         'ndiceBody]/DatiGenerali/DatiDDT[ number(./RiferimentoNumeroLinea' +
         ') = $valNumeroLinea] ">'
-      #9#9#9#9#9'<xsl:apply-templates select="."/>'
-      #9#9#9#9#9'<!-- apply DatiDDT template -->'
-      #9#9#9#9'</xsl:for-each>'
-      #9#9#9'</xsl:otherwise>'
-      #9#9'</xsl:choose>'
-      #9#9'<!--DatiOrdineAcquisto  -->'
-      #9#9'<xsl:choose>'
-      #9#9#9'<!--Pre LINEA OpzPreLineaDatiOrdineAcquisto  -->'
-      #9#9#9'<xsl:when test="OpzPreLineaDatiOrdineAcquisto ">'
-      #9#9#9#9'<xsl:for-each select="OpzPreLineaDatiOrdineAcquisto">'
-      #9#9#9#9#9'<xsl:call-template name="AltraDescrizioneLinea">'
-      #9#9#9#9#9#9'<xsl:with-param name="textDescrizione" select="."/>'
-      #9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9'</xsl:for-each>'
-      #9#9#9'</xsl:when>'
-      #9#9#9'<xsl:otherwise>'
       
-        #9#9#9#9'<xsl:for-each select="$TipoFattura/FatturaElettronicaBody[$I' +
-        'ndiceBody]/DatiGenerali/DatiOrdineAcquisto[ number(./Riferimento' +
-        'NumeroLinea) = $valNumeroLinea] ">'
-      #9#9#9#9#9'<xsl:call-template name="DatiCorrelati">'
+        #9#9#9#9'<xsl:apply-templates select="."/>'#9'<!-- apply DatiDDT templat' +
+        'e -->'
+      '        </xsl:for-each>'
+      ''
+      '      </xsl:otherwise>'
+      '    </xsl:choose>'
+      ''
+      ''
+      '    <!--DatiOrdineAcquisto  -->'
+      '    <xsl:choose>'
+      '      <!--Pre LINEA OpzPreLineaDatiOrdineAcquisto  -->'
+      '      <xsl:when test="OpzPreLineaDatiOrdineAcquisto ">'
+      '        <xsl:for-each select="OpzPreLineaDatiOrdineAcquisto"  >'
+      '          <xsl:call-template name="AltraDescrizioneLinea">'
       
-        #9#9#9#9#9#9'<xsl:with-param name="Prefix" select="&quot;Vs.Ord. &quot;' +
-        '"/>'
-      #9#9#9#9#9#9'<xsl:with-param name="IdDocumento" select="IdDocumento"/>'
-      #9#9#9#9#9#9'<xsl:with-param name="Data" select="Data"/>'
-      #9#9#9#9#9#9'<xsl:with-param name="CodiceCUP" select="CodiceCUP"/>'
-      #9#9#9#9#9#9'<xsl:with-param name="CodiceCIG" select="CodiceCIG"/>'
-      #9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9'</xsl:for-each>'
-      #9#9#9'</xsl:otherwise>'
-      #9#9'</xsl:choose>'
-      #9#9'<!--DatiContratto  -->'
-      #9#9'<xsl:choose>'
-      #9#9#9'<!--Pre LINEA OpzPreLineaDatiContratto  -->'
-      #9#9#9'<xsl:when test="OpzPreLineaDatiContratto ">'
-      #9#9#9#9'<xsl:for-each select="OpzPreLineaDatiContratto">'
-      #9#9#9#9#9'<xsl:call-template name="AltraDescrizioneLinea">'
-      #9#9#9#9#9#9'<xsl:with-param name="textDescrizione" select="."/>'
-      #9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9'</xsl:for-each>'
-      #9#9#9'</xsl:when>'
-      #9#9#9'<xsl:otherwise>'
+        '            <xsl:with-param name="textDescrizione" select = "." ' +
+        '/>'
+      '          </xsl:call-template>'
+      '        </xsl:for-each>'
+      '      </xsl:when>'
+      ''
+      '      <xsl:otherwise>'
+      ''
       
-        #9#9#9#9'<xsl:for-each select="$TipoFattura/FatturaElettronicaBody[$I' +
-        'ndiceBody]/DatiGenerali/DatiContratto[ number(./RiferimentoNumer' +
-        'oLinea) = $valNumeroLinea] ">'
-      #9#9#9#9#9'<xsl:call-template name="DatiCorrelati">'
+        #9'  <xsl:for-each select="$TipoFattura/FatturaElettronicaBody[$In' +
+        'diceBody]/DatiGenerali/DatiOrdineAcquisto[ number(./RiferimentoN' +
+        'umeroLinea) = $valNumeroLinea] ">'
+      #9#9#9'<xsl:call-template name="DatiCorrelati" >'
       
-        #9#9#9#9#9#9'<xsl:with-param name="Prefix" select="&quot;Contratto &quo' +
-        't;"/>'
-      #9#9#9#9#9#9'<xsl:with-param name="IdDocumento" select="IdDocumento"/>'
-      #9#9#9#9#9#9'<xsl:with-param name="Data" select="Data"/>'
-      #9#9#9#9#9#9'<xsl:with-param name="CodiceCUP" select="CodiceCUP"/>'
-      #9#9#9#9#9#9'<xsl:with-param name="CodiceCIG" select="CodiceCIG"/>'
-      #9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9'</xsl:for-each>'
-      #9#9#9'</xsl:otherwise>'
-      #9#9'</xsl:choose>'
-      #9#9'<!--DatiConvenzione -->'
-      #9#9'<xsl:choose>'
-      #9#9#9'<!--Pre LINEA OpzPreLineaDatiConvenzione -->'
-      #9#9#9'<xsl:when test="OpzPreLineaDatiConvenzione ">'
-      #9#9#9#9'<xsl:for-each select="OpzPreLineaDatiConvenzione">'
-      #9#9#9#9#9'<xsl:call-template name="AltraDescrizioneLinea">'
-      #9#9#9#9#9#9'<xsl:with-param name="textDescrizione" select="."/>'
-      #9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9'</xsl:for-each>'
-      #9#9#9'</xsl:when>'
-      #9#9#9'<xsl:otherwise>'
+        '            <xsl:with-param name="Prefix"   select='#39'"Vs.Ord. "'#39'/' +
+        '>'
       
-        #9#9#9#9'<xsl:for-each select="$TipoFattura/FatturaElettronicaBody[$I' +
-        'ndiceBody]/DatiGenerali/DatiConvenzione[ number(./RiferimentoNum' +
-        'eroLinea) = $valNumeroLinea] ">'
-      #9#9#9#9#9'<xsl:call-template name="DatiCorrelati">'
+        '            <xsl:with-param name="IdDocumento" select="IdDocumen' +
+        'to"/>'
+      '            <xsl:with-param name="Data" select="Data"/>'
       
-        #9#9#9#9#9#9'<xsl:with-param name="Prefix" select="&quot;Convenzione &q' +
-        'uot;"/>'
-      #9#9#9#9#9#9'<xsl:with-param name="IdDocumento" select="IdDocumento"/>'
-      #9#9#9#9#9#9'<xsl:with-param name="Data" select="Data"/>'
-      #9#9#9#9#9#9'<xsl:with-param name="CodiceCUP" select="CodiceCUP"/>'
-      #9#9#9#9#9#9'<xsl:with-param name="CodiceCIG" select="CodiceCIG"/>'
-      #9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9'</xsl:for-each>'
-      #9#9#9'</xsl:otherwise>'
-      #9#9'</xsl:choose>'
-      #9#9'<!--DatiRicezione -->'
-      #9#9'<xsl:choose>'
-      #9#9#9'<!--Pre LINEA OpzPreLineaDatiRicezione -->'
-      #9#9#9'<xsl:when test="OpzPreLineaDatiRicezione ">'
-      #9#9#9#9'<xsl:for-each select="OpzPreLineaDatiRicezione">'
-      #9#9#9#9#9'<xsl:call-template name="AltraDescrizioneLinea">'
-      #9#9#9#9#9#9'<xsl:with-param name="textDescrizione" select="."/>'
-      #9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9'</xsl:for-each>'
-      #9#9#9'</xsl:when>'
-      #9#9#9'<xsl:otherwise>'
+        '            <xsl:with-param name="CodiceCUP" select="CodiceCUP"/' +
+        '>'
       
-        #9#9#9#9'<xsl:for-each select="$TipoFattura/FatturaElettronicaBody[$I' +
-        'ndiceBody]/DatiGenerali/DatiRicezione[ number(./RiferimentoNumer' +
-        'oLinea) = $valNumeroLinea] ">'
-      #9#9#9#9#9'<xsl:call-template name="DatiCorrelati">'
+        '            <xsl:with-param name="CodiceCIG" select="CodiceCIG"/' +
+        '>'
+      '          </xsl:call-template >'
+      '        </xsl:for-each>'
+      ''
+      ''
+      #9'  </xsl:otherwise>'
+      '    </xsl:choose>'
+      ''
+      '    <!--DatiContratto  -->'
+      '      <xsl:choose>'
+      '      <!--Pre LINEA OpzPreLineaDatiContratto  -->'
+      '      <xsl:when test="OpzPreLineaDatiContratto ">'
+      '        <xsl:for-each select="OpzPreLineaDatiContratto"  >'
+      '          <xsl:call-template name="AltraDescrizioneLinea">'
       
-        #9#9#9#9#9#9'<xsl:with-param name="Prefix" select="&quot;Ricezione &quo' +
-        't;"/>'
-      #9#9#9#9#9#9'<xsl:with-param name="IdDocumento" select="IdDocumento"/>'
-      #9#9#9#9#9#9'<xsl:with-param name="Data" select="Data"/>'
-      #9#9#9#9#9#9'<xsl:with-param name="CodiceCUP" select="CodiceCUP"/>'
-      #9#9#9#9#9#9'<xsl:with-param name="CodiceCIG" select="CodiceCIG"/>'
-      #9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9'</xsl:for-each>'
-      #9#9#9'</xsl:otherwise>'
-      #9#9'</xsl:choose>'
-      #9#9'<!--DatiFattureCollegate-->'
-      #9#9'<xsl:choose>'
-      #9#9#9'<!--Pre LINEA OpzPreLineaDatiFattureCollegate-->'
-      #9#9#9'<xsl:when test="OpzPreLineaDatiFattureCollegate ">'
-      #9#9#9#9'<xsl:for-each select="OpzPreLineaDatiFattureCollegate">'
-      #9#9#9#9#9'<xsl:call-template name="AltraDescrizioneLinea">'
-      #9#9#9#9#9#9'<xsl:with-param name="textDescrizione" select="."/>'
-      #9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9'</xsl:for-each>'
-      #9#9#9'</xsl:when>'
-      #9#9#9'<xsl:otherwise>'
+        '            <xsl:with-param name="textDescrizione" select = "." ' +
+        '/>'
+      '          </xsl:call-template>'
+      '        </xsl:for-each>'
+      '      </xsl:when>'
+      ''
+      '      <xsl:otherwise>'
       
-        #9#9#9#9'<xsl:for-each select="$TipoFattura/FatturaElettronicaBody[$I' +
-        'ndiceBody]/DatiGenerali/DatiFattureCollegate[ number(./Riferimen' +
-        'toNumeroLinea) = $valNumeroLinea] ">'
-      #9#9#9#9#9'<xsl:call-template name="DatiCorrelati">'
+        #9#9'<xsl:for-each select="$TipoFattura/FatturaElettronicaBody[$Ind' +
+        'iceBody]/DatiGenerali/DatiContratto[ number(./RiferimentoNumeroL' +
+        'inea) = $valNumeroLinea] ">'
+      #9'    <xsl:call-template name="DatiCorrelati" >'
       
-        #9#9#9#9#9#9'<xsl:with-param name="Prefix" select="&quot;Fatt.coll. &qu' +
-        'ot;"/>'
-      #9#9#9#9#9#9'<xsl:with-param name="IdDocumento" select="IdDocumento"/>'
-      #9#9#9#9#9#9'<xsl:with-param name="Data" select="Data"/>'
-      #9#9#9#9#9#9'<xsl:with-param name="CodiceCUP" select="CodiceCUP"/>'
-      #9#9#9#9#9#9'<xsl:with-param name="CodiceCIG" select="CodiceCIG"/>'
-      #9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9'</xsl:for-each>'
-      #9#9#9'</xsl:otherwise>'
-      #9#9'</xsl:choose>'
-      #9#9'<!--DETTAGLIO LINEE -->'
-      #9#9'<xsl:choose>'
-      #9#9#9'<xsl:when test="$posASWRELSTD = $r">'
-      #9#9#9#9'<xsl:call-template name="DettaglioLineeASW"/>'
-      #9#9#9'</xsl:when>'
-      #9#9#9'<xsl:otherwise>'
-      #9#9#9#9'<tr>'
-      #9#9#9#9#9'<td>'
-      #9#9#9#9#9#9'<xsl:for-each select="CodiceArticolo">'
-      #9#9#9#9#9#9#9'<div class="tx-xsmall">'
-      #9#9#9#9#9#9#9#9'<xsl:if test="CodiceValore">'
-      #9#9#9#9#9#9#9#9#9'<xsl:text>'
-      #9#9#9#9#9#9#9#9#9'</xsl:text>'
-      #9#9#9#9#9#9#9#9#9'<xsl:value-of select="CodiceValore"/>'
-      #9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9'<xsl:if test="CodiceTipo">'
-      '                  (<xsl:value-of select="CodiceTipo"/>)'
+        '            <xsl:with-param name="Prefix"  select='#39'"Contratto "'#39 +
+        '/>'
+      
+        '            <xsl:with-param name="IdDocumento" select="IdDocumen' +
+        'to"/>'
+      '            <xsl:with-param name="Data" select="Data"/>'
+      
+        '            <xsl:with-param name="CodiceCUP" select="CodiceCUP"/' +
+        '>'
+      
+        '            <xsl:with-param name="CodiceCIG" select="CodiceCIG"/' +
+        '>'
+      '          </xsl:call-template >'
+      #9'    </xsl:for-each>'
+      ''
+      #9'  </xsl:otherwise>'
+      '    </xsl:choose>'
+      ''
+      '    <!--DatiConvenzione -->'
+      '    <xsl:choose>'
+      '      <!--Pre LINEA OpzPreLineaDatiConvenzione -->'
+      '      <xsl:when test="OpzPreLineaDatiConvenzione ">'
+      '        <xsl:for-each select="OpzPreLineaDatiConvenzione"  >'
+      '          <xsl:call-template name="AltraDescrizioneLinea">'
+      
+        '            <xsl:with-param name="textDescrizione" select = "." ' +
+        '/>'
+      '          </xsl:call-template>'
+      '        </xsl:for-each>'
+      '      </xsl:when>'
+      ''
+      '      <xsl:otherwise>'
+      ''
+      
+        #9'  <xsl:for-each select="$TipoFattura/FatturaElettronicaBody[$In' +
+        'diceBody]/DatiGenerali/DatiConvenzione[ number(./RiferimentoNume' +
+        'roLinea) = $valNumeroLinea] ">'
+      '          <xsl:call-template name="DatiCorrelati" >'
+      
+        '            <xsl:with-param name="Prefix"  select='#39'"Convenzione ' +
+        '"'#39'/>'
+      
+        '            <xsl:with-param name="IdDocumento" select="IdDocumen' +
+        'to"/>'
+      '            <xsl:with-param name="Data" select="Data"/>'
+      
+        '            <xsl:with-param name="CodiceCUP" select="CodiceCUP"/' +
+        '>'
+      
+        '            <xsl:with-param name="CodiceCIG" select="CodiceCIG"/' +
+        '>'
+      '          </xsl:call-template >'
+      '        </xsl:for-each>'
+      ''
+      #9'  </xsl:otherwise>'
+      '    </xsl:choose>'
+      ''
+      '    <!--DatiRicezione -->'
+      '    <xsl:choose>'
+      '      <!--Pre LINEA OpzPreLineaDatiRicezione -->'
+      '      <xsl:when test="OpzPreLineaDatiRicezione ">'
+      '        <xsl:for-each select="OpzPreLineaDatiRicezione"  >'
+      '          <xsl:call-template name="AltraDescrizioneLinea">'
+      
+        '            <xsl:with-param name="textDescrizione" select = "." ' +
+        '/>'
+      '          </xsl:call-template>'
+      '        </xsl:for-each>'
+      '      </xsl:when>'
+      ''
+      '      <xsl:otherwise>'
+      ''
+      
+        #9' <xsl:for-each select="$TipoFattura/FatturaElettronicaBody[$Ind' +
+        'iceBody]/DatiGenerali/DatiRicezione[ number(./RiferimentoNumeroL' +
+        'inea) = $valNumeroLinea] ">'
+      '          <xsl:call-template name="DatiCorrelati" >'
+      
+        '            <xsl:with-param name="Prefix"  select='#39'"Ricezione "'#39 +
+        '/>'
+      
+        '            <xsl:with-param name="IdDocumento" select="IdDocumen' +
+        'to"/>'
+      '            <xsl:with-param name="Data" select="Data"/>'
+      
+        '            <xsl:with-param name="CodiceCUP" select="CodiceCUP"/' +
+        '>'
+      
+        '            <xsl:with-param name="CodiceCIG" select="CodiceCIG"/' +
+        '>'
+      '          </xsl:call-template >'
+      '        </xsl:for-each>'
+      ''
+      #9'  </xsl:otherwise>'
+      '    </xsl:choose>'
+      ''
+      '    <!--DatiFattureCollegate-->'
+      '    <xsl:choose>'
+      '      <!--Pre LINEA OpzPreLineaDatiFattureCollegate-->'
+      '      <xsl:when test="OpzPreLineaDatiFattureCollegate ">'
+      
+        '        <xsl:for-each select="OpzPreLineaDatiFattureCollegate"  ' +
+        '>'
+      '          <xsl:call-template name="AltraDescrizioneLinea">'
+      
+        '            <xsl:with-param name="textDescrizione" select = "." ' +
+        '/>'
+      '          </xsl:call-template>'
+      '        </xsl:for-each>'
+      '      </xsl:when>'
+      '      <xsl:otherwise>'
+      ''
+      
+        '     <xsl:for-each select="$TipoFattura/FatturaElettronicaBody[$' +
+        'IndiceBody]/DatiGenerali/DatiFattureCollegate[ number(./Riferime' +
+        'ntoNumeroLinea) = $valNumeroLinea] ">'
+      '          <xsl:call-template name="DatiCorrelati" >'
+      
+        '            <xsl:with-param name="Prefix"  select='#39'"Fatt.coll. "' +
+        #39'/>'
+      
+        '            <xsl:with-param name="IdDocumento" select="IdDocumen' +
+        'to"/>'
+      '            <xsl:with-param name="Data" select="Data"/>'
+      
+        '            <xsl:with-param name="CodiceCUP" select="CodiceCUP"/' +
+        '>'
+      
+        '            <xsl:with-param name="CodiceCIG" select="CodiceCIG"/' +
+        '>'
+      '          </xsl:call-template >'
+      '        </xsl:for-each>'
+      ''
+      #9'  </xsl:otherwise>'
+      '    </xsl:choose>'
+      ''
+      '    <!--DETTAGLIO LINEE -->'
+      ''
+      '    <xsl:choose>'
+      '      <xsl:when test="$posASWRELSTD = $r">'
+      '        <xsl:call-template name="DettaglioLineeASW"/>'
+      '      </xsl:when>'
+      ''
+      '      <xsl:otherwise>'
+      ''
+      '        <tr>'
+      '          <td>'
+      '            <xsl:for-each select="CodiceArticolo"  >'
+      '              <div class="tx-xsmall">'
+      '                <xsl:if test="CodiceValore">'
+      '                  <xsl:text> </xsl:text>'
+      '                  <xsl:value-of select="CodiceValore" />'
       '                </xsl:if>'
-      #9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9'</td>'
-      #9#9#9#9#9'<td>'
-      #9#9#9#9#9#9'<xsl:if test="Descrizione">'
-      #9#9#9#9#9#9#9'<xsl:value-of select="Descrizione"/>'
-      #9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9'<xsl:if test="TipoCessionePrestazione">'
-      '              (<xsl:value-of select="TipoCessionePrestazione"/>)'
+      '                <xsl:if test="CodiceTipo">'
+      '                  (<xsl:value-of select="CodiceTipo" />)'
+      '                </xsl:if>'
+      '              </div>'
+      '            </xsl:for-each>'
+      '          </td>'
+      '          <td>'
+      ''
+      '            <xsl:if test="Descrizione">'
+      '              <xsl:value-of select="Descrizione" />'
       '            </xsl:if>'
-      #9#9#9#9#9#9'<xsl:if test="DataInizioPeriodo or DataFinePeriodo">'
-      #9#9#9#9#9#9#9'<div class="tx-xsmall">'
-      #9#9#9#9#9#9#9#9'<xsl:text>Periodo</xsl:text>'
-      #9#9#9#9#9#9#9#9'<xsl:if test="DataInizioPeriodo">'
-      #9#9#9#9#9#9#9#9#9'<xsl:text> da </xsl:text>'
-      #9#9#9#9#9#9#9#9#9'<xsl:call-template name="FormatDateIta">'
+      ''
+      '            <xsl:if test="TipoCessionePrestazione">'
       
-        #9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="DateTime" select="DataInizioPeri' +
-        'odo"/>'
-      #9#9#9#9#9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9'<xsl:if test="DataFinePeriodo">'
-      #9#9#9#9#9#9#9#9#9'<xsl:text> a </xsl:text>'
-      #9#9#9#9#9#9#9#9#9'<xsl:call-template name="FormatDateIta">'
+        '              (<xsl:value-of select="TipoCessionePrestazione" />' +
+        ')'
+      '            </xsl:if>'
+      ''
+      '            <xsl:if test="DataInizioPeriodo or DataFinePeriodo">'
+      '              <div class="tx-xsmall">'
+      '                <xsl:text>Periodo</xsl:text>'
+      '                <xsl:if test="DataInizioPeriodo">'
+      '                  <xsl:text> da </xsl:text>'
+      '                  <xsl:call-template name="FormatDateIta">'
       
-        #9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="DateTime" select="DataFinePeriod' +
-        'o"/>'
-      #9#9#9#9#9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9'<xsl:for-each select="AltriDatiGestionali">'
+        '                    <xsl:with-param name="DateTime" select="Data' +
+        'InizioPeriodo" />'
+      '                  </xsl:call-template>'
+      '                </xsl:if>'
+      '                <xsl:if test="DataFinePeriodo">'
+      '                  <xsl:text> a </xsl:text>'
+      '                  <xsl:call-template name="FormatDateIta">'
       
-        #9#9#9#9#9#9#9'<xsl:if test=" translate( TipoDato,&#xA;                 ' +
-        '                    '#39'ABCDEFGHIJKLMNOPQRSTUVWXYZ'#39',&#xA;          ' +
-        '                           '#39'abcdefghijklmnopqrstuvwxyz'#39'&#xA;    ' +
-        '                                ) != '#39'aswrelstd'#39'&#xA;'#9#9#9#9#9#9#9#9#9'an' +
-        'd&#xA;'#9#9#9#9#9#9#9#9#9'translate( TipoDato,&#xA;                        ' +
-        '             '#39'ABCDEFGHIJKLMNOPQRSTUVWXYZ'#39',&#xA;                 ' +
-        '                    '#39'abcdefghijklmnopqrstuvwxyz'#39'&#xA;           ' +
-        '                         ) != '#39'aswswhouse'#39'&#xA;         and&#xA;' +
-        #9#9#9#9#9#9#9#9#9'translate( TipoDato,&#xA;                              ' +
-        '       '#39'ABCDEFGHIJKLMNOPQRSTUVWXYZ'#39',&#xA;                       ' +
-        '              '#39'abcdefghijklmnopqrstuvwxyz'#39'&#xA;                 ' +
-        '                   ) != '#39'aswtriga'#39'   ">'
-      #9#9#9#9#9#9#9#9'<div class="tx-xsmall">'
-      #9#9#9#9#9#9#9#9#9'<xsl:text>Tipo dato: </xsl:text>'
-      #9#9#9#9#9#9#9#9#9'<xsl:value-of select="TipoDato"/>'
+        '                    <xsl:with-param name="DateTime" select="Data' +
+        'FinePeriodo" />'
+      '                  </xsl:call-template>'
+      '                </xsl:if>'
+      '              </div>'
+      ''
+      '            </xsl:if>'
+      ''
+      ''
+      '            <xsl:for-each select="AltriDatiGestionali"  >'
+      ''
+      '              <xsl:if test=" translate( TipoDato,'
       
-        #9#9#9#9#9#9#9#9#9'<xsl:if test=" translate( TipoDato,&#xA;               ' +
-        '                      '#39'ABCDEFGHIJKLMNOPQRSTUVWXYZ'#39',&#xA;        ' +
-        '                             '#39'abcdefghijklmnopqrstuvwxyz'#39'&#xA;  ' +
-        '                                  ) = '#39'aswlottsca'#39' ">'
+        '                                     '#39'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
+        #39','
       
-        #9#9#9#9#9#9#9#9#9#9'<xsl:text> (dati relativi a lotti e scadenze) </xsl:te' +
-        'xt>'
-      #9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9'<xsl:if test="RiferimentoTesto">'
-      #9#9#9#9#9#9#9#9#9'<div class="tx-xsmall">'
-      #9#9#9#9#9#9#9#9#9#9'<xsl:choose>'
+        '                                     '#39'abcdefghijklmnopqrstuvwxyz' +
+        #39
+      '                                    ) != '#39'aswrelstd'#39
+      #9#9#9#9#9#9#9#9#9'and'
+      #9#9#9#9#9#9#9#9#9'translate( TipoDato,'
       
-        #9#9#9#9#9#9#9#9#9#9#9'<xsl:when test=" translate( TipoDato,&#xA;           ' +
-        '                          '#39'ABCDEFGHIJKLMNOPQRSTUVWXYZ'#39',&#xA;    ' +
-        '                                 '#39'abcdefghijklmnopqrstuvwxyz'#39'&#x' +
-        'A;                                    ) = '#39'aswlottsca'#39' ">'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:text>Lotto: </xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:text>Rif. testo: </xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9'</xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="RiferimentoTesto"/>'
-      #9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9'<xsl:if test="RiferimentoData">'
-      #9#9#9#9#9#9#9#9#9'<div class="tx-xsmall">'
-      #9#9#9#9#9#9#9#9#9#9'<xsl:choose>'
+        '                                     '#39'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
+        #39','
       
-        #9#9#9#9#9#9#9#9#9#9#9'<xsl:when test=" translate( TipoDato,&#xA;           ' +
-        '                          '#39'ABCDEFGHIJKLMNOPQRSTUVWXYZ'#39',&#xA;    ' +
-        '                                 '#39'abcdefghijklmnopqrstuvwxyz'#39'&#x' +
-        'A;                                    ) = '#39'aswlottsca'#39' ">'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:text>Scadenza: </xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:text>Rif. data: </xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9'</xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9'<xsl:call-template name="FormatDateIta">'
+        '                                     '#39'abcdefghijklmnopqrstuvwxyz' +
+        #39
+      '                                    ) != '#39'aswswhouse'#39'   ">'
+      ''
+      ''
+      '                <div class="tx-xsmall">'
+      '                  <xsl:text>Tipo dato: </xsl:text>'
+      '                  <xsl:value-of select="TipoDato" />'
+      '                  <xsl:if test=" translate( TipoDato,'
       
-        #9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="DateTime" select="RiferimentoDa' +
-        'ta"/>'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9'<xsl:if test="RiferimentoNumero">'
-      #9#9#9#9#9#9#9#9#9'<div class="tx-xsmall">'
-      #9#9#9#9#9#9#9#9#9#9'<xsl:choose>'
+        '                                     '#39'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
+        #39','
       
-        #9#9#9#9#9#9#9#9#9#9#9'<xsl:when test=" translate( TipoDato,&#xA;           ' +
-        '                          '#39'ABCDEFGHIJKLMNOPQRSTUVWXYZ'#39',&#xA;    ' +
-        '                                 '#39'abcdefghijklmnopqrstuvwxyz'#39'&#x' +
-        'A;                                    ) = '#39'aswlottsca'#39' ">'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:text>Quantit'#224' del suddetto lotto: </xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:text>Rif. numero: </xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9'</xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:choose>'
+        '                                     '#39'abcdefghijklmnopqrstuvwxyz' +
+        #39
+      '                                    ) = '#39'aswlottsca'#39' ">'
       
-        #9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="format-number(RiferimentoNumero,' +
-        '  '#39'###.###.##0,00######'#39', '#39'euro'#39')"/>'
-      #9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9'<xsl:if test="RiferimentoAmministrazione">'
-      #9#9#9#9#9#9#9'<div class="tx-xsmall">'
+        '                    <xsl:text> (dati relativi a lotti e scadenze' +
+        ') </xsl:text>'
+      '                  </xsl:if>'
+      ''
+      '                </div>'
+      ''
+      '                <xsl:if test="RiferimentoTesto">'
+      '                  <div class="tx-xsmall">'
+      '                    <xsl:choose>'
+      '                      <xsl:when test=" translate( TipoDato,'
+      
+        '                                     '#39'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
+        #39','
+      
+        '                                     '#39'abcdefghijklmnopqrstuvwxyz' +
+        #39
+      '                                    ) = '#39'aswlottsca'#39' ">'
+      ''
+      '                        <xsl:text>Lotto: </xsl:text>'
+      '                      </xsl:when>'
+      '                      <xsl:otherwise>'
+      '                        <xsl:text>Rif. testo: </xsl:text>'
+      '                      </xsl:otherwise>'
+      '                    </xsl:choose>'
+      '                    <xsl:value-of select="RiferimentoTesto" />'
+      '                  </div>'
+      '                </xsl:if>'
+      ''
+      ''
+      ''
+      '                <xsl:if test="RiferimentoData">'
+      '                  <div class="tx-xsmall">'
+      '                    <xsl:choose>'
+      '                      <xsl:when test=" translate( TipoDato,'
+      
+        '                                     '#39'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
+        #39','
+      
+        '                                     '#39'abcdefghijklmnopqrstuvwxyz' +
+        #39
+      '                                    ) = '#39'aswlottsca'#39' ">'
+      ''
+      '                        <xsl:text>Scadenza: </xsl:text>'
+      '                      </xsl:when>'
+      '                      <xsl:otherwise>'
+      '                        <xsl:text>Rif. data: </xsl:text>'
+      '                      </xsl:otherwise>'
+      '                    </xsl:choose>'
+      ''
+      '                    <xsl:call-template name="FormatDateIta">'
+      
+        '                      <xsl:with-param name="DateTime" select="Ri' +
+        'ferimentoData" />'
+      '                    </xsl:call-template>'
+      ''
+      '                  </div>'
+      '                </xsl:if>'
+      ''
+      '                <xsl:if test="RiferimentoNumero">'
+      '                  <div class="tx-xsmall">'
+      '                    <xsl:choose>'
+      '                      <xsl:when test=" translate( TipoDato,'
+      
+        '                                     '#39'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
+        #39','
+      
+        '                                     '#39'abcdefghijklmnopqrstuvwxyz' +
+        #39
+      '                                    ) = '#39'aswlottsca'#39' ">'
+      ''
+      
+        '                        <xsl:text>Quantit'#224' del suddetto lotto: <' +
+        '/xsl:text>'
+      '                      </xsl:when>'
+      '                      <xsl:otherwise>'
+      '                        <xsl:text>Rif. numero: </xsl:text>'
+      '                      </xsl:otherwise>'
+      '                    </xsl:choose>'
+      
+        '                    <xsl:value-of select="format-number(Riferime' +
+        'ntoNumero,  '#39'###.###.##0,00######'#39', '#39'euro'#39')" />'
+      '                  </div>'
+      '                </xsl:if>'
+      ''
+      ''
+      ''
+      '              </xsl:if>'
+      ''
+      '            </xsl:for-each>'
+      ''
+      '            <xsl:if test="RiferimentoAmministrazione">'
+      '              <div class="tx-xsmall">'
       
         '                RIF.AMM. <xsl:value-of select="RiferimentoAmmini' +
-        'strazione"/>'
-      #9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9'</td>'
-      #9#9#9#9#9'<td class="import2">'
-      #9#9#9#9#9#9'<xsl:if test="Quantita">'
-      #9#9#9#9#9#9#9'<xsl:if test="number(Quantita)">'
+        'strazione" />'
+      '              </div>'
+      '            </xsl:if>'
+      ''
+      '          </td>'
+      ''
+      ''
+      ''
+      '          <td class="import2" >'
+      '            <xsl:if test="Quantita">'
+      '              <xsl:if test="number(Quantita)">'
       
-        #9#9#9#9#9#9#9#9'<xsl:value-of select="format-number(Quantita,  '#39'###.###.' +
-        '##0,00######'#39', '#39'euro'#39')"/>'
-      #9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9'</td>'
-      #9#9#9#9#9'<td class="import">'
-      #9#9#9#9#9#9'<xsl:if test="PrezzoUnitario">'
-      #9#9#9#9#9#9#9'<xsl:if test="number(PrezzoTotale)">'
-      
-        #9#9#9#9#9#9#9#9'<xsl:value-of select="format-number(PrezzoUnitario,  '#39'##' +
-        '#.###.##0,00######'#39', '#39'euro'#39')"/>'
-      #9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9'</td>'
-      #9#9#9#9#9'<td class="textCenter">'
-      #9#9#9#9#9#9'<xsl:if test="UnitaMisura">'
-      #9#9#9#9#9#9#9'<xsl:value-of select="UnitaMisura"/>'
-      #9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9'</td>'
-      #9#9#9#9#9'<td class="import">'
-      #9#9#9#9#9#9'<xsl:for-each select="ScontoMaggiorazione">'
-      #9#9#9#9#9#9#9'<div>'
-      #9#9#9#9#9#9#9#9'<xsl:call-template name="FormatColSconto">'
-      #9#9#9#9#9#9#9#9#9'<xsl:with-param name="tipo" select="Tipo"/>'
-      
-        #9#9#9#9#9#9#9#9#9'<xsl:with-param name="percentuale" select="Percentuale"' +
-        '/>'
-      #9#9#9#9#9#9#9#9#9'<xsl:with-param name="importo" select="Importo"/>'
-      #9#9#9#9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9'</td>'
-      #9#9#9#9#9'<td class="import">'
-      #9#9#9#9#9#9'<xsl:if test="number(PrezzoTotale)">'
-      #9#9#9#9#9#9#9'<xsl:call-template name="FormatIVA">'
-      #9#9#9#9#9#9#9#9'<xsl:with-param name="Natura" select="Natura"/>'
-      #9#9#9#9#9#9#9#9'<xsl:with-param name="IVA" select="AliquotaIVA"/>'
-      #9#9#9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9'</td>'
-      #9#9#9#9#9'<td>'
-      #9#9#9#9#9#9'<xsl:if test="PrezzoTotale">'
-      #9#9#9#9#9#9#9'<xsl:if test="number(PrezzoTotale)">'
-      #9#9#9#9#9#9#9#9'<div class="import">'
-      
-        #9#9#9#9#9#9#9#9#9'<xsl:value-of select="format-number(PrezzoTotale,  '#39'###' +
-        '.###.##0,00######'#39', '#39'euro'#39')"/>'
-      #9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9'<xsl:if test="OpzPrezzoTotale">'
-      #9#9#9#9#9#9#9#9'<div class="tx-xsmall">'
-      #9#9#9#9#9#9#9#9#9'<xsl:value-of select="OpzPrezzoTotale"/>'
-      #9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9'</td>'
-      #9#9#9#9'</tr>'
-      #9#9#9'</xsl:otherwise>'
-      #9#9'</xsl:choose>'
-      #9#9'<!--POST LINEA -->'
-      #9#9'<xsl:for-each select="OpzPostLinea">'
-      #9#9#9'<xsl:call-template name="AltraDescrizioneLinea">'
-      #9#9#9#9'<xsl:with-param name="textDescrizione" select="."/>'
-      #9#9#9'</xsl:call-template>'
-      #9#9'</xsl:for-each>'
-      #9'</xsl:template>'
-      
-        #9'<!-- Nel caso in cui ho un AltriDatiGestionali con aswrelstd o ' +
-        'aswswhouse, mi permette'
-      '  di stampare tutti alti dati ma non aswrelstd e aswswhouse -->'
-      #9'<xsl:template name="DettaglioLineeASW">'
-      #9#9'<tr>'
-      #9#9#9'<td>'
-      #9#9#9'</td>'
-      #9#9#9'<td>'
-      #9#9#9#9'<xsl:text>------------------------</xsl:text>'
-      #9#9#9#9'<xsl:for-each select="AltriDatiGestionali">'
-      
-        #9#9#9#9#9'<xsl:if test=" translate( TipoDato,&#xA;'#9#9#9#9#9#9#9#9#9#9#9#9#9#9' '#39'ABC' +
-        'DEFGHIJKLMNOPQRSTUVWXYZ'#39',&#xA;'#9#9#9#9#9#9#9#9#9#9#9#9#9#9' '#39'abcdefghijklmnopqr' +
-        'stuvwxyz'#39'&#xA;'#9#9#9#9#9#9#9#9#9#9#9#9#9#9') != '#39'aswrelstd'#39'&#xA;'#9#9#9#9#9#9#9#9#9#9#9#9#9#9'a' +
-        'nd&#xA;'#9#9#9#9#9#9#9#9#9#9#9#9#9#9'translate( TipoDato,&#xA;'#9#9#9#9#9#9#9#9#9#9#9#9#9#9' '#39'AB' +
-        'CDEFGHIJKLMNOPQRSTUVWXYZ'#39',&#xA;'#9#9#9#9#9#9#9#9#9#9#9#9#9#9' '#39'abcdefghijklmnopq' +
-        'rstuvwxyz'#39'&#xA;'#9#9#9#9#9#9#9#9#9#9#9#9#9#9') != '#39'aswswhouse'#39'   ">'
-      #9#9#9#9#9#9'<div class="tx-xsmall">'
-      #9#9#9#9#9#9#9'<xsl:value-of select="RiferimentoTesto"/>'
-      #9#9#9#9#9#9#9'<xsl:text>'
-      #9#9#9#9#9#9#9'</xsl:text>'
-      #9#9#9#9#9#9#9'<xsl:value-of select="TipoDato"/>'
-      #9#9#9#9#9#9'</div>'
-      #9#9#9#9#9'</xsl:if>'
-      #9#9#9#9'</xsl:for-each>'
-      #9#9#9'</td>'
-      #9#9#9'<td>'
-      #9#9#9'</td>'
-      #9#9#9'<td>'
-      #9#9#9'</td>'
-      #9#9#9'<td>'
-      #9#9#9'</td>'
-      #9#9#9'<td>'
-      #9#9#9'</td>'
-      #9#9#9'<td>'
-      #9#9#9'</td>'
-      #9#9#9'<td>'
-      #9#9#9'</td>'
-      #9#9'</tr>'
-      #9'</xsl:template>'
-      #9'<xsl:template name="AltraDescrizioneLinea">'
-      #9#9'<xsl:param name="textDescrizione"/>'
-      #9#9'<!-- testo della descrizione -->'
-      #9#9'<tr>'
-      #9#9#9'<td>'
-      #9#9#9'</td>'
-      #9#9#9'<td>'
-      #9#9#9#9'<div class="tx-xsmall">'
-      #9#9#9#9#9'<xsl:value-of select="$textDescrizione"/>'
-      #9#9#9#9'</div>'
-      #9#9#9'</td>'
-      #9#9#9'<td>'
-      #9#9#9'</td>'
-      #9#9#9'<td>'
-      #9#9#9'</td>'
-      #9#9#9'<td>'
-      #9#9#9'</td>'
-      #9#9#9'<td>'
-      #9#9#9'</td>'
-      #9#9#9'<td>'
-      #9#9#9'</td>'
-      #9#9#9'<td>'
-      #9#9#9'</td>'
-      #9#9'</tr>'
-      #9'</xsl:template>'
-      #9'<xsl:template match="DatiRitenuta">'
-      #9#9'<table class="tbFoglio">'
-      #9#9#9'<thead>'
-      #9#9#9#9'<tr>'
-      #9#9#9#9#9'<th class="title"> Dati ritenuta d'#39'acconto</th>'
-      #9#9#9#9#9'<th class="perc">Aliquota ritenuta</th>'
-      #9#9#9#9#9'<th>Causale'#9'</th>'
-      #9#9#9#9#9'<th width="15%">Importo </th>'
-      #9#9#9#9'</tr>'
-      #9#9#9'</thead>'
-      #9#9#9'<tbody>'
-      #9#9#9#9'<tr>'
-      #9#9#9#9#9'<td>'
-      #9#9#9#9#9#9'<xsl:if test="TipoRitenuta">'
-      #9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9'<xsl:value-of select="TipoRitenuta"/>'
-      #9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9'<xsl:variable name="TR">'
-      #9#9#9#9#9#9#9#9'<xsl:value-of select="TipoRitenuta"/>'
-      #9#9#9#9#9#9#9'</xsl:variable>'
-      #9#9#9#9#9#9#9'<xsl:choose>'
-      #9#9#9#9#9#9#9#9'<xsl:when test="$TR='#39'RT01'#39'">'
-      '                  (ritenuta persone fisiche)'
-      '                </xsl:when>'
-      #9#9#9#9#9#9#9#9'<xsl:when test="$TR='#39'RT02'#39'">'
-      '                  (ritenuta persone giuridiche)'
-      '                </xsl:when>'
-      #9#9#9#9#9#9#9#9'<xsl:when test="$TR='#39#39'">'
-      #9#9#9#9#9#9#9#9'</xsl:when>'
-      #9#9#9#9#9#9#9#9'<xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9'<span>(!!! codice non previsto !!!)</span>'
-      #9#9#9#9#9#9#9#9'</xsl:otherwise>'
-      #9#9#9#9#9#9#9'</xsl:choose>'
-      #9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9'</td>'
-      #9#9#9#9#9'<td class="import">'
-      #9#9#9#9#9#9'<xsl:if test="AliquotaRitenuta">'
-      
-        #9#9#9#9#9#9#9'<xsl:value-of select="format-number(AliquotaRitenuta,  '#39'#' +
-        '##.###.##0,00'#39', '#39'euro'#39')"/>'
-      #9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9'</td>'
-      #9#9#9#9#9'<td>'
-      #9#9#9#9#9#9'<xsl:if test="CausalePagamento">'
-      #9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9'<xsl:value-of select="CausalePagamento"/>'
-      #9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9'<xsl:variable name="CP">'
-      #9#9#9#9#9#9#9#9'<xsl:value-of select="CausalePagamento"/>'
-      #9#9#9#9#9#9#9'</xsl:variable>'
-      #9#9#9#9#9#9#9'<xsl:if test="$CP!='#39#39'">'
-      '                (decodifica come da modello 770S)'
+        '                <xsl:value-of select="format-number(Quantita,  '#39 +
+        '###.###.##0,00######'#39', '#39'euro'#39')" />'
       '              </xsl:if>'
-      #9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9'</td>'
-      #9#9#9#9#9'<td class="import">'
-      #9#9#9#9#9#9'<xsl:if test="ImportoRitenuta">'
+      '            </xsl:if>'
+      '          </td>'
+      ''
+      ''
+      ''
+      '          <td class="import" >'
+      '            <xsl:if test="PrezzoUnitario">'
+      '              <xsl:if test="number(PrezzoUnitario)">'
+      ''
       
-        #9#9#9#9#9#9#9'<xsl:value-of select="format-number(ImportoRitenuta,  '#39'##' +
-        '#.###.##0,00'#39', '#39'euro'#39')"/>'
-      #9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9'</td>'
-      #9#9#9#9'</tr>'
-      #9#9#9'</tbody>'
-      #9#9'</table>'
-      #9'</xsl:template>'
-      #9'<xsl:template name="FatturaElettronica">'
-      #9#9'<xsl:param name="TipoFattura"/>'
-      #9#9'<xsl:param name="IsFPRS"/>'
-      #9#9'<xsl:if test="$TipoFattura">'
+        '                <xsl:value-of select="format-number(PrezzoUnitar' +
+        'io,  '#39'###.###.##0,00######'#39', '#39'euro'#39')" />'
+      '              </xsl:if>'
+      '            </xsl:if>'
+      '          </td>'
+      ''
+      '          <td class="textCenter" >'
+      '            <xsl:if test="UnitaMisura">'
+      '              <xsl:value-of select="UnitaMisura" />'
+      '            </xsl:if>'
+      ''
+      '          </td>'
+      '          <td class="import" >'
+      ''
+      '            <xsl:for-each select="ScontoMaggiorazione" >'
+      ''
+      '              <div>'
+      ''
+      '                <xsl:call-template name="FormatColSconto" >'
+      '                  <xsl:with-param name="tipo" select="Tipo" />'
       
-        #9#9#9'<!--Variabile che contiene il codice destinatario dall'#39'HEADER' +
-        ' perch'#232' viene visualizzato nella sezione BODY -->'
+        '                  <xsl:with-param name="percentuale" select="Per' +
+        'centuale" />'
       
-        #9#9#9'<!--<xsl:variable name="CodiceDestinatario" select="$TipoFatt' +
-        'ura/FatturaElettronicaHeader/DatiTrasmissione/CodiceDestinatario' +
-        '"/>-->'
+        '                  <xsl:with-param name="importo" select="Importo' +
+        '" />'
+      '                </xsl:call-template>'
+      ''
+      ''
+      '              </div>'
+      '            </xsl:for-each>'
+      ''
+      '          </td>'
+      ''
+      '          <td class="import" >'
+      ''
+      '            <xsl:if test="number(PrezzoTotale)">'
+      ''
+      '              <xsl:call-template name="FormatIVA">'
+      '                <xsl:with-param name="Natura" select="Natura" />'
       
-        #9#9#9'<xsl:variable name="PecDestinatario" select="$TipoFattura/Fat' +
-        'turaElettronicaHeader/DatiTrasmissione/PECDestinatario"/>'
+        '                <xsl:with-param name="IVA" select="AliquotaIVA" ' +
+        '/>'
+      '              </xsl:call-template>'
+      '            </xsl:if>'
+      ''
+      '          </td>'
+      '          <td>'
+      '            <xsl:if test="PrezzoTotale">'
+      '              <xsl:if test="number(PrezzoTotale)">'
+      ''
+      '                <div class="import">'
       
-        #9#9#9'<!--Variabile che contiene il codice destinatario dall'#39'HEADER' +
-        ' perch'#232' viene visualizzato nella sezione BODY -->'
-      #9#9#9'<xsl:variable name="CodiceDestinatario">'
-      #9#9#9#9'<xsl:choose>'
+        '                  <xsl:value-of select="format-number(PrezzoTota' +
+        'le,  '#39'###.###.##0,00######'#39', '#39'euro'#39')" />'
+      '                </div>'
+      '              </xsl:if>'
+      ''
+      ''
+      '              <xsl:if test="OpzPrezzoTotale">'
+      '                <div class="tx-xsmall">'
+      '                  <xsl:value-of select="OpzPrezzoTotale" />'
+      '                </div>'
+      '              </xsl:if>'
+      '            </xsl:if>'
+      '          </td>'
+      ''
+      '        </tr>'
+      ''
+      '      </xsl:otherwise>'
+      '    </xsl:choose>'
+      ''
+      '    <!--POST LINEA -->'
+      '    <xsl:for-each select="OpzPostLinea"  >'
+      '      <xsl:call-template name="AltraDescrizioneLinea">'
+      '        <xsl:with-param name="textDescrizione" select = "." />'
+      '      </xsl:call-template>'
+      '    </xsl:for-each>'
+      ''
+      '  </xsl:template>'
+      ''
+      ''
       
-        #9#9#9#9#9'<xsl:when test="$TipoFattura/FatturaElettronicaHeader/DatiT' +
-        'rasmissione/CodiceDestinatario='#39'0000000'#39'">'
+        '  <!-- Nel caso in cui ho un AltriDatiGestionali con aswrelstd o' +
+        ' aswswhouse, mi permette'
+      '  di stampare tutti alti dati ma non aswrelstd e aswswhouse -->'
+      '  <xsl:template name="DettaglioLineeASW">'
+      '    <tr >'
+      '      <td>'
+      '      </td>'
+      ''
+      '      <td >'
+      '        <xsl:text>------------------------</xsl:text>'
+      '        <xsl:for-each select="AltriDatiGestionali"  >'
+      ''
+      '          <xsl:if test=" translate( TipoDato,'
+      #9#9#9#9#9#9#9#9#9#9#9#9#9#9' '#39'ABCDEFGHIJKLMNOPQRSTUVWXYZ'#39','
+      #9#9#9#9#9#9#9#9#9#9#9#9#9#9' '#39'abcdefghijklmnopqrstuvwxyz'#39
+      #9#9#9#9#9#9#9#9#9#9#9#9#9#9') != '#39'aswrelstd'#39
+      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'and'
+      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'translate( TipoDato,'
+      #9#9#9#9#9#9#9#9#9#9#9#9#9#9' '#39'ABCDEFGHIJKLMNOPQRSTUVWXYZ'#39','
+      #9#9#9#9#9#9#9#9#9#9#9#9#9#9' '#39'abcdefghijklmnopqrstuvwxyz'#39
+      #9#9#9#9#9#9#9#9#9#9#9#9#9#9') != '#39'aswswhouse'#39'   ">'
+      ''
+      '            <div class="tx-xsmall">'
+      '              <xsl:value-of select="RiferimentoTesto" />'
+      '              <xsl:text> </xsl:text>'
+      '              <xsl:value-of select="TipoDato" />'
+      '            </div>'
+      ''
+      '          </xsl:if>'
+      ''
+      '        </xsl:for-each>'
+      '      </td>'
+      ''
+      '      <td >'
+      '      </td>'
+      ''
+      ''
+      '      <td  >'
+      '      </td>'
+      '      <td >'
+      '      </td>'
+      '      <td  >'
+      '      </td>'
+      ''
+      '      <td  >'
+      '      </td>'
+      '      <td  >'
+      '      </td>'
+      '    </tr>'
+      ''
+      '  </xsl:template>'
+      ''
+      '  <xsl:template name="AltraDescrizioneLinea">'
+      '    <xsl:param name = "textDescrizione" />'
+      '    <!-- testo della descrizione -->'
+      '    <tr>'
+      '      <td >'
+      '      </td>'
+      ''
+      '      <td >'
+      '        <div class="tx-xsmall">'
+      '          <xsl:value-of select="$textDescrizione" />'
+      '        </div>'
+      '      </td>'
+      ''
+      '      <td>'
+      '      </td>'
+      ''
+      ''
+      '      <td>'
+      '      </td>'
+      '      <td>'
+      '      </td>'
+      '      <td>'
+      '      </td>'
+      ''
+      '      <td>'
+      '      </td>'
+      '      <td>'
+      '      </td>'
+      '    </tr>'
+      ''
+      '  </xsl:template>'
+      ''
+      '  <xsl:template match="DatiRitenuta">'
+      ''
+      ''
+      '        <tr>'
+      '          <td >'
+      ''
+      '            <xsl:if test="TipoRitenuta">'
+      ''
+      '              <span>'
+      '                <xsl:value-of select="TipoRitenuta" />'
+      '              </span>'
+      '              <xsl:variable name="TR">'
+      '                <xsl:value-of select="TipoRitenuta" />'
+      '              </xsl:variable>'
+      '              <xsl:choose>'
+      '                <xsl:when test="$TR='#39'RT01'#39'">'
+      '                  Ritenuta persone fisiche'
+      '                </xsl:when>'
+      '                <xsl:when test="$TR='#39'RT02'#39'">'
+      '                  Ritenuta persone giuridiche'
+      '                </xsl:when>'
+      #9#9#9#9'<xsl:when test="$TR='#39'RT03'#39'">'
+      #9#9#9#9#9'Contributo INPS'
+      #9#9#9#9'</xsl:when>'
+      #9#9#9#9'<xsl:when test="$TR='#39'RT04'#39'">'
+      #9#9#9#9#9'Contributo ENASARCO'
+      #9#9#9#9'</xsl:when>'
+      #9#9#9#9'<xsl:when test="$TR='#39'RT05'#39'">'
+      #9#9#9#9#9'Contributo ENPAM'
+      #9#9#9#9'</xsl:when>'
+      #9#9#9#9'<xsl:when test="$TR='#39'RT06'#39'">'
+      #9#9#9#9#9'Altro contributo previdenziale'
+      #9#9#9#9'</xsl:when>'
+      '                <xsl:when test="$TR='#39#39'">'
+      '                </xsl:when>'
+      '                <xsl:otherwise>'
+      '                  <span>(!!! codice non previsto !!!)</span>'
+      '                </xsl:otherwise>'
+      '              </xsl:choose>'
+      ''
+      '            </xsl:if>'
+      '          </td>'
+      ''
+      '          <td class="import" >'
+      '            <xsl:if test="AliquotaRitenuta">'
       
-        #9#9#9#9#9#9'<xsl:value-of select="$TipoFattura/FatturaElettronicaHeade' +
-        'r/DatiTrasmissione/PECDestinatario"/>'
-      #9#9#9#9#9'</xsl:when>'
-      #9#9#9#9#9'<xsl:otherwise>'
+        '              <xsl:value-of select="format-number(AliquotaRitenu' +
+        'ta,  '#39'###.###.##0,00'#39', '#39'euro'#39')" />'
+      '            </xsl:if>'
+      ''
+      '          </td>'
+      ''
+      '          <td >'
+      '            <xsl:if test="CausalePagamento">'
+      ''
+      '              <span>'
+      '                <xsl:value-of select="CausalePagamento" />'
+      '              </span>'
+      '              <xsl:variable name="CP">'
+      '                <xsl:value-of select="CausalePagamento" />'
+      '              </xsl:variable>'
+      '              <xsl:if test="$CP!='#39#39'">'
+      '                (decodifica come da modello CU)'
+      '              </xsl:if>'
+      ''
+      '            </xsl:if>'
+      '          </td>'
+      ''
+      '          <td class="import" >'
+      '            <xsl:if test="ImportoRitenuta">'
+      ''
       
-        #9#9#9#9#9#9'<xsl:value-of select="$TipoFattura/FatturaElettronicaHeade' +
-        'r/DatiTrasmissione/CodiceDestinatario"/>'
-      #9#9#9#9#9'</xsl:otherwise>'
-      #9#9#9#9'</xsl:choose>'
-      #9#9#9'</xsl:variable>'
-      #9#9#9'<div id="fattura-elettronica" class="page">'
-      #9#9#9#9'<!-- FatturaElettronicaHeader -->'
-      #9#9#9#9'<xsl:if test="$TipoFattura/FatturaElettronicaHeader">'
-      #9#9#9#9#9'<table id="tbHeader" class="tbHeader">'
-      #9#9#9#9#9#9'<tr>'
-      #9#9#9#9#9#9#9'<td class="tdHead">'
-      #9#9#9#9#9#9#9#9'<table class="tableHead">'
-      #9#9#9#9#9#9#9#9#9'<tr>'
-      #9#9#9#9#9#9#9#9#9#9'<td>'
-      #9#9#9#9#9#9#9#9#9#9#9'<!--INIZIO CEDENTE PRESTATORE-->'
-      #9#9#9#9#9#9#9#9#9#9#9'<div class="headBorder">'
+        '              <xsl:value-of select="format-number(ImportoRitenut' +
+        'a,  '#39'###.###.##0,00'#39', '#39'euro'#39')" />'
+      ''
+      '            </xsl:if>'
+      '          </td>'
+      ''
+      '        </tr>'
+      ''
+      '  </xsl:template>'
+      ''
+      '  <xsl:template match="DettaglioPagamento">'
+      ''
+      '    <xsl:if test="Beneficiario">'
+      '      Beneficiario  <xsl:value-of select="Beneficiario" /> <br/>'
+      '    </xsl:if>'
+      ''
+      '    <xsl:if test="IBAN">'
+      '      IBAN'
+      '      <xsl:value-of select="IBAN" /> <br/>'
+      '    </xsl:if>'
+      ''
+      '    <xsl:if test="ABI or CAB or BIC ">'
+      ''
+      '      <xsl:if test="ABI">'
+      '        ABI  <xsl:value-of select="ABI" />'
+      '      </xsl:if>'
+      ''
+      '      <xsl:if test="CAB">'
+      '        CAB  <xsl:value-of select="CAB" />'
+      '      </xsl:if>'
+      ''
+      '      <xsl:if test="BIC">'
+      '        BIC  <xsl:value-of select="BIC" />'
+      '      </xsl:if>'
+      '      <br/>'
+      '    </xsl:if>'
+      ''
+      '    <xsl:if test="IstitutoFinanziario">'
+      '      <xsl:value-of select="IstitutoFinanziario" />'
+      '      <br/>'
+      '    </xsl:if>'
+      ''
+      '    <xsl:if test="CodUfficioPostale">'
+      '      Codice ufficio postale'
+      '      <xsl:value-of select="CodUfficioPostale" />'
+      '      <br/>'
+      '    </xsl:if>'
+      ''
       
-        #9#9#9#9#9#9#9#9#9#9#9#9'<label class="headerLabel">Cedente/prestatore (forni' +
-        'tore) </label>'
+        '    <xsl:if test="TitoloQuietanzante or CognomeQuietanzante or N' +
+        'omeQuietanzante or CFQuietanzante">'
+      '      Quietanzante'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:for-each select="$TipoFattura/FatturaElettronic' +
-        'aHeader/CedentePrestatore">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="DatiAnagrafici">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<!--DatiAnagrafici FPA\FPR-->'
+        '      <xsl:value-of select="concat(TitoloQuietanzante , '#39' '#39',Cogn' +
+        'omeQuietanzante, '#39' '#39', NomeQuietanzante, '#39' '#39', CFQuietanzante )"/>'
+      '      <br/>'
+      '    </xsl:if>'
+      ''
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:for-each select="$TipoFattura/FatturaElettro' +
-        'nicaHeader/CedentePrestatore/DatiAnagrafici">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent mt5">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="IdFiscaleIVA">'
+        '    <xsl:if test="DataLimitePagamentoAnticipato or ScontoPagamen' +
+        'toAnticipato">'
+      ''
+      '      <xsl:if test="DataLimitePagamentoAnticipato">'
+      
+        '        Data limite pagamento anticipato <xsl:call-template name' +
+        '="FormatDateIta">'
+      
+        '          <xsl:with-param name="DateTime" select="DataLimitePaga' +
+        'mentoAnticipato" />'
+      '        </xsl:call-template>'
+      '      </xsl:if>'
+      ''
+      '      <xsl:if test="ScontoPagamentoAnticipato">'
+      '        Sconto anticipato'
+      
+        '        <xsl:value-of select="format-number(ScontoPagamentoAntic' +
+        'ipato,  '#39'###.###.##0,00'#39', '#39'euro'#39')" />'
+      '      </xsl:if>'
+      '      <br/>'
+      '    </xsl:if>'
+      ''
+      
+        '    <xsl:if test="DataDecorrenzaPenale or PenalitaPagamentiRitar' +
+        'dati">'
+      ''
+      '      <xsl:if test="DataDecorrenzaPenale">'
+      '        Data penale <xsl:call-template name="FormatDateIta">'
+      
+        '          <xsl:with-param name="DateTime" select="DataDecorrenza' +
+        'Penale" />'
+      '        </xsl:call-template>'
+      '      </xsl:if>'
+      ''
+      '      <xsl:if test="PenalitaPagamentiRitardati">'
+      '        Importo penale'
+      
+        '        <xsl:value-of select="format-number(PenalitaPagamentiRit' +
+        'ardati,  '#39'###.###.##0,00'#39', '#39'euro'#39')" />'
+      '      </xsl:if>'
+      ''
+      '      <br/>'
+      '    </xsl:if>'
+      ''
+      '    <xsl:if test="CodicePagamento">'
+      
+        '      Codice pagamento  <xsl:value-of select="CodicePagamento" /' +
+        '>'
+      '    </xsl:if>'
+      ''
+      '  </xsl:template>'
+      ''
+      '  <xsl:template name="FatturaElettronica">'
+      ''
+      '    <xsl:param name="TipoFattura" />'
+      '    <xsl:param name="IsFPRS" />'
+      ''
+      '    <xsl:if test="$TipoFattura">'
+      ''
+      ''
+      
+        '      <!--Variabile che contiene il codice destinatario dall'#39'HEA' +
+        'DER perch'#232' viene visualizzato nella sezione BODY -->'
+      
+        '      <!--<xsl:variable name="CodiceDestinatario" select="$TipoF' +
+        'attura/FatturaElettronicaHeader/DatiTrasmissione/CodiceDestinata' +
+        'rio"/>-->'
+      
+        '      <xsl:variable name="PecDestinatario" select="$TipoFattura/' +
+        'FatturaElettronicaHeader/DatiTrasmissione/PECDestinatario"/>'
+      ''
+      
+        '      <!--Variabile che contiene il codice destinatario dall'#39'HEA' +
+        'DER perch'#232' viene visualizzato nella sezione BODY -->'
+      '      <xsl:variable name="CodiceDestinatario" >'
+      ''
+      '        <xsl:choose>'
+      
+        '          <xsl:when test="$TipoFattura/FatturaElettronicaHeader/' +
+        'DatiTrasmissione/CodiceDestinatario='#39'0000000'#39'">'
+      
+        '            <xsl:value-of select="$TipoFattura/FatturaElettronic' +
+        'aHeader/DatiTrasmissione/PECDestinatario" />'
+      '          </xsl:when>'
+      '          <xsl:otherwise>'
+      
+        '            <xsl:value-of select="$TipoFattura/FatturaElettronic' +
+        'aHeader/DatiTrasmissione/CodiceDestinatario" />'
+      '          </xsl:otherwise>'
+      '        </xsl:choose>'
+      '      </xsl:variable>'
+      ''
+      '      <div id="fattura-elettronica" class="page">'
+      ''
+      '        <!-- FatturaElettronicaHeader -->'
+      '        <xsl:if test="$TipoFattura/FatturaElettronicaHeader">'
+      ''
+      
+        #9#9#9'  <xsl:if test="$TipoFattura/FatturaElettronicaHeader/NomeDoc' +
+        'umento">'
+      #9#9#9'      <table class="tbNoBorder">'
+      #9#9#9#9'  <tr >'
+      #9#9#9#9#9#9'<td>'
+      
+        '                       <xsl:value-of select="$TipoFattura/Fattur' +
+        'aElettronicaHeader/NomeDocumento"/>'
+      #9#9#9#9'  </td>'
+      #9#9#9#9'  </tr>'
+      #9#9#9#9'  </table>'
+      '                </xsl:if>'
+      ''
+      '          <table id="tbHeader" class="tbHeader">'
+      ''
+      '            <tr >'
+      '              <td class="tdHead">'
+      ''
+      '                <table class="tableHead">'
+      '                  <tr>'
+      ''
+      '                    <td >'
+      ''
+      '                      <!--INIZIO CEDENTE PRESTATORE-->'
+      '                      <div class="headBorder" >'
+      ''
+      
+        '                        <label class= "headerLabel">Cedente/pres' +
+        'tatore (fornitore) </label>'
+      
+        '                        <xsl:for-each select="$TipoFattura/Fattu' +
+        'raElettronicaHeader/CedentePrestatore">'
+      ''
+      '                          <xsl:choose>'
+      '                            <xsl:when test="DatiAnagrafici">'
+      '                              <!--DatiAnagrafici FPA\FPR-->'
+      ''
+      
+        '                              <xsl:for-each select="$TipoFattura' +
+        '/FatturaElettronicaHeader/CedentePrestatore/DatiAnagrafici">'
+      ''
+      '                                <div class="headContent mt5">'
+      '                                  <xsl:if test="IdFiscaleIVA">'
       ''
       
         '                                    Identificativo fiscale ai fi' +
         'ni IVA:'
       '                                    <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="IdFiscaleIVA/IdPaese"/>'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="IdFiscaleIVA/IdCodice"/' +
-        '>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="CodiceFiscale">'
+        '                                      <xsl:value-of select="IdFi' +
+        'scaleIVA/IdPaese" />'
+      
+        '                                      <xsl:value-of select="IdFi' +
+        'scaleIVA/IdCodice" />'
+      '                                    </span>'
+      ''
+      '                                  </xsl:if>'
+      '                                </div>'
+      ''
+      '                                <div class="headContent" >'
+      ''
+      '                                  <xsl:if test="CodiceFiscale">'
       ''
       '                                    Codice fiscale:'
       '                                    <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="CodiceFiscale"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Anagrafica/Denominazione">'
+      
+        '                                      <xsl:value-of select="Codi' +
+        'ceFiscale" />'
+      '                                    </span>'
+      ''
+      '                                  </xsl:if>'
+      ''
+      '                                </div>'
+      ''
+      '                                <div class="headContent" >'
+      ''
+      
+        '                                  <xsl:if test="Anagrafica/Denom' +
+        'inazione">'
       ''
       '                                    Denominazione:'
       '                                    <span>'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Anagrafica/Denominazion' +
-        'e"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
+        '                                      <xsl:value-of select="Anag' +
+        'rafica/Denominazione" />'
+      '                                    </span>'
+      ''
+      '                                  </xsl:if>'
+      ''
+      '                                </div>'
+      ''
+      '                                <div class="headContent" >'
+      ''
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Anagrafica/Nome | Anagrafica/Cogn' +
-        'ome">'
+        '                                  <xsl:if test="Anagrafica/Nome ' +
+        '| Anagrafica/Cognome">'
       ''
       '                                    Cognome nome:'
       ''
       
         '                                    <xsl:if test="Anagrafica/Cog' +
         'nome">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Anagrafica/Cognome"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Anagrafica/Nome">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Anagrafica/Nome"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="RegimeFiscale">'
+      '                                      <span>'
+      
+        '                                        <xsl:value-of select="An' +
+        'agrafica/Cognome" />'
+      '                                        <xsl:text> </xsl:text>'
+      '                                      </span>'
+      '                                    </xsl:if>'
+      
+        '                                    <xsl:if test="Anagrafica/Nom' +
+        'e">'
+      '                                      <span>'
+      
+        '                                        <xsl:value-of select="An' +
+        'agrafica/Nome" />'
+      '                                      </span>'
+      '                                    </xsl:if>'
+      ''
+      '                                  </xsl:if>'
+      ''
+      '                                </div>'
+      ''
+      ''
+      '                                <div class="headContent" >'
+      ''
+      '                                  <xsl:if test="RegimeFiscale">'
       ''
       '                                    Regime fiscale:'
       '                                    <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="RegimeFiscale"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:variable name="RF">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="RegimeFiscale"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:variable>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF01'#39'">'
-      '                                        (ordinario)'
-      '                                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF02'#39'">'
-      '                                        (contribuenti minimi)'
-      '                                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF03'#39'">'
       
-        '                                        (nuove iniziative produt' +
-        'tive)'
-      '                                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF04'#39'">'
+        '                                      <xsl:value-of select="Regi' +
+        'meFiscale" />'
+      '                                    </span>'
+      ''
+      '                                    <xsl:variable name="RF">'
       
-        '                                        (agricoltura e attivit'#224' ' +
-        'connesse e pesca)'
-      '                                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF05'#39'">'
+        '                                      <xsl:value-of select="Regi' +
+        'meFiscale" />'
+      '                                    </xsl:variable>'
+      '                                    <xsl:choose>'
       
-        '                                        (vendita sali e tabacchi' +
-        ')'
+        '                                      <xsl:when test="$RF='#39'RF01'#39 +
+        '">'
+      '                                        ordinario'
       '                                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF06'#39'">'
-      '                                        (commercio fiammiferi)'
-      '                                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF07'#39'">'
-      '                                        (editoria)'
-      '                                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF08'#39'">'
       
-        '                                        (gestione servizi telefo' +
-        'nia pubblica)'
+        '                                      <xsl:when test="$RF='#39'RF02'#39 +
+        '">'
+      '                                        contribuenti minimi'
       '                                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF09'#39'">'
       
-        '                                        (rivendita documenti di ' +
-        'trasporto pubblico e di sosta)'
-      '                                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF10'#39'">'
+        '                                      <xsl:when test="$RF='#39'RF03'#39 +
+        '">'
       
-        '                                        (intrattenimenti, giochi' +
-        ' e altre attivit'#224' di cui alla tariffa allegata al DPR 640/72)'
+        '                                        nuove iniziative produtt' +
+        'ive - Non pi'#249' valido in quanto abrogato dalla legge di stabilit'#224 +
+        ' 2015'
       '                                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF11'#39'">'
       
-        '                                        (agenzie viaggi e turism' +
-        'o)'
-      '                                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF12'#39'">'
-      '                                        (agriturismo)'
-      '                                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF13'#39'">'
-      '                                        (vendite a domicilio)'
-      '                                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF14'#39'">'
+        '                                      <xsl:when test="$RF='#39'RF04'#39 +
+        '">'
       
-        '                                        (rivendita beni usati, o' +
-        'ggetti d'#8217'arte,'
+        '                                        agricoltura e attivit'#224' c' +
+        'onnesse e pesca'
+      '                                      </xsl:when>'
       
-        '                                        d'#8217'antiquariato o da coll' +
-        'ezione)'
+        '                                      <xsl:when test="$RF='#39'RF05'#39 +
+        '">'
+      '                                        vendita sali e tabacchi'
       '                                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF15'#39'">'
       
-        '                                        (agenzie di vendite all'#8217 +
-        'asta di oggetti d'#8217'arte,'
+        '                                      <xsl:when test="$RF='#39'RF06'#39 +
+        '">'
+      '                                        commercio fiammiferi'
+      '                                      </xsl:when>'
       
-        '                                        antiquariato o da collez' +
-        'ione)'
+        '                                      <xsl:when test="$RF='#39'RF07'#39 +
+        '">'
+      '                                        editoria'
       '                                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF16'#39'">'
-      '                                        (IVA per cassa P.A.)'
-      '                                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF17'#39'">'
       
-        '                                        (IVA per cassa - art. 32' +
-        '-bis, D.L. 83/2012)'
-      '                                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF19'#39'">'
-      '                                        (Regime forfettario)'
-      '                                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF18'#39'">'
-      '                                        (altro)'
-      '                                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39#39'">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>(!!! codice non previsto !!!)</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:for-each>'
+        '                                      <xsl:when test="$RF='#39'RF08'#39 +
+        '">'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:for-each select="$TipoFattura/FatturaElettro' +
-        'nicaHeader/CedentePrestatore/Sede">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Indirizzo">'
+        '                                        gestione servizi telefon' +
+        'ia pubblica'
+      '                                      </xsl:when>'
+      
+        '                                      <xsl:when test="$RF='#39'RF09'#39 +
+        '">'
+      
+        '                                        rivendita documenti di t' +
+        'rasporto pubblico e di sosta'
+      '                                      </xsl:when>'
+      
+        '                                      <xsl:when test="$RF='#39'RF10'#39 +
+        '">'
+      
+        '                                        intrattenimenti, giochi ' +
+        'e altre attivit'#224' di cui alla tariffa allegata al DPR 640/72'
+      '                                      </xsl:when>'
+      
+        '                                      <xsl:when test="$RF='#39'RF11'#39 +
+        '">'
+      '                                        agenzie viaggi e turismo'
+      '                                      </xsl:when>'
+      
+        '                                      <xsl:when test="$RF='#39'RF12'#39 +
+        '">'
+      '                                        agriturismo'
+      '                                      </xsl:when>'
+      
+        '                                      <xsl:when test="$RF='#39'RF13'#39 +
+        '">'
+      '                                        vendite a domicilio'
+      '                                      </xsl:when>'
+      
+        '                                      <xsl:when test="$RF='#39'RF14'#39 +
+        '">'
+      
+        '                                        rivendita beni usati, og' +
+        'getti d'#8217'arte, d'#8217'antiquariato o da collezione'
+      '                                      </xsl:when>'
+      
+        '                                      <xsl:when test="$RF='#39'RF15'#39 +
+        '">'
+      
+        '                                        agenzie di vendite all'#8217'a' +
+        'sta di oggetti d'#8217'arte, antiquariato o da collezione'
+      '                                      </xsl:when>'
+      
+        '                                      <xsl:when test="$RF='#39'RF16'#39 +
+        '">'
+      '                                        IVA per cassa P.A.'
+      '                                      </xsl:when>'
+      
+        '                                      <xsl:when test="$RF='#39'RF17'#39 +
+        '">'
+      
+        '                                        IVA per cassa - art. 32-' +
+        'bis, D.L. 83/2012'
+      '                                      </xsl:when>'
+      
+        '                                      <xsl:when test="$RF='#39'RF19'#39 +
+        '">'
+      '                                        Regime forfettario'
+      '                                      </xsl:when>'
+      
+        '                                      <xsl:when test="$RF='#39'RF18'#39 +
+        '">'
+      '                                        altro'
+      '                                      </xsl:when>'
+      '                                      <xsl:when test="$RF='#39#39'">'
+      '                                      </xsl:when>'
+      '                                      <xsl:otherwise>'
+      
+        '                                        <span>(!!! codice non pr' +
+        'evisto !!!)</span>'
+      '                                      </xsl:otherwise>'
+      '                                    </xsl:choose>'
+      ''
+      '                                  </xsl:if>'
+      ''
+      '                                </div>'
+      ''
+      '                              </xsl:for-each>'
+      ''
+      
+        '                              <xsl:for-each select="$TipoFattura' +
+        '/FatturaElettronicaHeader/CedentePrestatore/Sede">'
+      ''
+      '                                <div class="headContent" >'
+      ''
+      '                                  <xsl:if test="Indirizzo">'
       ''
       '                                    Indirizzo:'
       '                                    <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Indirizzo"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="NumeroCivico"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Comune">'
+      
+        '                                      <xsl:value-of select="Indi' +
+        'rizzo" />'
+      '                                      <xsl:text> </xsl:text>'
+      
+        '                                      <xsl:value-of select="Nume' +
+        'roCivico" />'
+      '                                    </span>'
+      ''
+      '                                  </xsl:if>'
+      ''
+      '                                </div>'
+      ''
+      '                                <div class="headContent" >'
+      '                                  <span>'
+      '                                    <xsl:if test="Comune">'
       ''
       '                                      Comune:'
       '                                      <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Comune"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Provincia">'
+      
+        '                                        <xsl:value-of select="Co' +
+        'mune" />'
+      ''
+      '                                      </span>'
+      ''
+      '                                    </xsl:if>'
+      '                                    <xsl:if test="Provincia">'
       ''
       '                                      Provincia:'
       '                                      <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Provincia"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="CAP">'
+      
+        '                                        <xsl:value-of select="Pr' +
+        'ovincia" />'
+      ''
+      '                                      </span>'
+      ''
+      '                                    </xsl:if>'
+      '                                  </span>'
+      ''
+      ''
+      '                                </div>'
+      '                                <div class="headContent" >'
+      ''
+      '                                  <span>'
+      '                                    <xsl:if test="CAP">'
       '                                      Cap:'
       '                                      <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="CAP"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Nazione">'
+      
+        '                                        <xsl:value-of select="CA' +
+        'P" />'
+      ''
+      '                                      </span>'
+      '                                    </xsl:if>'
+      ''
+      '                                    <xsl:if test="Nazione">'
       ''
       '                                      Nazione:'
       '                                      <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Nazione"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="$TipoFattura/FatturaElettronicaHea' +
-        'der/CedentePrestatore/Contatti/Telefono">'
+        '                                        <xsl:value-of select="Na' +
+        'zione" />'
+      ''
+      '                                      </span>'
+      ''
+      '                                    </xsl:if>'
+      '                                  </span>'
+      ''
+      '                                </div>'
+      '                              </xsl:for-each>'
+      '                              <div class="headContent" >'
+      ''
+      
+        '                                <xsl:if test="$TipoFattura/Fattu' +
+        'raElettronicaHeader/CedentePrestatore/Contatti/Telefono">'
       ''
       '                                  Telefono:'
       '                                  <span>'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="$TipoFattura/FatturaElet' +
-        'tronicaHeader/CedentePrestatore/Contatti/Telefono"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
+        '                                    <xsl:value-of select="$TipoF' +
+        'attura/FatturaElettronicaHeader/CedentePrestatore/Contatti/Telef' +
+        'ono" />'
+      ''
+      '                                  </span>'
+      ''
+      '                                </xsl:if>'
+      ''
+      ''
+      '                              </div>'
+      ''
+      '                              <div class="headContent" >'
+      ''
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="$TipoFattura/FatturaElettronicaHea' +
-        'der/CedentePrestatore/Contatti/Email">'
+        '                                <xsl:if test="$TipoFattura/Fattu' +
+        'raElettronicaHeader/CedentePrestatore/Contatti/Email">'
       ''
       '                                  Email:'
       '                                  <span>'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="$TipoFattura/FatturaElet' +
-        'tronicaHeader/CedentePrestatore/Contatti/Email"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
+        '                                    <xsl:value-of select="$TipoF' +
+        'attura/FatturaElettronicaHeader/CedentePrestatore/Contatti/Email' +
+        '" />'
+      ''
+      '                                  </span>'
+      ''
+      '                                </xsl:if>'
+      ''
+      ''
+      ''
+      '                              </div>'
+      ''
+      '                              <div class="headContent" >'
+      ''
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="$TipoFattura/FatturaElettronicaHea' +
-        'der/CedentePrestatore/RiferimentoAmministrazione">'
+        '                                <xsl:if test="$TipoFattura/Fattu' +
+        'raElettronicaHeader/CedentePrestatore/RiferimentoAmministrazione' +
+        '">'
       ''
       '                                  Riferimento Amministrazione:'
       '                                  <span>'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="$TipoFattura/FatturaElet' +
-        'tronicaHeader/CedentePrestatore/RiferimentoAmministrazione"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<!--Anagrafica FPRS-->'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent mt5">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="IdFiscaleIVA">'
+        '                                    <xsl:value-of select="$TipoF' +
+        'attura/FatturaElettronicaHeader/CedentePrestatore/RiferimentoAmm' +
+        'inistrazione" />'
+      ''
+      '                                  </span>'
+      ''
+      '                                </xsl:if>'
+      ''
+      ''
+      ''
+      '                              </div>'
+      ''
+      '                            </xsl:when>'
+      '                            <xsl:otherwise>'
+      '                              <!--Anagrafica FPRS-->'
+      '                              <div class="headContent mt5">'
+      '                                <xsl:if test="IdFiscaleIVA">'
       ''
       
         '                                  Identificativo fiscale ai fini' +
         ' IVA:'
       '                                  <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="IdFiscaleIVA/IdPaese"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="IdFiscaleIVA/IdCodice"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="CodiceFiscale">'
+      
+        '                                    <xsl:value-of select="IdFisc' +
+        'aleIVA/IdPaese" />'
+      
+        '                                    <xsl:value-of select="IdFisc' +
+        'aleIVA/IdCodice" />'
+      '                                  </span>'
+      ''
+      '                                </xsl:if>'
+      '                              </div>'
+      ''
+      '                              <div class="headContent" >'
+      ''
+      '                                <xsl:if test="CodiceFiscale">'
       ''
       '                                  Codice fiscale:'
       '                                  <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="CodiceFiscale"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Denominazione">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
+      
+        '                                    <xsl:value-of select="Codice' +
+        'Fiscale" />'
+      '                                  </span>'
+      ''
+      '                                </xsl:if>'
+      ''
+      '                              </div>'
+      ''
+      '                              <xsl:if test="Denominazione">'
+      '                                <div class="headContent">'
       ''
       '                                  Denominazione:'
       '                                  <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Denominazione"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Nome | Cognome">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
+      
+        '                                    <xsl:value-of select="Denomi' +
+        'nazione" />'
+      '                                  </span>'
+      '                                </div>'
+      '                              </xsl:if>'
+      ''
+      '                              <xsl:if test="Nome | Cognome">'
+      '                              <div class="headContent" >'
       ''
       '                                  Cognome nome:'
       ''
       '                                  <xsl:if test="Cognome">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Cognome"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Nome">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Nome"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="RegimeFiscale">'
+      '                                    <span>'
+      
+        '                                      <xsl:value-of select="Cogn' +
+        'ome" />'
+      '                                      <xsl:text> </xsl:text>'
+      '                                    </span>'
+      '                                  </xsl:if>'
+      '                                  <xsl:if test="Nome">'
+      '                                    <span>'
+      
+        '                                      <xsl:value-of select="Nome' +
+        '" />'
+      '                                    </span>'
+      '                                  </xsl:if>'
+      '                              </div>'
+      '                              </xsl:if>'
+      ''
+      '                              <div class="headContent" >'
+      ''
+      '                                <xsl:if test="RegimeFiscale">'
       ''
       '                                  Regime fiscale:'
       '                                  <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="RegimeFiscale"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:variable name="RF">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="RegimeFiscale"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:variable>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF01'#39'">'
-      '                                      (ordinario)'
-      '                                    </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF02'#39'">'
-      '                                      (contribuenti minimi)'
-      '                                    </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF03'#39'">'
       
-        '                                      (nuove iniziative produtti' +
-        've)'
-      '                                    </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF04'#39'">'
+        '                                    <xsl:value-of select="Regime' +
+        'Fiscale" />'
+      '                                  </span>'
+      ''
+      '                                  <xsl:variable name="RF">'
       
-        '                                      (agricoltura e attivit'#224' co' +
-        'nnesse e pesca)'
+        '                                    <xsl:value-of select="Regime' +
+        'Fiscale" />'
+      '                                  </xsl:variable>'
+      '                                  <xsl:choose>'
+      '                                    <xsl:when test="$RF='#39'RF01'#39'">'
+      '                                      ordinario'
       '                                    </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF05'#39'">'
-      '                                      (vendita sali e tabacchi)'
+      '                                    <xsl:when test="$RF='#39'RF02'#39'">'
+      '                                      contribuenti minimi'
       '                                    </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF06'#39'">'
-      '                                      (commercio fiammiferi)'
-      '                                    </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF07'#39'">'
-      '                                      (editoria)'
-      '                                    </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF08'#39'">'
+      '                                    <xsl:when test="$RF='#39'RF03'#39'">'
       
-        '                                      (gestione servizi telefoni' +
-        'a pubblica)'
+        '                                      nuove iniziative produttiv' +
+        'e - Non pi'#249' valido in quanto abrogato dalla legge di stabilit'#224' 2' +
+        '015'
       '                                    </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF09'#39'">'
+      '                                    <xsl:when test="$RF='#39'RF04'#39'">'
       
-        '                                      (rivendita documenti di tr' +
-        'asporto pubblico e di sosta)'
+        '                                      agricoltura e attivit'#224' con' +
+        'nesse e pesca'
       '                                    </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF10'#39'">'
+      '                                    <xsl:when test="$RF='#39'RF05'#39'">'
+      '                                      vendita sali e tabacchi'
+      '                                    </xsl:when>'
+      '                                    <xsl:when test="$RF='#39'RF06'#39'">'
+      '                                      commercio fiammiferi'
+      '                                    </xsl:when>'
+      '                                    <xsl:when test="$RF='#39'RF07'#39'">'
+      '                                      editoria'
+      '                                    </xsl:when>'
+      '                                    <xsl:when test="$RF='#39'RF08'#39'">'
       
-        '                                      (intrattenimenti, giochi e' +
-        ' altre attivit'#224' di cui alla tariffa allegata al DPR 640/72)'
+        '                                      gestione servizi telefonia' +
+        ' pubblica'
       '                                    </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF11'#39'">'
-      '                                      (agenzie viaggi e turismo)'
-      '                                    </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF12'#39'">'
-      '                                      (agriturismo)'
-      '                                    </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF13'#39'">'
-      '                                      (vendite a domicilio)'
-      '                                    </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF14'#39'">'
+      '                                    <xsl:when test="$RF='#39'RF09'#39'">'
       
-        '                                      (rivendita beni usati, ogg' +
-        'etti d'#8217'arte,'
+        '                                      rivendita documenti di tra' +
+        'sporto pubblico e di sosta'
+      '                                    </xsl:when>'
+      '                                    <xsl:when test="$RF='#39'RF10'#39'">'
       
-        '                                      d'#8217'antiquariato o da collez' +
-        'ione)'
+        '                                      intrattenimenti, giochi e ' +
+        'altre attivit'#224' di cui alla tariffa allegata al DPR 640/72'
       '                                    </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF15'#39'">'
+      '                                    <xsl:when test="$RF='#39'RF11'#39'">'
+      '                                      agenzie viaggi e turismo'
+      '                                    </xsl:when>'
+      '                                    <xsl:when test="$RF='#39'RF12'#39'">'
+      '                                      agriturismo'
+      '                                    </xsl:when>'
+      '                                    <xsl:when test="$RF='#39'RF13'#39'">'
+      '                                      vendite a domicilio'
+      '                                    </xsl:when>'
+      '                                    <xsl:when test="$RF='#39'RF14'#39'">'
       
-        '                                      (agenzie di vendite all'#8217'as' +
-        'ta di oggetti d'#8217'arte,'
+        '                                      rivendita beni usati, ogge' +
+        'tti d'#8217'arte, d'#8217'antiquariato o da collezione'
+      '                                    </xsl:when>'
+      '                                    <xsl:when test="$RF='#39'RF15'#39'">'
       
-        '                                      antiquariato o da collezio' +
-        'ne)'
+        '                                      agenzie di vendite all'#8217'ast' +
+        'a di oggetti d'#8217'arte, antiquariato o da collezione'
       '                                    </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF16'#39'">'
-      '                                      (IVA per cassa P.A.)'
+      '                                    <xsl:when test="$RF='#39'RF16'#39'">'
+      '                                      IVA per cassa P.A.'
       '                                    </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF17'#39'">'
+      '                                    <xsl:when test="$RF='#39'RF17'#39'">'
       
-        '                                      (IVA per cassa - art. 32-b' +
-        'is, D.L. 83/2012)'
+        '                                      IVA per cassa - art. 32-bi' +
+        's, D.L. 83/2012'
       '                                    </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF19'#39'">'
-      '                                      (Regime forfettario)'
+      '                                    <xsl:when test="$RF='#39'RF19'#39'">'
+      '                                      Regime forfettario'
       '                                    </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39'RF18'#39'">'
-      '                                      (altro)'
+      '                                    <xsl:when test="$RF='#39'RF18'#39'">'
+      '                                      altro'
       '                                    </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$RF='#39#39'">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>(!!! codice non previsto !!!)</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
+      '                                    <xsl:when test="$RF='#39#39'">'
+      '                                    </xsl:when>'
+      '                                    <xsl:otherwise>'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:for-each select="$TipoFattura/FatturaElettro' +
-        'nicaHeader/CedentePrestatore/Sede">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Indirizzo">'
+        '                                      <span>!!! codice non previ' +
+        'sto !!!</span>'
+      '                                    </xsl:otherwise>'
+      '                                  </xsl:choose>'
+      ''
+      '                                </xsl:if>'
+      ''
+      '                              </div>'
+      ''
+      
+        '                              <xsl:for-each select="$TipoFattura' +
+        '/FatturaElettronicaHeader/CedentePrestatore/Sede">'
+      ''
+      '                                <div class="headContent" >'
+      ''
+      '                                  <xsl:if test="Indirizzo">'
       ''
       '                                    Indirizzo:'
       '                                    <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Indirizzo"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="NumeroCivico"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Comune">'
+      
+        '                                      <xsl:value-of select="Indi' +
+        'rizzo" />'
+      '                                      <xsl:text> </xsl:text>'
+      
+        '                                      <xsl:value-of select="Nume' +
+        'roCivico" />'
+      '                                    </span>'
+      ''
+      '                                  </xsl:if>'
+      ''
+      '                                </div>'
+      ''
+      '                                <div class="headContent" >'
+      '                                  <span>'
+      '                                    <xsl:if test="Comune">'
       ''
       '                                      Comune:'
       '                                      <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Comune"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Provincia">'
+      
+        '                                        <xsl:value-of select="Co' +
+        'mune" />'
+      ''
+      '                                      </span>'
+      ''
+      '                                    </xsl:if>'
+      '                                    <xsl:if test="Provincia">'
       ''
       '                                      Provincia:'
       '                                      <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Provincia"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="CAP">'
+      
+        '                                        <xsl:value-of select="Pr' +
+        'ovincia" />'
+      ''
+      '                                      </span>'
+      ''
+      '                                    </xsl:if>'
+      '                                  </span>'
+      ''
+      ''
+      '                                </div>'
+      '                                <div class="headContent" >'
+      ''
+      '                                  <span>'
+      '                                    <xsl:if test="CAP">'
       '                                      Cap:'
       '                                      <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="CAP"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Nazione">'
+      
+        '                                        <xsl:value-of select="CA' +
+        'P" />'
+      ''
+      '                                      </span>'
+      '                                    </xsl:if>'
+      ''
+      '                                    <xsl:if test="Nazione">'
       ''
       '                                      Nazione:'
       '                                      <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Nazione"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9'<!--FINE CEDENTE PRESTATORE-->'
-      #9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9'</tr>'
-      #9#9#9#9#9#9#9#9'</table>'
-      #9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9'<td class="tdHead">'
-      #9#9#9#9#9#9#9#9'<table class="tableHead">'
-      #9#9#9#9#9#9#9#9#9'<tr>'
-      #9#9#9#9#9#9#9#9#9#9'<td>'
-      #9#9#9#9#9#9#9#9#9#9#9'<!--INIZIO CESSIONARIO COMMITTENTE-->'
-      #9#9#9#9#9#9#9#9#9#9#9'<div class="headBorder">'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9'<label class="headerLabel">Cessionario/committente (' +
-        'cliente) </label>'
+        '                                        <xsl:value-of select="Na' +
+        'zione" />'
+      ''
+      '                                      </span>'
+      ''
+      '                                    </xsl:if>'
+      '                                  </span>'
+      ''
+      '                                </div>'
+      '                              </xsl:for-each>'
+      '                            </xsl:otherwise>'
+      '                          </xsl:choose>'
+      ''
+      '                        </xsl:for-each>'
+      ''
       
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:for-each select="$TipoFattura/FatturaElettronic' +
-        'aHeader/CessionarioCommittente">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="DatiAnagrafici">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<!--DatiAnagrafici FPA\FPR-->'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:for-each select="DatiAnagrafici">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent mt5">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="IdFiscaleIVA">'
+        '                        <!--INIZIO TerzoIntermediarioOSoggettoEm' +
+        'ittente-->'
+      
+        '                        <xsl:if test="$TipoFattura/FatturaElettr' +
+        'onicaHeader/TerzoIntermediarioOSoggettoEmittente">'
+      '                          <br/>'
+      ''
+      '                          <xsl:choose>'
+      
+        '                            <xsl:when test="$TipoFattura/Fattura' +
+        'ElettronicaHeader/SoggettoEmittente='#39'CC'#39'">'
+      
+        '                              <label class= "headerLabel">Sogget' +
+        'to Emittente (cessionario committente)  </label>'
+      ''
+      '                            </xsl:when>'
+      
+        '                            <xsl:when test="$TipoFattura/Fattura' +
+        'ElettronicaHeader/SoggettoEmittente='#39'TZ'#39'">'
+      
+        '                              <label class= "headerLabel">Terzo ' +
+        'Intermediario  </label>'
+      '                            </xsl:when>'
+      ''
+      '                            <xsl:otherwise>'
+      
+        '                              <label class= "headerLabel">Terzo ' +
+        'Intermediario o Soggetto Emittente </label>'
+      '                            </xsl:otherwise>'
+      '                          </xsl:choose>'
+      ''
+      
+        '                          <xsl:for-each select="$TipoFattura/Fat' +
+        'turaElettronicaHeader/TerzoIntermediarioOSoggettoEmittente/DatiA' +
+        'nagrafici">'
+      ''
+      '                            <div class="headContent mt5">'
+      '                              <xsl:if test="IdFiscaleIVA">'
+      ''
+      
+        '                                Identificativo fiscale ai fini I' +
+        'VA:'
+      '                                <span>'
+      
+        '                                  <xsl:value-of select="IdFiscal' +
+        'eIVA/IdPaese" />'
+      
+        '                                  <xsl:value-of select="IdFiscal' +
+        'eIVA/IdCodice" />'
+      '                                </span>'
+      ''
+      '                              </xsl:if>'
+      '                            </div>'
+      ''
+      '                            <div class="headContent" >'
+      ''
+      '                              <xsl:if test="CodiceFiscale">'
+      ''
+      '                                Codice fiscale:'
+      '                                <span>'
+      
+        '                                  <xsl:value-of select="CodiceFi' +
+        'scale" />'
+      '                                </span>'
+      ''
+      '                              </xsl:if>'
+      ''
+      '                            </div>'
+      ''
+      '                            <div class="headContent" >'
+      ''
+      
+        '                              <xsl:if test="Anagrafica/Denominaz' +
+        'ione">'
+      ''
+      '                                Denominazione:'
+      '                                <span>'
+      
+        '                                  <xsl:value-of select="Anagrafi' +
+        'ca/Denominazione" />'
+      '                                </span>'
+      ''
+      '                              </xsl:if>'
+      ''
+      '                            </div>'
+      ''
+      '                            <div class="headContent" >'
+      ''
+      
+        '                              <xsl:if test="Anagrafica/Nome | An' +
+        'agrafica/Cognome">'
+      ''
+      '                                Cognome nome:'
+      ''
+      
+        '                                <xsl:if test="Anagrafica/Cognome' +
+        '">'
+      '                                  <span>'
+      
+        '                                    <xsl:value-of select="Anagra' +
+        'fica/Cognome" />'
+      '                                    <xsl:text> </xsl:text>'
+      '                                  </span>'
+      '                                </xsl:if>'
+      '                                <xsl:if test="Anagrafica/Nome">'
+      '                                  <span>'
+      
+        '                                    <xsl:value-of select="Anagra' +
+        'fica/Nome" />'
+      '                                  </span>'
+      '                                </xsl:if>'
+      ''
+      '                              </xsl:if>'
+      ''
+      '                            </div>'
+      ''
+      ''
+      '                             </xsl:for-each>'
+      ''
+      ''
+      ''
+      '                        </xsl:if>'
+      
+        '                        <!--FINE TerzoIntermediarioOSoggettoEmit' +
+        'tente-->'
+      ''
+      '                      </div>'
+      '                      <!--FINE CEDENTE PRESTATORE-->'
+      ''
+      '                    </td>'
+      '                  </tr>'
+      ''
+      '                </table>'
+      ''
+      ''
+      ''
+      '              </td>'
+      '              <td class="tdHead">'
+      ''
+      '                <!--INIZIO CESSIONARIO COMMITTENTE-->'
+      '                <table class="tableHead">'
+      '                  <tr>'
+      '                    <td >'
+      ''
+      '                      <div class="headBorder" >'
+      
+        '                        <label class= "headerLabel"  >Cessionari' +
+        'o/committente (cliente) </label>'
+      
+        '                        <xsl:for-each select="$TipoFattura/Fattu' +
+        'raElettronicaHeader/CessionarioCommittente">'
+      '                          <xsl:choose>'
+      '                            <xsl:when test="DatiAnagrafici">'
+      '                              <!--DatiAnagrafici FPA\FPR-->'
+      
+        '                              <xsl:for-each select="DatiAnagrafi' +
+        'ci">'
+      ''
+      '                                <div class="headContent mt5" >'
+      '                                  <xsl:if test="IdFiscaleIVA">'
       ''
       
         '                                    Identificativo fiscale ai fi' +
         'ni IVA:'
       '                                    <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="IdFiscaleIVA/IdPaese"/>'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="IdFiscaleIVA/IdCodice"/' +
-        '>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="CodiceFiscale">'
+        '                                      <xsl:value-of select="IdFi' +
+        'scaleIVA/IdPaese" />'
+      
+        '                                      <xsl:value-of select="IdFi' +
+        'scaleIVA/IdCodice" />'
+      '                                    </span>'
+      ''
+      '                                  </xsl:if>'
+      '                                </div>'
+      ''
+      '                                <div class="headContent" >'
+      ''
+      '                                  <xsl:if test="CodiceFiscale">'
       ''
       '                                    Codice fiscale:'
       '                                    <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="CodiceFiscale"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Anagrafica/Denominazione">'
+      
+        '                                      <xsl:value-of select="Codi' +
+        'ceFiscale" />'
+      '                                    </span>'
+      ''
+      '                                  </xsl:if>'
+      ''
+      '                                </div>'
+      ''
+      '                                <div class="headContent" >'
+      ''
+      
+        '                                  <xsl:if test="Anagrafica/Denom' +
+        'inazione">'
       ''
       '                                    Denominazione:'
       '                                    <span>'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Anagrafica/Denominazion' +
-        'e"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
+        '                                      <xsl:value-of select="Anag' +
+        'rafica/Denominazione" />'
+      '                                    </span>'
+      ''
+      '                                  </xsl:if>'
+      ''
+      '                                </div>'
+      ''
+      '                                <div class="headContent" >'
+      ''
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Anagrafica/Nome | Anagrafica/Cogn' +
-        'ome">'
+        '                                  <xsl:if test="Anagrafica/Nome ' +
+        '| Anagrafica/Cognome">'
       ''
       '                                    Cognome nome:'
       ''
       
         '                                    <xsl:if test="Anagrafica/Cog' +
         'nome">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Anagrafica/Cognome"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Anagrafica/Nome">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Anagrafica/Nome"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:for-each select="Sede">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Indirizzo">'
+      '                                      <span>'
+      
+        '                                        <xsl:value-of select="An' +
+        'agrafica/Cognome" />'
+      '                                        <xsl:text> </xsl:text>'
+      '                                      </span>'
+      '                                    </xsl:if>'
+      
+        '                                    <xsl:if test="Anagrafica/Nom' +
+        'e">'
+      '                                      <span>'
+      
+        '                                        <xsl:value-of select="An' +
+        'agrafica/Nome" />'
+      '                                      </span>'
+      '                                    </xsl:if>'
+      ''
+      '                                  </xsl:if>'
+      ''
+      '                                </div>'
+      ''
+      ''
+      '                              </xsl:for-each>'
+      ''
+      '                              <xsl:for-each select="Sede">'
+      ''
+      '                                <div class="headContent" >'
+      ''
+      '                                  <xsl:if test="Indirizzo">'
       ''
       '                                    Indirizzo:'
       '                                    <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Indirizzo"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="NumeroCivico"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Comune">'
+      
+        '                                      <xsl:value-of select="Indi' +
+        'rizzo" />'
+      '                                      <xsl:text> </xsl:text>'
+      
+        '                                      <xsl:value-of select="Nume' +
+        'roCivico" />'
+      '                                    </span>'
+      ''
+      '                                  </xsl:if>'
+      ''
+      '                                </div>'
+      ''
+      ''
+      ''
+      '                                <div class="headContent" >'
+      '                                  <span>'
+      '                                    <xsl:if test="Comune">'
       ''
       '                                      Comune:'
       '                                      <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Comune"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Provincia">'
+      
+        '                                        <xsl:value-of select="Co' +
+        'mune" />'
+      ''
+      '                                      </span>'
+      ''
+      '                                    </xsl:if>'
+      '                                    <xsl:if test="Provincia">'
       ''
       '                                      Provincia:'
       '                                      <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Provincia"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="CAP">'
+      
+        '                                        <xsl:value-of select="Pr' +
+        'ovincia" />'
+      ''
+      '                                      </span>'
+      ''
+      '                                    </xsl:if>'
+      '                                  </span>'
+      ''
+      ''
+      '                                </div>'
+      '                                <div class="headContent" >'
+      ''
+      '                                  <span>'
+      '                                    <xsl:if test="CAP">'
       '                                      Cap:'
       '                                      <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="CAP"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Nazione">'
+      
+        '                                        <xsl:value-of select="CA' +
+        'P" />'
+      ''
+      '                                      </span>'
+      '                                    </xsl:if>'
+      ''
+      '                                    <xsl:if test="Nazione">'
       ''
       '                                      Nazione:'
       '                                      <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Nazione"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="$PecDestinatario">'
+      
+        '                                        <xsl:value-of select="Na' +
+        'zione" />'
+      ''
+      '                                      </span>'
+      ''
+      '                                    </xsl:if>'
+      '                                  </span>'
+      ''
+      '                                </div>'
+      '                                <div class="headContent" >'
+      ''
+      
+        '                                  <xsl:if test="$PecDestinatario' +
+        '">'
       ''
       '                                    Pec: <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="$PecDestinatario"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<!--Anagrafica FPRS-->'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:for-each select="$TipoFattura/FatturaElettro' +
-        'nicaHeader/CessionarioCommittente/IdentificativiFiscali">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent mt5">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="IdFiscaleIVA">'
+        '                                      <xsl:value-of select="$Pec' +
+        'Destinatario" />'
+      '                                    </span>'
+      ''
+      '                                  </xsl:if>'
+      ''
+      '                                </div>'
+      ''
+      ''
+      '                              </xsl:for-each>'
+      '                            </xsl:when>'
+      '                            <xsl:otherwise>'
+      '                              <!--Anagrafica FPRS-->'
+      
+        '                              <xsl:for-each select="$TipoFattura' +
+        '/FatturaElettronicaHeader/CessionarioCommittente/IdentificativiF' +
+        'iscali">'
+      '                                <div class="headContent mt5" >'
+      '                                  <xsl:if test="IdFiscaleIVA">'
       ''
       
         '                                    Identificativo fiscale ai fi' +
         'ni IVA:'
       '                                    <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="IdFiscaleIVA/IdPaese"/>'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="IdFiscaleIVA/IdCodice"/' +
-        '>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="CodiceFiscale">'
+        '                                      <xsl:value-of select="IdFi' +
+        'scaleIVA/IdPaese" />'
+      
+        '                                      <xsl:value-of select="IdFi' +
+        'scaleIVA/IdCodice" />'
+      '                                    </span>'
+      ''
+      '                                  </xsl:if>'
+      '                                </div>'
+      ''
+      '                                <div class="headContent" >'
+      ''
+      '                                  <xsl:if test="CodiceFiscale">'
       ''
       '                                    Codice fiscale:'
       '                                    <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="CodiceFiscale"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:for-each>'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:for-each select="$TipoFattura/FatturaElettro' +
-        'nicaHeader/CessionarioCommittente/AltriDatiIdentificativi">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Denominazione">'
+        '                                      <xsl:value-of select="Codi' +
+        'ceFiscale" />'
+      '                                    </span>'
+      ''
+      '                                  </xsl:if>'
+      ''
+      '                                </div>'
+      '                              </xsl:for-each>'
+      
+        '                              <xsl:for-each select="$TipoFattura' +
+        '/FatturaElettronicaHeader/CessionarioCommittente/AltriDatiIdenti' +
+        'ficativi">'
+      '                                <div class="headContent" >'
+      ''
+      '                                  <xsl:if test="Denominazione">'
       ''
       '                                    Denominazione:'
       '                                    <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Denominazione"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Nome | Cognome">'
+      
+        '                                      <xsl:value-of select="Deno' +
+        'minazione" />'
+      '                                    </span>'
+      ''
+      '                                  </xsl:if>'
+      ''
+      '                                </div>'
+      ''
+      '                                <div class="headContent" >'
+      ''
+      '                                  <xsl:if test="Nome | Cognome">'
       ''
       '                                    Cognome nome:'
       ''
       '                                    <xsl:if test="Cognome">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Cognome"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Nome">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Nome"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
+      '                                      <span>'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:for-each select="$TipoFattura/FatturaElettr' +
-        'onicaHeader/CessionarioCommittente/AltriDatiIdentificativi/Sede"' +
-        '>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Indirizzo">'
+        '                                        <xsl:value-of select="Co' +
+        'gnome" />'
+      '                                        <xsl:text> </xsl:text>'
+      '                                      </span>'
+      '                                    </xsl:if>'
+      '                                    <xsl:if test="Nome">'
+      '                                      <span>'
+      
+        '                                        <xsl:value-of select="No' +
+        'me" />'
+      '                                      </span>'
+      '                                    </xsl:if>'
+      ''
+      '                                  </xsl:if>'
+      ''
+      '                                </div>'
+      ''
+      
+        '                                <xsl:for-each select="$TipoFattu' +
+        'ra/FatturaElettronicaHeader/CessionarioCommittente/AltriDatiIden' +
+        'tificativi/Sede">'
+      ''
+      '                                  <div class="headContent" >'
+      ''
+      '                                    <xsl:if test="Indirizzo">'
       ''
       '                                      Indirizzo:'
       '                                      <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Indirizzo"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="NumeroCivico"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Comune">'
+      
+        '                                        <xsl:value-of select="In' +
+        'dirizzo" />'
+      '                                        <xsl:text> </xsl:text>'
+      
+        '                                        <xsl:value-of select="Nu' +
+        'meroCivico" />'
+      '                                      </span>'
+      ''
+      '                                    </xsl:if>'
+      ''
+      '                                  </div>'
+      ''
+      ''
+      ''
+      '                                  <div class="headContent" >'
+      '                                    <span>'
+      '                                      <xsl:if test="Comune">'
       ''
       '                                        Comune:'
       '                                        <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Comune"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Provincia">'
+      
+        '                                          <xsl:value-of select="' +
+        'Comune" />'
+      ''
+      '                                        </span>'
+      ''
+      '                                      </xsl:if>'
+      '                                      <xsl:if test="Provincia">'
       ''
       '                                        Provincia:'
       '                                        <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Provincia"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="CAP">'
+      
+        '                                          <xsl:value-of select="' +
+        'Provincia" />'
+      ''
+      '                                        </span>'
+      ''
+      '                                      </xsl:if>'
+      '                                    </span>'
+      ''
+      ''
+      '                                  </div>'
+      '                                  <div class="headContent" >'
+      ''
+      '                                    <span>'
+      '                                      <xsl:if test="CAP">'
       '                                        Cap:'
       '                                        <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="CAP"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Nazione">'
+      
+        '                                          <xsl:value-of select="' +
+        'CAP" />'
+      ''
+      '                                        </span>'
+      '                                      </xsl:if>'
+      ''
+      '                                      <xsl:if test="Nazione">'
       ''
       '                                        Nazione:'
       '                                        <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Nazione"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="headContent">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="$PecDestinatario">'
+      
+        '                                          <xsl:value-of select="' +
+        'Nazione" />'
+      ''
+      '                                        </span>'
+      ''
+      '                                      </xsl:if>'
+      '                                    </span>'
+      ''
+      '                                  </div>'
+      '                                  <div class="headContent" >'
+      ''
+      
+        '                                    <xsl:if test="$PecDestinatar' +
+        'io">'
       ''
       '                                      Pec: <span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="$PecDestinatario"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9'<!--FINE CESSIONARIO COMMITTENTE-->'
-      #9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9'</tr>'
-      #9#9#9#9#9#9#9#9'</table>'
-      #9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9'</tr>'
-      #9#9#9#9#9'</table>'
-      #9#9#9#9'</xsl:if>'
-      #9#9#9#9'<div style="height:10px">'
-      #9#9#9#9'</div>'
-      #9#9#9#9'<!-- FINE FatturaElettronicaHeader -->'
-      #9#9#9#9'<!--INIZIO BODY-->'
-      #9#9#9#9'<xsl:for-each select="$TipoFattura/FatturaElettronicaBody">'
-      #9#9#9#9#9'<xsl:variable name="BodyIndex" select="position()"/>'
       
-        #9#9#9#9#9'<!-- Conforme Standard AssoSoftware se altridatigestionali ' +
-        'presenta ASWRELSTD   -->'
-      #9#9#9#9#9'<xsl:variable name="posASWRELSTD">'
-      #9#9#9#9#9#9'<xsl:for-each select="DatiBeniServizi/DettaglioLinee">'
-      #9#9#9#9#9#9#9'<xsl:variable name="DettaglioLinee" select="."/>'
+        '                                        <xsl:value-of select="$P' +
+        'ecDestinatario" />'
+      '                                      </span>'
+      ''
+      '                                    </xsl:if>'
+      ''
+      '                                  </div>'
+      ''
+      ''
+      '                                </xsl:for-each>'
+      ''
+      '                              </xsl:for-each>'
+      '                            </xsl:otherwise>'
+      '                          </xsl:choose>'
+      '                        </xsl:for-each>'
+      '                      </div>'
+      ''
+      '                    </td>'
+      '                  </tr>'
+      ''
+      '                </table>'
+      '                <!--FINE CESSIONARIO COMMITTENTE-->'
+      '              </td>'
+      '            </tr>'
+      ''
+      ''
+      '          </table>'
+      ''
+      ''
+      '        </xsl:if>'
+      '        <div style="height:10px" > </div>'
+      ''
+      '        <!-- FINE FatturaElettronicaHeader -->'
+      ''
+      '        <!--INIZIO BODY-->'
+      ''
       
-        #9#9#9#9#9#9#9'<xsl:variable name="posDettaglioLinee" select="position()' +
-        '"/>'
-      #9#9#9#9#9#9#9'<xsl:for-each select="AltriDatiGestionali">'
+        '        <xsl:for-each select="$TipoFattura/FatturaElettronicaBod' +
+        'y" >'
+      ''
+      ''
+      '          <xsl:variable name="BodyIndex" select="position()"/>'
+      ''
       
-        #9#9#9#9#9#9#9#9'<xsl:if test=" translate( TipoDato,&#xA;                ' +
-        '                     '#39'ABCDEFGHIJKLMNOPQRSTUVWXYZ'#39',&#xA;         ' +
-        '                            '#39'abcdefghijklmnopqrstuvwxyz'#39'&#xA;   ' +
-        '                                 ) = '#39'aswrelstd'#39'">'
-      #9#9#9#9#9#9#9#9#9'<xsl:value-of select="number($posDettaglioLinee)"/>'
-      #9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9'</xsl:variable>'
-      #9#9#9#9#9'<!-- FINE conforme AssoSoftware -->'
-      #9#9#9#9#9'<table class="tbFoglio">'
-      #9#9#9#9#9#9'<!-- TIPOLOGIA DOCUMENTO TESTATA-->'
-      #9#9#9#9#9#9'<thead>'
-      #9#9#9#9#9#9#9'<tr>'
-      #9#9#9#9#9#9#9#9'<th>Tipologia documento</th>'
-      #9#9#9#9#9#9#9#9'<th class="perc">Art. 73</th>'
-      #9#9#9#9#9#9#9#9'<th>Numero documento</th>'
-      #9#9#9#9#9#9#9#9'<th class="data">Data documento</th>'
-      #9#9#9#9#9#9#9#9'<th>Codice destinatario</th>'
-      #9#9#9#9#9#9#9'</tr>'
-      #9#9#9#9#9#9'</thead>'
-      #9#9#9#9#9#9'<tbody>'
-      #9#9#9#9#9#9#9'<tr>'
-      #9#9#9#9#9#9#9#9'<td>'
+        '          <!-- Conforme Standard AssoSoftware se altridatigestio' +
+        'nali presenta ASWRELSTD   -->'
+      '          <xsl:variable name="posASWRELSTD" >'
       
-        #9#9#9#9#9#9#9#9#9'<xsl:if test="DatiGenerali/DatiGeneraliDocumento/TipoDo' +
-        'cumento">'
-      
-        #9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="DatiGenerali/DatiGeneraliDocumen' +
-        'to/TipoDocumento"/>'
-      #9#9#9#9#9#9#9#9#9#9'<xsl:variable name="TD">'
-      
-        #9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="DatiGenerali/DatiGeneraliDocume' +
-        'nto/TipoDocumento"/>'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:variable>'
-      #9#9#9#9#9#9#9#9#9#9'<xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TD='#39'TD01'#39'">'
-      '                        (fattura)'
-      '                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TD='#39'TD02'#39'">'
-      '                        (acconto/anticipo su fattura)'
-      '                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TD='#39'TD03'#39'">'
-      '                        (acconto/anticipo su parcella)'
-      '                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TD='#39'TD04'#39'">'
-      '                        (nota di credito)'
-      '                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TD='#39'TD05'#39'">'
-      '                        (nota di debito)'
-      '                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TD='#39'TD06'#39'">'
-      '                        (parcella)'
-      '                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TD='#39'TD20'#39'">'
-      '                        (autofattura)'
-      '                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9'<!--FPRS-->'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TD='#39'TD07'#39'">'
-      '                        (fattura semplificata)'
-      '                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TD='#39'TD08'#39'">'
-      '                        (nota di credito semplificata)'
-      '                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TD='#39'TD09'#39'">'
-      '                        (nota di debito semplificata)'
-      '                      </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TD='#39#39'">'
-      #9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<span>(!!! codice non previsto !!!)</span>'
-      #9#9#9#9#9#9#9#9#9#9#9'</xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:choose>'
-      #9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9'<td class="ritenuta">'
-      
-        #9#9#9#9#9#9#9#9#9'<xsl:if test="DatiGenerali/DatiGeneraliDocumento/Art73"' +
-        '>'
-      
-        #9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="DatiGenerali/DatiGeneraliDocumen' +
-        'to/Art73"/>'
-      #9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9'<td class="textCenter">'
-      
-        #9#9#9#9#9#9#9#9#9'<xsl:if test="DatiGenerali/DatiGeneraliDocumento/Numero' +
+        '            <xsl:for-each select="DatiBeniServizi/DettaglioLinee' +
         '">'
+      '              <xsl:variable name="DettaglioLinee" select="."/>'
+      ''
       
-        #9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="DatiGenerali/DatiGeneraliDocumen' +
-        'to/Numero"/>'
-      #9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9'<td class="data">'
-      #9#9#9#9#9#9#9#9#9'<xsl:if test="DatiGenerali/DatiGeneraliDocumento/Data">'
-      #9#9#9#9#9#9#9#9#9#9'<xsl:call-template name="FormatDateIta">'
+        '              <xsl:variable name="posDettaglioLinee" select="pos' +
+        'ition()"/>'
+      '              <xsl:for-each select="AltriDatiGestionali">'
+      ''
+      '                <xsl:if test=" translate( TipoDato,'
       
-        #9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="DateTime" select="DatiGenerali/' +
-        'DatiGeneraliDocumento/Data"/>'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9'<td class="textCenter">'
-      #9#9#9#9#9#9#9#9#9'<xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9'<xsl:when test="$PecDestinatario">'
+        '                                     '#39'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
+        #39','
+      
+        '                                     '#39'abcdefghijklmnopqrstuvwxyz' +
+        #39
+      '                                    ) = '#39'aswrelstd'#39'">'
+      ''
+      
+        '                  <xsl:value-of select="number($posDettaglioLine' +
+        'e)"/>'
+      ''
+      '                </xsl:if>'
+      '              </xsl:for-each>'
+      ''
+      '            </xsl:for-each>'
+      '          </xsl:variable>'
+      '          <!-- FINE conforme AssoSoftware -->'
+      ''
+      ''
+      '          <table class="tbFoglio">'
+      ''
+      '            <!-- TIPOLOGIA DOCUMENTO TESTATA-->'
+      '            <thead>'
+      '              <tr>'
+      ''
+      '                <th>Tipologia documento</th>'
+      '                <th class="perc">Art. 73</th>'
+      '                <th >Numero documento</th>'
+      '                <th class="data">Data documento</th>'
+      '                <th >Codice destinatario</th>'
+      ''
+      '              </tr>'
+      '            </thead>'
+      '            <tbody>'
+      '              <tr>'
+      '                <td>'
+      
+        '                  <xsl:if test="DatiGenerali/DatiGeneraliDocumen' +
+        'to/TipoDocumento">'
+      ''
+      
+        '                    <xsl:value-of select="DatiGenerali/DatiGener' +
+        'aliDocumento/TipoDocumento" />'
+      ''
+      ''
+      '                    <xsl:variable name="TD">'
+      
+        '                      <xsl:value-of select="DatiGenerali/DatiGen' +
+        'eraliDocumento/TipoDocumento" />'
+      '                    </xsl:variable>'
+      '                    <xsl:choose>'
+      '                      <xsl:when test="$TD='#39'TD01'#39'">'
+      '                        fattura'
+      '                      </xsl:when>'
+      '                      <xsl:when test="$TD='#39'TD02'#39'">'
+      '                        acconto / anticipo su fattura'
+      '                      </xsl:when>'
+      '                      <xsl:when test="$TD='#39'TD03'#39'">'
+      '                        acconto / anticipo su parcella'
+      '                      </xsl:when>'
+      '                      <xsl:when test="$TD='#39'TD04'#39'">'
+      '                        nota di credito'
+      '                      </xsl:when>'
+      '                      <xsl:when test="$TD='#39'TD05'#39'">'
+      '                        nota di debito'
+      '                      </xsl:when>'
+      '                      <xsl:when test="$TD='#39'TD06'#39'">'
+      '                        parcella'
+      '                      </xsl:when>'
+      '                     <xsl:when test="$TD='#39'TD16'#39'">'
+      #9#9#9#9#9#9#9'integrazione fattura reverse charge interno'
+      #9#9#9#9#9#9'</xsl:when>'
+      #9#9#9#9#9#9'<xsl:when test="$TD='#39'TD17'#39'">'
+      #9#9#9#9#9#9#9'integrazione/autofattura per acquisto servizi dall'#39'estero'
+      #9#9#9#9#9#9'</xsl:when>'
+      #9#9#9#9#9#9'<xsl:when test="$TD='#39'TD18'#39'">'
+      #9#9#9#9#9#9#9'integrazione per acquisto di beni intracomunitari'
+      #9#9#9#9#9#9'</xsl:when>'
+      #9#9#9#9#9#9'<xsl:when test="$TD='#39'TD19'#39'">'
+      
+        #9#9#9#9#9#9#9'integrazione/autofattura per acquisto di beni ex art.17 c' +
+        '.2 DPR 633/72'
+      #9#9#9#9#9#9'</xsl:when>'
+      #9#9#9#9#9#9'<xsl:when test="$TD='#39'TD20'#39'">'
+      
+        #9#9#9#9#9#9#9'autofattura per regolarizzazione e integrazione delle fat' +
+        'ture (ex art.6 c.8 e 9-bis d.lgs.471/97 o art.46 c.5 D.L. 331/93'
+      #9#9#9#9#9#9'</xsl:when>'
+      #9#9#9#9#9#9'<xsl:when test="$TD='#39'TD21'#39'">'
+      #9#9#9#9#9#9#9'autofattura per splafonamento'
+      #9#9#9#9#9#9'</xsl:when>'
+      #9#9#9#9#9#9'<xsl:when test="$TD='#39'TD22'#39'">'
+      #9#9#9#9#9#9#9'estrazione beni da Deposito IVA'
+      #9#9#9#9#9#9'</xsl:when>'
+      #9#9#9#9#9#9'<xsl:when test="$TD='#39'TD23'#39'">'
+      #9#9#9#9#9#9#9'estrazione beni da Deposito IVA con versamento dell'#39'IVA'
+      #9#9#9#9#9#9'</xsl:when>'
+      #9#9#9#9#9#9'<xsl:when test="$TD='#39'TD24'#39'">'
+      
+        #9#9#9#9#9#9#9'fattura differita di cui all'#39'art.21, comma 4, terzo perio' +
+        'do lett. a) DPR 633/72'
+      #9#9#9#9#9#9'</xsl:when>'
+      #9#9#9#9#9#9'<xsl:when test="$TD='#39'TD25'#39'">'
+      
+        #9#9#9#9#9#9#9'fattura differita di cui all'#39'art.21, comma 4, terzo perio' +
+        'do lett. b) DPR 633/72'
+      #9#9#9#9#9#9'</xsl:when>'
+      #9#9#9#9#9#9'<xsl:when test="$TD='#39'TD26'#39'">'
+      
+        #9#9#9#9#9#9#9'cessione di beni ammortizzabili e per passaggi interni (e' +
+        'x art.36 DPR 633/72)'
+      #9#9#9#9#9#9'</xsl:when>'
+      #9#9#9#9#9#9'<xsl:when test="$TD='#39'TD27'#39'">'
+      
+        #9#9#9#9#9#9#9'fattura per autoconsumo o per cessioni gratuite senza riv' +
+        'alsa'
+      #9#9#9#9#9#9'</xsl:when>'
+      #9#9#9#9#9#9'<xsl:when test="$TD='#39'TD28'#39'">'
+      #9#9#9#9#9#9#9'acquisti da San Marino con IVA (fattura cartacea)'
+      #9#9#9#9#9#9'</xsl:when>'
+      ''
+      '                      <!--FPRS-->'
+      '                      <xsl:when test="$TD='#39'TD07'#39'">'
+      '                        fattura semplificata'
+      '                      </xsl:when>'
+      '                      <xsl:when test="$TD='#39'TD08'#39'">'
+      '                        nota di credito semplificata'
+      '                      </xsl:when>'
+      '                      <xsl:when test="$TD='#39'TD09'#39'">'
+      '                        nota di debito semplificata'
+      '                      </xsl:when>'
+      '                      <xsl:when test="$TD='#39#39'">'
+      '                      </xsl:when>'
+      '                      <!--<xsl:otherwise>'
+      
+        '                        <span>(!!! codice non previsto !!!)</spa' +
+        'n>'
+      '                      </xsl:otherwise>-->'
+      '                    </xsl:choose>'
+      ''
+      '                  </xsl:if>'
+      '                </td>'
+      ''
+      '                <td class="ritenuta"  >'
+      
+        '                  <xsl:if test="DatiGenerali/DatiGeneraliDocumen' +
+        'to/Art73">'
+      
+        '                    <xsl:value-of select="DatiGenerali/DatiGener' +
+        'aliDocumento/Art73" />'
+      '                  </xsl:if>'
+      '                </td>'
+      ''
+      '                <td class="textCenter" >'
+      ''
+      
+        '                  <xsl:if test="DatiGenerali/DatiGeneraliDocumen' +
+        'to/Numero">'
+      
+        '                    <xsl:value-of select="DatiGenerali/DatiGener' +
+        'aliDocumento/Numero" />'
+      '                  </xsl:if>'
+      '                </td>'
+      '                <td class="data" >'
+      ''
+      
+        '                  <xsl:if test="DatiGenerali/DatiGeneraliDocumen' +
+        'to/Data">'
+      '                    <xsl:call-template name="FormatDateIta">'
+      
+        '                      <xsl:with-param name="DateTime" select="Da' +
+        'tiGenerali/DatiGeneraliDocumento/Data" />'
+      '                    </xsl:call-template>'
+      '                  </xsl:if>'
+      ''
+      '                </td>'
+      ''
+      '                <td class="textCenter" >'
+      '                  <xsl:choose>'
+      '                    <xsl:when test="$PecDestinatario">'
       '                      Indicata PEC'
       '                    </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9'<xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="$CodiceDestinatario">'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="$CodiceDestinatario"/>'
-      #9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9'</xsl:choose>'
-      #9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9'</tr>'
-      #9#9#9#9#9#9#9'<!--FINE TIPOLOGIA Documento TESTATA-->'
-      #9#9#9#9#9#9'</tbody>'
-      #9#9#9#9#9'</table>'
-      #9#9#9#9#9'<xsl:if test="DatiGenerali/DatiGeneraliDocumento/Causale">'
-      #9#9#9#9#9#9'<div class="separa">'
-      #9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9'<table class="tbFoglio">'
-      #9#9#9#9#9#9#9'<!-- TIPOLOGIA DOCUMENTO TESTATA - parte causale-->'
-      #9#9#9#9#9#9#9'<thead>'
-      #9#9#9#9#9#9#9#9'<tr>'
-      #9#9#9#9#9#9#9#9#9'<th>Causale</th>'
-      #9#9#9#9#9#9#9#9'</tr>'
-      #9#9#9#9#9#9#9'</thead>'
-      #9#9#9#9#9#9#9'<tbody>'
-      #9#9#9#9#9#9#9#9'<tr>'
-      #9#9#9#9#9#9#9#9#9'<td>'
+      ''
+      '                    <xsl:otherwise>'
+      '                      <xsl:if test="$CodiceDestinatario">'
       
-        #9#9#9#9#9#9#9#9#9#9'<xsl:if test="DatiGenerali/DatiGeneraliDocumento/Causa' +
+        '                        <xsl:value-of select="$CodiceDestinatari' +
+        'o" />'
+      '                      </xsl:if>'
+      '                    </xsl:otherwise>'
+      '                  </xsl:choose>'
+      '                </td>'
+      ''
+      '              </tr>'
+      ''
+      '              <!--FINE TIPOLOGIA Documento TESTATA-->'
+      '            </tbody>'
+      '          </table>'
+      ''
+      
+        '          <xsl:if test="DatiGenerali/DatiGeneraliDocumento/Causa' +
         'le">'
+      '            <div class="separa"> </div>'
+      '            <table class="tbFoglio">'
+      ''
       
-        #9#9#9#9#9#9#9#9#9#9#9'<xsl:for-each select="DatiGenerali/DatiGeneraliDocume' +
-        'nto/Causale">'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="."/>'
-      #9#9#9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9'</tr>'
-      #9#9#9#9#9#9#9#9'<!--FINE TIPOLOGIA Documento TESTATA - parte causale -->'
-      #9#9#9#9#9#9#9'</tbody>'
-      #9#9#9#9#9#9'</table>'
-      #9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9'<div class="separa">'
-      #9#9#9#9#9'</div>'
-      #9#9#9#9#9'<xsl:choose>'
-      #9#9#9#9#9#9'<xsl:when test="$IsFPRS='#39'1'#39'">'
-      #9#9#9#9#9#9#9'<!--  Dettaglio Linee   -->'
-      #9#9#9#9#9#9#9'<table class="tbFoglio">'
-      #9#9#9#9#9#9#9#9'<thead>'
-      #9#9#9#9#9#9#9#9#9'<tr>'
-      #9#9#9#9#9#9#9#9#9#9'<th>Descrizione</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th class="perc">Imposta</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th class="perc2">%IVA</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th class="ximport">Prezzo totale</th>'
-      #9#9#9#9#9#9#9#9#9'</tr>'
-      #9#9#9#9#9#9#9#9'</thead>'
-      #9#9#9#9#9#9#9#9'<tbody>'
-      #9#9#9#9#9#9#9#9#9'<xsl:for-each select="DatiBeniServizi">'
-      #9#9#9#9#9#9#9#9#9#9'<tr>'
-      #9#9#9#9#9#9#9#9#9#9#9'<td>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Descrizione">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Descrizione"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="RiferimentoNormativo">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="tx-xsmall">'
+        '              <!-- TIPOLOGIA DOCUMENTO TESTATA - parte causale--' +
+        '>'
+      '              <thead>'
+      '                <tr>'
+      '                  <th>Causale</th>'
+      '                </tr>'
+      '              </thead>'
+      '              <tbody>'
+      '                <tr>'
+      ''
+      '                  <td >'
+      
+        '                    <xsl:if test="DatiGenerali/DatiGeneraliDocum' +
+        'ento/Causale">'
+      ''
+      
+        '                      <xsl:for-each select="DatiGenerali/DatiGen' +
+        'eraliDocumento/Causale"  >'
+      '                        <xsl:value-of select="." /><br/>'
+      '                      </xsl:for-each>'
+      ''
+      '                    </xsl:if>'
+      '                  </td>'
+      ''
+      '                </tr>'
+      ''
+      
+        '                <!--FINE TIPOLOGIA Documento TESTATA - parte cau' +
+        'sale -->'
+      '              </tbody>'
+      '            </table>'
+      '          </xsl:if>'
+      ''
+      '          <div class="separa"> </div>'
+      ''
+      '          <xsl:choose>'
+      '            <xsl:when test="$IsFPRS='#39'1'#39'">'
+      ''
+      '              <!--  Dettaglio Linee   -->'
+      '              <table class="tbFoglio"  >'
+      ''
+      '                <thead>'
+      '                  <tr>'
+      '                    <th>Descrizione</th>'
+      '                    <th class="perc">Imposta</th>'
+      '                    <th class="perc2">%IVA</th>'
+      '                    <th class="ximport">Prezzo totale</th>'
+      ''
+      '                  </tr>'
+      '                </thead>'
+      '                <tbody>'
+      ''
+      '                  <xsl:for-each select="DatiBeniServizi" >'
+      ''
+      '                    <tr>'
+      '                      <td>'
+      ''
+      '                        <xsl:if test="Descrizione">'
+      '                          <xsl:value-of select="Descrizione" />'
+      '                        </xsl:if>'
+      ''
+      '                        <xsl:if test="RiferimentoNormativo">'
+      '                          <div class="tx-xsmall">'
       
         '                            RIF.NORM. <xsl:value-of select="Rife' +
-        'rimentoNormativo"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9#9'<td class="import">'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="DatiIVA/Imposta">'
+        'rimentoNormativo" />'
+      '                          </div>'
+      '                        </xsl:if>'
+      ''
+      '                      </td>'
+      '                      <td class="import" >'
+      ''
+      '                        <xsl:if test="DatiIVA/Imposta">'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="format-number(DatiIVA/Imposta' +
-        ',  '#39'###.###.##0,00'#39', '#39'euro'#39')"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9#9'<td class="import">'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:call-template name="FormatIVA">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="Natura" select="Natura"/>'
+        '                          <xsl:value-of select="format-number(Da' +
+        'tiIVA/Imposta,  '#39'###.###.##0,00'#39', '#39'euro'#39')" />'
+      '                        </xsl:if>'
+      '                      </td>'
+      '                      <td class="import" >'
+      ''
+      '                        <xsl:call-template name="FormatIVA">'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="IVA" select="DatiIVA/Aliquota' +
+        '                          <xsl:with-param name="Natura" select="' +
+        'Natura" />'
+      
+        '                          <xsl:with-param name="IVA" select="Dat' +
+        'iIVA/Aliquota" />'
+      '                        </xsl:call-template>'
+      ''
+      '                      </td>'
+      '                      <td class="import" >'
+      '                        <xsl:if test="Importo">'
+      
+        '                          <xsl:value-of select="format-number(Im' +
+        'porto,  '#39'###.###.##0,00'#39', '#39'euro'#39')" />'
+      '                        </xsl:if>'
+      '                      </td>'
+      '                    </tr>'
+      ''
+      '                  </xsl:for-each>'
+      ''
+      ''
+      '                </tbody>'
+      ''
+      '              </table>'
+      ''
+      '            </xsl:when>'
+      '            <xsl:otherwise>'
+      ''
+      '              <!--  Dettaglio Linee   -->'
+      '              <table class="tbFoglio"  >'
+      ''
+      '                <thead>'
+      '                  <tr>'
+      '                    <th width="80px">Cod. articolo</th>'
+      '                    <th>Descrizione</th>'
+      '                    <th class="import2" >Quantit'#224'</th>'
+      '                    <th class="import2">Prezzo unitario</th>'
+      '                    <th class="perc2">UM</th>'
+      '                    <th class="perc">Sconto o magg.</th>'
+      '                    <th class="perc2">%IVA</th>'
+      '                    <th class="ximport">Prezzo totale</th>'
+      ''
+      '                  </tr>'
+      '                </thead>'
+      '                <tbody>'
+      ''
+      ''
+      
+        '                  <xsl:if test="count(DatiGenerali/DatiOrdineAcq' +
+        'uisto[not(./RiferimentoNumeroLinea) or normalize-space(./Riferim' +
+        'entoNumeroLinea)='#39#39']) +'
+      
+        #9#9#9#9'  count(DatiGenerali/DatiContratto[not(./RiferimentoNumeroLi' +
+        'nea) or normalize-space(./RiferimentoNumeroLinea)='#39#39']) +'
+      
+        #9#9#9#9'  count(DatiGenerali/DatiDDT[not(./RiferimentoNumeroLinea) o' +
+        'r normalize-space(./RiferimentoNumeroLinea)='#39#39']) +'
+      
+        #9#9#9#9'  count(DatiGenerali/DatiFattureCollegate[not(./RiferimentoN' +
+        'umeroLinea) or  normalize-space(./RiferimentoNumeroLinea)='#39#39']) +'
+      
+        #9#9#9#9'  count(DatiGenerali/DatiConvenzione[not(./RiferimentoNumero' +
+        'Linea) or  normalize-space(./RiferimentoNumeroLinea)='#39#39'])+'
+      
+        #9#9#9#9'  count(DatiGenerali/DatiRicezione[not(./RiferimentoNumeroLi' +
+        'nea) or  normalize-space(./RiferimentoNumeroLinea)='#39#39'])  > 0 " >'
+      ''
+      ''
+      
+        '                    <!-- Verifica che DatiOrdineAcquisto non sia' +
+        'no senza riferimento numero linea in questo modo bisogna creare ' +
+        'la linea di info '#9'  -->'
+      
+        '                    <xsl:for-each select="DatiGenerali/DatiOrdin' +
+        'eAcquisto[not(./RiferimentoNumeroLinea) or  normalize-space(./Ri' +
+        'ferimentoNumeroLinea)='#39#39'] " >'
+      ''
+      '                      <xsl:call-template name="DatiCorrelati" >'
+      
+        '                        <xsl:with-param name="Prefix"   select='#39 +
+        '"Vs.Ord. "'#39'/>'
+      
+        '                        <xsl:with-param name="IdDocumento" selec' +
+        't="IdDocumento"/>'
+      
+        '                        <xsl:with-param name="Data" select="Data' +
         '"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9#9'<td class="import">'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Importo">'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="format-number(Importo,  '#39'###.' +
-        '###.##0,00'#39', '#39'euro'#39')"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9'</tr>'
-      #9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9#9#9'</tbody>'
-      #9#9#9#9#9#9#9'</table>'
-      #9#9#9#9#9#9'</xsl:when>'
-      #9#9#9#9#9#9'<xsl:otherwise>'
-      #9#9#9#9#9#9#9'<!--  Dettaglio Linee   -->'
-      #9#9#9#9#9#9#9'<table class="tbFoglio">'
-      #9#9#9#9#9#9#9#9'<thead>'
-      #9#9#9#9#9#9#9#9#9'<tr>'
-      #9#9#9#9#9#9#9#9#9#9'<th class="cod-articolo">Cod. articolo</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th>Descrizione</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th class="import2">Quantit'#224'</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th class="import2">Prezzo unitario</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th class="perc2">UM</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th class="perc">Sconto o magg.</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th class="perc2">%IVA</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th class="ximport">Prezzo totale</th>'
-      #9#9#9#9#9#9#9#9#9'</tr>'
-      #9#9#9#9#9#9#9#9'</thead>'
-      #9#9#9#9#9#9#9#9'<tbody>'
+        '                        <xsl:with-param name="CodiceCUP" select=' +
+        '"CodiceCUP"/>'
       
-        #9#9#9#9#9#9#9#9#9'<xsl:if test="count(DatiGenerali/DatiOrdineAcquisto[not' +
-        '(./RiferimentoNumeroLinea) or normalize-space(./RiferimentoNumer' +
-        'oLinea)='#39#39']) +&#xA;'#9#9#9#9'  count(DatiGenerali/DatiContratto[not(./' +
-        'RiferimentoNumeroLinea) or normalize-space(./RiferimentoNumeroLi' +
-        'nea)='#39#39']) +&#xA;'#9#9#9#9'  count(DatiGenerali/DatiDDT[not(./Riferimen' +
-        'toNumeroLinea) or normalize-space(./RiferimentoNumeroLinea)='#39#39'])' +
-        ' +&#xA;'#9#9#9#9'  count(DatiGenerali/DatiFattureCollegate[not(./Rifer' +
-        'imentoNumeroLinea) or  normalize-space(./RiferimentoNumeroLinea)' +
-        '='#39#39']) +&#xA;'#9#9#9#9'  count(DatiGenerali/DatiConvenzione[not(./Rifer' +
-        'imentoNumeroLinea) or  normalize-space(./RiferimentoNumeroLinea)' +
-        '='#39#39'])+&#xA;'#9#9#9#9'  count(DatiGenerali/DatiRicezione[not(./Riferime' +
-        'ntoNumeroLinea) or  normalize-space(./RiferimentoNumeroLinea)='#39#39 +
-        '])  &gt; 0 ">'
+        '                        <xsl:with-param name="CodiceCIG" select=' +
+        '"CodiceCIG"/>'
+      '                      </xsl:call-template >'
+      '                    </xsl:for-each>'
+      ''
       
-        #9#9#9#9#9#9#9#9#9#9'<!-- Verifica che DatiOrdineAcquisto non siano senza r' +
-        'iferimento numero linea in questo modo bisogna creare la linea d' +
-        'i info '#9'  -->'
+        '                    <!-- Verifica che DatiContratto non siano se' +
+        'nza riferimento numero linea in questo modo bisogna creare la li' +
+        'nea di info '#9'  -->'
+      ''
       
-        #9#9#9#9#9#9#9#9#9#9'<xsl:for-each select="DatiGenerali/DatiOrdineAcquisto[' +
-        'not(./RiferimentoNumeroLinea) or  normalize-space(./RiferimentoN' +
-        'umeroLinea)='#39#39'] ">'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:call-template name="DatiCorrelati">'
+        '                    <xsl:for-each select="DatiGenerali/DatiContr' +
+        'atto[not(./RiferimentoNumeroLinea) or  normalize-space(./Riferim' +
+        'entoNumeroLinea)='#39#39'] " >'
+      '                      <xsl:call-template name="DatiCorrelati" >'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="Prefix" select="&quot;Vs.Ord. ' +
-        '&quot;"/>'
+        '                        <xsl:with-param name="Prefix"   select='#39 +
+        '"Contratto "'#39'/>'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="IdDocumento" select="IdDocumen' +
-        'to"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="Data" select="Data"/>'
+        '                        <xsl:with-param name="IdDocumento" selec' +
+        't="IdDocumento"/>'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="CodiceCUP" select="CodiceCUP"/' +
+        '                        <xsl:with-param name="Data" select="Data' +
+        '"/>'
+      
+        '                        <xsl:with-param name="CodiceCUP" select=' +
+        '"CodiceCUP"/>'
+      
+        '                        <xsl:with-param name="CodiceCIG" select=' +
+        '"CodiceCIG"/>'
+      '                      </xsl:call-template >'
+      ''
+      '                    </xsl:for-each>'
+      ''
+      
+        '                    <!-- Verifica che DatiConvenzione non siano ' +
+        'senza riferimento numero linea in questo modo bisogna creare la ' +
+        'linea di info '#9'  -->'
+      ''
+      
+        '                    <xsl:for-each select="DatiGenerali/DatiConve' +
+        'nzione[not(./RiferimentoNumeroLinea) or  normalize-space(./Rifer' +
+        'imentoNumeroLinea)='#39#39'] " >'
+      '                      <xsl:call-template name="DatiCorrelati" >'
+      
+        '                        <xsl:with-param name="Prefix"   select='#39 +
+        '"Convenzione "'#39'/>'
+      
+        '                        <xsl:with-param name="IdDocumento" selec' +
+        't="IdDocumento"/>'
+      
+        '                        <xsl:with-param name="Data" select="Data' +
+        '"/>'
+      
+        '                        <xsl:with-param name="CodiceCUP" select=' +
+        '"CodiceCUP"/>'
+      
+        '                        <xsl:with-param name="CodiceCIG" select=' +
+        '"CodiceCIG"/>'
+      '                      </xsl:call-template >'
+      ''
+      '                    </xsl:for-each>'
+      ''
+      
+        '                    <!-- Verifica che DatiRicezione non siano se' +
+        'nza riferimento numero linea in questo modo bisogna creare la li' +
+        'nea di info '#9'  -->'
+      
+        '                    <xsl:for-each select="DatiGenerali/DatiRicez' +
+        'ione[not(./RiferimentoNumeroLinea) or  normalize-space(./Riferim' +
+        'entoNumeroLinea)='#39#39'] " >'
+      '                      <xsl:call-template name="DatiCorrelati" >'
+      
+        '                        <xsl:with-param name="Prefix"   select='#39 +
+        '"Ricezione "'#39'/>'
+      
+        '                        <xsl:with-param name="IdDocumento" selec' +
+        't="IdDocumento"/>'
+      
+        '                        <xsl:with-param name="Data" select="Data' +
+        '"/>'
+      
+        '                        <xsl:with-param name="CodiceCUP" select=' +
+        '"CodiceCUP"/>'
+      
+        '                        <xsl:with-param name="CodiceCIG" select=' +
+        '"CodiceCIG"/>'
+      '                      </xsl:call-template >'
+      ''
+      '                    </xsl:for-each>'
+      ''
+      
+        '                    <!-- Verifica che DatiFattureCollegate non s' +
+        'iano senza riferimento numero linea in questo modo bisogna crear' +
+        'e la linea di info '#9'  -->'
+      ''
+      
+        '                    <xsl:for-each select="DatiGenerali/DatiFattu' +
+        'reCollegate[not(./RiferimentoNumeroLinea) or normalize-space(./R' +
+        'iferimentoNumeroLinea)='#39#39'] " >'
+      ''
+      '                      <xsl:call-template name="DatiCorrelati" >'
+      
+        '                        <xsl:with-param name="Prefix"   select='#39 +
+        '"Fatt.Coll. "'#39'/>'
+      
+        '                        <xsl:with-param name="IdDocumento" selec' +
+        't="IdDocumento"/>'
+      
+        '                        <xsl:with-param name="Data" select="Data' +
+        '"/>'
+      
+        '                        <xsl:with-param name="CodiceCUP" select=' +
+        '"CodiceCUP"/>'
+      
+        '                        <xsl:with-param name="CodiceCIG" select=' +
+        '"CodiceCIG"/>'
+      '                      </xsl:call-template >'
+      ''
+      '                    </xsl:for-each>'
+      ''
+      
+        '                    <xsl:for-each select="DatiGenerali/DatiDDT[n' +
+        'ot(./RiferimentoNumeroLinea) or normalize-space(./RiferimentoNum' +
+        'eroLinea)='#39#39'] ">'
+      
+        '                      <xsl:apply-templates select="."/>'#9'<!-- app' +
+        'ly DatiDDT template -->'
+      '                    </xsl:for-each>'
+      ''
+      
+        '                    <xsl:call-template name="AltraDescrizioneLin' +
+        'ea">'
+      
+        '                      <xsl:with-param name="textDescrizione" sel' +
+        'ect = '#39'"------------------------"'#39' />'
+      '                    </xsl:call-template>'
+      '                  </xsl:if>'
+      ''
+      ''
+      ''
+      
+        '                  <xsl:for-each select="DatiBeniServizi/Dettagli' +
+        'oLinee" >'
+      '                    <xsl:apply-templates select=".">'
+      
+        '                      <xsl:with-param name="r" select="position(' +
+        ')"/>'
+      
+        '                      <xsl:with-param name="posASWRELSTD" select' +
+        '="$posASWRELSTD"/>'
+      
+        '                      <xsl:with-param name="TipoFattura" select=' +
+        '"$TipoFattura"/>'
+      
+        '                      <xsl:with-param name="IndiceBody" select="' +
+        '$BodyIndex"/>'
+      '                    </xsl:apply-templates>'
+      '                  </xsl:for-each>'
+      ''
+      ''
+      '                </tbody>'
+      ''
+      '              </table>'
+      ''
+      '              <!--   Dati Cassa Prevvidenziale    -->'
+      
+        '              <xsl:if test="DatiGenerali/DatiGeneraliDocumento/D' +
+        'atiCassaPrevidenziale">'
+      '                <div class="separa"> </div>'
+      ''
+      '                <table class="tbFoglio">'
+      ''
+      '                  <thead>'
+      '                    <tr>'
+      
+        '                      <th class="title">Dati Cassa Previdenziale' +
+        '</th>'
+      '                      <th>Imponibile</th>'
+      '                      <th class="perc">%Contr.</th>'
+      '                      <th class="perc">Ritenuta</th>'
+      '                      <th class="perc">%IVA</th>'
+      '                      <th >Importo</th>'
+      '                    </tr>'
+      '                  </thead>'
+      '                  <tbody>'
+      
+        '                    <xsl:for-each select="DatiGenerali/DatiGener' +
+        'aliDocumento/DatiCassaPrevidenziale"  >'
+      ''
+      '                      <tr>'
+      '                        <td>'
+      '                          <xsl:if test="TipoCassa">'
+      ''
+      '                            <span>'
+      
+        '                              <xsl:value-of select="TipoCassa" /' +
         '>'
+      '                            </span>'
+      '                            <xsl:variable name="TC">'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="CodiceCIG" select="CodiceCIG"/' +
+        '                              <xsl:value-of select="TipoCassa" /' +
         '>'
-      #9#9#9#9#9#9#9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      
-        #9#9#9#9#9#9#9#9#9#9'<!-- Verifica che DatiContratto non siano senza riferi' +
-        'mento numero linea in questo modo bisogna creare la linea di inf' +
-        'o '#9'  -->'
-      
-        #9#9#9#9#9#9#9#9#9#9'<xsl:for-each select="DatiGenerali/DatiContratto[not(.' +
-        '/RiferimentoNumeroLinea) or  normalize-space(./RiferimentoNumero' +
-        'Linea)='#39#39'] ">'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:call-template name="DatiCorrelati">'
-      
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="Prefix" select="&quot;Contratt' +
-        'o &quot;"/>'
-      
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="IdDocumento" select="IdDocumen' +
-        'to"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="Data" select="Data"/>'
-      
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="CodiceCUP" select="CodiceCUP"/' +
-        '>'
-      
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="CodiceCIG" select="CodiceCIG"/' +
-        '>'
-      #9#9#9#9#9#9#9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      
-        #9#9#9#9#9#9#9#9#9#9'<!-- Verifica che DatiConvenzione non siano senza rife' +
-        'rimento numero linea in questo modo bisogna creare la linea di i' +
-        'nfo '#9'  -->'
-      
-        #9#9#9#9#9#9#9#9#9#9'<xsl:for-each select="DatiGenerali/DatiConvenzione[not' +
-        '(./RiferimentoNumeroLinea) or  normalize-space(./RiferimentoNume' +
-        'roLinea)='#39#39'] ">'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:call-template name="DatiCorrelati">'
-      
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="Prefix" select="&quot;Convenzi' +
-        'one &quot;"/>'
-      
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="IdDocumento" select="IdDocumen' +
-        'to"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="Data" select="Data"/>'
-      
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="CodiceCUP" select="CodiceCUP"/' +
-        '>'
-      
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="CodiceCIG" select="CodiceCIG"/' +
-        '>'
-      #9#9#9#9#9#9#9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      
-        #9#9#9#9#9#9#9#9#9#9'<!-- Verifica che DatiRicezione non siano senza riferi' +
-        'mento numero linea in questo modo bisogna creare la linea di inf' +
-        'o '#9'  -->'
-      
-        #9#9#9#9#9#9#9#9#9#9'<xsl:for-each select="DatiGenerali/DatiRicezione[not(.' +
-        '/RiferimentoNumeroLinea) or  normalize-space(./RiferimentoNumero' +
-        'Linea)='#39#39'] ">'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:call-template name="DatiCorrelati">'
-      
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="Prefix" select="&quot;Ricezion' +
-        'e &quot;"/>'
-      
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="IdDocumento" select="IdDocumen' +
-        'to"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="Data" select="Data"/>'
-      
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="CodiceCUP" select="CodiceCUP"/' +
-        '>'
-      
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="CodiceCIG" select="CodiceCIG"/' +
-        '>'
-      #9#9#9#9#9#9#9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      
-        #9#9#9#9#9#9#9#9#9#9'<!-- Verifica che DatiFattureCollegate non siano senza' +
-        ' riferimento numero linea in questo modo bisogna creare la linea' +
-        ' di info '#9'  -->'
-      
-        #9#9#9#9#9#9#9#9#9#9'<xsl:for-each select="DatiGenerali/DatiFattureCollegat' +
-        'e[not(./RiferimentoNumeroLinea) or normalize-space(./Riferimento' +
-        'NumeroLinea)='#39#39'] ">'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:call-template name="DatiCorrelati">'
-      
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="Prefix" select="&quot;Fatt.Col' +
-        'l. &quot;"/>'
-      
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="IdDocumento" select="IdDocumen' +
-        'to"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="Data" select="Data"/>'
-      
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="CodiceCUP" select="CodiceCUP"/' +
-        '>'
-      
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="CodiceCIG" select="CodiceCIG"/' +
-        '>'
-      #9#9#9#9#9#9#9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      
-        #9#9#9#9#9#9#9#9#9#9'<xsl:for-each select="DatiGenerali/DatiDDT[not(./Rifer' +
-        'imentoNumeroLinea) or normalize-space(./RiferimentoNumeroLinea)=' +
-        #39#39'] ">'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:apply-templates select="."/>'
-      #9#9#9#9#9#9#9#9#9#9#9'<!-- apply DatiDDT template -->'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9#9#9#9#9'<xsl:call-template name="AltraDescrizioneLinea">'
-      
-        #9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="textDescrizione" select="&quot;' +
-        '------------------------&quot;"/>'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9'<xsl:for-each select="DatiBeniServizi/DettaglioLinee">'
-      #9#9#9#9#9#9#9#9#9#9'<xsl:apply-templates select=".">'
-      #9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="r" select="position()"/>'
-      
-        #9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="posASWRELSTD" select="$posASWRE' +
-        'LSTD"/>'
-      
-        #9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="TipoFattura" select="$TipoFattu' +
-        'ra"/>'
-      
-        #9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="IndiceBody" select="$BodyIndex"' +
-        '/>'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:apply-templates>'
-      #9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9#9#9'</tbody>'
-      #9#9#9#9#9#9#9'</table>'
-      #9#9#9#9#9#9#9'<!--   Dati Cassa Prevvidenziale    -->'
-      
-        #9#9#9#9#9#9#9'<xsl:if test="DatiGenerali/DatiGeneraliDocumento/DatiCass' +
-        'aPrevidenziale">'
-      #9#9#9#9#9#9#9#9'<div class="separa">'
-      #9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9'<table class="tbFoglio">'
-      #9#9#9#9#9#9#9#9#9'<thead>'
-      #9#9#9#9#9#9#9#9#9#9'<tr>'
-      #9#9#9#9#9#9#9#9#9#9#9'<th class="title">Dati Cassa Previdenziale</th>'
-      #9#9#9#9#9#9#9#9#9#9#9'<th>Imponibile</th>'
-      #9#9#9#9#9#9#9#9#9#9#9'<th class="perc">%Contr.</th>'
-      #9#9#9#9#9#9#9#9#9#9#9'<th class="perc">Ritenuta</th>'
-      #9#9#9#9#9#9#9#9#9#9#9'<th class="perc">%IVA</th>'
-      #9#9#9#9#9#9#9#9#9#9#9'<th>Importo</th>'
-      #9#9#9#9#9#9#9#9#9#9'</tr>'
-      #9#9#9#9#9#9#9#9#9'</thead>'
-      #9#9#9#9#9#9#9#9#9'<tbody>'
-      
-        #9#9#9#9#9#9#9#9#9#9'<xsl:for-each select="DatiGenerali/DatiGeneraliDocumen' +
-        'to/DatiCassaPrevidenziale">'
-      #9#9#9#9#9#9#9#9#9#9#9'<tr>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<td>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="TipoCassa">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="TipoCassa"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:variable name="TC">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="TipoCassa"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:variable>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC01'#39'">'
+      '                            </xsl:variable>'
+      '                            <xsl:choose>'
+      '                              <xsl:when test="$TC='#39'TC01'#39'">'
       
         '                                (Cassa Nazionale Previdenza e As' +
         'sistenza Avvocati'
       '                                e Procuratori legali)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC02'#39'">'
+      '                              <xsl:when test="$TC='#39'TC02'#39'">'
       
         '                                (Cassa Previdenza Dottori Commer' +
         'cialisti)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC03'#39'">'
+      '                              <xsl:when test="$TC='#39'TC03'#39'">'
       
         '                                (Cassa Previdenza e Assistenza G' +
         'eometri)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC04'#39'">'
+      '                              <xsl:when test="$TC='#39'TC04'#39'">'
       
         '                                (Cassa Nazionale Previdenza e As' +
         'sistenza'
@@ -6350,92 +8611,92 @@ object dmResources: TdmResources
         '                                Ingegneri e Architetti liberi pr' +
         'ofess.)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC05'#39'">'
+      '                              <xsl:when test="$TC='#39'TC05'#39'">'
       '                                (Cassa Nazionale del Notariato)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC06'#39'">'
+      '                              <xsl:when test="$TC='#39'TC06'#39'">'
       
         '                                (Cassa Nazionale Previdenza e As' +
         'sistenza'
       '                                Ragionieri e Periti commerciali)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC07'#39'">'
+      '                              <xsl:when test="$TC='#39'TC07'#39'">'
       
         '                                (Ente Nazionale Assistenza Agent' +
         'i e Rappresentanti'
       '                                di Commercio-ENASARCO)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC08'#39'">'
+      '                              <xsl:when test="$TC='#39'TC08'#39'">'
       
         '                                (Ente Nazionale Previdenza e Ass' +
         'istenza Consulenti'
       '                                del Lavoro-ENPACL)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC09'#39'">'
+      '                              <xsl:when test="$TC='#39'TC09'#39'">'
       
         '                                (Ente Nazionale Previdenza e Ass' +
         'istenza'
       '                                Medici-ENPAM)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC10'#39'">'
+      '                              <xsl:when test="$TC='#39'TC10'#39'">'
       
         '                                (Ente Nazionale Previdenza e Ass' +
         'istenza'
       '                                Farmacisti-ENPAF)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC11'#39'">'
+      '                              <xsl:when test="$TC='#39'TC11'#39'">'
       
         '                                (Ente Nazionale Previdenza e Ass' +
         'istenza'
       '                                Veterinari-ENPAV)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC12'#39'">'
+      '                              <xsl:when test="$TC='#39'TC12'#39'">'
       
         '                                (Ente Nazionale Previdenza e Ass' +
         'istenza Impiegati'
       '                                dell'#39'Agricoltura-ENPAIA)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC13'#39'">'
+      '                              <xsl:when test="$TC='#39'TC13'#39'">'
       
         '                                (Fondo Previdenza Impiegati Impr' +
         'ese di Spedizione'
       '                                e Agenzie Marittime)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC14'#39'">'
+      '                              <xsl:when test="$TC='#39'TC14'#39'">'
       
         '                                (Istituto Nazionale Previdenza G' +
         'iornalisti'
       '                                Italiani-INPGI)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC15'#39'">'
+      '                              <xsl:when test="$TC='#39'TC15'#39'">'
       
         '                                (Opera Nazionale Assistenza Orfa' +
         'ni Sanitari'
       '                                Italiani-ONAOSI)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC16'#39'">'
+      '                              <xsl:when test="$TC='#39'TC16'#39'">'
       
         '                                (Cassa Autonoma Assistenza Integ' +
         'rativa'
       '                                Giornalisti Italiani-CASAGIT)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC17'#39'">'
+      '                              <xsl:when test="$TC='#39'TC17'#39'">'
       
         '                                (Ente Previdenza Periti Industri' +
         'ali e Periti'
       '                                Industriali Laureati-EPPI)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC18'#39'">'
+      '                              <xsl:when test="$TC='#39'TC18'#39'">'
       '                                (Ente Previdenza e Assistenza'
       '                                Pluricategoriale-EPAP)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC19'#39'">'
+      '                              <xsl:when test="$TC='#39'TC19'#39'">'
       
         '                                (Ente Nazionale Previdenza e Ass' +
         'istenza'
       '                                Biologi-ENPAB)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC20'#39'">'
+      '                              <xsl:when test="$TC='#39'TC20'#39'">'
       
         '                                (Ente Nazionale Previdenza e Ass' +
         'istenza'
@@ -6443,436 +8704,687 @@ object dmResources: TdmResources
         '                                Professione Infermieristica-ENPA' +
         'PI)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC21'#39'">'
+      '                              <xsl:when test="$TC='#39'TC21'#39'">'
       
         '                                (Ente Nazionale Previdenza e Ass' +
         'istenza'
       '                                Psicologi-ENPAP)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39'TC22'#39'">'
+      '                              <xsl:when test="$TC='#39'TC22'#39'">'
       '                                (INPS)'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TC='#39#39'">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>(!!! codice non previsto !!!)</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<td class="import">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="ImponibileCassa">'
+      '                              <xsl:when test="$TC='#39#39'">'
+      '                              </xsl:when>'
+      '                              <xsl:otherwise>'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="format-number(ImponibileCass' +
-        'a,  '#39'###.###.##0,00'#39', '#39'euro'#39')"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<td class="import">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="AlCassa">'
+        '                                <span>(!!! codice non previsto !' +
+        '!!)</span>'
+      '                              </xsl:otherwise>'
+      '                            </xsl:choose>'
+      ''
+      '                          </xsl:if>'
+      '                        </td>'
+      '                        <td class="import">'
+      '                          <xsl:if test="ImponibileCassa">'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="format-number(AlCassa,  '#39'###' +
-        '.###.##0,00'#39', '#39'euro'#39')"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<td class="Ritenuta">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Ritenuta">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Ritenuta"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<td class="import">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="Natura">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="Natura"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="AliquotaIVA">'
+        '                            <xsl:value-of select="format-number(' +
+        'ImponibileCassa,  '#39'###.###.##0,00'#39', '#39'euro'#39')" />'
+      '                          </xsl:if>'
+      '                        </td>'
+      ''
+      '                        <td class="import">'
+      '                          <xsl:if test="AlCassa">'
+      ''
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="format-number(AliquotaIVA,' +
-        '  '#39'###.###.##0,00'#39', '#39'euro'#39')"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<td class="import">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="ImportoContributoCassa">'
+        '                            <xsl:value-of select="format-number(' +
+        'AlCassa,  '#39'###.###.##0,00'#39', '#39'euro'#39')" />'
+      ''
+      '                          </xsl:if>'
+      ''
+      '                        </td>'
+      ''
+      '                        <td  class="Ritenuta" >'
+      '                          <xsl:if test="Ritenuta">'
+      ''
+      '                            <xsl:value-of select="Ritenuta" />'
+      ''
+      '                          </xsl:if>'
+      '                        </td>'
+      ''
+      '                        <td class="import" >'
+      ''
+      '                          <xsl:choose>'
+      '                            <xsl:when test="Natura">'
+      ''
+      '                              <xsl:value-of select="Natura" />'
+      ''
+      '                            </xsl:when>'
+      '                            <xsl:otherwise>'
+      '                              <xsl:if test="AliquotaIVA">'
+      ''
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="format-number(ImportoContrib' +
-        'utoCassa,  '#39'###.###.##0,00'#39', '#39'euro'#39')"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9#9'</tr>'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9#9#9#9'</tbody>'
-      #9#9#9#9#9#9#9#9'</table>'
-      #9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9'<!--  Fine Cassa Prevvidenziale    -->'
-      #9#9#9#9#9#9#9'<div class="separa">'
-      #9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9'<!-- Dati RIEPILOGO-->'
-      #9#9#9#9#9#9#9'<table class="tbTitolo">'
-      #9#9#9#9#9#9#9#9'<thead>'
-      #9#9#9#9#9#9#9#9#9'<tr>'
-      #9#9#9#9#9#9#9#9#9#9'<th>RIEPILOGHI IVA E TOTALI</th>'
-      #9#9#9#9#9#9#9#9#9'</tr>'
-      #9#9#9#9#9#9#9#9'</thead>'
-      #9#9#9#9#9#9#9'</table>'
-      #9#9#9#9#9#9#9'<table class="tbFoglio">'
-      #9#9#9#9#9#9#9#9'<thead>'
-      #9#9#9#9#9#9#9#9#9'<tr>'
+        '                                <xsl:value-of select="format-num' +
+        'ber(AliquotaIVA,  '#39'###.###.##0,00'#39', '#39'euro'#39')" />'
+      ''
+      '                              </xsl:if>'
+      '                            </xsl:otherwise>'
+      '                          </xsl:choose>'
+      ''
+      '                        </td>'
+      ''
+      '                        <td class="import">'
+      '                          <xsl:if test="ImportoContributoCassa">'
+      ''
       
-        #9#9#9#9#9#9#9#9#9#9'<th colspan="3">esigibilit'#224' iva / riferimenti normativ' +
-        'i</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th class="perc">%IVA</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th>Spese accessorie</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th class="perc">Arr.</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th colspan="2">Totale imponibile</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th colspan="2">Totale imposta</th>'
-      #9#9#9#9#9#9#9#9#9'</tr>'
-      #9#9#9#9#9#9#9#9'</thead>'
-      #9#9#9#9#9#9#9#9'<tbody>'
-      #9#9#9#9#9#9#9#9#9'<xsl:for-each select="DatiBeniServizi/DatiRiepilogo">'
-      #9#9#9#9#9#9#9#9#9#9'<xsl:if test="number(ImponibileImporto)">'
-      #9#9#9#9#9#9#9#9#9#9#9'<tr>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<td colspan="3">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="EsigibilitaIVA">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="EsigibilitaIVA"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:variable name="EI">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="EsigibilitaIVA"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:variable>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$EI='#39'I'#39'">'
+        '                            <xsl:value-of select="format-number(' +
+        'ImportoContributoCassa,  '#39'###.###.##0,00'#39', '#39'euro'#39')" />'
+      ''
+      '                          </xsl:if>'
+      ''
+      '                        </td>'
+      ''
+      '                      </tr>'
+      ''
+      '                    </xsl:for-each>'
+      ''
+      ''
+      '                  </tbody>'
+      '                </table>'
+      ''
+      ''
+      '              </xsl:if>'
+      '              <!--  Fine Cassa Prevvidenziale    -->'
+      ''
+      ''
+      '              <div class="separa" > </div>'
+      '              <!-- Dati RIEPILOGO-->'
+      ''
+      '              <table class="tbTitolo">'
+      '                <thead>'
+      '                  <tr>'
+      '                    <th>RIEPILOGHI IVA E TOTALI</th>'
+      '                  </tr>'
+      '                </thead>'
+      '              </table>'
+      ''
+      ''
+      ''
+      '              <table class="tbFoglio">'
+      '                <thead>'
+      '                  <tr >'
+      ''
+      
+        '                    <th colspan="3" >esigibilit'#224' iva / riferimen' +
+        'ti normativi</th>'
+      '                    <th class="perc">%IVA</th>'
+      '                    <th>Spese accessorie</th>'
+      #9#9#9#9#9' <th class="perc">Arr.</th>'
+      '                    <th colspan="2" >Totale imponibile</th>'
+      '                    <th colspan="2" >Totale imposta</th>'
+      '                  </tr>'
+      '                </thead>'
+      '                <tbody>'
+      ''
+      
+        '                  <xsl:for-each select="DatiBeniServizi/DatiRiep' +
+        'ilogo" >'
+      ''
+      '                    <xsl:if test="number(ImponibileImporto)">'
+      ''
+      '                      <tr>'
+      '                        <td colspan="3" >'
+      '                          <xsl:choose>'
+      '                            <xsl:when test="EsigibilitaIVA">'
+      ''
+      '                              <span>'
+      
+        '                                <xsl:value-of select="Esigibilit' +
+        'aIVA" />'
+      '                              </span>'
+      '                              <xsl:variable name="EI">'
+      
+        '                                <xsl:value-of select="Esigibilit' +
+        'aIVA" />'
+      '                              </xsl:variable>'
+      '                              <xsl:choose>'
+      '                                <xsl:when test="$EI='#39'I'#39'">'
       '                                  (esigibilit'#224' immediata)'
       '                                </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$EI='#39'D'#39'">'
+      '                                <xsl:when test="$EI='#39'D'#39'">'
       '                                  (esigibilit'#224' differita)'
       '                                </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$EI='#39'S'#39'">'
+      '                                <xsl:when test="$EI='#39'S'#39'">'
       '                                  (scissione dei pagamenti)'
       '                                </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>(!!! codice non previsto !!!)</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:otherwise>'
+      '                                <xsl:otherwise>'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>Esigib. non dich. (si presume immediata)</s' +
-        'pan>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="RiferimentoNormativo">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<div class="tx-xsmall">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="RiferimentoNormativo"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<td class="import">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:call-template name="FormatIVA">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="Natura" select="Natura"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="IVA" select="AliquotaIVA"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<td class="import">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="SpeseAccessorie">'
+        '                                  <span>(!!! codice non previsto' +
+        ' !!!)</span>'
+      '                                </xsl:otherwise>'
+      '                              </xsl:choose>'
+      '                            </xsl:when>'
+      ''
+      '                            <xsl:otherwise>'
+      ''
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="format-number(SpeseAccessori' +
-        'e,  '#39'###.###.##0,00'#39', '#39'euro'#39')"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<td class="import">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Arrotondamento">'
+        '                              <span>Esigib. non dich. (si presum' +
+        'e immediata)</span>'
+      ''
+      '                            </xsl:otherwise>'
+      '                          </xsl:choose>'
+      ''
+      '                          <xsl:if test="RiferimentoNormativo">'
+      '                            <div class="tx-xsmall">'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="format-number(Arrotondamento' +
-        ',  '#39'###.###.##0,00'#39', '#39'euro'#39')"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<td colspan="2" class="import">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="ImponibileImporto">'
+        '                              <xsl:value-of select="RiferimentoN' +
+        'ormativo" />'
+      '                            </div>'
+      '                          </xsl:if>'
+      '                        </td>'
+      ''
+      ''
+      '                        <td class="import" >'
+      ''
+      '                          <xsl:call-template name="FormatIVA">'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="format-number(ImponibileImpo' +
-        'rto,  '#39'###.###.##0,00'#39', '#39'euro'#39')"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<td colspan="2" class="import">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="Imposta">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="Imposta = 0">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:text>0</xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:otherwise>'
+        '                            <xsl:with-param name="Natura" select' +
+        '="Natura" />'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="format-number(Imposta,  '#39'#' +
-        '##.###.##0,00'#39', '#39'euro'#39')"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9#9'</tr>'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9#9#9#9'<!-- Importo Totale  -->'
-      #9#9#9#9#9#9#9#9#9'<tr>'
-      #9#9#9#9#9#9#9#9#9#9'<th colspan="2">'
+        '                            <xsl:with-param name="IVA" select="A' +
+        'liquotaIVA" />'
+      '                          </xsl:call-template>'
+      ''
+      ''
+      '                        </td>'
+      ''
+      ''
+      '                        <td class="import">'
+      ''
+      '                          <xsl:if test="SpeseAccessorie">'
+      
+        '                            <xsl:value-of select="format-number(' +
+        'SpeseAccessorie,  '#39'###.###.##0,00'#39', '#39'euro'#39')" />'
+      '                          </xsl:if>'
+      '                        </td>'
+      ''
+      ''
+      #9#9#9#9#9#9' <td class="import">'
+      ''
+      '                        <xsl:if test="Arrotondamento">'
+      
+        '                          <xsl:value-of select="format-number(Ar' +
+        'rotondamento,  '#39'###.###.##0,00'#39', '#39'euro'#39')" />'
+      '                        </xsl:if>'
+      '                      </td>'
+      '                        <td  colspan="2" class="import" >'
+      ''
+      '                          <xsl:if test="ImponibileImporto">'
+      
+        '                            <xsl:value-of select="format-number(' +
+        'ImponibileImporto,  '#39'###.###.##0,00'#39', '#39'euro'#39')" />'
+      '                          </xsl:if>'
+      '                        </td>'
+      ''
+      '                        <td colspan="2"  class="import" >'
+      ''
+      '                          <xsl:if test="Imposta">'
+      ''
+      '                            <xsl:choose>'
+      '                              <xsl:when test="Imposta = 0">'
+      '                                <xsl:text>0</xsl:text>'
+      '                              </xsl:when>'
+      '                              <xsl:otherwise>'
+      
+        '                                <xsl:value-of select="format-num' +
+        'ber(Imposta,  '#39'###.###.##0,00'#39', '#39'euro'#39')" />'
+      '                              </xsl:otherwise>'
+      '                            </xsl:choose>'
+      ''
+      ''
+      ''
+      '                          </xsl:if>'
+      '                        </td>'
+      ''
+      '                      </tr>'
+      ''
+      '                    </xsl:if>'
+      ''
+      '                  </xsl:for-each>'
+      ''
+      '                  <!-- Importo Totale  -->'
+      '                  <tr >'
+      ''
+      '                    <th  colspan="2">'
       '                      Importo bollo'
       '                    </th>'
-      #9#9#9#9#9#9#9#9#9#9'<th colspan="3">'
+      '                    <th  colspan="3">'
       '                      Sconto/Maggiorazione'
       '                    </th>'
-      #9#9#9#9#9#9#9#9#9#9'<th class="perc">Arr.</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th colspan="4">'
+      ''
+      ''
+      ''
+      #9#9#9#9#9' <th class="perc">Arr.</th>'
+      '                    <th colspan="4" >'
       '                      Totale documento'
       '                    </th>'
-      #9#9#9#9#9#9#9#9#9'</tr>'
-      #9#9#9#9#9#9#9#9#9'<tr>'
-      #9#9#9#9#9#9#9#9#9#9'<td colspan="2" class="import">'
+      ''
+      ''
+      '                  </tr>'
+      ''
+      '                  <tr >'
+      '                    <td colspan="2" class="import" >'
+      ''
       
-        #9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="DatiGenerali/DatiGeneraliDocumento/Dati' +
-        'Bollo/ImportoBollo">'
+        #9#9#9#9#9' <xsl:if test="DatiGenerali/DatiGeneraliDocumento/DatiBollo' +
+        '">'
+      '                        <xsl:choose>'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="format-number(DatiGenerali/Dat' +
-        'iGeneraliDocumento/DatiBollo/ImportoBollo,  '#39'###.###.##0,00'#39', '#39'e' +
-        'uro'#39')"/>'
-      #9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9'<td colspan="3" class="import">'
+        #9#9#9#9#9#9'<xsl:when test="DatiGenerali/DatiGeneraliDocumento/DatiBol' +
+        'lo/ImportoBollo">'
       
-        #9#9#9#9#9#9#9#9#9#9#9'<xsl:for-each select="DatiGenerali/DatiGeneraliDocume' +
-        'nto/ScontoMaggiorazione">'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:call-template name="FormatSconto">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="tipo" select="Tipo"/>'
+        #9#9#9#9#9#9#9'<xsl:value-of select="format-number(DatiGenerali/DatiGene' +
+        'raliDocumento/DatiBollo/ImportoBollo,  '#39'###.###.##0,00'#39', '#39'euro'#39')' +
+        '" />'
+      #9#9#9#9#9#9'</xsl:when>'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="percentuale" select="Percentu' +
-        'ale"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="importo" select="Importo"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9'<td class="import">'
+        #9#9#9#9#9#9'<xsl:when test="DatiGenerali/DatiGeneraliDocumento/DatiBol' +
+        'lo/BolloVirtuale">'
       
-        #9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="DatiGenerali/DatiGeneraliDocumento/Arro' +
-        'tondamento">'
+        #9#9#9#9#9#9#9'<xsl:value-of select="DatiGenerali/DatiGeneraliDocumento/' +
+        'DatiBollo/BolloVirtuale" />'
+      #9#9#9#9#9#9'</xsl:when>'
+      #9#9#9#9#9#9'<xsl:otherwise></xsl:otherwise>'
+      #9#9#9#9#9'  </xsl:choose>'
+      '                      </xsl:if>'
+      ''
+      '                    </td>'
+      '                    <td colspan="3" class="import">'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="format-number(DatiGenerali/Dat' +
-        'iGeneraliDocumento/Arrotondamento,  '#39'###.###.##0,00'#39', '#39'euro'#39')"/>'
-      #9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9'<td colspan="4" class="import">'
+        '                      <xsl:for-each select="DatiGenerali/DatiGen' +
+        'eraliDocumento/ScontoMaggiorazione"  >'
+      ''
+      '                        <xsl:call-template name="FormatSconto" >'
       
-        #9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="DatiGenerali/DatiGeneraliDocumento/Impo' +
-        'rtoTotaleDocumento">'
+        '                          <xsl:with-param name="tipo" select="Ti' +
+        'po" />'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="format-number(DatiGenerali/Dat' +
-        'iGeneraliDocumento/ImportoTotaleDocumento,  '#39'###.###.##0,00'#39', '#39'e' +
-        'uro'#39')"/>'
-      #9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9'</tr>'
-      #9#9#9#9#9#9#9#9#9'<!-- FINE Importo Totale  -->'
-      #9#9#9#9#9#9#9#9'</tbody>'
-      #9#9#9#9#9#9#9'</table>'
-      #9#9#9#9#9#9#9'<!--  FINE Dettaglio Linee   -->'
-      #9#9#9#9#9#9#9'<!--   Dati Ritenuta Acconto   -->'
+        '                          <xsl:with-param name="percentuale" sel' +
+        'ect="Percentuale" />'
       
-        #9#9#9#9#9#9#9'<xsl:if test="DatiGenerali/DatiGeneraliDocumento/DatiRite' +
-        'nuta">'
-      #9#9#9#9#9#9#9#9'<div class="separa">'
-      #9#9#9#9#9#9#9#9'</div>'
+        '                          <xsl:with-param name="importo" select=' +
+        '"Importo" />'
+      '                        </xsl:call-template>'
+      ''
+      ''
+      '                      </xsl:for-each>'
+      '                    </td>'
+      ''
+      ''
+      ''
+      ''
+      #9#9#9#9#9'<td class="import">'
+      ''
       
-        #9#9#9#9#9#9#9#9'<xsl:apply-templates select="DatiGenerali/DatiGeneraliDo' +
-        'cumento/DatiRitenuta"/>'
-      #9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9'<!--  Fine Dati Ritenuta   -->'
-      #9#9#9#9#9#9#9'<div class="separa">'
-      #9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9'<!--   Dati Pagamento   -->'
-      #9#9#9#9#9#9#9'<table class="tbFoglio">'
-      #9#9#9#9#9#9#9#9'<thead>'
-      #9#9#9#9#9#9#9#9#9'<tr>'
-      #9#9#9#9#9#9#9#9#9#9'<th>Modalit'#224' pagamento</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th>IBAN</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th>Istituto</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th class="data">Data scadenza</th>'
-      #9#9#9#9#9#9#9#9#9#9'<th class="ximport">Importo</th>'
-      #9#9#9#9#9#9#9#9#9'</tr>'
-      #9#9#9#9#9#9#9#9'</thead>'
-      #9#9#9#9#9#9#9#9'<tbody>'
-      #9#9#9#9#9#9#9#9#9'<xsl:for-each select="DatiPagamento">'
-      #9#9#9#9#9#9#9#9#9#9'<xsl:for-each select="DettaglioPagamento">'
-      #9#9#9#9#9#9#9#9#9#9#9'<tr>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<td>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="ModalitaPagamento">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="ModalitaPagamento"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:variable name="MP">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="ModalitaPagamento"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:variable>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP01'#39'">'
+        '                      <xsl:if test="DatiGenerali/DatiGeneraliDoc' +
+        'umento/Arrotondamento">'
+      ''
+      
+        '                        <xsl:value-of select="format-number(Dati' +
+        'Generali/DatiGeneraliDocumento/Arrotondamento,  '#39'###.###.##0,00'#39 +
+        ', '#39'euro'#39')" />'
+      ''
+      '                      </xsl:if>'
+      '                    </td>'
+      ''
+      '                    <td colspan="4" class="import">'
+      ''
+      
+        '                      <xsl:if test="DatiGenerali/DatiGeneraliDoc' +
+        'umento/ImportoTotaleDocumento">'
+      ''
+      
+        '                        <xsl:value-of select="format-number(Dati' +
+        'Generali/DatiGeneraliDocumento/ImportoTotaleDocumento,  '#39'###.###' +
+        '.##0,00'#39', '#39'euro'#39')" />'
+      ''
+      '                      </xsl:if>'
+      '                    </td>'
+      ''
+      '                  </tr>'
+      ''
+      '                  <!-- FINE Importo Totale  -->'
+      '                </tbody>'
+      '              </table>'
+      '              <!--  FINE Dettaglio Linee   -->'
+      ''
+      ''
+      '              <!--   Dati Ritenuta Acconto   -->'
+      
+        '              <xsl:if test="DatiGenerali/DatiGeneraliDocumento/D' +
+        'atiRitenuta">'
+      '                <div class="separa"> </div>'
+      ''
+      #9#9#9#9'   <table class="tbFoglio">'
+      ''
+      #9#9#9#9#9'  <thead>'
+      #9#9#9#9#9#9'<tr>'
+      #9#9#9#9#9#9'  <th class="title"> Dati ritenuta d'#39'acconto</th>'
+      #9#9#9#9#9#9'  <th class="perc">Aliquota ritenuta</th>'
+      #9#9#9#9#9#9'  <th>Causale'#9'</th>'
+      #9#9#9#9#9#9'  <th width="15%">Importo </th>'
+      #9#9#9#9#9#9'</tr>'
+      #9#9#9#9#9'  </thead>'
+      #9#9#9#9#9'  <tbody>'
+      ''
+      
+        #9#9#9#9#9'   <xsl:for-each select="DatiGenerali/DatiGeneraliDocumento' +
+        '/DatiRitenuta"  >'
+      #9#9#9#9#9#9#9'<xsl:apply-templates select="." />'
+      #9#9#9#9#9#9'</xsl:for-each>'
+      #9#9#9#9#9'  </tbody>'
+      #9#9#9#9#9'</table>'
+      ''
+      '              </xsl:if>'
+      '              <!--  Fine Dati Ritenuta   -->'
+      ''
+      ''
+      '              <div class="separa"> </div>'
+      ''
+      ''
+      '              <!--   Dati Pagamento   -->'
+      ''
+      '              <table class="tbFoglio" >'
+      '                <thead>'
+      '                  <tr>'
+      
+        '                    <th style="width:200px">Modalit'#224' pagamento</' +
+        'th>'
+      '                    <th>Dettagli</th>'
+      '                    <th  style="width:180px">Scadenze</th>'
+      '                    <th class="ximport">Importo</th>'
+      '                  </tr>'
+      '                </thead>'
+      '                <tbody>'
+      '                  <xsl:for-each select="DatiPagamento" >'
+      ''
+      
+        '                    <xsl:variable name="CountDettaglioPagamento"' +
+        '>'
+      
+        '                      <xsl:value-of select="count(DettaglioPagam' +
+        'ento)" />'
+      '                    </xsl:variable>'
+      ''
+      ''
+      '                    <xsl:for-each select="DettaglioPagamento">'
+      ''
+      '                      <tr>'
+      '                        <td>'
+      ''
+      '                          <xsl:if test="ModalitaPagamento">'
+      '                            <span>'
+      
+        '                              <xsl:value-of select="ModalitaPaga' +
+        'mento" />'
+      '                            </span>'
+      '                            <xsl:variable name="MP">'
+      
+        '                              <xsl:value-of select="ModalitaPaga' +
+        'mento" />'
+      '                            </xsl:variable>'
+      '                            <xsl:choose>'
+      '                              <xsl:when test="$MP='#39'MP01'#39'">'
       '                                Contanti'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP02'#39'">'
+      '                              <xsl:when test="$MP='#39'MP02'#39'">'
       '                                Assegno'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP03'#39'">'
+      '                              <xsl:when test="$MP='#39'MP03'#39'">'
       '                                Assegno circolare'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP04'#39'">'
+      '                              <xsl:when test="$MP='#39'MP04'#39'">'
       '                                Contanti presso Tesoreria'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP05'#39'">'
+      '                              <xsl:when test="$MP='#39'MP05'#39'">'
       '                                Bonifico'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP06'#39'">'
+      '                              <xsl:when test="$MP='#39'MP06'#39'">'
       '                                Vaglia cambiario'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP07'#39'">'
+      '                              <xsl:when test="$MP='#39'MP07'#39'">'
       '                                Bollettino bancario'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP08'#39'">'
+      '                              <xsl:when test="$MP='#39'MP08'#39'">'
       '                                Carta di pagamento'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP09'#39'">'
+      '                              <xsl:when test="$MP='#39'MP09'#39'">'
       '                                RID'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP10'#39'">'
+      '                              <xsl:when test="$MP='#39'MP10'#39'">'
       '                                RID utenze'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP11'#39'">'
+      '                              <xsl:when test="$MP='#39'MP11'#39'">'
       '                                RID veloce'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP12'#39'">'
+      '                              <xsl:when test="$MP='#39'MP12'#39'">'
       '                                RIBA'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP13'#39'">'
+      '                              <xsl:when test="$MP='#39'MP13'#39'">'
       '                                MAV'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP14'#39'">'
+      '                              <xsl:when test="$MP='#39'MP14'#39'">'
       '                                Quietanza erario'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP15'#39'">'
+      '                              <xsl:when test="$MP='#39'MP15'#39'">'
       
         '                                Giroconto su conti di contabilit' +
         #224' speciale'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP16'#39'">'
+      '                              <xsl:when test="$MP='#39'MP16'#39'">'
       '                                Domiciliazione bancaria'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP17'#39'">'
+      '                              <xsl:when test="$MP='#39'MP17'#39'">'
       '                                Domiciliazione postale'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP18'#39'">'
+      '                              <xsl:when test="$MP='#39'MP18'#39'">'
       '                                Bollettino di c/c postale'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP19'#39'">'
+      '                              <xsl:when test="$MP='#39'MP19'#39'">'
       '                                SEPA Direct Debit'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP20'#39'">'
+      '                              <xsl:when test="$MP='#39'MP20'#39'">'
       '                                SEPA Direct Debit CORE'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP21'#39'">'
+      '                              <xsl:when test="$MP='#39'MP21'#39'">'
       '                                SEPA Direct Debit B2B'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39'MP22'#39'">'
+      '                              <xsl:when test="$MP='#39'MP22'#39'">'
       '                                Trattenuta su somme gi'#224' riscosse'
       '                              </xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$MP='#39#39'">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span></span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:otherwise>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:choose>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="OpzDescrizionePagamento"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<td>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="IBAN">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="IBAN"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<td>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="IstitutoFinanziario">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="IstitutoFinanziario"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<td class="data">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="DataScadenzaPagamento">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:call-template name="FormatDateIta">'
+      #9#9#9#9#9#9#9'  <xsl:when test="$MP='#39'MP23'#39'">'
+      #9#9#9#9#9#9#9#9'  PagoPA'
+      #9#9#9#9#9#9#9#9'</xsl:when>'
+      '                              <xsl:when test="$MP='#39#39'">'
+      '                              </xsl:when>'
+      '                              <xsl:otherwise>'
+      '                                <span></span>'
+      '                              </xsl:otherwise>'
+      '                            </xsl:choose>'
+      '                            <span>'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:with-param name="DateTime" select="DataScade' +
-        'nzaPagamento"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'<td class="import">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="ImportoPagamento">'
+        '                              <xsl:value-of select="OpzDescrizio' +
+        'nePagamento" />'
+      '                            </span>'
+      '                          </xsl:if>'
+      ''
+      '                        </td>'
+      ''
+      ''
+      '                          <td>'
+      '                            <xsl:apply-templates select="."/>'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="format-number(ImportoPagamen' +
-        'to,  '#39'###.###.##0,00'#39', '#39'euro'#39')"/>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9#9#9#9#9#9#9'</td>'
-      #9#9#9#9#9#9#9#9#9#9#9'</tr>'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9#9#9'</tbody>'
-      #9#9#9#9#9#9#9'</table>'
-      #9#9#9#9#9#9#9'<!-- FINE   Dati Pagamento   -->'
-      #9#9#9#9#9#9#9'<div style="height:10px">'
-      #9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9'<xsl:for-each select="OpzRiepilogoIVA">'
-      #9#9#9#9#9#9#9#9'<div class="tx-xsmall">'
-      '                  * <xsl:value-of select="."/>'
-      #9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9#9'<xsl:if test="OpzRiepilogoIVA">'
-      #9#9#9#9#9#9#9#9'<div style="height:10px">'
-      #9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9#9'</xsl:otherwise>'
-      #9#9#9#9#9'</xsl:choose>'
-      #9#9#9#9#9'<!-- Definizione degli allegati -->'
-      #9#9#9#9#9'<xsl:if test="Allegati">'
-      #9#9#9#9#9#9'<div class="tx-small">Allegati:</div>'
-      #9#9#9#9#9#9'<ul class="ulAllegati">'
-      #9#9#9#9#9#9#9'<xsl:for-each select="Allegati">'
-      #9#9#9#9#9#9#9#9'<li>'
-      #9#9#9#9#9#9#9#9#9'<div class="tx-small">'
-      #9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="NomeAttachment"/>'
-      #9#9#9#9#9#9#9#9#9#9'<xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9'</xsl:text>'
-      #9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="DescrizioneAttachment"/>'
-      #9#9#9#9#9#9#9#9#9'</div>'
-      #9#9#9#9#9#9#9#9'</li>'
-      #9#9#9#9#9#9#9'</xsl:for-each>'
-      #9#9#9#9#9#9'</ul>'
-      #9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9'<!--Definizione se fattura '#232' AssoSofware-->'
-      #9#9#9#9#9'<xsl:if test="$posASWRELSTD &gt; 0 ">'
-      #9#9#9#9#9#9'<div class="dtASWRELSTD">'
+        '                            <xsl:if test="(position( )) !=  $Cou' +
+        'ntDettaglioPagamento">'
       
-        #9#9#9#9#9#9#9'<label class="headerLabel">Conforme Standard AssoSoftware' +
-        '</label>'
-      #9#9#9#9#9#9'</div>'
-      #9#9#9#9#9'</xsl:if>'
-      #9#9#9#9#9'<!-- FINE    ASWRELSTD  -->'
-      #9#9#9#9'</xsl:for-each>'
-      #9#9#9#9'<!--FINE BODY-->'
-      #9#9#9'</div>'
-      #9#9'</xsl:if>'
-      #9'</xsl:template>'
-      #9'<xsl:template match="/">'
-      #9#9'<html>'
-      #9#9#9'<head>'
-      #9#9#9#9'<meta http-equiv="X-UA-Compatible" content="IE=edge"/>'
-      #9#9#9#9'<style type="text/css">'
-      #9#9'  body {'
-      #9#9'  margin-right: 3em;'
-      #9#9'  }'
+        '                              <xsl:if test="Beneficiario or CodU' +
+        'fficioPostale or CognomeQuietanzante or CognomeQuietanzante or C' +
+        'FQuietanzante or TitoloQuietanzante'
+      
+        #9#9#9#9#9#9#9'or IstitutoFinanziario or IBAN or ABI or CAB or BIC or Sc' +
+        'ontoPagamentoAnticipato or DataLimitePagamentoAnticipato or Pena' +
+        'litaPagamentiRitardati'
+      #9#9#9#9#9#9#9'or DataDecorrenzaPenale or CodicePagamento">'
+      
+        '                                <xsl:text>----------------------' +
+        '--</xsl:text>'
+      '                              </xsl:if>'
+      '                            </xsl:if>'
+      ''
+      '                          </td>'
+      ''
+      '                        <td>'
+      ''
+      
+        '                          <xsl:if test="DataRiferimentoTerminiPa' +
+        'gamento or GiorniTerminiPagamento">'
+      ''
+      '                            <xsl:choose>'
+      
+        '                              <xsl:when test="DataRiferimentoTer' +
+        'miniPagamento">'
+      
+        '                                <xsl:text>Data termine </xsl:tex' +
+        't>'
+      
+        '                                <xsl:call-template name="FormatD' +
+        'ateIta">'
+      
+        '                                  <xsl:with-param name="DateTime' +
+        '" select="DataRiferimentoTerminiPagamento" />'
+      '                                </xsl:call-template>'
+      ''
+      
+        '                                <xsl:if test="GiorniTerminiPagam' +
+        'ento">'
+      
+        '                                  <xsl:text> </xsl:text><xsl:val' +
+        'ue-of select="GiorniTerminiPagamento" />gg'
+      '                                </xsl:if>'
+      '                              </xsl:when>'
+      '                              <xsl:otherwise>'
+      
+        '                                <xsl:text>Giorni termine </xsl:t' +
+        'ext>'
+      
+        '                                <xsl:value-of select="GiorniTerm' +
+        'iniPagamento" />'
+      ''
+      '                              </xsl:otherwise>'
+      '                            </xsl:choose>'
+      '                            <br/>'
+      '                          </xsl:if>'
+      ''
+      '                          <xsl:if test="DataScadenzaPagamento">'
+      
+        '                            Data scadenza <xsl:call-template nam' +
+        'e="FormatDateIta">'
+      
+        '                              <xsl:with-param name="DateTime" se' +
+        'lect="DataScadenzaPagamento" />'
+      '                            </xsl:call-template>'
+      '                          </xsl:if>'
+      '                        </td>'
+      '                        <td class="import">'
+      ''
+      '                          <xsl:if test="ImportoPagamento">'
+      ''
+      
+        '                            <xsl:value-of select="format-number(' +
+        'ImportoPagamento,  '#39'###.###.##0,00'#39', '#39'euro'#39')" />'
+      ''
+      '                          </xsl:if>'
+      '                        </td>'
+      '                      </tr>'
+      '                    </xsl:for-each>'
+      ''
+      '                  </xsl:for-each>'
+      '                </tbody>'
+      '              </table>'
+      '              <!-- FINE   Dati Pagamento   -->'
+      ''
+      '              <div style="height:10px" > </div>'
+      ''
+      '              <xsl:for-each select="OpzRiepilogoIVA"  >'
+      '                <div class="tx-xsmall">'
+      '                  * <xsl:value-of select="." />'
+      '                </div>'
+      ''
+      '              </xsl:for-each>'
+      '              <xsl:if test="OpzRiepilogoIVA">'
+      '                <div style="height:10px" > </div>'
+      '              </xsl:if>'
+      ''
+      '            </xsl:otherwise>'
+      ''
+      '          </xsl:choose>'
+      ''
+      '          <!-- Definizione degli allegati -->'
+      '          <xsl:if test="Allegati">'
+      ''
+      '            <div class="tx-small" >Allegati:</div>'
+      ''
+      '            <ul class="ulAllegati">'
+      '              <xsl:for-each select="Allegati">'
+      '                <li>'
+      '                  <div class="tx-small">'
+      ''
+      '                    <xsl:value-of select="NomeAttachment" />'
+      '                    <xsl:text> </xsl:text>'
+      
+        '                    <xsl:value-of select="DescrizioneAttachment"' +
+        ' />'
+      '                  </div>'
+      '                </li>'
+      ''
+      ''
+      '              </xsl:for-each>'
+      ''
+      '            </ul>'
+      ''
+      '          </xsl:if>'
+      ''
+      '          <!--Definizione se fattura '#232' AssoSofware-->'
+      ''
+      '          <xsl:if test="$posASWRELSTD &gt; 0 ">'
+      '            <div class="dtASWRELSTD">'
+      ''
+      
+        '              <label class="headerLabel">Conforme Standard AssoS' +
+        'oftware</label>'
+      ''
+      '            </div>'
+      ''
+      '          </xsl:if>'
+      ''
+      ''
+      '          <!-- FINE    ASWRELSTD  -->'
+      ''
+      ''
+      '        </xsl:for-each>'
+      '        <!--FINE BODY-->'
+      ''
+      '      </div>'
+      ''
+      ''
+      ''
+      '    </xsl:if>'
+      '  </xsl:template>'
+      ''
+      '  <xsl:template match="/">'
+      '    <html>'
+      '      <head>'
+      '        <meta http-equiv="X-UA-Compatible" content="IE=edge" />'
+      '        <style type="text/css">'
       ''
       '          #fattura-elettronica'
       '          {'
@@ -6881,7 +9393,8 @@ object dmResources: TdmResources
         '-serif;'
       '          margin-left: auto;'
       '          margin-right: auto;'
-      '          min-width: 400px;'
+      '          max-width: 1280px;'
+      '          min-width: 800px;'
       '          padding: 0;  }'
       ''
       '          #fattura-elettronica'
@@ -6990,7 +9503,7 @@ object dmResources: TdmResources
       ''
       '          table.tbFoglio tbody'
       '          {'
-      '          border: solid 1px red;'
+      '          border: solid 1px Gray;'
       '          }'
       ''
       '          table.tbFoglio th .perc'
@@ -7112,54 +9625,59 @@ object dmResources: TdmResources
       ''
       ''
       '        </style>'
-      #9#9#9'</head>'
-      #9#9#9'<body>'
-      #9#9#9#9'<div id="fattura-container">'
-      #9#9#9#9#9'<xsl:choose>'
-      #9#9#9#9#9#9'<xsl:when test="d:FatturaElettronicaSemplificata">'
-      #9#9#9#9#9#9#9'<!--versione 1.0 SEMPLIFICATA-->'
-      #9#9#9#9#9#9#9'<xsl:call-template name="FatturaElettronica">'
+      '      </head>'
+      '      <body>'
+      '        <div id="fattura-container">'
+      ''
+      '          <xsl:choose>'
+      '            <xsl:when test="d:FatturaElettronicaSemplificata">'
+      '              <!--versione 1.0 SEMPLIFICATA-->'
+      '              <xsl:call-template name="FatturaElettronica">'
       
-        #9#9#9#9#9#9#9#9'<xsl:with-param name="TipoFattura" select="d:FatturaElet' +
-        'tronicaSemplificata"/>'
-      #9#9#9#9#9#9#9#9'<xsl:with-param name="IsFPRS" select="1"/>'
-      #9#9#9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9#9#9'</xsl:when>'
-      #9#9#9#9#9#9'<xsl:when test="c:FatturaElettronica">'
-      #9#9#9#9#9#9#9'<!--versione 1.0-->'
-      #9#9#9#9#9#9#9'<xsl:call-template name="FatturaElettronica">'
+        '                <xsl:with-param name="TipoFattura" select="d:Fat' +
+        'turaElettronicaSemplificata" />'
+      '                <xsl:with-param name="IsFPRS" select="1" />'
+      '              </xsl:call-template>'
+      '            </xsl:when>'
+      '            <xsl:when test="c:FatturaElettronica">'
+      '              <!--versione 1.0-->'
+      '              <xsl:call-template name="FatturaElettronica">'
       
-        #9#9#9#9#9#9#9#9'<xsl:with-param name="TipoFattura" select="c:FatturaElet' +
-        'tronica"/>'
-      #9#9#9#9#9#9#9#9'<xsl:with-param name="IsFPRS" select="0"/>'
-      #9#9#9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9#9#9'</xsl:when>'
-      #9#9#9#9#9#9'<xsl:when test="b:FatturaElettronica">'
-      #9#9#9#9#9#9#9'<!--versione 1.1-->'
-      #9#9#9#9#9#9#9'<xsl:call-template name="FatturaElettronica">'
+        '                <xsl:with-param name="TipoFattura" select="c:Fat' +
+        'turaElettronica" />'
+      '                <xsl:with-param name="IsFPRS" select="0" />'
+      '              </xsl:call-template>'
+      '            </xsl:when>'
+      '            <xsl:when test="b:FatturaElettronica">'
+      '              <!--versione 1.1-->'
+      '              <xsl:call-template name="FatturaElettronica">'
       
-        #9#9#9#9#9#9#9#9'<xsl:with-param name="TipoFattura" select="b:FatturaElet' +
-        'tronica"/>'
-      #9#9#9#9#9#9#9#9'<xsl:with-param name="IsFPRS" select="0"/>'
-      #9#9#9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9#9#9'</xsl:when>'
-      #9#9#9#9#9#9'<xsl:otherwise>'
-      #9#9#9#9#9#9#9'<xsl:call-template name="FatturaElettronica">'
-      #9#9#9#9#9#9#9#9'<!--versione 1.2-->'
+        '                <xsl:with-param name="TipoFattura" select="b:Fat' +
+        'turaElettronica" />'
+      '                <xsl:with-param name="IsFPRS" select="0" />'
+      '              </xsl:call-template>'
+      '            </xsl:when>'
+      '            <xsl:otherwise>'
+      '              <xsl:call-template name="FatturaElettronica">'
+      '                <!--versione 1.2-->'
       
-        #9#9#9#9#9#9#9#9'<xsl:with-param name="TipoFattura" select="a:FatturaElet' +
-        'tronica"/>'
-      #9#9#9#9#9#9#9#9'<xsl:with-param name="IsFPRS" select="0"/>'
-      #9#9#9#9#9#9#9'</xsl:call-template>'
-      #9#9#9#9#9#9'</xsl:otherwise>'
-      #9#9#9#9#9'</xsl:choose>'
-      #9#9#9#9'</div>'
-      #9#9#9'</body>'
-      #9#9'</html>'
-      #9'</xsl:template>'
-      '</xsl:stylesheet>')
-    Left = 38
-    Top = 75
+        '                <xsl:with-param name="TipoFattura" select="a:Fat' +
+        'turaElettronica" />'
+      '                <xsl:with-param name="IsFPRS" select="0" />'
+      '              </xsl:call-template>'
+      '            </xsl:otherwise>'
+      '          </xsl:choose>'
+      ''
+      ''
+      ''
+      '        </div>'
+      '      </body>'
+      '    </html>'
+      '  </xsl:template>'
+      '</xsl:stylesheet>'
+      '')
+    Left = 62
+    Top = 131
     DOMVendorDesc = 'MSXML'
   end
   object SVGTemplates: TSVGIconImageCollection
@@ -7186,8 +9704,8 @@ object dmResources: TdmResources
           '3.115,7.9999999 14.5,7.9999999 H 37 c 0,-1 0,0 0,-1 z"/>'#13#10'</svg>' +
           #13#10
       end>
-    Left = 124
-    Top = 40
+    Left = 244
+    Top = 136
   end
   object AgenziaEntrateTemplate: TXMLDocument
     NodeIndentStr = #9
@@ -7195,7 +9713,7 @@ object dmResources: TdmResources
     XML.Strings = (
       '<?xml version="1.0"?>'
       '<xsl:stylesheet'
-      #9'version="1.1"'
+      #9'version="1.2.2"'
       #9'xmlns:xsl="http://www.w3.org/1999/XSL/Transform"'
       
         #9'xmlns:a="http://ivaservizi.agenziaentrate.gov.it/docs/xsd/fattu' +
@@ -7396,7 +9914,7 @@ object dmResources: TdmResources
       #9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:if>'
       #9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:if test="CodiceDestinatario">'
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9'<li>'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'Codice identificativo destinatario:'
+      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'Codice Amministrazione destinataria:'
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<span>'
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:value-of select="CodiceDestinatario" />'
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</span>'
@@ -8503,12 +11021,14 @@ object dmResources: TdmResources
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'con versamento IVA)'
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TD='#39'TD24'#39'">'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'(fattura differita - art.21 c.4 lett. a)'
+      
+        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'(fattura differita - art.21 c.4 terzo periodo ' +
+        'lett. a - DPR 633/72)'
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TD='#39'TD25'#39'">'
       
         #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'(fattura differita - art.21 c.4 terzo periodo ' +
-        'lett. b)'
+        'lett. b - DPR 633/72)'
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TD='#39'TD26'#39'">'
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'(cessione di beni ammortizzabili e per'
@@ -8517,6 +11037,11 @@ object dmResources: TdmResources
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TD='#39'TD27'#39'">'
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'(fattura per autoconsumo o per cessioni'
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'gratuite senza rivalsa)'
+      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
+      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TD='#39'TD28'#39'">'
+      
+        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'(acquisti da San Marino con IVA - Fattura Cart' +
+        'acea)'
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$TD='#39#39'">'
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
@@ -8980,7 +11505,13 @@ object dmResources: TdmResources
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$NT='#39'N6.2'#39'">'
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'(inversione contabile - cessione di oro e'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'argento puro)'
+      
+        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'argento ai sensi della legge 7/2000 nonch'#233' ' +
+        'di oreficeria'
+      
+        '                                                                ' +
+        '                                                                ' +
+        '                                        usata ad OPO)'
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$NT='#39'N6.3'#39'">'
       
@@ -9020,18 +11551,14 @@ object dmResources: TdmResources
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$NT='#39'N7'#39'">'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'(IVA assolta in altro stato UE - vendite a ' +
-        'distanza'
+        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'(IVA assolta in altro stato UE - prestazion' +
+        'e di servizi di'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'ex art.40 c.3 e 4 e art.41 c.1 lett. b DL 3' +
-        '31/93;'
+        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'telecomunicazioni, tele-radiodiffusione ed ' +
+        'elettronici ex'
       
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'prestazione di servizi di telecomunicazioni' +
-        ','
-      
-        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'tele-radiodiffusione ed elettronici ex art.' +
-        '7-sexies'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'lett. f, g, e art.74-sexies DPR 633/72)'
+        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'art. 7-octies, comma 1 lett. a, b, art. 74-' +
+        'sexies DPR 633/72)'
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$NT='#39#39'">'
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
@@ -10194,7 +12721,13 @@ object dmResources: TdmResources
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$NAT='#39'N6.2'#39'">'
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'(inversione contabile - cessione di oro e'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'argento puro)'
+      
+        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'argento ai sensi della legge 7/2000 nonch'#233' di' +
+        ' oreficeria'
+      
+        '                                                                ' +
+        '                                                                ' +
+        '                        usata ad OPO)'
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$NAT='#39'N6.3'#39'">'
       
@@ -10400,7 +12933,13 @@ object dmResources: TdmResources
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$NAT1='#39'N6.2'#39'">'
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'(inversione contabile - cessione di oro e'
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'argento puro)'
+      
+        #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'argento ai sensi della legge 7/2000 nonch'#233' di' +
+        ' oreficeria'
+      
+        '                                                                ' +
+        '                                                                ' +
+        '                        usata ad OPO)'
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'</xsl:when>'
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9#9'<xsl:when test="$NAT1='#39'N6.3'#39'">'
       
@@ -10949,8 +13488,8 @@ object dmResources: TdmResources
       #9#9'</html>'
       #9'</xsl:template>'
       '</xsl:stylesheet>')
-    Left = 38
-    Top = 103
+    Left = 62
+    Top = 191
     DOMVendorDesc = 'MSXML'
   end
   object SynXSLSyn: TSynXMLSyn
@@ -10959,7 +13498,7 @@ object dmResources: TdmResources
     Options.AutoDetectLineLimit = 0
     Options.Visible = False
     WantBracesParsed = False
-    Left = 96
+    Left = 216
     Top = 8
   end
   object SynXSLSynDark: TSynXMLSyn
@@ -10981,14 +13520,14 @@ object dmResources: TdmResources
     DocTypeAttri.Foreground = 9750039
     SymbolAttri.Foreground = 6008319
     WantBracesParsed = False
-    Left = 133
+    Left = 317
     Top = 8
   end
   object EditingTemplate: TXMLDocument
     NodeIndentStr = #9
     Options = [doNodeAutoIndent]
-    Left = 38
-    Top = 131
+    Left = 62
+    Top = 243
     DOMVendorDesc = 'MSXML'
   end
   object SudTirolo_ITA_DEU: TXMLDocument
@@ -16621,8 +19160,8 @@ object dmResources: TdmResources
       '          </html>'
       '     </xsl:template>'
       '</xsl:stylesheet>')
-    Left = 39
-    Top = 160
+    Left = 63
+    Top = 288
     DOMVendorDesc = 'MSXML'
   end
 end

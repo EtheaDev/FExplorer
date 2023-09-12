@@ -34,7 +34,7 @@ type
     FFileStream: TFileStream;
     FPreviewGUIDStr: string;
     FFileName: string;
-    FLoaded :Boolean;
+    FLoaded: Boolean;
     FPreviewHandler: IPreviewHandler;
     procedure SetFileName(const Value: string);
     procedure LoadPreviewHandler;
@@ -47,24 +47,23 @@ type
     destructor Destroy; override;
   end;
 
-
 implementation
 
 uses
- SysUtils,
- Windows,
- Graphics,
- ComObj,
- ActiveX,
- Registry,
- PropSys;
+  SysUtils,
+  Windows,
+  Graphics,
+  ComObj,
+  ActiveX,
+  Registry,
+  PropSys;
 
 constructor THostPreviewHandler.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   FPreviewHandler:=nil;
   FPreviewGUIDStr:='';
-  FFileStream:=nil;
+  FFileStream := nil;
 end;
 
 procedure THostPreviewHandler.Paint;
@@ -73,28 +72,27 @@ const
 var
   lpRect: TRect;
 begin
- if (FPreviewGUIDStr<>'') and (FPreviewHandler<>nil) and not FLoaded then
- begin
-  FLoaded:=True;
-  FPreviewHandler.DoPreview;
-  FPreviewHandler.SetFocus;
- end
- else
- if FPreviewGUIDStr='' then
- begin
-   lpRect:=Rect(0, 0, Self.Width, Self.Height);
-   Canvas.Brush.Style :=bsClear;
-   Canvas.Font.Color  :=clWindowText;
-   DrawText(Canvas.Handle, PChar(Msg) ,Length(Msg), lpRect, DT_VCENTER or DT_CENTER or DT_SINGLELINE);
- end;
+  if (FPreviewGUIDStr <> '') and (FPreviewHandler <> nil) and not FLoaded then
+  begin
+    FLoaded := True;
+    FPreviewHandler.DoPreview;
+    FPreviewHandler.SetFocus;
+  end
+  else(*if FPreviewGUIDStr = '' then*)
+  begin
+    lpRect := Rect(0, 0, Self.Width, Self.Height);
+    Canvas.Brush.Style := bsClear;
+    Canvas.Font.Color := clWindowText;
+    DrawText(Canvas.Handle, PChar(Msg), Length(Msg), lpRect, DT_VCENTER or DT_CENTER or DT_SINGLELINE);
+  end;
 end;
 
 destructor THostPreviewHandler.Destroy;
 begin
-  if (FPreviewHandler<>nil) then
+  if (FPreviewHandler <> nil) then
     FPreviewHandler.Unload;
 
-  if FFileStream<>nil then
+  if FFileStream <> nil then
     FreeAndNil(FFileStream);
 
   inherited;
@@ -107,23 +105,23 @@ var
   LRegistry: TRegistry;
   LExt, LFileClass, LPerceivedType, LKey: String;
 begin
-  Result:='';
+  Result := '';
   LExt := ExtractFileExt(AFileName);
   LRegistry := TRegistry.Create(KEY_READ);
   try
 
-    //Check on the registered Preview Handlers using the file extension
+    // Check on the registered Preview Handlers using the file extension
     LRegistry.RootKey := HKEY_CLASSES_ROOT;
-    LKey := LExt + '\shellex\'+SID_IPreviewHandler;
+    LKey := LExt + '\shellex\' + SID_IPreviewHandler;
     if LRegistry.KeyExists(LKey) and LRegistry.OpenKeyReadOnly(LKey) then
     begin
-      Result:=LRegistry.ReadString('');
-      if Result<>'' then
+      Result := LRegistry.ReadString('');
+      if Result <> '' then
         Exit;
     end;
 
-    //Get the perceived Types
-    //https://msdn.microsoft.com/en-us/library/windows/desktop/cc144150(v=vs.85).aspx
+    // Get the perceived Types
+    // https://msdn.microsoft.com/en-us/library/windows/desktop/cc144150(v=vs.85).aspx
     if (LRegistry.OpenKeyReadOnly(LExt)) then
     begin
       LFileClass := LRegistry.ReadString('');
@@ -131,38 +129,39 @@ begin
       LRegistry.CloseKey();
     end;
 
-    //Check on the registered Preview Handlers using  the file class
-    LKey := LFileClass + '\shellex\'+SID_IPreviewHandler;
-    if (LFileClass<>'') and  LRegistry.KeyExists(LKey) and LRegistry.OpenKeyReadOnly(LKey) then
+    // Check on the registered Preview Handlers using  the file class
+    LKey := LFileClass + '\shellex\' + SID_IPreviewHandler;
+    if (LFileClass <> '') and LRegistry.KeyExists(LKey) and
+      LRegistry.OpenKeyReadOnly(LKey) then
     begin
       Result := LRegistry.ReadString('');
-      if Result<>'' then
+      if Result <> '' then
         Exit
       else
-      LRegistry.CloseKey();
+        LRegistry.CloseKey();
     end;
 
-    //Finding the associated preview handler for some extensions can require an additional search
-    //in the HKEY_CLASSES_ROOT\SystemFileAssociations
+    // Finding the associated preview handler for some extensions can require an additional search
+    // in the HKEY_CLASSES_ROOT\SystemFileAssociations
 
-    LKey := 'SystemFileAssociations\'+ LExt + '\shellex\' + SID_IPreviewHandler;
+    LKey := 'SystemFileAssociations\' + LExt + '\shellex\' + SID_IPreviewHandler;
     if LRegistry.KeyExists(LExt) and LRegistry.OpenKeyReadOnly(LKey) then
     begin
       Result := LRegistry.ReadString('');
-      if Result<>'' then
+      if Result <> '' then
         Exit
       else
-      LRegistry.CloseKey();
+        LRegistry.CloseKey();
     end;
 
-    LKey := 'SystemFileAssociations\'+ LPerceivedType + '\shellex\' + SID_IPreviewHandler;
+    LKey := 'SystemFileAssociations\' + LPerceivedType + '\shellex\' + SID_IPreviewHandler;
     if LRegistry.KeyExists(LExt) and LRegistry.OpenKeyReadOnly(LKey) then
     begin
       Result := LRegistry.ReadString('');
-      if Result<>'' then
+      if Result <> '' then
         Exit
       else
-      LRegistry.CloseKey();
+        LRegistry.CloseKey();
     end;
 
   finally
@@ -170,9 +169,6 @@ begin
     LRegistry.Free;
   end;
 end;
-
-
-
 
 procedure THostPreviewHandler.LoadPreviewHandler;
 const
@@ -187,27 +183,34 @@ var
   LShellItem: IShellItem;
 begin
 
-  FLoaded:=False;
-  FPreviewGUIDStr:=GetPreviewHandlerCLSID(FFileName);
-  if FPreviewGUIDStr='' then exit;
+  FLoaded := False;
+  FPreviewGUIDStr := GetPreviewHandlerCLSID(FFileName);
+  if FPreviewGUIDStr = '' then
+    Exit;
 
   if FFileStream<>nil then
     FreeAndNil(FFileStream);
 
   LPreviewGUID:= StringToGUID(FPreviewGUIDStr);
 
-  FPreviewHandler := CreateComObject(LPreviewGUID) As IPreviewHandler;
-  if (FPreviewHandler = nil) then
-    exit;
+  Try
+    FPreviewHandler := CreateComObject(LPreviewGUID) As IPreviewHandler;
+    if (FPreviewHandler = nil) then
+      Exit;
+  Except
+    FPreviewHandler.Unload;
+    FPreviewHandler := nil;
+    Exit;
+  End;
 
   if FPreviewHandler.QueryInterface(IInitializeWithFile, LInitializeWithFile) = S_OK then
     LInitializeWithFile.Initialize(StringToOleStr(FFileName), STGM_READ)
   else
   if FPreviewHandler.QueryInterface(IInitializeWithStream, LInitializeWithStream) = S_OK then
   begin
-      FFileStream := TFileStream.Create(FFileName, fmOpenRead or fmShareDenyNone);
-      LIStream := TStreamAdapter.Create(FFileStream, soReference) as IStream;
-      LInitializeWithStream.Initialize(LIStream, STGM_READ);
+    FFileStream := TFileStream.Create(FFileName, fmOpenRead or fmShareDenyNone);
+    LIStream := TStreamAdapter.Create(FFileStream, soReference) as IStream;
+    LInitializeWithStream.Initialize(LIStream, STGM_READ);
   end
   else
   if FPreviewHandler.QueryInterface(IInitializeWithItem, LInitializeWithItem) = S_OK then
@@ -218,8 +221,8 @@ begin
   else
   begin
     FPreviewHandler.Unload;
-    FPreviewHandler:=nil;
-    exit;
+    FPreviewHandler := nil;
+    Exit;
   end;
 
   prc := ClientRect;
@@ -238,7 +241,7 @@ var
   prc: TRect;
 begin
   inherited;
-  if FPreviewHandler<>nil then
+  if FPreviewHandler <> nil then
   begin
     prc := ClientRect;
     FPreviewHandler.SetRect(prc);

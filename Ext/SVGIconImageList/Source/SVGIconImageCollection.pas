@@ -3,7 +3,7 @@
 {       SVGIconImageList: An extended ImageList for Delphi/VCL                 }
 {       to simplify use of SVG Icons (resize, opacity and more...)             }
 {                                                                              }
-{       Copyright (c) 2019-2022 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2019-2023 (Ethea S.r.l.)                                 }
 {       Author: Vincent Parrett                                                }
 {       Contributors: Carlo Barazzetta, Kiriakos Vlahos                        }
 {                                                                              }
@@ -96,6 +96,11 @@ type
     function GetNameByIndex(AIndex: Integer): String; override;
     function GetBitmap(AIndex: Integer; AWidth, AHeight: Integer): TBitmap; override;
     procedure Draw(ACanvas: TCanvas; ARect: TRect; AIndex: Integer; AProportional: Boolean = False); override;
+    procedure UpdateAttributes(AFixedColor: TColor;
+      AApplyFixedColorToRootOnly: Boolean;
+      AGrayScale: Boolean;
+      AAntiAliasColor: TColor;
+      AOpacity: Byte);
     {$ELSE}
     procedure Change;
     procedure Draw(ACanvas: TCanvas; ARect: TRect; AIndex: Integer; AProportional: Boolean = False);
@@ -464,6 +469,29 @@ begin
     Result := nil;
 end;
 
+procedure TSVGIconImageCollection.UpdateAttributes(
+  AFixedColor: TColor;
+  AApplyFixedColorToRootOnly: Boolean;
+  AGrayScale: Boolean;
+  AAntiAliasColor: TColor;
+  AOpacity: Byte);
+begin
+  if (AFixedColor <> FFixedColor) or
+    (AApplyFixedColorToRootOnly <> FApplyFixedColorToRootOnly) or
+    (AGrayScale <> FGrayScale) or
+    (AAntiAliasColor <> FAntiAliasColor) or
+    (AOpacity <> FOpacity) then
+  FSVGItems.BeginUpdate;
+  try
+    FFixedColor := AFixedColor;
+    FApplyFixedColorToRootOnly := AApplyFixedColorToRootOnly;
+    FGrayScale := AGrayScale;
+    FAntiAliasColor := AAntiAliasColor;
+    FOpacity := AOpacity;
+  finally
+    FSVGItems.EndUpdate;
+  end;
+end;
 {$ELSE}
 procedure TSVGIconImageCollection.Change;
 begin

@@ -25,7 +25,7 @@ package FrameViewer11;
 {$IMAGEBASE $400000}
 {$DEFINE RELEASE}
 {$ENDIF IMPLICITBUILDING}
-{$DESCRIPTION 'THtmlViewer, TFrameViewer, and TFrameBrowser for D10.2'}
+{$DESCRIPTION 'THtmlViewer, TFrameViewer, and TFrameBrowser for D11'}
 {$RUNONLY}
 {$IMPLICITBUILD ON}
 
