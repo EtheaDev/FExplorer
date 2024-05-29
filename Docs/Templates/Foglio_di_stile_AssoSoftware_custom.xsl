@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <xsl:stylesheet
 	version="1.1"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -111,40 +111,57 @@
 
   </xsl:template>
 
-  <!--DatiOrdineAcquisto  Vs.Ord. XXXXXX del 26/09/2018 CUP:YYYYYY CIG:ZZZZZZZ-->
-  <!--DatiContratto  Contratto XXXXXX del 26/09/2018 CUP:YYYYYY CIG:ZZZZZZZ -->
-  <!--DatiConvenzione  Convenzione XXXXXX del 26/09/2018 CUP:YYYYYY CIG:ZZZZZZZ -->
-  <!--DatiRicezione  Ricezione XXXXXX del 26/09/2018 CUP:YYYYYY CIG:ZZZZZZZ -->
-  <!--Fatture collegate Fatt.coll. XXXXXX del 26/09/2018 CUP:YYYYYY CIG:ZZZZZZZ -->
+ <!--DatiOrdineAcquisto  Rif.Ord. XXXXXX del 26/09/2018 CUP:YYYYYY CIG:ZZZZZZZ Codice commessa/convenzione:#cod-vvv#-->
+  <!--DatiContratto  Contratto XXXXXX del 26/09/2018 CUP:YYYYYY CIG:ZZZZZZZ Codice commessa/convenzione:#cod-vvv#-->
+  <!--DatiConvenzione  Convenzione XXXXXX del 26/09/2018 CUP:YYYYYY CIG:ZZZZZZZ Codice commessa/convenzione:#cod-vvv#-->
+  <!--DatiRicezione  Ricezione XXXXXX del 26/09/2018 CUP:YYYYYY CIG:ZZZZZZZ Codice commessa/convenzione:#cod-vvv#-->
+  <!--Fatture collegate Fatt.coll. XXXXXX del 26/09/2018 CUP:YYYYYY CIG:ZZZZZZZ Codice commessa/convenzione:#cod-vvv#-->
   <xsl:template name="DatiCorrelati">
-    <xsl:param name="Prefix" />
-    <xsl:param name="IdDocumento" />
-    <xsl:param name="Data" />
-    <xsl:param name="CodiceCUP" />
-    <xsl:param name="CodiceCIG" />
+     <xsl:param name="Prefix" />
     <xsl:variable name="descrizione" >
-      <xsl:value-of select="$Prefix" />
-      <xsl:value-of select="$IdDocumento" />
-      <xsl:if test="$Data">
-        <xsl:text> del </xsl:text>
-        <xsl:call-template name="FormatDateIta">
-          <xsl:with-param name="DateTime" select="$Data" />
-        </xsl:call-template>
-      </xsl:if>
-      <xsl:if test="$CodiceCUP">
-        <xsl:text> CUP: </xsl:text>
-        <xsl:value-of select="$CodiceCUP" />
-      </xsl:if>
-      <xsl:if test="$CodiceCIG">
-        <xsl:text> CIG: </xsl:text>
-        <xsl:value-of select="$CodiceCIG" />
-      </xsl:if>
+        <xsl:value-of select="$Prefix" />
+        <xsl:value-of select="IdDocumento" />
+        <xsl:if test="Data">
+          <xsl:text> del </xsl:text>
+          <xsl:call-template name="FormatDateIta">
+            <xsl:with-param name="DateTime" select="Data" />
+          </xsl:call-template>
+        </xsl:if>
+        <xsl:if test="CodiceCUP">
+          <xsl:text> CUP: </xsl:text>
+          <xsl:value-of select="CodiceCUP" />
+        </xsl:if>
+        <xsl:if test="CodiceCIG">
+          <xsl:text> CIG: </xsl:text>
+          <xsl:value-of select="CodiceCIG" />
+        </xsl:if>
+      
     </xsl:variable>
+
+    <xsl:variable name="descrizioneCC">
+      <xsl:if test="CodiceCommessaConvenzione">
+                  <xsl:text>Commessa/convenzione: </xsl:text>
+                <xsl:value-of select="CodiceCommessaConvenzione" />
+              </xsl:if>
+  </xsl:variable>
+
     <xsl:if test="$descrizione">
       <xsl:call-template name="AltraDescrizioneLinea">
         <xsl:with-param name="textDescrizione" select = "$descrizione" />
       </xsl:call-template>
     </xsl:if>
+
+    <xsl:if test="$descrizioneCC">
+      <xsl:call-template name="AltraDescrizioneLinea">
+        <xsl:with-param name="textDescrizione" select = "$descrizioneCC" />
+      </xsl:call-template>
+    </xsl:if>
+
+
+ 
+
+   
+
   </xsl:template>
 
   <xsl:template match="DatiDDT"> 
@@ -216,16 +233,10 @@
       <xsl:otherwise>
 	  
 	  <xsl:for-each select="$TipoFattura/FatturaElettronicaBody[$IndiceBody]/DatiGenerali/DatiOrdineAcquisto[ number(./RiferimentoNumeroLinea) = $valNumeroLinea] ">		
-			<xsl:call-template name="DatiCorrelati" >
-            <xsl:with-param name="Prefix"   select='"Vs.Ord. "'/>
-            <xsl:with-param name="IdDocumento" select="IdDocumento"/>
-            <xsl:with-param name="Data" select="Data"/>
-            <xsl:with-param name="CodiceCUP" select="CodiceCUP"/>
-            <xsl:with-param name="CodiceCIG" select="CodiceCIG"/>
+			<xsl:call-template name="DatiCorrelati"  select="." >
+            <xsl:with-param name="Prefix"   select='"Vs.Ord. "'/>          
           </xsl:call-template >
-        </xsl:for-each>   
-	  
-	  
+        </xsl:for-each>   	  
 	  </xsl:otherwise>
     </xsl:choose>
 
@@ -242,12 +253,9 @@
      
       <xsl:otherwise>
 		<xsl:for-each select="$TipoFattura/FatturaElettronicaBody[$IndiceBody]/DatiGenerali/DatiContratto[ number(./RiferimentoNumeroLinea) = $valNumeroLinea] ">		
-	    <xsl:call-template name="DatiCorrelati" >
+	    <xsl:call-template name="DatiCorrelati" select=".">
             <xsl:with-param name="Prefix"  select='"Contratto "'/>
-            <xsl:with-param name="IdDocumento" select="IdDocumento"/>
-            <xsl:with-param name="Data" select="Data"/>
-            <xsl:with-param name="CodiceCUP" select="CodiceCUP"/>
-            <xsl:with-param name="CodiceCIG" select="CodiceCIG"/>
+            
           </xsl:call-template >
 	    </xsl:for-each>   
 	  
@@ -268,12 +276,8 @@
       <xsl:otherwise>
 	  
 	  <xsl:for-each select="$TipoFattura/FatturaElettronicaBody[$IndiceBody]/DatiGenerali/DatiConvenzione[ number(./RiferimentoNumeroLinea) = $valNumeroLinea] ">		
-          <xsl:call-template name="DatiCorrelati" >
+          <xsl:call-template name="DatiCorrelati"  select=".">
             <xsl:with-param name="Prefix"  select='"Convenzione "'/>
-            <xsl:with-param name="IdDocumento" select="IdDocumento"/>
-            <xsl:with-param name="Data" select="Data"/>
-            <xsl:with-param name="CodiceCUP" select="CodiceCUP"/>
-            <xsl:with-param name="CodiceCIG" select="CodiceCIG"/>
           </xsl:call-template >
         </xsl:for-each>
 	  
@@ -294,12 +298,8 @@
       <xsl:otherwise>
 	  
 	 <xsl:for-each select="$TipoFattura/FatturaElettronicaBody[$IndiceBody]/DatiGenerali/DatiRicezione[ number(./RiferimentoNumeroLinea) = $valNumeroLinea] ">
-          <xsl:call-template name="DatiCorrelati" >
+          <xsl:call-template name="DatiCorrelati" select=".">
             <xsl:with-param name="Prefix"  select='"Ricezione "'/>
-            <xsl:with-param name="IdDocumento" select="IdDocumento"/>
-            <xsl:with-param name="Data" select="Data"/>
-            <xsl:with-param name="CodiceCUP" select="CodiceCUP"/>
-            <xsl:with-param name="CodiceCIG" select="CodiceCIG"/>
           </xsl:call-template >
         </xsl:for-each>
 	  
@@ -319,12 +319,8 @@
       <xsl:otherwise>
 	  
      <xsl:for-each select="$TipoFattura/FatturaElettronicaBody[$IndiceBody]/DatiGenerali/DatiFattureCollegate[ number(./RiferimentoNumeroLinea) = $valNumeroLinea] ">
-          <xsl:call-template name="DatiCorrelati" >
-            <xsl:with-param name="Prefix"  select='"Fatt.coll. "'/>
-            <xsl:with-param name="IdDocumento" select="IdDocumento"/>
-            <xsl:with-param name="Data" select="Data"/>
-            <xsl:with-param name="CodiceCUP" select="CodiceCUP"/>
-            <xsl:with-param name="CodiceCIG" select="CodiceCIG"/>
+          <xsl:call-template name="DatiCorrelati" select=".">
+            <xsl:with-param name="Prefix"  select='"Fatt.coll. "'/>           
           </xsl:call-template >
         </xsl:for-each>
 	  
@@ -2043,7 +2039,7 @@
 
                 <thead>
                   <tr>
-                    <th width="80px">Cod. articolo</th>
+                    <th width="40">Cod. articolo</th>
                     <th>Descrizione</th>
                     <th class="import2" >Quantità</th>
                     <th class="import2">Prezzo unitario</th>
@@ -2068,24 +2064,16 @@
                     <!-- Verifica che DatiOrdineAcquisto non siano senza riferimento numero linea in questo modo bisogna creare la linea di info 	  -->
                     <xsl:for-each select="DatiGenerali/DatiOrdineAcquisto[not(./RiferimentoNumeroLinea) or  normalize-space(./RiferimentoNumeroLinea)=''] " >
 
-                      <xsl:call-template name="DatiCorrelati" >
+                      <xsl:call-template name="DatiCorrelati" select=".">
                         <xsl:with-param name="Prefix"   select='"Vs.Ord. "'/>
-                        <xsl:with-param name="IdDocumento" select="IdDocumento"/>
-                        <xsl:with-param name="Data" select="Data"/>
-                        <xsl:with-param name="CodiceCUP" select="CodiceCUP"/>
-                        <xsl:with-param name="CodiceCIG" select="CodiceCIG"/>
                       </xsl:call-template >
                     </xsl:for-each>
 
                     <!-- Verifica che DatiContratto non siano senza riferimento numero linea in questo modo bisogna creare la linea di info 	  -->
 
                     <xsl:for-each select="DatiGenerali/DatiContratto[not(./RiferimentoNumeroLinea) or  normalize-space(./RiferimentoNumeroLinea)=''] " >
-                      <xsl:call-template name="DatiCorrelati" >
+                      <xsl:call-template name="DatiCorrelati" select=".">
                         <xsl:with-param name="Prefix"   select='"Contratto "'/>
-                        <xsl:with-param name="IdDocumento" select="IdDocumento"/>
-                        <xsl:with-param name="Data" select="Data"/>
-                        <xsl:with-param name="CodiceCUP" select="CodiceCUP"/>
-                        <xsl:with-param name="CodiceCIG" select="CodiceCIG"/>
                       </xsl:call-template >
 
                     </xsl:for-each>
@@ -2093,24 +2081,17 @@
                     <!-- Verifica che DatiConvenzione non siano senza riferimento numero linea in questo modo bisogna creare la linea di info 	  -->
 
                     <xsl:for-each select="DatiGenerali/DatiConvenzione[not(./RiferimentoNumeroLinea) or  normalize-space(./RiferimentoNumeroLinea)=''] " >
-                      <xsl:call-template name="DatiCorrelati" >
+                      <xsl:call-template name="DatiCorrelati" select="." >
                         <xsl:with-param name="Prefix"   select='"Convenzione "'/>
-                        <xsl:with-param name="IdDocumento" select="IdDocumento"/>
-                        <xsl:with-param name="Data" select="Data"/>
-                        <xsl:with-param name="CodiceCUP" select="CodiceCUP"/>
-                        <xsl:with-param name="CodiceCIG" select="CodiceCIG"/>
+                       
                       </xsl:call-template >
 
                     </xsl:for-each>
 
                     <!-- Verifica che DatiRicezione non siano senza riferimento numero linea in questo modo bisogna creare la linea di info 	  -->
                     <xsl:for-each select="DatiGenerali/DatiRicezione[not(./RiferimentoNumeroLinea) or  normalize-space(./RiferimentoNumeroLinea)=''] " >
-                      <xsl:call-template name="DatiCorrelati" >
+                      <xsl:call-template name="DatiCorrelati" select=".">
                         <xsl:with-param name="Prefix"   select='"Ricezione "'/>
-                        <xsl:with-param name="IdDocumento" select="IdDocumento"/>
-                        <xsl:with-param name="Data" select="Data"/>
-                        <xsl:with-param name="CodiceCUP" select="CodiceCUP"/>
-                        <xsl:with-param name="CodiceCIG" select="CodiceCIG"/>
                       </xsl:call-template >
 
                     </xsl:for-each>
@@ -2119,12 +2100,8 @@
 
                     <xsl:for-each select="DatiGenerali/DatiFattureCollegate[not(./RiferimentoNumeroLinea) or normalize-space(./RiferimentoNumeroLinea)=''] " >
 
-                      <xsl:call-template name="DatiCorrelati" >
+                      <xsl:call-template name="DatiCorrelati" select=".">
                         <xsl:with-param name="Prefix"   select='"Fatt.Coll. "'/>
-                        <xsl:with-param name="IdDocumento" select="IdDocumento"/>
-                        <xsl:with-param name="Data" select="Data"/>
-                        <xsl:with-param name="CodiceCUP" select="CodiceCUP"/>
-                        <xsl:with-param name="CodiceCIG" select="CodiceCIG"/>
                       </xsl:call-template >
 
                     </xsl:for-each>
@@ -2981,10 +2958,6 @@
           width:48%
           }
 
-          th.cod-articolo {
-            min-width: 80px;
-          }
-
           th.perc {
           width:50px;
           }
@@ -3009,7 +2982,7 @@
 
           th.import2
           {
-          width:40px;
+          width:42px;
           }
 
           td.import2
@@ -3055,7 +3028,15 @@
           text-align:right;
           }
 
-
+		  table.tbNoBorder
+          {
+			  border-collapse: collapse;			
+			  margin-bottom: 5px;			  
+			  font-size:small;
+			  text-align:center;
+			  width:100%;
+          }
+		  
         </style>
       </head>
       <body>

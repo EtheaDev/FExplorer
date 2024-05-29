@@ -34,15 +34,13 @@ object SVGSettingsForm: TSVGSettingsForm
     Align = alClient
     Images = SettingsImageList
     TabOrder = 0
-    ExplicitWidth = 658
-    ExplicitHeight = 450
     object stGeneral: TTabSheet
       Caption = 'Anteprima'
       ImageIndex = 4
       ImageName = 'eye-settings'
       object PreviewStyleGroupBox: TGroupBox
         Left = 3
-        Top = 168
+        Top = 98
         Width = 310
         Height = 62
         Caption = 'Stile anteprima fattura'
@@ -66,25 +64,25 @@ object SVGSettingsForm: TSVGSettingsForm
         end
       end
       object GUIElementsGroupBox: TGroupBox
-        Left = 2
-        Top = 236
+        Left = 3
+        Top = 166
         Width = 310
-        Height = 147
+        Height = 125
         Caption = 'Visualizzazione elementi interfaccia utente'
         TabOrder = 2
         DesignSize = (
           310
-          147)
+          125)
         object IconStyleLabel: TLabel
           Left = 14
-          Top = 74
+          Top = 71
           Width = 111
           Height = 15
           Caption = 'Stile anteprima Icona'
         end
         object ShowIconCheckBox: TCheckBox
           Left = 14
-          Top = 52
+          Top = 49
           Width = 280
           Height = 18
           Caption = 'Mostra anteprima icona'
@@ -92,7 +90,7 @@ object SVGSettingsForm: TSVGSettingsForm
         end
         object IconStyleSheetComboBox: TComboBox
           Left = 14
-          Top = 95
+          Top = 92
           Width = 280
           Height = 23
           Anchors = [akLeft, akTop, akRight]
@@ -103,7 +101,7 @@ object SVGSettingsForm: TSVGSettingsForm
         end
         object ShowXMLCheckBox: TCheckBox
           Left = 14
-          Top = 25
+          Top = 22
           Width = 280
           Height = 17
           Caption = 'Mostra testo originale (XML)'
@@ -112,15 +110,48 @@ object SVGSettingsForm: TSVGSettingsForm
       end
       object EngineRadioGroup: TRadioGroup
         Left = 3
-        Top = 16
+        Top = 3
         Width = 310
-        Height = 129
+        Height = 89
         Caption = 'Opzioni di rendering SVG'
         ItemIndex = 0
         Items.Strings = (
           'Delphi Image32'
           'Windows Direct 2D')
         TabOrder = 0
+      end
+      object RoundedButtonsGroupBox: TGroupBox
+        AlignWithMargins = True
+        Left = 3
+        Top = 297
+        Width = 310
+        Height = 97
+        Caption = 'Pulsanti arrotondati'
+        TabOrder = 3
+        object ToolbarRoundedCheckBox: TCheckBox
+          Left = 14
+          Top = 24
+          Width = 240
+          Height = 17
+          Caption = 'Applica alle Toolbar'
+          TabOrder = 0
+        end
+        object ButtonsRoundedCheckBox: TCheckBox
+          Left = 14
+          Top = 47
+          Width = 240
+          Height = 17
+          Caption = 'Applica ai pulsanti'
+          TabOrder = 1
+        end
+        object MenuRoundedCheckBox: TCheckBox
+          Left = 14
+          Top = 70
+          Width = 240
+          Height = 17
+          Caption = 'Applica ai pulsanti del menu'
+          TabOrder = 2
+        end
       end
     end
     object stTheme: TTabSheet
@@ -292,8 +323,6 @@ object SVGSettingsForm: TSVGSettingsForm
         Width = 4
         Height = 402
         MinSize = 100
-        ExplicitLeft = 143
-        ExplicitHeight = 366
       end
       object paLeft: TPanel
         Left = 0
@@ -393,7 +422,7 @@ object SVGSettingsForm: TSVGSettingsForm
           DesignSize = (
             193
             42)
-          object ResetButton: TButton
+          object ResetButton: TStyledButton
             Left = 9
             Top = 6
             Width = 174
@@ -704,10 +733,8 @@ object SVGSettingsForm: TSVGSettingsForm
     ParentFont = True
     SimplePanel = True
     UseSystemFont = False
-    ExplicitTop = 491
-    ExplicitWidth = 811
   end
-  object MenuButtonGroup: TButtonGroup
+  object MenuButtonGroup: TStyledButtonGroup
     Left = 0
     Top = 41
     Width = 153
@@ -756,7 +783,6 @@ object SVGSettingsForm: TSVGSettingsForm
       end>
     TabOrder = 2
     OnButtonClicked = MenuButtonGroupButtonClicked
-    ExplicitHeight = 450
   end
   object TitlePanel: TPanel
     Left = 0
@@ -768,7 +794,6 @@ object SVGSettingsForm: TSVGSettingsForm
     BevelOuter = bvNone
     Caption = 'Impostazioni'
     TabOrder = 3
-    ExplicitWidth = 811
   end
   object OpenDialog: TOpenDialog
     Left = 634

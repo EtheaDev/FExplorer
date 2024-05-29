@@ -3,7 +3,7 @@
 {       FExplorer: Shell extensions per Fattura Elettronica                    }
 {       (Preview Panel, Thumbnail Icon, F.E.Viewer)                            }
 {                                                                              }
-{       Copyright (c) 2021-2023 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2021-2024 (Ethea S.r.l.)                                 }
 {       Author: Carlo Barazzetta                                               }
 {                                                                              }
 {       https://github.com/EtheaDev/FExplorer                                  }
@@ -44,7 +44,9 @@ uses
   SVGIconImageList, SVGIconImageListBase, SVGIconImage, Vcl.VirtualImageList,
   Vcl.OleCtrls, SHDocVw, Xml.xmldom, Xml.XMLIntf, Xml.Win.msxmldom, Xml.XMLDoc,
   FExplorer.Resources, HTMLUn2, HtmlView,
-  UPreviewContainer;
+  UPreviewContainer,
+  Vcl.ButtonStylesAttributes, Vcl.StyledButton,
+  Vcl.StyledToolbar, Vcl.StyledButtonGroup;
 
 type
   TFrmPreview = class(TPreviewContainer)
@@ -53,16 +55,16 @@ type
     PanelXML: TPanel;
     StatusBar: TStatusBar;
     SVGIconImageList: TVirtualImageList;
-    ToolButtonZoomIn: TToolButton;
-    ToolButtonZoomOut: TToolButton;
-    ToolBar: TToolBar;
-    ToolButtonSettings: TToolButton;
-    ToolButtonAbout: TToolButton;
-    SeparatorEditor: TToolButton;
-    ToolButtonShowText: TToolButton;
-    ToolButtonReformat: TToolButton;
+    ToolButtonZoomIn: TStyledToolButton;
+    ToolButtonZoomOut: TStyledToolButton;
+    StyledToolBar: TStyledToolbar;
+    ToolButtonSettings: TStyledToolButton;
+    ToolButtonAbout: TStyledToolButton;
+    ToolButtonShowText: TStyledToolButton;
+    SeparatorEditor: TStyledToolButton;
+    ToolButtonReformat: TStyledToolButton;
     Splitter: TSplitter;
-    ToolBarAllegati: TToolBar;
+    ToolBarAllegati: TStyledToolbar;
     HtmlViewer: THtmlViewer;
     procedure FormCreate(Sender: TObject);
     procedure ToolButtonZoomInClick(Sender: TObject);
@@ -85,7 +87,7 @@ type
     FIconVisible: Boolean;
     FPreviewSettings: TPreviewSettings;
     FInvoice: TLegalInvoice;
-    FAllegatiButtons: TObjectList<TToolButton>;
+    FAllegatiButtons: TObjectList<TStyledToolButton>;
 
     class var FExtensions: TDictionary<TSynCustomHighlighterClass, TStrings>;
     class var FAParent: TWinControl;
@@ -212,7 +214,7 @@ procedure TFrmPreview.RenderAllegati;
 var
   LIndex: Integer;
   LAllegato: TLinkedDoc;
-  LButton: TToolButton;
+  LButton: TStyledToolButton;
 begin
   FAllegatiButtons.Clear;
 
@@ -220,7 +222,7 @@ begin
   begin
     LAllegato := FInvoice.Allegati[LIndex];
 
-    LButton := TToolButton.Create(nil);
+    LButton := TStyledToolButton.Create(nil);
     try
       LButton.Cursor := crHandPoint;
       LButton.AutoSize := True;
@@ -245,7 +247,7 @@ begin
   inherited;
   FPreviewSettings := TPreviewSettings.CreateSettings(SynEdit.Highlighter);
   dmResources := TdmResources.Create(nil);
-  FAllegatiButtons := TObjectList<TToolButton>.Create(True);
+  FAllegatiButtons := TObjectList<TStyledToolButton>.Create(True);
 end;
 
 destructor TFrmPreview.Destroy;
@@ -333,10 +335,16 @@ procedure TFrmPreview.FormResize(Sender: TObject);
 begin
   PanelXML.Height := Round(Self.Height * (FPreviewSettings.SplitterPos / 100));
   Splitter.Top := PanelXML.Height;
-  if Self.Width < (550 * Self.ScaleFactor) then
-    ToolBar.ShowCaptions := False
+  if Self.Width < (560 * Self.ScaleFactor) then
+  begin
+    StyledToolBar.ShowCaptions := False;
+    StyledToolBar.ButtonWidth := Round(30 * Self.ScaleFactor);
+  end
   else
-    Toolbar.ShowCaptions := True;
+  begin
+    StyledToolbar.ShowCaptions := True;
+    StyledToolBar.ButtonWidth := Round(110 * Self.ScaleFactor);
+  end;
   UpdateGUI;
 end;
 
@@ -434,7 +442,7 @@ end;
 procedure TFrmPreview.SplitterMoved(Sender: TObject);
 begin
   FPreviewSettings.SplitterPos := splitter.Top * 100 div
-    (Self.Height - Toolbar.Height);
+    (Self.Height - StyledToolbar.Height);
   SaveSettings;
 end;
 
@@ -454,7 +462,7 @@ end;
 
 procedure TFrmPreview.ToolButtonMouseEnter(Sender: TObject);
 begin
-  StatusBar.SimpleText := (Sender as TToolButton).Hint;
+  StatusBar.SimpleText := (Sender as TStyledToolButton).Hint;
 end;
 
 procedure TFrmPreview.ToolButtonMouseLeave(Sender: TObject);
@@ -468,6 +476,8 @@ begin
 end;
 
 procedure TFrmPreview.UpdateFromSettings(const Preview: Boolean);
+var
+  LStyle: TStyledButtonDrawType;
 begin
   FPreviewSettings.ReadSettings(SynEdit.Highlighter, nil);
   if FPreviewSettings.XMLFontSize >= MinfontSize then
@@ -475,6 +485,28 @@ begin
   else
     XMLFontSize := MinfontSize;
   SynEdit.Font.Name := FPreviewSettings.XMLFontName;
+
+  //Rounded Buttons for StyledButtons
+  if FPreviewSettings.ButtonDrawRounded then
+    LStyle := btRounded
+  else
+    LStyle := btRoundRect;
+  TStyledButton.RegisterDefaultRenderingStyle(LStyle);
+
+  //Rounded Buttons for StyledToolbars
+  if FPreviewSettings.ToolbarDrawRounded then
+    LStyle := btRounded
+  else
+    LStyle := btRoundRect;
+  TStyledToolbar.RegisterDefaultRenderingStyle(LStyle);
+  StyledToolbar.StyleDrawType := LStyle;
+
+  //Rounded Buttons for menus: StyledCategories and StyledButtonGroup
+  if FPreviewSettings.MenuDrawRounded then
+    LStyle := btRounded
+  else
+    LStyle := btRoundRect;
+  TStyledButtonGroup.RegisterDefaultRenderingStyle(LStyle);
 
   if FPreviewSettings.HTMLFontSize >= MinfontSize then
     HTMLFontSize := FPreviewSettings.HTMLFontSize
@@ -504,7 +536,7 @@ end;
 
 procedure TFrmPreview.ToolButtonSelectModeClick(Sender: TObject);
 begin
-  TToolButton(Sender).CheckMenuDropdown;
+  //TStyledToolButton(Sender).CheckMenuDropdown;
 end;
 
 procedure TFrmPreview.ToolButtonZoomOutClick(Sender: TObject);

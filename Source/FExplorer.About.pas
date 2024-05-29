@@ -3,7 +3,7 @@
 {       FExplorer: Shell extensions per Fattura Elettronica                    }
 {       (Preview Panel, Thumbnail Icon, F.E.Viewer)                            }
 {                                                                              }
-{       Copyright (c) 2021-2023 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2021-2024 (Ethea S.r.l.)                                 }
 {       Author: Carlo Barazzetta                                               }
 {                                                                              }
 {       https://github.com/EtheaDev/FExplorer                                  }
@@ -36,22 +36,23 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   Dialogs, StdCtrls, ExtCtrls, pngimage, Vcl.ImgList, System.ImageList,
-  Vcl.Imaging.GIFImg, SVGIconImage;
+  Vcl.Imaging.GIFImg, SVGIconImage, Vcl.ButtonStylesAttributes, Vcl.StyledButton;
 
 resourcestring
   Title_FEViewer = 'Visualizzatore Fattura Elettronica';
   Title_SVGPreview = 'Anteprima Fattura Elettronica';
-  FReeware_Caption = ' - Freeware';
 
+const
+  HELP_URL = 'https://github.com/EtheaDev/FExplorer/issues';
 type
   TFrmAbout = class(TForm)
     Panel1:    TPanel;
-    btnOK: TButton;
+    btnOK: TStyledButton;
     TitleLabel: TLabel;
     LabelVersion: TLabel;
     MemoCopyRights: TMemo;
-    btnIssues: TButton;
-    btnCheckUpdates: TButton;
+    btnIssues: TStyledButton;
+    btnCheckUpdates: TStyledButton;
     LinkLabel1: TLinkLabel;
     SVGIconImage1: TSVGIconImage;
     SVGIconImage2: TSVGIconImage;
@@ -64,13 +65,14 @@ type
     procedure FormCreate(Sender: TObject);
     procedure btnIssuesClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
-    procedure LinkLabel1Click(Sender: TObject);
     procedure btnCheckUpdatesClick(Sender: TObject);
+    procedure LinkLabel1LinkClick(Sender: TObject; const Link: string;
+      LinkType: TSysLinkType);
+    procedure FormShow(Sender: TObject);
   private
     FTitle: string;
     procedure SetTitle(const Value: string);
     procedure RefreshSSLInfo;
-    { Private declarations }
   public
     procedure DisableButtons;
     property Title: string read FTitle write SetTitle;
@@ -152,7 +154,7 @@ end;
 procedure TFrmAbout.btnIssuesClick(Sender: TObject);
 begin
    ShellExecute(Handle, 'open',
-    PChar('https://github.com/EtheaDev/FExplorer/issues'),
+    PChar(HELP_URL+'/issues'),
     nil, nil, SW_SHOW);
 end;
 
@@ -183,17 +185,23 @@ begin
   RefreshSSLInfo;
 end;
 
-procedure TFrmAbout.LinkLabel1Click(Sender: TObject);
+procedure TFrmAbout.FormShow(Sender: TObject);
 begin
-   ShellExecute(Handle, 'open',
-    PChar('https://github.com/EtheaDev/FExplorer'), nil, nil, SW_SHOW);
+  if btnOK.CanFocus then
+    btnOK.SetFocus;
+end;
+
+procedure TFrmAbout.LinkLabel1LinkClick(Sender: TObject; const Link: string;
+  LinkType: TSysLinkType);
+begin
+  ShellExecute(Handle, 'open', PChar(Link), nil, nil, SW_SHOW);
 end;
 
 procedure TFrmAbout.SetTitle(const Value: string);
 begin
   FTitle := Value;
   Caption := FTitle;
-  TitleLabel.Caption := Value + FReeware_Caption;
+  TitleLabel.Caption := Value;
 end;
 
 procedure TFrmAbout.RefreshSSLInfo;

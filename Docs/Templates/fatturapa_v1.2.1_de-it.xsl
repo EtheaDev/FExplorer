@@ -27,7 +27,7 @@ http://www.gnu.org/licenses/.
 <xsl:output method="html" />
 
      <xsl:variable name="VersionFT">
-         <p>Stylesheet fatturapa_v1.2.1_de-it.xsl v20201125 ft - <a href="http://tinyurl.com/fatturapa-xsl-southtyrol">http://tinyurl.com/fatturapa-xsl-southtyrol</a></p>
+         <p>Stylesheet fatturapa_v1.2.1_de-it.xsl v20230608 ft - <a href="http://tinyurl.com/fatturapa-xsl-southtyrol">http://tinyurl.com/fatturapa-xsl-southtyrol</a></p>
      </xsl:variable>
      <xsl:decimal-format name="euro" decimal-separator="," grouping-separator="."/>
 
@@ -527,7 +527,7 @@ http://www.gnu.org/licenses/.
                                                   <div id="soggetto-emittente">
                                                        <h3>Rechnungsersteller - <i>Soggetto emittente la fattura</i></h3>
                                                        <table id="t1">
-                                                            <tr><td width="100px">1.6</td><td width="200px">Austeller<br/><i>Soggetto emittente</i></td>
+                                                            <tr><td width="100px">1.6</td><td width="200px">Aussteller<br/><i>Soggetto emittente</i></td>
                                                             <td width="500px"><span><xsl:value-of select="a:FatturaElettronica/FatturaElettronicaHeader/SoggettoEmittente"/> </span><xsl:variable name="SC"><xsl:value-of select="a:FatturaElettronica/FatturaElettronicaHeader/SoggettoEmittente"/> </xsl:variable>
                                                                  <xsl:choose>
                                                                       <xsl:when test="$SC='CC'"> (Rechnungssteller)<i>(cessionario/committente)</i></xsl:when>

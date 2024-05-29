@@ -3,7 +3,7 @@
 {       FExplorer: Shell extensions per Fattura Elettronica                    }
 {       (Preview Panel, Thumbnail Icon, F.E.Viewer)                            }
 {                                                                              }
-{       Copyright (c) 2021-2023 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2021-2024 (Ethea S.r.l.)                                 }
 {       Author: Carlo Barazzetta                                               }
 {                                                                              }
 {       https://github.com/EtheaDev/FExplorer                                  }
@@ -32,10 +32,10 @@
 program FEViewer;
 
 uses
+  System.SysUtils,
   Vcl.Forms,
   Vcl.Themes,
   Vcl.Styles,
-  System.SysUtils,
   dlgSearchText in 'dlgSearchText.pas' {TextSearchDialog},
   dlgReplaceText in 'dlgReplaceText.pas' {TextReplaceDialog},
   FExplorer.ViewerMainForm in 'FExplorer.ViewerMainForm.pas' {frmMain},
@@ -52,7 +52,9 @@ uses
   FExplorer.InvoiceToImage in 'FExplorer.InvoiceToImage.pas',
   FExplorer.ThumbnailResources in 'FExplorer.ThumbnailResources.pas' {dmThumbnailResources: TDataModule},
   vmHtmlToPdf in 'vmHtmlToPdf.pas',
-  uDragDropUtils in 'uDragDropUtils.pas';
+  uDragDropUtils in 'uDragDropUtils.pas',
+  Vcl.StyledTaskDialogFormUnit in '..\Ext\StyledComponents\source\Vcl.StyledTaskDialogFormUnit.pas' {StyledTaskDialogForm},
+  Skia.Vcl.StyledTaskDialogAnimatedUnit in '..\Ext\StyledComponents\source\Skia.Vcl.StyledTaskDialogAnimatedUnit.pas' {StyledTaskDialogAnimated};
 
 {$R *.res}
 
@@ -60,16 +62,19 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskBar := True;
   Application.ActionUpdateDelay := 50;
-  Application.Title := Title_FEViewer+'- © 2021-2023 Ethea S.r.l.';
+  Application.Title := Title_FEViewer+'- © 2021-2024 Ethea S.r.l.';
+  //Uses System Style for border / shadow of Forms
+  TStyleManager.FormBorderStyle := TStyleManager.TFormBorderStyle.fbsSystemStyle;
   with TSplashForm.Create(nil) do
   Try
     Show;
     Update;
     Application.HelpFile := '';
-  Application.CreateForm(TdmResources, dmResources);
-  Application.CreateForm(TfrmMain, frmMain);
-  Application.CreateForm(TPageSetupDlg, PageSetupDlg);
-  Hide;
+    Application.CreateForm(TdmResources, dmResources);
+    Application.CreateForm(TfrmMain, frmMain);
+    Application.CreateForm(TPageSetupDlg, PageSetupDlg);
+    Application.OnException := frmMain.ManageExceptions;
+    Hide;
   Finally
     Free;
   End;

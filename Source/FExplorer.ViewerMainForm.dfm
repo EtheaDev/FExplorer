@@ -5,12 +5,15 @@ object frmMain: TfrmMain
   ClientHeight = 590
   ClientWidth = 944
   Color = clWindow
+  Constraints.MinHeight = 600
+  Constraints.MinWidth = 800
   Ctl3D = False
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -12
   Font.Name = 'Segoe UI'
   Font.Style = []
+  KeyPreview = True
   Position = poScreenCenter
   ShowHint = True
   OnAfterMonitorDpiChanged = FormAfterMonitorDpiChanged
@@ -56,15 +59,16 @@ object frmMain: TfrmMain
       OnMouseMove = PageControlMouseMove
     end
     object PanelCloseButton: TPanel
-      Left = 122
-      Top = 16
+      Left = 20
+      Top = 32
       Width = 22
       Height = 22
       Cursor = crHandPoint
       BevelOuter = bvNone
-      ParentBackground = False
+      ParentColor = True
       TabOrder = 1
       Visible = False
+      StyleElements = [seFont, seBorder]
       object SVGIconImageCloseButton: TSVGIconImage
         Left = 0
         Top = 0
@@ -253,8 +257,8 @@ object frmMain: TfrmMain
         AlignWithMargins = True
         Left = 36
         Top = 4
-        Width = 4
-        Height = 4
+        Width = 210
+        Height = 34
         Align = alClient
         Alignment = taCenter
         TabOrder = 0
@@ -264,12 +268,13 @@ object frmMain: TfrmMain
   object SV: TSplitView
     Left = 0
     Top = 36
-    Width = 160
+    Width = 44
     Height = 535
     CloseStyle = svcCompact
     Color = clHighlight
     CompactWidth = 44
     DisplayMode = svmOverlay
+    Opened = False
     OpenedWidth = 160
     ParentDoubleBuffered = True
     Placement = svpLeft
@@ -278,10 +283,10 @@ object frmMain: TfrmMain
     OnClosing = SVClosing
     OnOpened = SVOpened
     OnOpening = SVOpening
-    object catMenuItems: TCategoryButtons
+    object catMenuItems: TStyledCategoryButtons
       Left = 0
       Top = 0
-      Width = 160
+      Width = 44
       Height = 535
       Align = alClient
       BackgroundGradientDirection = gdVertical
@@ -398,95 +403,80 @@ object frmMain: TfrmMain
     TabOrder = 2
     object lblTitle: TLabel
       AlignWithMargins = True
-      Left = 41
+      Left = 40
       Top = 3
       Width = 170
       Height = 30
       Align = alLeft
       Caption = 'Visualizzatore Fattura Elettronica'
       Layout = tlCenter
+      ExplicitHeight = 15
     end
-    object SettingsToolBar: TToolBar
+    object SettingsToolBar: TStyledToolbar
       AlignWithMargins = True
       Left = 741
       Top = 3
       Width = 200
       Height = 30
       Align = alRight
-      AutoSize = True
       ButtonHeight = 32
       ButtonWidth = 32
-      Color = clYellow
-      DrawingStyle = dsGradient
-      GradientEndColor = clBtnFace
-      GradientStartColor = clBtnFace
       Images = VirtualImageList
-      ParentColor = False
+      Indent = 3
       TabOrder = 0
-      Transparent = True
-      object ColorSettingsToolButton: TToolButton
+      object ColorSettingsToolButton: TStyledToolButton
         Left = 0
         Top = 0
         Action = actnColorSettings
       end
-      object EditOptionsToolButton: TToolButton
+      object EditOptionsToolButton: TStyledToolButton
         Left = 32
         Top = 0
         Action = actnEditOptions
       end
-      object PageSetupToolButton: TToolButton
+      object PageSetupToolButton: TStyledToolButton
         Left = 64
         Top = 0
         Action = actnPageSetup
       end
-      object PrinterSetupToolButton: TToolButton
+      object PrinterSetupToolButton: TStyledToolButton
         Left = 96
         Top = 0
         Action = actnPrinterSetup
       end
-      object SepToolButton: TToolButton
+      object SepToolButton: TStyledToolButton
         Left = 128
         Top = 0
-        Width = 8
-        ImageName = 'Informazioni'
         Style = tbsSeparator
       end
-      object AboutToolButton: TToolButton
-        Left = 136
+      object AboutToolButton: TStyledToolButton
+        Left = 134
         Top = 0
         Action = acAbout
       end
-      object QuitToolButton: TToolButton
-        Left = 168
+      object QuitToolButton: TStyledToolButton
+        Left = 166
         Top = 0
         Action = acQuit
         ImageName = 'Exit'
       end
     end
-    object MenuButtonToolbar: TToolBar
+    object MenuButtonToolbar: TStyledToolbar
       AlignWithMargins = True
       Left = 3
       Top = 3
-      Width = 32
+      Width = 31
       Height = 30
       Align = alLeft
-      AutoSize = True
       ButtonHeight = 32
       ButtonWidth = 32
-      Color = clYellow
-      DrawingStyle = dsGradient
-      GradientEndColor = clBtnFace
-      GradientStartColor = clBtnFace
       Images = VirtualImageList
-      ParentColor = False
+      Indent = 3
       TabOrder = 1
-      Transparent = True
-      object MenuToolButton: TToolButton
-        AlignWithMargins = True
+      object MenuToolButton: TStyledToolButton
         Left = 0
         Top = 0
         Action = actMenu
-        AutoSize = True
       end
     end
   end
@@ -766,6 +756,7 @@ object frmMain: TfrmMain
       ImageIndex = 26
       ImageName = 'plus'
       OnExecute = acZoomExecute
+      OnUpdate = acHTMLViewerUpdate
     end
     object acZoomOut: TAction
       Category = 'HTMLViewer'
@@ -773,6 +764,7 @@ object frmMain: TfrmMain
       ImageIndex = 25
       ImageName = 'Minus'
       OnExecute = acZoomExecute
+      OnUpdate = acHTMLViewerUpdate
     end
     object acSaveHTMLFile: TAction
       Category = 'HTMLViewer'
@@ -781,6 +773,7 @@ object frmMain: TfrmMain
       ImageIndex = 51
       ImageName = 'save_html'
       OnExecute = acSaveHTMLFileExecute
+      OnUpdate = acHTMLViewerUpdate
     end
     object acSavePDFFile: TAction
       Category = 'HTMLViewer'
@@ -789,6 +782,7 @@ object frmMain: TfrmMain
       ImageIndex = 52
       ImageName = 'save_pdf'
       OnExecute = acSavePDFFileExecute
+      OnUpdate = acHTMLViewerUpdate
     end
   end
   object SaveDialog: TSaveDialog
@@ -1213,5 +1207,17 @@ object frmMain: TfrmMain
     Height = 20
     Left = 448
     Top = 368
+  end
+  object LoadTimer: TTimer
+    Enabled = False
+    OnTimer = LoadTimerTimer
+    Left = 272
+    Top = 352
+  end
+  object CheckFileChangedTimer: TTimer
+    Interval = 3000
+    OnTimer = CheckFileChangedTimerTimer
+    Left = 144
+    Top = 352
   end
 end

@@ -3,7 +3,7 @@
 {       SVGIconImageList: An extended ImageList for Delphi/VCL                 }
 {       to simplify use of SVG Icons (resize, opacity and more...)             }
 {                                                                              }
-{       Copyright (c) 2019-2023 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2019-2024 (Ethea S.r.l.)                                 }
 {       Author: Vincent Parrett                                                }
 {       Contributors: Carlo Barazzetta, Kiriakos Vlahos                        }
 {                                                                              }
@@ -379,9 +379,6 @@ begin
   FAntiAliasColor := clBtnFace;
   FGrayScale := False;
   FOpacity := 255;
-  {$IFDEF HiDPISupport}
-  FScaled := True;
-  {$ENDIF}
   inherited;
 end;
 {$ENDIF}

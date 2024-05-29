@@ -3,7 +3,7 @@
 {       FExplorer: Shell extensions per Fattura Elettronica                    }
 {       (Preview Panel, Thumbnail Icon, F.E.Viewer)                            }
 {                                                                              }
-{       Copyright (c) 2021-2023 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2021-2024 (Ethea S.r.l.)                                 }
 {       Author: Carlo Barazzetta                                               }
 {                                                                              }
 {       https://github.com/EtheaDev/FExplorer                                  }
@@ -37,7 +37,8 @@ uses
   ActnList, SynEditHighlighter, SynUnicode, System.ImageList, Vcl.ImgList,
   SVGIconImageListBase, SVGIconImageList, FExplorer.Settings, Vcl.ButtonGroup,
   Vcl.ToolWin, FExplorer.Resources, Vcl.VirtualImageList, FExplorer.About, Vcl.WinXCtrls,
-  SVGIconImage, Vcl.NumberBox;
+  SVGIconImage, Vcl.NumberBox, Vcl.ButtonStylesAttributes,
+  Vcl.StyledButtonGroup, Vcl.StyledButton;
 
 type
   TSVGSettingsForm = class(TForm)
@@ -70,14 +71,14 @@ type
     ForegroundColorLabel: TLabel;
     BackgroundColorLabel: TLabel;
     BackgroundColorBox: TColorBox;
-    MenuButtonGroup: TButtonGroup;
+    MenuButtonGroup: TStyledButtonGroup;
     TitlePanel: TPanel;
     ThemeLeftPanel: TPanel;
     ThemesRadioGroup: TRadioGroup;
     SelectThemeRadioGroup: TRadioGroup;
     ThemeClientPanel: TPanel;
     ResetPanel: TPanel;
-    ResetButton: TButton;
+    ResetButton: TStyledButton;
     PreviewStyleGroupBox: TGroupBox;
     StylesheetComboBox: TComboBox;
     XMLGroupBox: TGroupBox;
@@ -117,6 +118,10 @@ type
     IconStyleLabel: TLabel;
     ShowXMLCheckBox: TCheckBox;
     EngineRadioGroup: TRadioGroup;
+    RoundedButtonsGroupBox: TGroupBox;
+    ToolbarRoundedCheckBox: TCheckBox;
+    ButtonsRoundedCheckBox: TCheckBox;
+    MenuRoundedCheckBox: TCheckBox;
     procedure BoxElementsClick(Sender: TObject);
     procedure cbForegroundClick(Sender: TObject);
     procedure cbBackgroundClick(Sender: TObject);
@@ -575,6 +580,10 @@ begin
   HTMLFontComboBox.ItemIndex := HTMLFontComboBox.Items.IndexOf(ASettings.HTMLFontName);
   HTMLUpDown.Position := ASettings.HTMLFontSize;
 
+  ToolbarRoundedCheckBox.Checked := ASettings.ToolbarDrawRounded;
+  ButtonsRoundedCheckBox.Checked := ASettings.ButtonDrawRounded;
+  MenuRoundedCheckBox.Checked := ASettings.MenuDrawRounded;
+
   EngineRadioGroup.Enabled := WinSvgSupported;
   EngineRadioGroup.ItemIndex := Ord(ASettings.SVGEngine);
   StylesheetComboBox.ItemIndex := StylesheetComboBox.Items.IndexOf(ASettings.StylesheetName);
@@ -643,6 +652,10 @@ begin
 
   ASettings.StylesheetName := StylesheetComboBox.Text;
   ASettings.IconStylesheetName := IconStyleSheetComboBox.Text;
+
+  ASettings.ToolbarDrawRounded := ToolbarRoundedCheckBox.Checked;
+  ASettings.ButtonDrawRounded := ButtonsRoundedCheckBox.Checked;
+  ASettings.MenuDrawRounded := MenuRoundedCheckBox.Checked;
 
   ASettings.PDFPageSettings.PrintOrientation := TPrinterOrientation(OrientationRadioGroup.ItemIndex);
   ASettings.PDFPageSettings.PaperSize := PaperSizeRadioGroup.ItemIndex;

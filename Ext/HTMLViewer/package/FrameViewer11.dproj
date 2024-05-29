@@ -104,6 +104,7 @@
         <DCCReference Include="rtl.dcp"/>
         <DCCReference Include="vcl.dcp"/>
         <DCCReference Include="vclimg.dcp"/>
+        <DCCReference Include="soaprtl.dcp"/>
         <DCCReference Include="VclSmp.dcp"/>
         <DCCReference Include="..\source\BegaHtmlPrintPreviewForm.pas"/>
         <DCCReference Include="..\source\BegaMetaFilePrinter.pas"/>
@@ -131,7 +132,7 @@
         <DCCReference Include="..\source\Htmlsbs1.pas"/>
         <DCCReference Include="..\source\HTMLSubs.pas"/>
         <DCCReference Include="..\source\HtmlSymb.pas"/>
-        <DCCReference Include="..\source\htmlun2.pas"/>
+        <DCCReference Include="..\source\HTMLUn2.pas"/>
         <DCCReference Include="..\source\htmlview.pas"/>
         <DCCReference Include="..\source\MetaFilePrinter.pas"/>
         <DCCReference Include="..\source\ReadHTML.pas"/>
@@ -140,16 +141,17 @@
         <DCCReference Include="..\source\StyleUn.pas"/>
         <DCCReference Include="..\source\URLSubs.pas"/>
         <DCCReference Include="..\Source\UrlConn.pas"/>
+        <DCCReference Include="..\source\HtmlPrinter.pas"/>
         <DCCReference Include="..\source\vwPrint.pas"/>
-        <BuildConfiguration Include="Debug">
-            <Key>Cfg_2</Key>
-            <CfgParent>Base</CfgParent>
-        </BuildConfiguration>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
         <BuildConfiguration Include="Release">
             <Key>Cfg_1</Key>
+            <CfgParent>Base</CfgParent>
+        </BuildConfiguration>
+        <BuildConfiguration Include="Debug">
+            <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
         </BuildConfiguration>
     </ItemGroup>

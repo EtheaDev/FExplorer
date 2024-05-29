@@ -5,6 +5,7 @@ inherited FrmPreview: TFrmPreview
   ClientWidth = 601
   DoubleBuffered = True
   Font.Name = 'Segoe UI'
+  StyleElements = [seFont, seClient, seBorder]
   OnResize = FormResize
   ExplicitWidth = 617
   ExplicitHeight = 652
@@ -19,7 +20,6 @@ inherited FrmPreview: TFrmPreview
     AutoSnap = False
     MinSize = 100
     OnMoved = SplitterMoved
-    ExplicitWidth = 888
   end
   object PanelTop: TPanel
     Left = 0
@@ -29,105 +29,90 @@ inherited FrmPreview: TFrmPreview
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 2
-    object ToolBar: TToolBar
+    object StyledToolBar: TStyledToolbar
       Left = 0
       Top = 0
-      Width = 605
+      Width = 601
       Height = 35
       Align = alClient
       AutoSize = True
       ButtonHeight = 30
-      ButtonWidth = 110
-      EdgeInner = esNone
-      EdgeOuter = esNone
+      ButtonWidth = 30
       Images = SVGIconImageList
       List = True
       TabOrder = 0
-      object ToolButtonShowText: TToolButton
+      object ToolButtonShowText: TStyledToolButton
         Left = 0
         Top = 0
-        Cursor = crHandPoint
-        AutoSize = True
+        OnMouseEnter = ToolButtonMouseEnter
+        OnMouseLeave = ToolButtonMouseLeave
+        OnClick = ToolButtonShowTextClick
+        Visible = False
         Caption = 'Nascondi XML'
         ImageIndex = 1
         ImageName = 'Hide-Text'
-        Visible = False
-        OnClick = ToolButtonShowTextClick
+      end
+      object ToolButtonZoomIn: TStyledToolButton
+        Left = 30
+        Top = 0
+        Hint = 'Zoom + (aumento lo zoom)'
         OnMouseEnter = ToolButtonMouseEnter
         OnMouseLeave = ToolButtonMouseLeave
-      end
-      object ToolButtonZoomIn: TToolButton
-        Left = 35
-        Top = 0
-        Cursor = crHandPoint
-        Hint = 'Zoom + (aumento lo zoom)'
-        AutoSize = True
+        OnClick = ToolButtonZoomInClick
         Caption = 'Zoom +'
         ImageIndex = 6
         ImageName = 'plus'
-        OnClick = ToolButtonZoomInClick
+      end
+      object ToolButtonZoomOut: TStyledToolButton
+        Left = 60
+        Top = 0
+        Hint = 'Zoom - (diminuisce lo zoom)'
         OnMouseEnter = ToolButtonMouseEnter
         OnMouseLeave = ToolButtonMouseLeave
-      end
-      object ToolButtonZoomOut: TToolButton
-        Left = 70
-        Top = 0
-        Cursor = crHandPoint
-        Hint = 'Zoom - (diminuisce lo zoom)'
-        AutoSize = True
+        OnClick = ToolButtonZoomOutClick
         Caption = 'Zoom -'
         ImageIndex = 7
         ImageName = 'minus'
-        OnClick = ToolButtonZoomOutClick
+      end
+      object ToolButtonSettings: TStyledToolButton
+        Left = 90
+        Top = 0
+        Hint = 'Modifica impostazioni...'
         OnMouseEnter = ToolButtonMouseEnter
         OnMouseLeave = ToolButtonMouseLeave
-      end
-      object ToolButtonSettings: TToolButton
-        Left = 105
-        Top = 0
-        Cursor = crHandPoint
-        Hint = 'Modifica impostazioni...'
-        AutoSize = True
+        OnClick = ToolButtonSettingsClick
+        Visible = False
         Caption = 'Impostazioni...'
         ImageIndex = 12
         ImageName = 'preferences-desktop'
-        Visible = False
-        OnClick = ToolButtonSettingsClick
+      end
+      object ToolButtonAbout: TStyledToolButton
+        Left = 120
+        Top = 0
+        Hint = 'Mostra info...'
         OnMouseEnter = ToolButtonMouseEnter
         OnMouseLeave = ToolButtonMouseLeave
-      end
-      object ToolButtonAbout: TToolButton
-        Left = 140
-        Top = 0
-        Cursor = crHandPoint
-        Hint = 'Mostra info...'
-        AutoSize = True
+        OnClick = ToolButtonAboutClick
+        Visible = False
         Caption = 'Info...'
         ImageIndex = 2
         ImageName = 'about'
-        Visible = False
-        OnClick = ToolButtonAboutClick
-        OnMouseEnter = ToolButtonMouseEnter
-        OnMouseLeave = ToolButtonMouseLeave
       end
-      object SeparatorEditor: TToolButton
-        Left = 175
+      object SeparatorEditor: TStyledToolButton
+        Left = 150
         Top = 0
-        Width = 8
-        ImageName = 'settings'
         Style = tbsSeparator
       end
-      object ToolButtonReformat: TToolButton
-        Left = 183
+      object ToolButtonReformat: TStyledToolButton
+        Left = 156
         Top = 0
         Hint = 'Riformatta testo XML'
-        AutoSize = True
+        OnMouseEnter = ToolButtonMouseEnter
+        OnMouseLeave = ToolButtonMouseLeave
+        OnClick = ToolButtonReformatClick
         Caption = 'Formatta'
         ImageIndex = 10
         ImageName = 'Reformat'
-        OnClick = ToolButtonReformatClick
-        OnMouseEnter = ToolButtonMouseEnter
-        OnMouseLeave = ToolButtonMouseLeave
       end
     end
   end
@@ -143,7 +128,7 @@ inherited FrmPreview: TFrmPreview
     object SynEdit: TSynEdit
       Left = 0
       Top = 0
-      Width = 605
+      Width = 601
       Height = 110
       Align = alClient
       Font.Charset = DEFAULT_CHARSET
@@ -170,7 +155,6 @@ inherited FrmPreview: TFrmPreview
       Gutter.ShowLineNumbers = True
       ReadOnly = True
       FontSmoothing = fsmNone
-      ExplicitWidth = 601
     end
   end
   object StatusBar: TStatusBar
@@ -195,22 +179,19 @@ inherited FrmPreview: TFrmPreview
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
-    object ToolBarAllegati: TToolBar
+    object ToolBarAllegati: TStyledToolbar
       Left = 0
       Top = 0
-      Width = 605
+      Width = 601
       Height = 30
       Align = alClient
       AutoSize = True
       ButtonHeight = 30
       ButtonWidth = 81
-      EdgeInner = esNone
-      EdgeOuter = esNone
       Images = SVGIconImageList
       List = True
+      ShowCaptions = True
       TabOrder = 0
-      Transparent = True
-      ExplicitWidth = 601
     end
   end
   object HtmlViewer: THtmlViewer

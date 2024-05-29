@@ -1,0 +1,180 @@
+<style type="text/css">
+code{
+  font-family: "Consolas", monospace;
+}
+pre{
+  border: 1px solid #ddd;
+  border-left: 3px solid #f36d33;
+  overflow: auto;
+  padding: 1em 1.5em;
+  display: block;
+}
+Blockquote{
+  border-left: 3px solid #d0d0d0;
+  padding-left: 0.5em;
+  margin-left:1em;
+}
+Blockquote p{
+  margin: 0;
+}
+table{
+  border:1px solid;
+  border-collapse:collapse;
+}
+th{  padding:5px;
+  border:1px solid;
+}
+td{
+  padding:5px;
+  border:1px solid;
+}
+</style>
+<h1>FExplorer (Fattura Elettronica in Windows Explorer) <a href="https://opensource.org/licenses/Apache-2.0"><img src="https://img.shields.io/badge/License-Apache%202.0-yellowgreen.svg" alt="License"/></a></h1>
+<h2><strong>Anteprima Fattura Elettronica (Viewer e Icone) integrato in Windows Explorer e Visualizzatore</strong></h2>
+<h3>Versione attuale 2.3</h3>
+<p><strong>Una serie di strumenti per gestire i file xml contenenti Fatture Elettroniche in Windows:</strong></p>
+<ul>
+<li><p>Un <a href="https://docs.microsoft.com/en-us/windows/win32/shell/preview-handlers">Preview handler</a>  che permette di vedere una anteprima della Fattura Elettronica nel &ldquo;Pannello Anteprima&rdquo; di Windows Explorer.</p>
+</li>
+<li><p>Un <a href="https://docs.microsoft.com/en-us/windows/win32/shell/thumbnail-providers">Thumbnail handler</a> che permette di vedere l'anteprina delle F.E. come icone dentro Windows Explorer</p>
+</li>
+<li><p>Un <a href="https://github.com/EtheaDev/FExplorer/wiki/Using-The-SVG-Text-Editor">Visualizzatore</a> di F.E. che permette di visualizzarla in formati diversi e stamparla</p>
+</li>
+</ul>
+<h3>Funzionalità</h3>
+<ul>
+<li>Possibilità di scegliere lo stile di visualizzazione della fattura (PA, AssoSoftware, Custom&hellip;)</li>
+<li>Possibilità di associare colori diversi alle icone in base ai tipi di F.E. o ad altre regole</li>
+<li>Supporta Windows Vista, 7, 8 and 10 (sia 32 bit che 64 bit).</li>
+<li>Supporto dei temi (Scuro o Chiaro) in accordo con le preferenze dell'utente in Windows</li>
+<li>Supporto ai file firmati digitalmente (p7m) grazie alla libreria PKCS7Extractor</li>
+</ul>
+<h3>Installazione semplice</h3>
+<p>Clicca per scaricare il Setup: <a href="https://github.com/EtheaDev/FExplorer/releases/latest/download/FExplorerSetup.exe">FExplorerSetup.exe</a> (che si trova anche nella &ldquo;release area&rdquo;).</p>
+<p><img src="./Images/Setup.png" alt="Preview Thumbnails Dark"/></p>
+<p>INFO: il setup è firmato con certificato!</p>
+<h3>Pannello Preview e Anteprima Icone in azione</h3>
+<p>Con Windows 10 e tema scuro:</p>
+<p><img src="./Images/FExplorer.png" alt="Preview Thumbnails Dark"/></p>
+<h3>Visualizzatore della Fattura Elettronica</h3>
+<p>Un comodo visualizzatore della fattura elettronica per poterla anche stampare.</p>
+<p><img src="./Images/FEViewer.png" alt="FEViewer"/></p>
+<h3>Build e Installazione manuale (per sviluppatori Delphi)</h3>
+<p>Se hai Delphi 11 o Delphi 12, puoi compilare manualmente il progetto.</p>
+<h2>Compilazione/Installazione packages di componenti di terze parti</h2>
+<p>Utilizzare il file {FExplorer}\Ext\AllPackagesGroup.groupproj per caricare nell'IDE tutti i package da compilare e installare</p>
+<p>Utilizzare il file {FExplorer}\Source\FExplorerGroup.groupproj per caricare nell'IDE i 2 progetti da compilare</p>
+<p>Per installare manualmente FExplorer.dll seguire questi step:</p>
+<ol>
+<li><p>Chiudere tutte le istanze di Windows Explorer in cui è attivo il gestore di anteprima o è stato utilizzato il gestore di anteprima (ricorda che la dll rimane in memoria fino alla chiusura di Windows Explorer).</p>
+</li>
+<li><p>Se hai già utilizzato il programma di installazione, disinstallare i componenti dal sistema.</p>
+</li>
+<li><p>Per installare manualmente la dll modificare opportunamente il file <code>Setup \ Register64bit.bat</code> ed eseguirlo (run-as-administrator).</p>
+</li>
+<li><p>Se si desidera disinstallare la dll, modificare opportunamente il file Setup \ UnRegister64Bit.bat` ed eseguirlo.</p>
+</li>
+<li><p>Una volta registrato, puoi continuare a modificare il codice e ricompilare la dll (attenzione a chiudere tutte le istanze di Explorer ogni volta che si ricompila).</p>
+</li>
+</ol>
+<h2>Release Notes</h2>
+<p>29 mag 2024 - Versione 2.3.0</p>
+<ul>
+<li>Finestre con bordo ombreggiato</li>
+<li>Fogli di stile AssoSoftware e PA aggiornati</li>
+<li>Corretto Layout per mancanza codice articolo</li>
+<li>Aggiunta gestione pulsanti arrotondati</li>
+<li>Aggiunte Dialog moderne con animazioni</li>
+<li>Compilato con Delphi 12.1</li>
+</ul>
+<p>12 Set 2023 - Versione 2.2.0</p>
+<ul>
+<li>Aggiornati fogli di stile Assosoftware e PA</li>
+<li>Build con Delphi 12</li>
+<li>Rimosso engine TSVG</li>
+<li>Aggiunto pulsante di chiusura sui Tab</li>
+<li>Aggiunto supporto a Delphi 12</li>
+</ul>
+<p>23 Nov 2022 - Versione 2.1.0</p>
+<ul>
+<li>Aggiunto &ldquo;Stile&rdquo; SudTirolo (ITA/DEU)<a href="https://github.com/provbz/fatturapa-xsl-southtyrol">16</a></li>
+<li>Aggiunta possibilità di spegnere pannello anteprima icona e testo XML nel Viewer</li>
+</ul>
+<p>11 Sep 2022 - Versione 2.0.0</p>
+<ul>
+<li>Build con Delphi 11.2 Alexandria</li>
+<li>Fixato errore in caricamento file con spazi</li>
+</ul>
+<p>08 Ago 2022 - Versione 1.9.0</p>
+<ul>
+<li>Build con Delphi 11.1 Alexandria</li>
+<li>Fix apertura file con estensioni in maiuscolo</li>
+<li>Aggiornate librerie HTMLViewer, SynPDF, SVGIconImageList e Image32</li>
+</ul>
+<p>23 Ott 2021 - Versione 1.8.0</p>
+<ul>
+<li>Aggiunti nuovi stili Windows 11</li>
+</ul>
+<p>03 Set 2021 - Versione 1.7.0</p>
+<ul>
+<li>Aggiunto supporto Delphi 11</li>
+<li>Build con Delphi 11</li>
+</ul>
+<p>23 Lug 2021 - Versione 1.6.0</p>
+<ul>
+<li>Aggiunto supporto SVG con engine Image32</li>
+</ul>
+<p>05 Lug 2021 - Versione 1.5.0</p>
+<ul>
+<li>Aggiunto supporto drag/drop files da Exporer al viewer/editor</li>
+<li>Setup firmato con certificato</li>
+</ul>
+<p>22 Giu 2021 - Versione 1.4.0</p>
+<ul>
+<li>Aggiunto supporto ai file encodati BASE64 con la libreria <a href="https://github.com/DelphiClubItalia/PKCS7Extractor">PKCS7Extractor</a></li>
+<li>Aggiunta la stampa in PDF della fattura basata sul template HTML</li>
+<li>Migliorato il template Assosoftware Custom per la visualizzazione</li>
+<li>Fixati problemi con caricamento XML con BOM</li>
+<li>Aggiunta pagina layout PDF in Settings</li>
+</ul>
+<p>11 Giu 2021 - Versione 1.3.0</p>
+<ul>
+<li>Aggiunto supporto ai file firmati (p7m) con la libreria <a href="https://github.com/DelphiClubItalia/PKCS7Extractor">PKCS7Extractor</a></li>
+</ul>
+<p>30 Apr 2021 - Versione 1.2.0</p>
+<ul>
+<li>Aggiunto supporto FExplorer a 32 Bit</li>
+</ul>
+<p>23 Apr 2021 - Versione 1.1.0</p>
+<p>Thumbnails:</p>
+<ul>
+<li>preview anche delle fatture elettroniche semplificate</li>
+<li>preview di una generica icona XML per i file che non sono fatture</li>
+</ul>
+<p>FExplorer:</p>
+<ul>
+<li>default apertura file &ldquo;read-only&rdquo;</li>
+<li>Settings:</li>
+<li>possibilità di abilitare l'editing dei file</li>
+<li>possibilità di caricare anche file xsl</li>
+<li>auto-riconoscimento xsl di trasformazione fatture*</li>
+<li>auto-riconoscimento xsl di trasformazioni icone svg*</li>
+</ul>
+<p>*queste due funzioni permettono di utilizzare l'editor per testare nuovi stili di trasformazione di fatture e di icone</p>
+<p>Bug-fixing:</p>
+<ul>
+<li>impostazione stampante (AV in apertura)</li>
+<li>preview di stampa corretta</li>
+<li>alcuni messaggi in inglese</li>
+</ul>
+<p>14 Apr 2021 - Versione 1.0.0</p>
+<p>26 Mar 2021 - Creazione Repo</p>
+<h2>Credits</h2>
+<p>Grazie a *<em> Rodrigo Ruz V. *</em> (autore di <a href="https://theroadtodelphi.com/">theroadtodelphi.com</a> Blog) per il suo ottimolavoro su <a href="https://github.com/RRUZ/delphi-preview-handler">delphi-preview-handler</a> da cui questo progetto ha usato codice e ispirazione.</p>
+<p>Grazie a *<em> Carlo Barazzetta *</em> per il suo ottimo lavoro su <a href="https://github.com/EtheaDev/SVGShellExtensions/">SvgShellExtensions</a> da cui questo progetto ha usato molto codice e ispirazione.</p>
+<p>Grazie ad *<em> Andrea Magni *</em> che ha collaborato alla realizzazione di questo progetto.</p>
+<h2>Licenza</h2>
+<p>Rilasciato sotto licenza <a href="https://opensource.org/licenses/Apache-2.0">Apache License, Version 2.0</a> (the &ldquo;License&rdquo;);</p>
+<p>A meno che non sia richiesto dalla legge applicabile o concordato per iscritto, il software distribuito in base alla Licenza è distribuito &ldquo;COSÌ COM'È&rdquo;, SENZA GARANZIE O CONDIZIONI DI ALCUN TIPO, esplicite o implicite. Vedere la Licenza per la lingua specifica che regola le autorizzazioni e le limitazioni ai sensi della Licenza.</p>
+<p><img src="./Setup/SupportingDelphi.jpg" alt="Delphi 12 Support"/></p>
+<p>Related links: <a href="https://www.embarcadero.com/">embarcadero.com</a> - <a href="https://learndelphi.org/">learndelphi.org</a></p>

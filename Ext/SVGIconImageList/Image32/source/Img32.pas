@@ -3,9 +3,9 @@ unit Img32;
 (*******************************************************************************
 * Author    :  Angus Johnson                                                   *
 * Version   :  4.4                                                             *
-* Date      :  1 May 2023                                                      *
+* Date      :  7 May 2024                                                      *
 * Website   :  http://www.angusj.com                                           *
-* Copyright :  Angus Johnson 2019-2023                                         *
+* Copyright :  Angus Johnson 2019-2024                                         *
 * Purpose   :  The core module of the Image32 library                          *
 * License   :  http://www.boost.org/LICENSE_1_0.txt                            *
 *******************************************************************************)
@@ -82,9 +82,7 @@ const
   {$ZEROBASEDSTRINGS OFF}
 {$ENDIF}
 
-{$IFNDEF MSWINDOWS}
-  RT_BITMAP = PChar(2);
-{$ENDIF}
+RT_BITMAP = PChar(2);
 
 type
   TClipboardPriority = (cpLow, cpMedium, cpHigh);
@@ -166,7 +164,7 @@ type
 
   TTileFillStyle = (tfsRepeat, tfsMirrorHorz, tfsMirrorVert, tfsRotate180);
 
-  TResamplerFunction = function(img: TImage32; x256, y256: integer): TColor32;
+  TResamplerFunction = function(img: TImage32; x, y: double): TColor32;
 
   TImage32 = class(TObject)
   private
@@ -197,6 +195,7 @@ type
     function GetBounds: TRect;
     function GetMidPoint: TPointD;
   protected
+    procedure ResetColorCount;
     function  RectHasTransparency(rec: TRect): Boolean;
     function  CopyPixels(rec: TRect): TArrayOfColor32;
     //CopyInternal: Internal routine (has no scaling or bounds checking)
@@ -220,6 +219,7 @@ type
 
     procedure Assign(src: TImage32);
     procedure AssignTo(dst: TImage32);
+
     //SetSize: Erases any current image, and fills with the specified color.
     procedure SetSize(newWidth, newHeight: Integer; color: TColor32 = 0);
     //Resize: is very similar to Scale()
@@ -254,10 +254,10 @@ type
     procedure CopyToDc(const srcRect, dstRect: TRect; dstDc: HDC;
       transparent: Boolean = true); overload;
 {$ENDIF}
-{$IFDEF USING_VCL_LCL}
+{$IF DEFINED(USING_VCL_LCL)}
     procedure CopyFromBitmap(bmp: TBitmap);
     procedure CopyToBitmap(bmp: TBitmap);
-{$ENDIF}
+{$IFEND}
     function CopyToClipBoard: Boolean;
     class function CanPasteFromClipBoard: Boolean;
     function PasteFromClipBoard: Boolean;
@@ -292,6 +292,7 @@ type
     procedure AdjustLuminance(percent: Integer);   //ie +/- 100%
     procedure AdjustSaturation(percent: Integer);  //ie +/- 100%
 
+    function GetOpaqueBounds: TRect;
     //CropTransparentPixels: Trims transparent edges until each edge contains
     //at least one opaque or semi-opaque pixel.
     function CropTransparentPixels: TRect;
@@ -444,6 +445,9 @@ type
   function GetByteMask(img: TImage32; reference: TColor32;
     compareFunc: TCompareFunctionEx): TArrayOfByte;
 
+  function GetColorMask(img: TImage32; reference: TColor32;
+    compareFunc: TCompareFunction; tolerance: Integer): TArrayOfColor32;
+
   {$IFDEF MSWINDOWS}
   //Color32: Converts a Graphics.TColor value into a TColor32 value.
   function Color32(rgbColor: Integer): TColor32; overload;
@@ -475,7 +479,9 @@ type
   function ClampByte(val: Integer): byte; overload; {$IFDEF INLINE} inline; {$ENDIF}
   function ClampByte(val: double): byte; overload; {$IFDEF INLINE} inline; {$ENDIF}
   function ClampRange(val, min, max: Integer): Integer; overload;
+    {$IFDEF INLINE} inline; {$ENDIF}
   function ClampRange(val, min, max: double): double; overload;
+    {$IFDEF INLINE} inline; {$ENDIF}
   function IncPColor32(pc: Pointer; cnt: Integer): PColor32;
 
   procedure NormalizeAngle(var angle: double; tolerance: double = Pi/360);
@@ -543,7 +549,7 @@ var
   rNearestResampler : integer;
   rBilinearResampler: integer;
   rBicubicResampler : integer;
-
+  rWeightedBilinear : integer;
   DefaultResampler: Integer = 0;
 
   //Both MulTable and DivTable are used in blend functions
@@ -580,7 +586,7 @@ var
 implementation
 
 uses
-  Img32.Vector, Img32.Resamplers, Img32.Transform;
+  Img32.Vector, Img32.Resamplers, Img32.Transform, Img32.Fmt.BMP;
 
 resourcestring
   rsImageTooLarge = 'Image32 error: the image is too large.';
@@ -1069,7 +1075,7 @@ begin
   Result.biHeight := height;
   Result.biPlanes := 1;
   Result.biBitCount := 32;
-  Result.biSizeImage := width * height * SizeOf(TColor32);
+  Result.biSizeImage := width * Abs(height) * SizeOf(TColor32);
   Result.biCompression := BI_RGB;
 end;
 //------------------------------------------------------------------------------
@@ -1199,6 +1205,29 @@ begin
       pa^ := #0;
   {$ENDIF}
     inc(pc); inc(pa);
+  end;
+end;
+//------------------------------------------------------------------------------
+
+function GetColorMask(img: TImage32; reference: TColor32;
+  compareFunc: TCompareFunction; tolerance: Integer): TArrayOfColor32;
+var
+  i: integer;
+  pDstPxl: PColor32;
+  pSrcPxl: PColor32;
+begin
+  result := nil;
+  if not assigned(img) or img.IsEmpty then Exit;
+  if not Assigned(compareFunc) then compareFunc := CompareRGB;
+  SetLength(Result, img.Width * img.Height);
+  pDstPxl := @Result[0];
+  pSrcPxl := img.PixelBase;
+  for i := 0 to img.Width * img.Height -1 do
+  begin
+    if compareFunc(reference, pSrcPxl^, tolerance) then
+      pDstPxl^ := clWhite32 else
+      pDstPxl^ := clBlack32;
+    inc(pSrcPxl); inc(pDstPxl);
   end;
 end;
 //------------------------------------------------------------------------------
@@ -1641,7 +1670,7 @@ begin
     dst.fResampler := fResampler;
     dst.fIsPremultiplied := fIsPremultiplied;
     dst.fAntiAliased := fAntiAliased;
-    dst.fColorCount := 0;
+    dst.ResetColorCount;
     try
       dst.SetSize(Width, Height);
       if (Width > 0) and (Height > 0) then
@@ -1658,7 +1687,7 @@ end;
 procedure TImage32.Changed;
 begin
   if fUpdateCnt <> 0 then Exit;
-  fColorCount := 0;
+  ResetColorCount;
   if Assigned(fOnChange) then fOnChange(Self);
 end;
 //------------------------------------------------------------------------------
@@ -1772,6 +1801,12 @@ begin
     inc(c, Width - rw);
   end;
   Changed;
+end;
+//------------------------------------------------------------------------------
+
+procedure TImage32.ResetColorCount;
+begin
+  fColorCount := 0;
 end;
 //------------------------------------------------------------------------------
 
@@ -1947,9 +1982,7 @@ begin
 
   BlockNotify;
   try
-    if (newWidth < Width) and (newHeight < Height) then
-      BoxDownSampling(self, newWidth, newHeight)
-    else if fResampler = 0 then
+    if fResampler <= rNearestResampler then
       NearestNeighborResize(newWidth, newHeight)
     else
       ResamplerResize(newWidth, newHeight);
@@ -1976,16 +2009,15 @@ begin
   //get scaled X & Y values once only (storing them in lookup arrays) ...
   SetLength(scaledXi, newWidth);
   for x := 0 to newWidth -1 do
-    scaledXi[x] := Floor(x * fWidth / newWidth);
+    scaledXi[x] := Trunc(x * fWidth / newWidth);
   SetLength(scaledYi, newHeight);
   for y := 0 to newHeight -1 do
-    scaledYi[y] := Floor(y * fHeight / newHeight);
+    scaledYi[y] := Trunc(y * fHeight / newHeight);
 
   pc := @tmp[0];
   for y := 0 to newHeight - 1 do
   begin
     srcY := scaledYi[y];
-    if (srcY < 0) or (srcY >= fHeight) then Continue;
     for x := 0 to newWidth - 1 do
     begin
       pc^ := fPixels[scaledXi[x] + srcY * fWidth];
@@ -2059,7 +2091,7 @@ begin
       Scale(sx);
       if height = self.Height then Exit;
       rec2 := Bounds;
-      Types.OffsetRect(rec2, 0, (height - self.Height) div 2);
+      TranslateRect(rec2, 0, (height - self.Height) div 2);
       tmp := TImage32.Create(self);
       try
         SetSize(width, height);
@@ -2072,7 +2104,7 @@ begin
       Scale(sy);
       if width = self.Width then Exit;
       rec2 := Bounds;
-      Types.OffsetRect(rec2, (width - self.Width) div 2, 0);
+      TranslateRect(rec2, (width - self.Width) div 2, 0);
       tmp := TImage32.Create(self);
       try
         SetSize(width, height);
@@ -2219,7 +2251,7 @@ begin
   pc := PARGB(PixelBase);
   for i := 0 to Width * Height -1 do
   begin
-    if pc.A < 255 then Exit;
+    if pc.A < 128 then Exit;
     inc(pc);
   end;
   result := false;
@@ -2426,7 +2458,7 @@ begin
     RectWidthHeight(srcRecClipped, w, h);
     RectWidthHeight(srcRec, srcW, srcH);
     ScaleRect(dstRec, w / srcW, h / srcH);
-    Types.OffsetRect(dstRec,
+    TranslateRect(dstRec,
       srcRecClipped.Left - srcRec.Left,
       srcRecClipped.Top - srcRec.Top);
   end;
@@ -2456,7 +2488,7 @@ begin
     RectWidthHeight(dstRecClipped, w, h);
     RectWidthHeight(dstRec, dstW, dstH);
     ScaleRect(srcRecClipped, w / dstW, h / dstH);
-    Types.OffsetRect(srcRecClipped,
+    TranslateRect(srcRecClipped,
       dstRecClipped.Left - dstRec.Left,
       dstRecClipped.Top - dstRec.Top);
   end;
@@ -2494,8 +2526,7 @@ begin
 end;
 //------------------------------------------------------------------------------
 
-{$IFDEF MSWINDOWS}
-
+{$IF DEFINED (MSWINDOWS)}
 procedure TImage32.CopyFromDC(srcDc: HDC; const srcRect: TRect);
 var
   bi: TBitmapInfoHeader;
@@ -2508,7 +2539,7 @@ begin
   try
     RectWidthHeight(srcRect, w,h);
     SetSize(w, h);
-    bi := Get32bitBitmapInfoHeader(w, h);
+    bi := Get32bitBitmapInfoHeader(w, -h); // -h => avoids need to flip image
     dc := GetDC(0);
     memDc := CreateCompatibleDC(dc);
     try
@@ -2528,7 +2559,7 @@ begin
       ReleaseDc(0, dc);
     end;
     if IsBlank then SetAlpha(255);
-    FlipVertical;
+    //FlipVertical;
   finally
     EndUpdate;
   end;
@@ -2555,12 +2586,12 @@ end;
 procedure TImage32.CopyToDc(const srcRect, dstRect: TRect;
   dstDc: HDC; transparent: Boolean = true);
 var
-  i, x,y, wSrc ,hSrc, wDest, hDest: integer;
+  i, x,y, wSrc ,hSrc, wDest, hDest, wBytes: integer;
   rec: TRect;
   bi: TBitmapInfoHeader;
   bm, oldBm: HBitmap;
   dibBits: Pointer;
-  pc: PARGB;
+  pDst, pSrc: PARGB;
   memDc: HDC;
   isTransparent: Boolean;
   bf: BLENDFUNCTION;
@@ -2585,11 +2616,15 @@ begin
 
     try
       //copy Image to dibBits (with vertical flip)
-      pc := dibBits;
+      wBytes := wSrc * SizeOf(TColor32);
+      pDst := dibBits;
+      pSrc := PARGB(PixelRow[rec.Bottom -1]);
+      inc(pSrc, rec.Left);
       for i := rec.Bottom -1 downto rec.Top do
       begin
-        Move(Pixels[i * Width + rec.Left], pc^, wSrc * SizeOf(TColor32));
-        inc(pc, wSrc);
+        Move(pSrc^, pDst^, wBytes);
+        dec(pSrc, Width);
+        inc(pDst, wSrc);
       end;
 
       oldBm := SelectObject(memDC, bm);
@@ -2597,17 +2632,17 @@ begin
       begin
 
         //premultiplied alphas are required when alpha blending
-        pc := dibBits;
+        pDst := dibBits;
         for i := 0 to wSrc * hSrc -1 do
         begin
-          if pc.A > 0 then
+          if pDst.A > 0 then
           begin
-            pc.R  := MulTable[pc.R, pc.A];
-            pc.G  := MulTable[pc.G, pc.A];
-            pc.B  := MulTable[pc.B, pc.A];
+            pDst.R  := MulTable[pDst.R, pDst.A];
+            pDst.G  := MulTable[pDst.G, pDst.A];
+            pDst.B  := MulTable[pDst.B, pDst.A];
           end else
-            pc.Color := 0;
-          inc(pc);
+            pDst.Color := 0;
+          inc(pDst);
         end;
 
         bf.BlendOp := AC_SRC_OVER;
@@ -2617,10 +2652,13 @@ begin
         AlphaBlend(dstDc, x,y, wDest,hDest, memDC, 0,0, wSrc,hSrc, bf);
       end
       else if (wDest = wSrc) and (hDest = hSrc) then
+      begin
         BitBlt(dstDc, x,y, wSrc, hSrc, memDc, 0,0, SRCCOPY)
-      else
+      end else
+      begin
+        SetStretchBltMode(dstDc, COLORONCOLOR);
         StretchBlt(dstDc, x,y, wDest, hDest, memDc, 0,0, wSrc,hSrc, SRCCOPY);
-
+      end;
       SelectObject(memDC, oldBm);
     finally
       DeleteObject(bm);
@@ -2629,8 +2667,51 @@ begin
     DeleteDc(memDc);
   end;
 end;
+{$IFEND}
 //------------------------------------------------------------------------------
-{$ENDIF}
+
+{$IF DEFINED(USING_VCL_LCL)}
+procedure TImage32.CopyFromBitmap(bmp: TBitmap);
+var
+  ms: TMemoryStream;
+  bmpFormat: TImageFormat_BMP;
+begin
+  ms := TMemoryStream.create;
+  bmpFormat := TImageFormat_BMP.Create;
+  try
+    bmp.SaveToStream(ms);
+    ms.Position := 0;
+    bmpFormat.LoadFromStream(ms, self);
+  finally
+    ms.Free;
+    bmpFormat.Free;
+  end;
+end;
+//------------------------------------------------------------------------------
+
+procedure TImage32.CopyToBitmap(bmp: TBitmap);
+var
+  ms: TMemoryStream;
+  bmpFormat: TImageFormat_BMP;
+begin
+  ms := TMemoryStream.create;
+  bmpFormat := TImageFormat_BMP.Create;
+  try
+     bmpFormat.IncludeFileHeaderInSaveStream := true;
+     bmpFormat.SaveToStream(ms, self);
+     ms.Position := 0;
+     bmp.PixelFormat := pf32bit;
+     {$IF DEFINED(USING_VCL) AND DEFINED(ALPHAFORMAT)}
+     bmp.AlphaFormat := afDefined;
+     {$IFEND}
+     bmp.LoadFromStream(ms);
+  finally
+    ms.Free;
+    bmpFormat.Free;
+  end;
+end;
+//------------------------------------------------------------------------------
+{$IFEND}
 
 function TImage32.CopyToClipBoard: Boolean;
 var
@@ -2699,63 +2780,6 @@ begin
   end;
 end;
 //------------------------------------------------------------------------------
-
-{$IFDEF USING_VCL_LCL}
-procedure TImage32.CopyFromBitmap(bmp: TBitmap);
-var
-  savedPF: TPixelFormat;
-{$IFNDEF MSWINDOWS}
-  i: integer;
-  pxDst, pxSrc: PColor32;
-{$ENDIF}
-begin
-  if not Assigned(bmp) then Exit;
-  savedPF := bmp.PixelFormat;
-  bmp.PixelFormat := pf32bit;
-  SetSize(bmp.Width, bmp.Height);
-{$IFDEF MSWINDOWS}
-  GetBitmapBits(bmp.Handle, Width * Height * 4, PixelBase);
-{$ELSE}
-  for i := 0 to bmp.Height -1 do
-  begin
-    pxSrc := bmp.ScanLine[i];
-    pxDst := PixelRow[i];
-    Move(pxSrc^, pxDst^, bmp.Width * SizeOf(TColor32));
-  end;
-{$ENDIF}
-  bmp.PixelFormat := savedPF;
-end;
-//------------------------------------------------------------------------------
-
-procedure TImage32.CopyToBitmap(bmp: TBitmap);
-{$IFNDEF MSWINDOWS}
-var
-  i: integer;
-  pxDst, pxSrc: PColor32;
-{$ENDIF}
-begin
-  if not Assigned(bmp) then Exit;
-  bmp.PixelFormat := pf32bit;
-  bmp.Width := Width;
-  bmp.Height := Height;
-{$IFDEF MSWINDOWS}
-  {$IFNDEF FPC}
-  {$IFDEF ALPHAFORMAT}
-  bmp.AlphaFormat := afDefined;
-  {$ENDIF}
-  {$ENDIF}
-  SetBitmapBits(bmp.Handle, Width * Height * 4, PixelBase);
-{$ELSE}
-  for i := 0 to bmp.Height -1 do
-  begin
-    pxDst := bmp.ScanLine[i];
-    pxSrc := PixelRow[i];
-    Move(pxSrc^, pxDst^, bmp.Width * SizeOf(TColor32));
-  end;
-{$ENDIF}
-end;
-//------------------------------------------------------------------------------
-{$ENDIF}
 
 procedure TImage32.ConvertToBoolMask(reference: TColor32; tolerance: integer;
   colorFunc: TCompareFunction; maskBg: TColor32; maskFg: TColor32);
@@ -3087,13 +3111,14 @@ begin
 end;
 //------------------------------------------------------------------------------
 
-function TImage32.CropTransparentPixels: TRect;
+function TImage32.GetOpaqueBounds: TRect;
 var
   x,y, x1,x2,y1,y2: Integer;
   found: Boolean;
 begin
   y1 := 0; y2 := 0;
   found := false;
+  Result := NullRect;
   for y := 0 to Height -1 do
   begin
     for x := 0 to Width -1 do
@@ -3107,10 +3132,7 @@ begin
   end;
 
   if not found then
-  begin
-    SetSize(0, 0);
     Exit;
-  end;
 
   found := false;
   for y := Height -1 downto 0 do
@@ -3135,13 +3157,20 @@ begin
       end;
 
   Result := Types.Rect(x1, y1, x2+1, y2+1);
-  Crop(Result);
+end;
+//------------------------------------------------------------------------------
+
+function TImage32.CropTransparentPixels: TRect;
+begin
+  Result := GetOpaqueBounds;
+  if IsEmptyRect(Result) then
+     SetSize(0,0) else
+     Crop(Result);
 end;
 //------------------------------------------------------------------------------
 
 procedure TImage32.Rotate(angleRads: double);
 var
-  rec: TRectD;
   mat: TMatrixD;
 begin
   if not ClockwiseRotationIsAnglePositive then
@@ -3167,11 +3196,10 @@ begin
   end else
   begin
     mat := IdentityMatrix;
-    MatrixTranslate(mat, Width/2, Height/2);
-    rec := RectD(Bounds);
-    rec := GetRotatedRectBounds(rec, angleRads);
+    // the rotation point isn't important
+    // because AffineTransformImage() will
+    // will resize and recenter the image
     MatrixRotate(mat, NullPointD, angleRads);
-    MatrixTranslate(mat, rec.Width/2, rec.Height/2);
     AffineTransformImage(self, mat);
   end;
 end;
@@ -3471,15 +3499,6 @@ end;
 {$ENDIF}
 //------------------------------------------------------------------------------
 
-{$IFDEF USING_VCL_LCL}
-procedure GetScreenScale2;
-begin
-  DpiAwareOne := Screen.PixelsPerInch / 96;
-  dpiAware1   := Round(DpiAwareOne);
-end;
-{$ENDIF}
-//------------------------------------------------------------------------------
-
 procedure CleanUpImageFormatClassList;
 var
   i: integer;
@@ -3565,10 +3584,6 @@ initialization
 
 {$IFDEF MSWINDOWS}
   GetScreenScale;
-{$ELSE}
-  {$IFDEF USING_VCL_LCL}
-  GetScreenScale2;
-  {$ENDIF}
 {$ENDIF}
 
 finalization

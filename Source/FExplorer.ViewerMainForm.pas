@@ -3,7 +3,7 @@
 {       FExplorer: Shell extensions per Fattura Elettronica                    }
 {       (Preview Panel, Thumbnail Icon, F.E.Viewer)                            }
 {                                                                              }
-{       Copyright (c) 2021-2023 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2021-2024 (Ethea S.r.l.)                                 }
 {       Author: Carlo Barazzetta                                               }
 {                                                                              }
 {       https://github.com/EtheaDev/FExplorer                                  }
@@ -40,6 +40,7 @@ uses
   , System.Generics.Collections
   , FExplorer.ThumbnailResources
   , Vcl.PlatformVclStylesActnCtrls
+  {$IFNDEF NO_VCL_STYLES}
   , Vcl.Styles.Fixes
   , Vcl.Styles.FormStyleHooks
   , Vcl.Styles.NC
@@ -54,9 +55,16 @@ uses
   , Vcl.Styles.Utils.ComCtrls
   , Vcl.Styles.Utils.StdCtrls
   , Vcl.Styles.Ext
+  {$ENDIF}
   , HTMLUn2
+  , HtmlGlobals
   , HtmlView
   , uDragDropUtils
+  , Vcl.StyledButton
+  , Vcl.StyledToolbar
+  , Vcl.ButtonStylesAttributes
+  , Vcl.StyledButtonGroup
+  , Vcl.StyledCategoryButtons
   ;
 
 const
@@ -74,7 +82,10 @@ resourcestring
   STATE_INSERT = 'Inserimento';
   STATE_OVERWRITE = 'Sovrascrittura';
   CLOSING_PROBLEMS = 'Problemi in chiusura!';
+  STR_ERROR = 'ERRORE!';
+  STR_UNEXPECTED_ERROR = 'ERRORE NON PREVISTO!';
   CONFIRM_CHANGES = 'ATTENZIONE: il contenuto del file "%s" è cambiato: vuoi salvare il file?';
+  FILE_CHANGED_RELOAD = 'La Data/Ora del File "%s" è cambiata! Vuoi ricaricarlo?';
   FILE_SAVED = 'File "%s" salvato correttamente: vuoi aprirlo subito?';
   SVG_PARSING_OK = 'Il parsing SVG è corretto.';
 
@@ -83,16 +94,18 @@ type
   private
     FIcon : TIcon;
     FFileName : string;
+    FFileAge: TDateTime;
     FName : string;
     FExtension: string;
     FInvoice: TLegalInvoice;
-    FAllegatiButtons: TObjectList<TToolButton>;
+    FAllegatiButtons: TObjectList<TStyledToolButton>;
     FFileContentType: TFileContentType;
     procedure ReadFromFile;
     procedure SaveToFile;
     function GetFileName: string;
     function GetName: string;
     procedure SetFileName(const Value: string);
+    procedure LoadFromFile(const AFileName: string);
     procedure RenderAllegati;
     procedure AllegatoButtonClick(Sender: TObject);
     procedure UpdateContentType;
@@ -101,7 +114,7 @@ type
     EditFileType: TEditFileType;
     SynEditor: TSynEdit;
     HTMLViewer: THTMLViewer;
-    ToolbarAllegati: TToolBar;
+    ToolbarAllegati: TStyledToolBar;
     TabSheet: TTabSheet;
     Splitter: TSplitter;
     Constructor Create(const EditFileName : string);
@@ -163,21 +176,21 @@ type
     RightSplitter: TSplitter;
     panelPreview: TPanel;
     SV: TSplitView;
-    catMenuItems: TCategoryButtons;
+    catMenuItems: TStyledCategoryButtons;
     panlTop: TPanel;
     lblTitle: TLabel;
-    SettingsToolBar: TToolBar;
-    ColorSettingsToolButton: TToolButton;
-    EditOptionsToolButton: TToolButton;
+    SettingsToolBar: TStyledToolbar;
+    ColorSettingsToolButton: TStyledToolButton;
+    EditOptionsToolButton: TStyledToolButton;
     VirtualImageList: TVirtualImageList;
     actMenu: TAction;
-    MenuButtonToolbar: TToolBar;
-    MenuToolButton: TToolButton;
-    PageSetupToolButton: TToolButton;
-    PrinterSetupToolButton: TToolButton;
-    AboutToolButton: TToolButton;
-    QuitToolButton: TToolButton;
-    SepToolButton: TToolButton;
+    MenuButtonToolbar: TStyledToolbar;
+    MenuToolButton: TStyledToolButton;
+    PageSetupToolButton: TStyledToolButton;
+    PrinterSetupToolButton: TStyledToolButton;
+    AboutToolButton: TStyledToolButton;
+    QuitToolButton: TStyledToolButton;
+    SepToolButton: TStyledToolButton;
     FlowPanel: TFlowPanel;
     SVGIconImage16: TSVGIconImage;
     SVGIconImage32: TSVGIconImage;
@@ -216,6 +229,8 @@ type
     VirtualImageList20: TVirtualImageList;
     PanelCloseButton: TPanel;
     SVGIconImageCloseButton: TSVGIconImage;
+    LoadTimer: TTimer;
+    CheckFileChangedTimer: TTimer;
     procedure WMGetMinMaxInfo(var Message: TWMGetMinMaxInfo); message WM_GETMINMAXINFO;
     procedure acOpenFileExecute(Sender: TObject);
     procedure acSaveExecute(Sender: TObject);
@@ -297,7 +312,13 @@ type
     procedure PageControlMouseEnter(Sender: TObject);
     procedure PageControlMouseLeave(Sender: TObject);
     procedure SVGIconImageCloseButtonClick(Sender: TObject);
+    procedure CheckFileChangedTimerTimer(Sender: TObject);
+    procedure LoadTimerTimer(Sender: TObject);
+    procedure acHTMLViewerUpdate(Sender: TObject);
+    procedure AppDeactivate(Sender: TObject);
+    procedure AppActivate(Sender: TObject);
   private
+    FEditingInProgress: Boolean;
     FirstAction: Boolean;
     MinFormWidth, MinFormHeight, MaxFormWidth, MaxFormHeight: Integer;
     FThumbnailResource: TdmThumbnailResources;
@@ -331,6 +352,7 @@ type
     procedure UpdateFromSettings(AEditor: TSynEdit);
     function DialogPosRect: TRect;
     procedure AdjustCompactWidth;
+    procedure AdjustViewerWidth;
     function OpenFile(const FileName: string;
       const ARaiseError: Boolean = True): Boolean;
     function AddEditingFile(EditingFile: TEditingFile): Integer;
@@ -360,11 +382,15 @@ type
     procedure ShowXMLEditor(AEditingFile: TEditingFile; const AVisible: Boolean);
     procedure ConfirmChanges(EditingFile: TEditingFile);
     procedure ShowTabCloseButtonOnHotTab;
+    procedure UpdateTabsheetImage(ATabSheet: TTabSheet; AModified: Boolean;
+      const AImageName: string);
     property XMLFontSize: Integer read FXMLFontSize write SetXMLFontSize;
     property HTMLFontSize: Integer read FHTMLFontSize write SetHTMLFontSize;
   protected
     procedure CreateWindowHandle(const Params: TCreateParams); override;
     procedure DestroyWindowHandle; override;
+  public
+    procedure ManageExceptions(Sender: TObject; E: Exception);
   end;
 
 var
@@ -394,6 +420,7 @@ uses
   , SynPDF
   , vmHtmlToPdf
   , uLogExcept
+  , Vcl.StyledTaskDialog
   , PKCS7Extractor
   ;
 
@@ -493,7 +520,7 @@ procedure TEditingFile.RenderAllegati;
 var
   LIndex: NativeInt;
   LAllegato: TLinkedDoc;
-  LButton: TToolButton;
+  LButton: TStyledToolButton;
 begin
   FAllegatiButtons.Clear;
 
@@ -501,7 +528,7 @@ begin
   begin
     LAllegato := FInvoice.Allegati[LIndex];
 
-    LButton := TToolButton.Create(nil);
+    LButton := TStyledToolButton.Create(nil);
     try
       LButton.Cursor := crHandPoint;
       LButton.AutoSize := True;
@@ -523,16 +550,15 @@ end;
 
 procedure TEditingFile.ReadFromFile;
 begin
-  TLegalInvoiceLoader.LoadFromFile(FFileName,
-    SynEditor);
+  LoadFromFile(FileName);
 end;
 
 procedure TEditingFile.AllegatoButtonClick(Sender: TObject);
 var
-  LButton: TToolButton;
+  LButton: TStyledToolButton;
   LAllegato: TLinkedDoc;
 begin
-  LButton := Sender as TToolButton;
+  LButton := Sender as TStyledToolButton;
   LAllegato := FInvoice.Allegati[LButton.Tag];
   LAllegato.DumpAndOpen;
 end;
@@ -542,7 +568,7 @@ var
   Filter : Word;
 begin
   inherited Create;
-  FAllegatiButtons := TObjectList<TToolButton>.Create(True);
+  FAllegatiButtons := TObjectList<TStyledToolButton>.Create(True);
 
   if not IsStyleHookRegistered(TCustomSynEdit, TScrollingStyleHook) then
     TStyleManager.Engine.RegisterStyleHook(TCustomSynEdit, TScrollingStyleHook);
@@ -594,6 +620,12 @@ begin
   inherited;
 end;
 
+procedure TEditingFile.LoadFromFile(const AFileName: string);
+begin
+  TLegalInvoiceLoader.LoadFromFile(FFileName, SynEditor);
+  FileAge(AFileName, FFileAge);
+end;
+
 procedure TEditingFile.UpdateContentType;
 var
   LContent: string;
@@ -625,6 +657,7 @@ procedure TEditingFile.SaveToFile;
 begin
   SynEditor.Lines.SaveToFile(Self.FileName);
   SynEditor.Modified := False;
+  FileAge(Self.FileName, FFileAge);
   SynEditor.OnChange(SynEditor);
 end;
 
@@ -741,6 +774,16 @@ begin
   CurrentEditFile.SaveToFile;
 end;
 
+procedure TfrmMain.AppActivate(Sender: TObject);
+begin
+  CheckFileChangedTimerTimer(CheckFileChangedTimer);
+end;
+
+procedure TfrmMain.AppDeactivate(Sender: TObject);
+begin
+  CheckFileChangedTimer.Enabled := False;
+end;
+
 procedure TfrmMain.FormDestroy(Sender: TObject);
 begin
   FreeAndNil(FThumbnailResource);
@@ -754,26 +797,43 @@ end;
 procedure TfrmMain.FormMouseWheelDown(Sender: TObject; Shift: TShiftState;
   MousePos: TPoint; var Handled: Boolean);
 begin
-  if Shift = [ssCtrl] then
+  if (Shift = [ssCtrl]) and (CurrentEditFile <> nil) then
   begin
-    actnReduceFont.Execute;
-    Handled := True;
+    if CurrentEditFile.SynEditor.Focused then
+    begin
+      actnReduceFont.Execute;
+      Handled := True;
+    end
+    else if CurrentEditFile.HTMLViewer.Focused then
+    begin
+      acZoomOut.Execute;
+      Handled := True;
+    end;
   end;
 end;
 
 procedure TfrmMain.FormMouseWheelUp(Sender: TObject; Shift: TShiftState;
   MousePos: TPoint; var Handled: Boolean);
 begin
-  if Shift = [ssCtrl] then
+  if (Shift = [ssCtrl]) and (CurrentEditFile <> nil) then
   begin
-    actnEnlargeFont.Execute;
-    Handled := True;
+    if CurrentEditFile.SynEditor.Focused then
+    begin
+      actnEnlargeFont.Execute;
+      Handled := True;
+    end
+    else if CurrentEditFile.HTMLViewer.Focused then
+    begin
+      acZoomIn.Execute;
+      Handled := True;
+    end;
   end;
 end;
 
 procedure TfrmMain.FormResize(Sender: TObject);
 begin
   AdjustCompactWidth;
+  AdjustViewerWidth;
 end;
 
 procedure TfrmMain.ShowSRDialog(aReplace: boolean);
@@ -1018,11 +1078,28 @@ begin
   UpdateInvoiceViewer;
 end;
 
+procedure TfrmMain.LoadTimerTimer(Sender: TObject);
+begin
+  if FEditingInProgress then
+  begin
+    FEditingInProgress := False;
+    UpdateInvoiceViewer;
+  end;
+end;
+
 procedure TfrmMain.FormCreate(Sender: TObject);
 var
   FileVersionStr: string;
 begin
+  //To check Application Focus
+  Application.OnActivate := AppActivate;
+  Application.OnDeactivate := AppDeactivate;
+
   FThumbnailResource := TdmThumbnailResources.Create(nil);
+  //Initialize AnimatedTaskDialog font size
+  Screen.MessageFont.Size := Round(Screen.MessageFont.Size*1.2);
+  InitializeStyledTaskDialogs(True, Screen.MessageFont);
+
   //creo la lista dei files aperti
   EditFileList := TObjectList.Create(True);
   FEditorOptions := TSynEditorOptionsContainer.create(self);
@@ -1140,10 +1217,8 @@ end;
 procedure TfrmMain.UpdateContentType;
 begin
   CurrentEditFile.UpdateContentType;
-  if CurrentEditor.Modified then
-    pageControl.ActivePage.Imagename := CurrentEditFile.ImageName
-  else
-    pageControl.ActivePage.Imagename := CurrentEditFile.ImageName+'-gray';
+  UpdateTabsheetImage(pageControl.ActivePage, CurrentEditor.Modified,
+      CurrentEditFile.ImageName);
 
   case CurrentEditFile.ContentType of
     fcLegalInvoice: FXMLInvoice := CurrentEditFile;
@@ -1152,10 +1227,27 @@ begin
   end;
 end;
 
+procedure TfrmMain.acHTMLViewerUpdate(Sender: TObject);
+begin
+  (Sender as TAction).Enabled :=
+    (CurrentEditFile <> nil) and (CurrentEditFile.HTMLViewer <> nil);
+end;
+
+procedure TfrmMain.UpdateTabsheetImage(ATabSheet: TTabSheet;
+  AModified: Boolean; const AImageName: string);
+begin
+  if AModified then
+    ATabSheet.ImageName := AImageName
+  else
+    ATabSheet.ImageName := AImageName+'-gray';
+end;
+
 procedure TfrmMain.SynEditChange(Sender: TObject);
 begin
   if Sender = CurrentEditor then
   begin
+    FEditingInProgress := True;
+    LoadTimer.Enabled := False;
     UpdateContentType;
     UpdateInvoiceViewer;
   end;
@@ -1171,7 +1263,7 @@ var
   LTabSheet: TTabSheet;
   LEditor: TSynEdit;
   LFEViewer: THtmlViewer;
-  LToolBarAllegati: TToolbar;
+  LToolBarAllegati: TStyledToolbar;
   LSplitter: TSplitter;
 begin
   //lo aggiungo alla lista dei file aperti
@@ -1213,11 +1305,13 @@ begin
     LFEViewer.Parent := LTabSheet;
     LFEViewer.PopupMenu := PopHTMLViewer;
 
-    LToolBarAllegati := TToolbar.Create(LTabSheet);
+    LToolBarAllegati := TStyledToolbar.Create(LTabSheet);
     LToolBarAllegati.Align := alTop;
     LToolBarAllegati.List := True;
     LToolBarAllegati.ShowCaptions := True;
-    LToolBarAllegati.Height := 30;
+    LToolBarAllegati.ButtonWidth := 260;
+    LToolBarAllegati.ButtonHeight := 38;
+    LToolBarAllegati.Height := 40;
     LToolBarAllegati.Parent := LTabSheet;
     LToolBarAllegati.Images := VirtualImageList;
 
@@ -1366,6 +1460,7 @@ begin
       FXMLInvoice := CurrentEditFile;
   end;
   UpdateInvoiceViewer;
+  AdjustViewerWidth;
 end;
 
 procedure TfrmMain.PageControlMouseMove(Sender: TObject; Shift: TShiftState; X,
@@ -1410,6 +1505,38 @@ begin
   acSave.Enabled := (CurrentEditor <> nil) and (CurrentEditor.Modified);
 end;
 
+procedure TfrmMain.CheckFileChangedTimerTimer(Sender: TObject);
+var
+  LFileAge: TDateTime;
+begin
+  CheckFileChangedTimer.Enabled := False;
+  Try
+    //Check if opened files are changed on Disk
+    for var I := 0 to EditFileList.Count -1 do
+    begin
+      var LEditFile := TEditingFile(EditFileList.items[I]);
+      if FileAge(LEditFile.FileName, LFileAge) then
+      begin
+        if LFileAge <> LEditFile.FFileAge then
+        begin
+          var LConfirm := StyledMessageDlg(Format(FILE_CHANGED_RELOAD,[LEditFile.FileName]),
+            mtWarning, [mbYes, mbNo], 0);
+          if LConfirm = mrYes then
+          begin
+            LEditFile.ReadFromFile;
+            UpdateTabsheetImage(LEditFile.TabSheet, False, LEditFile.ImageName);
+            SynEditChange(LEditFile.SynEditor);
+          end
+          else
+            LEditFile.FFileAge := LFileAge;
+        end;
+      end;
+    end;
+  Finally
+    CheckFileChangedTimer.Enabled := True;
+  End;
+end;
+
 procedure TfrmMain.CloseSplitViewMenu;
 begin
   SV.Close;
@@ -1444,7 +1571,7 @@ begin
   //Confirm save changes
   if EditingFile.SynEditor.Modified then
   begin
-    LConfirm := MessageDlg(Format(CONFIRM_CHANGES,[EditingFile.FileName]),
+    LConfirm := StyledMessageDlg(Format(CONFIRM_CHANGES,[EditingFile.FileName]),
       mtWarning, [mbYes, mbNo], 0);
     if LConfirm = mrYes then
       EditingFile.SaveToFile
@@ -1642,7 +1769,7 @@ end;
 
 procedure TfrmMain.FileSavedAskToOpen(const AFileName: string);
 begin
-  if MessageDlg(Format(FILE_SAVED,[AFileName]),
+  if StyledMessageDlg(Format(FILE_SAVED,[AFileName]),
     TMsgDlgType.mtInformation, [mbYes, MbNo], 0) = mrYes then
   begin
     ShellExecute(handle, 'open', PChar(AFilename), nil, nil, SW_SHOWNORMAL);
@@ -1694,7 +1821,7 @@ begin
       LScaleFactor := CurrentEditFile.HTMLViewer.DefFontSize / FXMLFontSize
     else
       LScaleFactor := 1;
-    CurrentEditFile.HTMLViewer.DefFontSize := Round(Value * LScaleFactor);
+    CurrentEditFile.HTMLViewer.DefFontSize := Round(Value * LScaleFactor * Self.ScaleFactor);
     FEditorSettings.HTMLFontSize := Value;
   end;
   FHTMLFontSize := Value;
@@ -1745,6 +1872,7 @@ end;
 
 procedure TfrmMain.UpdateFromSettings(AEditor: TSynEdit);
 var
+  LStyle: TStyledButtonDrawType;
   LEditingFile: TEditingfile;
 begin
   if AEditor <> nil then
@@ -1756,6 +1884,32 @@ begin
   end
   else
     FEditorSettings.ReadSettings(nil, self.FEditorOptions);
+
+  //Rounded Buttons for StyledButtons
+  if FEditorSettings.ButtonDrawRounded then
+    LStyle := btRounded
+  else
+    LStyle := btRoundRect;
+  TStyledButton.RegisterDefaultRenderingStyle(LStyle);
+
+  //Rounded Buttons for StyledToolbars
+  if FEditorSettings.ToolbarDrawRounded then
+    LStyle := btRounded
+  else
+    LStyle := btRoundRect;
+  TStyledToolbar.RegisterDefaultRenderingStyle(LStyle);
+  SettingsToolBar.StyleDrawType := LStyle;
+
+  //Rounded Buttons for menus: StyledCategories and StyledButtonGroup
+  if FEditorSettings.MenuDrawRounded then
+    LStyle := btRounded
+  else
+    LStyle := btRoundRect;
+  TStyledCategoryButtons.RegisterDefaultRenderingStyle(LStyle);
+  TStyledButtonGroup.RegisterDefaultRenderingStyle(LStyle);
+  catMenuItems.StyleDrawType := LStyle;
+  MenuButtonToolbar.StyleDrawType := LStyle;
+
   if FEditorSettings.XMLFontSize >= MinfontSize then
     XMLFontSize := FEditorSettings.XMLFontSize
   else
@@ -1959,10 +2113,18 @@ var
   InitialDir : string;
   LFileName: string;
 begin
+  if CurrentEditFile <> nil then
+    Caption := Application.Title+' - '+CurrentEditFile.FileName
+  else
+    Caption := Application.Title;
+
   UpdateStatusBarPanels;
   if not FirstAction then
   begin
     FirstAction := True;
+    //Load previous opened-files
+    LoadOpenedFiles;
+
     //Initialize Open and Save Dialog with application path
     LFileName := ParamStr(1);
     if LFileName <> '' then
@@ -1978,10 +2140,8 @@ begin
 
     OpenDialog.InitialDir := InitialDir;
     SaveDialog.InitialDir := InitialDir;
-
-    //Load previous opened-files
-    LoadOpenedFiles;
   end;
+  LoadTimer.Enabled := True;
 end;
 
 procedure TfrmMain.actMenuExecute(Sender: TObject);
@@ -2049,6 +2209,21 @@ begin
   FEditorSettings.HistoryFileList.Insert(0, AFileName);
 end;
 
+procedure TfrmMain.AdjustViewerWidth;
+begin
+  if CurrentEditFile <> nil then
+  begin
+    var LImagePanelWidth := ImagePanel.Width;
+    var LMinWidth := Self.Width div 3;
+    if LImagePanelWidth > LMinWidth then
+      ImagePanel.width := LMinWidth;
+    if CurrentEditFile.SynEditor.Width > LMinWidth then
+      CurrentEditFile.SynEditor.Width := LMinWidth
+    else
+      CurrentEditFile.SynEditor.Width := (Self.Width - ImagePanel.Width) div 2;
+  end;
+end;
+
 procedure TfrmMain.AdjustCompactWidth;
 begin
   //Change size of compact because Scrollbars appears
@@ -2056,6 +2231,8 @@ begin
     SV.CompactWidth := Round(44 * ScaleFactor)
   else
     SV.CompactWidth := Round(66 * ScaleFactor);
+  if (CurrentEditFile <> nil) and (CurrentEditFile.HTMLViewer <> nil) and (CurrentEditFile.HTMLViewer.Width > CurrentEditFile.TabSheet.Width) then
+    CurrentEditFile.HTMLViewer.Width := width div 3;
 end;
 
 procedure TfrmMain.FormAfterMonitorDpiChanged(Sender: TObject; OldDPI,
@@ -2199,14 +2376,16 @@ begin
     rectOver := PageControl.TabRect(iot);
 
     PanelCloseButton.Left := rectOver.Right - PanelCloseButton.Width;
-    PanelCloseButton.Top := rectOver.Top + ((rectOver.Height div 2) - (PanelCloseButton.Height div 2)) + 1;
+    PanelCloseButton.Top := rectOver.Top + ((rectOver.Height div 2) - (PanelCloseButton.Height div 2));
 
     PanelCloseButton.Tag := iot;
+    PanelCloseButton.Color := StyleServices.GetSystemColor(clWindow);
     PanelCloseButton.Show;
   end
   else
   begin
     PanelCloseButton.Tag := -1;
+    PanelCloseButton.Color := StyleServices.GetSystemColor(clBtnFace);
     PanelCloseButton.Hide;
   end;
 end;
@@ -2222,6 +2401,27 @@ begin
   begin
     PanelCloseButton.Hide;
     PanelCloseButton.Tag := -1;
+  end;
+end;
+
+procedure TfrmMain.ManageExceptions(Sender: TObject; E: Exception);
+begin
+  //This is an event-handler for exceptions that replace Delphi standard handler
+  if E is EAccessViolation then
+  begin
+    if StyledMessageDlg(STR_UNEXPECTED_ERROR,
+      Format('Unexpected Error: %s%s',[sLineBreak,E.Message]),
+      TMsgDlgType.mtError,
+      [TMsgDlgBtn.mbOK, TMsgDlgBtn.mbAbort], 0) = mrAbort then
+    Application.Terminate;
+  end
+  else
+  begin
+
+    StyledMessageDlg(STR_ERROR,
+      Format('Error: %s%s',[sLineBreak,E.Message]),
+      TMsgDlgType.mtError,
+      [TMsgDlgBtn.mbOK, TMsgDlgBtn.mbHelp], 0);
   end;
 end;
 

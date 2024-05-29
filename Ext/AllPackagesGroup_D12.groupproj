@@ -1,0 +1,120 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{1BA49F4A-A03D-4A6C-A756-73FC11E9373C}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="HTMLViewer\package\FrameViewer12.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="HTMLViewer\package\dclFrameViewer12.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="SVGIconImageList\Packages\D12\SVGIconImageList.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="SVGIconImageList\Packages\D12\dclSVGIconImageList.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="SynEdit\Packages\SynEdit_R12.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="SynEdit\Packages\SynEdit_D12.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="StyledComponents\packages\D12\StyledComponents.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="StyledComponents\packages\D12\dclStyledComponents.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="FrameViewer12">
+        <MSBuild Projects="HTMLViewer\package\FrameViewer12.dproj"/>
+    </Target>
+    <Target Name="FrameViewer12:Clean">
+        <MSBuild Projects="HTMLViewer\package\FrameViewer12.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="FrameViewer12:Make">
+        <MSBuild Projects="HTMLViewer\package\FrameViewer12.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="dclFrameViewer12">
+        <MSBuild Projects="HTMLViewer\package\dclFrameViewer12.dproj"/>
+    </Target>
+    <Target Name="dclFrameViewer12:Clean">
+        <MSBuild Projects="HTMLViewer\package\dclFrameViewer12.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="dclFrameViewer12:Make">
+        <MSBuild Projects="HTMLViewer\package\dclFrameViewer12.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="SVGIconImageList">
+        <MSBuild Projects="SVGIconImageList\Packages\D12\SVGIconImageList.dproj"/>
+    </Target>
+    <Target Name="SVGIconImageList:Clean">
+        <MSBuild Projects="SVGIconImageList\Packages\D12\SVGIconImageList.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="SVGIconImageList:Make">
+        <MSBuild Projects="SVGIconImageList\Packages\D12\SVGIconImageList.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="dclSVGIconImageList">
+        <MSBuild Projects="SVGIconImageList\Packages\D12\dclSVGIconImageList.dproj"/>
+    </Target>
+    <Target Name="dclSVGIconImageList:Clean">
+        <MSBuild Projects="SVGIconImageList\Packages\D12\dclSVGIconImageList.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="dclSVGIconImageList:Make">
+        <MSBuild Projects="SVGIconImageList\Packages\D12\dclSVGIconImageList.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="SynEdit_R12">
+        <MSBuild Projects="SynEdit\Packages\SynEdit_R12.dproj"/>
+    </Target>
+    <Target Name="SynEdit_R12:Clean">
+        <MSBuild Projects="SynEdit\Packages\SynEdit_R12.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="SynEdit_R12:Make">
+        <MSBuild Projects="SynEdit\Packages\SynEdit_R12.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="SynEdit_D12">
+        <MSBuild Projects="SynEdit\Packages\SynEdit_D12.dproj"/>
+    </Target>
+    <Target Name="SynEdit_D12:Clean">
+        <MSBuild Projects="SynEdit\Packages\SynEdit_D12.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="SynEdit_D12:Make">
+        <MSBuild Projects="SynEdit\Packages\SynEdit_D12.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="StyledComponents">
+        <MSBuild Projects="StyledComponents\packages\D12\StyledComponents.dproj"/>
+    </Target>
+    <Target Name="StyledComponents:Clean">
+        <MSBuild Projects="StyledComponents\packages\D12\StyledComponents.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="StyledComponents:Make">
+        <MSBuild Projects="StyledComponents\packages\D12\StyledComponents.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="dclStyledComponents">
+        <MSBuild Projects="StyledComponents\packages\D12\dclStyledComponents.dproj"/>
+    </Target>
+    <Target Name="dclStyledComponents:Clean">
+        <MSBuild Projects="StyledComponents\packages\D12\dclStyledComponents.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="dclStyledComponents:Make">
+        <MSBuild Projects="StyledComponents\packages\D12\dclStyledComponents.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="FrameViewer12;dclFrameViewer12;SVGIconImageList;dclSVGIconImageList;SynEdit_R12;SynEdit_D12;StyledComponents;dclStyledComponents"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="FrameViewer12:Clean;dclFrameViewer12:Clean;SVGIconImageList:Clean;dclSVGIconImageList:Clean;SynEdit_R12:Clean;SynEdit_D12:Clean;StyledComponents:Clean;dclStyledComponents:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="FrameViewer12:Make;dclFrameViewer12:Make;SVGIconImageList:Make;dclSVGIconImageList:Make;SynEdit_R12:Make;SynEdit_D12:Make;StyledComponents:Make;dclStyledComponents:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

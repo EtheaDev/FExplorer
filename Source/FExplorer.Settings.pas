@@ -3,7 +3,7 @@
 {       FExplorer: Shell extensions per Fattura Elettronica                    }
 {       (Preview Panel, Thumbnail Icon, F.E.Viewer)                            }
 {                                                                              }
-{       Copyright (c) 2021-2023 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2021-2024 (Ethea S.r.l.)                                 }
 {       Author: Carlo Barazzetta                                               }
 {                                                                              }
 {       https://github.com/EtheaDev/FExplorer                                  }
@@ -89,12 +89,18 @@ type
     FHTMLFontSize: Integer;
     FHTMLFontName: string;
     FIconStylesheetName: string;
+    FButtonDrawRounded: Boolean;
+    FToolbarDrawRounded: Boolean;
+    FMenuDrawRounded: Boolean;
     function GetUseDarkStyle: Boolean;
     procedure SetSVGEngine(const Value: TSVGEngine);
     function GetThemeSectionName: string;
     function GetButtonTextColor: TColor;
     class function GetSettingsFileName: string; static;
     procedure UpdateEngine;
+    procedure SetButtonDrawRounded(const Value: Boolean);
+    procedure SetToolbarDrawRounded(const Value: Boolean);
+    procedure SetMenuDrawRounded(const Value: Boolean);
   protected
     FIniFile: TIniFile;
   public
@@ -132,6 +138,9 @@ type
     property ThemeSelection: TThemeSelection read FThemeSelection write FThemeSelection;
     property StylesheetName: string read FStylesheetName write FStylesheetName;
     property IconStylesheetName: string read FIconStylesheetName write FIconStylesheetName;
+    property ButtonDrawRounded: Boolean read FButtonDrawRounded write SetButtonDrawRounded;
+    property ToolbarDrawRounded: Boolean read FToolbarDrawRounded write SetToolbarDrawRounded;
+    property MenuDrawRounded: Boolean read FMenuDrawRounded write SetMenuDrawRounded;
   end;
 
   TPreviewSettings = class(TSettings)
@@ -356,6 +365,9 @@ begin
   FStylesheetName := FIniFile.ReadString('Global', 'StylesheetName', 'Custom');
   FIconStylesheetName := FIniFile.ReadString('Global', 'IconStylesheetName', 'Default');
   FThemeSelection := TThemeSelection(FIniFile.ReadInteger('Global', 'ThemeSelection', 0));
+  FToolbarDrawRounded := FIniFile.ReadBool('Global', 'ToolbarDrawRounded', false);
+  FButtonDrawRounded := FIniFile.ReadBool('Global', 'ButtonDrawRounded', false);
+  FMenuDrawRounded := FIniFile.ReadBool('Global', 'MenuDrawRounded', false);
   //Select Style by default on Actual Windows Theme
   if FThemeSelection = tsAsWindows then
   begin
@@ -443,6 +455,10 @@ begin
   FIniFile.WriteString('Global', 'IconStylesheetName', FIconStylesheetName);
 
   FIniFile.WriteInteger('Global', 'ThemeSelection', Ord(FThemeSelection));
+  FIniFile.WriteBool('Global', 'ToolbarDrawRounded', ToolbarDrawRounded);
+  FIniFile.WriteBool('Global', 'ButtonDrawRounded', ButtonDrawRounded);
+  FIniFile.WriteBool('Global', 'MenuDrawRounded', MenuDrawRounded);
+
   if (FUseDarkStyle and (LightBackground <> default_darkbackground)) or
     (not FUseDarkStyle and (LightBackground <> default_lightbackground)) then
     FIniFile.WriteInteger('Global', 'LightBackground', LightBackground);
@@ -466,6 +482,22 @@ begin
   FIniFile.WriteFloat('PDFPageSettins', 'MarginBottom', PDFPageSettings.MarginBottom);
   FIniFile.WriteFloat('PDFPageSettins', 'MarginLeft', PDFPageSettings.MarginLeft);
   FIniFile.WriteFloat('PDFPageSettins', 'MarginRight', PDFPageSettings.MarginRight);
+end;
+
+procedure TSettings.SetToolbarDrawRounded(
+  const Value: Boolean);
+begin
+  FToolbarDrawRounded := Value;
+end;
+
+procedure TSettings.SetMenuDrawRounded(const Value: Boolean);
+begin
+  FMenuDrawRounded := Value;
+end;
+
+procedure TSettings.SetButtonDrawRounded(const Value: Boolean);
+begin
+  FButtonDrawRounded := Value;
 end;
 
 { TPreviewSettings }
