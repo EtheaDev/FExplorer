@@ -1782,7 +1782,7 @@ object dmResources: TdmResources
       '  <xsl:template name="FormatIVA">'
       '    <xsl:param name="Natura" />'
       '    <xsl:param name="IVA" />'
-      '   '
+      ''
       #9'<xsl:choose>'
       '      <xsl:when test="$Natura">'
       '        <xsl:value-of select="$Natura" />'
@@ -1907,7 +1907,7 @@ object dmResources: TdmResources
       '          <xsl:text> CIG: </xsl:text>'
       '          <xsl:value-of select="CodiceCIG" />'
       '        </xsl:if>'
-      '      '
+      ''
       '    </xsl:variable>'
       ''
       '    <xsl:variable name="descrizioneCC">'
@@ -1936,15 +1936,15 @@ object dmResources: TdmResources
       '    </xsl:if>'
       ''
       ''
-      ' '
       ''
-      '   '
+      ''
+      ''
       ''
       '  </xsl:template>'
       ''
-      '  <xsl:template match="DatiDDT"> '
+      '  <xsl:template match="DatiDDT">'
       #9'  <xsl:variable name="descri_DAO" >'
-      #9#9
+      ''
       #9#9'  <xsl:text>DDT </xsl:text>'
       #9#9'  <xsl:value-of select="NumeroDDT" />'
       #9#9'  <xsl:if test="DataDDT">'
@@ -1953,7 +1953,7 @@ object dmResources: TdmResources
       #9#9#9'  <xsl:with-param name="DateTime" select="DataDDT" />'
       #9#9#9'</xsl:call-template>'
       #9#9'  </xsl:if>'
-      #9'  '
+      ''
       #9'  </xsl:variable>'
       ''
       #9'  <xsl:if test="$descri_DAO">'
@@ -1964,7 +1964,7 @@ object dmResources: TdmResources
       #9#9'</xsl:call-template>'
       #9'  </xsl:if>'
       '  </xsl:template>'
-      '    '
+      ''
       '  <xsl:template match="DettaglioLinee">'
       '    <xsl:param name="r" />'
       '    <xsl:param name="posASWRELSTD" />'
@@ -1975,9 +1975,9 @@ object dmResources: TdmResources
       '    <xsl:variable name="valNumeroLinea" >'
       '      <xsl:value-of select="number(NumeroLinea)" />'
       '    </xsl:variable>'
-      ' '
+      ''
       '    <!--Pre LINEA OpzPreLineaDatiDDT -->'
-      #9#9
+      ''
       '    <xsl:choose>'
       ''
       '      <xsl:when test="OpzPreLineaDatiDDT">'
@@ -1989,20 +1989,20 @@ object dmResources: TdmResources
         '/>'
       '          </xsl:call-template>'
       '        </xsl:for-each>'
-      '        '
+      ''
       '      </xsl:when>'
-      #9'    <xsl:otherwise>'#9' '
-      #9'  '
+      #9'    <xsl:otherwise>'
+      ''
       
         #9'   <xsl:for-each select="$TipoFattura/FatturaElettronicaBody[$I' +
         'ndiceBody]/DatiGenerali/DatiDDT[ number(./RiferimentoNumeroLinea' +
-        ') = $valNumeroLinea] ">'#9#9
+        ') = $valNumeroLinea] ">'
       
         #9#9#9#9'<xsl:apply-templates select="."/>'#9'<!-- apply DatiDDT templat' +
         'e -->'
-      '        </xsl:for-each>    '
-      #9#9
-      '      </xsl:otherwise>'#9'  '
+      '        </xsl:for-each>'
+      ''
+      '      </xsl:otherwise>'
       '    </xsl:choose>'
       ''
       ''
@@ -2018,19 +2018,19 @@ object dmResources: TdmResources
       '          </xsl:call-template>'
       '        </xsl:for-each>'
       '      </xsl:when>'
-      '     '
+      ''
       '      <xsl:otherwise>'
-      #9'  '
+      ''
       
         #9'  <xsl:for-each select="$TipoFattura/FatturaElettronicaBody[$In' +
         'diceBody]/DatiGenerali/DatiOrdineAcquisto[ number(./RiferimentoN' +
-        'umeroLinea) = $valNumeroLinea] ">'#9#9
+        'umeroLinea) = $valNumeroLinea] ">'
       #9#9#9'<xsl:call-template name="DatiCorrelati"  select="." >'
       
         '            <xsl:with-param name="Prefix"   select='#39'"Vs.Ord. "'#39'/' +
-        '>          '
+        '>'
       '          </xsl:call-template >'
-      '        </xsl:for-each>   '#9'  '
+      '        </xsl:for-each>'
       #9'  </xsl:otherwise>'
       '    </xsl:choose>'
       ''
@@ -2046,20 +2046,20 @@ object dmResources: TdmResources
       '          </xsl:call-template>'
       '        </xsl:for-each>'
       '      </xsl:when>'
-      '     '
+      ''
       '      <xsl:otherwise>'
       
         #9#9'<xsl:for-each select="$TipoFattura/FatturaElettronicaBody[$Ind' +
         'iceBody]/DatiGenerali/DatiContratto[ number(./RiferimentoNumeroL' +
-        'inea) = $valNumeroLinea] ">'#9#9
+        'inea) = $valNumeroLinea] ">'
       #9'    <xsl:call-template name="DatiCorrelati" select=".">'
       
         '            <xsl:with-param name="Prefix"  select='#39'"Contratto "'#39 +
         '/>'
-      '            '
+      ''
       '          </xsl:call-template >'
-      #9'    </xsl:for-each>   '
-      #9'  '
+      #9'    </xsl:for-each>'
+      ''
       #9'  </xsl:otherwise>'
       '    </xsl:choose>'
       ''
@@ -2075,20 +2075,20 @@ object dmResources: TdmResources
       '          </xsl:call-template>'
       '        </xsl:for-each>'
       '      </xsl:when>'
-      '     '
+      ''
       '      <xsl:otherwise>'
-      #9'  '
+      ''
       
         #9'  <xsl:for-each select="$TipoFattura/FatturaElettronicaBody[$In' +
         'diceBody]/DatiGenerali/DatiConvenzione[ number(./RiferimentoNume' +
-        'roLinea) = $valNumeroLinea] ">'#9#9
+        'roLinea) = $valNumeroLinea] ">'
       '          <xsl:call-template name="DatiCorrelati"  select=".">'
       
         '            <xsl:with-param name="Prefix"  select='#39'"Convenzione ' +
         '"'#39'/>'
       '          </xsl:call-template >'
       '        </xsl:for-each>'
-      #9'  '
+      ''
       #9'  </xsl:otherwise>'
       '    </xsl:choose>'
       ''
@@ -2104,9 +2104,9 @@ object dmResources: TdmResources
       '          </xsl:call-template>'
       '        </xsl:for-each>'
       '      </xsl:when>'
-      '     '
+      ''
       '      <xsl:otherwise>'
-      #9'  '
+      ''
       
         #9' <xsl:for-each select="$TipoFattura/FatturaElettronicaBody[$Ind' +
         'iceBody]/DatiGenerali/DatiRicezione[ number(./RiferimentoNumeroL' +
@@ -2117,7 +2117,7 @@ object dmResources: TdmResources
         '/>'
       '          </xsl:call-template >'
       '        </xsl:for-each>'
-      #9'  '
+      ''
       #9'  </xsl:otherwise>'
       '    </xsl:choose>'
       ''
@@ -2134,9 +2134,9 @@ object dmResources: TdmResources
         '/>'
       '          </xsl:call-template>'
       '        </xsl:for-each>'
-      '      </xsl:when>    '
+      '      </xsl:when>'
       '      <xsl:otherwise>'
-      #9'  '
+      ''
       
         '     <xsl:for-each select="$TipoFattura/FatturaElettronicaBody[$' +
         'IndiceBody]/DatiGenerali/DatiFattureCollegate[ number(./Riferime' +
@@ -2144,10 +2144,10 @@ object dmResources: TdmResources
       '          <xsl:call-template name="DatiCorrelati" select=".">'
       
         '            <xsl:with-param name="Prefix"  select='#39'"Fatt.coll. "' +
-        #39'/>           '
+        #39'/>'
       '          </xsl:call-template >'
       '        </xsl:for-each>'
-      #9'  '
+      ''
       #9'  </xsl:otherwise>'
       '    </xsl:choose>'
       ''
@@ -2219,8 +2219,8 @@ object dmResources: TdmResources
       
         '                                     '#39'abcdefghijklmnopqrstuvwxyz' +
         #39
-      '                                    ) != '#39'aswrelstd'#39' '
-      #9#9#9#9#9#9#9#9#9'and '#9#9#9#9#9#9#9#9#9
+      '                                    ) != '#39'aswrelstd'#39
+      #9#9#9#9#9#9#9#9#9'and'
       #9#9#9#9#9#9#9#9#9'translate( TipoDato,'
       
         '                                     '#39'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
@@ -2314,8 +2314,8 @@ object dmResources: TdmResources
       '                                    ) = '#39'aswlottsca'#39' ">'
       ''
       
-        '                        <xsl:text>Quantit'#195#160' del suddetto lotto: ' +
-        '</xsl:text>'
+        '                        <xsl:text>Quantit'#224' del suddetto lotto: <' +
+        '/xsl:text>'
       '                      </xsl:when>'
       '                      <xsl:otherwise>'
       '                        <xsl:text>Rif. numero: </xsl:text>'
@@ -2460,8 +2460,8 @@ object dmResources: TdmResources
       '          <xsl:if test=" translate( TipoDato,'
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9' '#39'ABCDEFGHIJKLMNOPQRSTUVWXYZ'#39','
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9' '#39'abcdefghijklmnopqrstuvwxyz'#39
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9') != '#39'aswrelstd'#39' '
-      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'and '#9#9#9#9#9#9#9#9#9
+      #9#9#9#9#9#9#9#9#9#9#9#9#9#9') != '#39'aswrelstd'#39
+      #9#9#9#9#9#9#9#9#9#9#9#9#9#9'and'
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9'translate( TipoDato,'
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9' '#39'ABCDEFGHIJKLMNOPQRSTUVWXYZ'#39','
       #9#9#9#9#9#9#9#9#9#9#9#9#9#9' '#39'abcdefghijklmnopqrstuvwxyz'#39
@@ -2531,7 +2531,7 @@ object dmResources: TdmResources
       ''
       '  <xsl:template match="DatiRitenuta">'
       ''
-      '   '
+      ''
       '        <tr>'
       '          <td >'
       ''
@@ -2608,7 +2608,7 @@ object dmResources: TdmResources
       '          </td>'
       ''
       '        </tr>'
-      '     '
+      ''
       '  </xsl:template>'
       ''
       '  <xsl:template match="DettaglioPagamento">'
@@ -2722,7 +2722,7 @@ object dmResources: TdmResources
       ''
       
         '      <!--Variabile che contiene il codice destinatario dall'#39'HEA' +
-        'DER perch'#195#168' viene visualizzato nella sezione BODY -->'
+        'DER perch'#232' viene visualizzato nella sezione BODY -->'
       
         '      <!--<xsl:variable name="CodiceDestinatario" select="$TipoF' +
         'attura/FatturaElettronicaHeader/DatiTrasmissione/CodiceDestinata' +
@@ -2733,7 +2733,7 @@ object dmResources: TdmResources
       ''
       
         '      <!--Variabile che contiene il codice destinatario dall'#39'HEA' +
-        'DER perch'#195#168' viene visualizzato nella sezione BODY -->'
+        'DER perch'#232' viene visualizzato nella sezione BODY -->'
       '      <xsl:variable name="CodiceDestinatario" >'
       ''
       '        <xsl:choose>'
@@ -2753,10 +2753,10 @@ object dmResources: TdmResources
       '      </xsl:variable>'
       ''
       '      <div id="fattura-elettronica" class="page">'
-      #9'  '
+      ''
       '        <!-- FatturaElettronicaHeader -->'
       '        <xsl:if test="$TipoFattura/FatturaElettronicaHeader">'
-      #9#9#9
+      ''
       
         #9#9#9'  <xsl:if test="$TipoFattura/FatturaElettronicaHeader/NomeDoc' +
         'umento">'
@@ -2770,7 +2770,7 @@ object dmResources: TdmResources
       #9#9#9#9'  </tr>'
       #9#9#9#9'  </table>'
       '                </xsl:if>'
-      #9#9
+      ''
       '          <table id="tbHeader" class="tbHeader">'
       ''
       '            <tr >'
@@ -2914,15 +2914,15 @@ object dmResources: TdmResources
         '">'
       
         '                                        nuove iniziative produtt' +
-        'ive - Non pi'#195#185' valido in quanto abrogato dalla legge di stabilit' +
-        #195#160' 2015'
+        'ive - Non pi'#249' valido in quanto abrogato dalla legge di stabilit'#224 +
+        ' 2015'
       '                                      </xsl:when>'
       
         '                                      <xsl:when test="$RF='#39'RF04'#39 +
         '">'
       
-        '                                        agricoltura e attivit'#195#160' ' +
-        'connesse e pesca'
+        '                                        agricoltura e attivit'#224' c' +
+        'onnesse e pesca'
       '                                      </xsl:when>'
       
         '                                      <xsl:when test="$RF='#39'RF05'#39 +
@@ -2958,7 +2958,7 @@ object dmResources: TdmResources
         '">'
       
         '                                        intrattenimenti, giochi ' +
-        'e altre attivit'#195#160' di cui alla tariffa allegata al DPR 640/72'
+        'e altre attivit'#224' di cui alla tariffa allegata al DPR 640/72'
       '                                      </xsl:when>'
       
         '                                      <xsl:when test="$RF='#39'RF11'#39 +
@@ -2980,14 +2980,14 @@ object dmResources: TdmResources
         '">'
       
         '                                        rivendita beni usati, og' +
-        'getti d'#226#8364#8482'arte, d'#226#8364#8482'antiquariato o da collezione'
+        'getti d'#8217'arte, d'#8217'antiquariato o da collezione'
       '                                      </xsl:when>'
       
         '                                      <xsl:when test="$RF='#39'RF15'#39 +
         '">'
       
-        '                                        agenzie di vendite all'#226#8364 +
-        #8482'asta di oggetti d'#226#8364#8482'arte, antiquariato o da collezione'
+        '                                        agenzie di vendite all'#8217'a' +
+        'sta di oggetti d'#8217'arte, antiquariato o da collezione'
       '                                      </xsl:when>'
       
         '                                      <xsl:when test="$RF='#39'RF16'#39 +
@@ -3204,9 +3204,7 @@ object dmResources: TdmResources
       ''
       '                              </div>'
       ''
-      
-        '                              <xsl:if test="Denominazione">     ' +
-        '                         '
+      '                              <xsl:if test="Denominazione">'
       '                                <div class="headContent">'
       ''
       '                                  Denominazione:'
@@ -3267,13 +3265,13 @@ object dmResources: TdmResources
       '                                    <xsl:when test="$RF='#39'RF03'#39'">'
       
         '                                      nuove iniziative produttiv' +
-        'e - Non pi'#195#185' valido in quanto abrogato dalla legge di stabilit'#195#160 +
-        ' 2015'
+        'e - Non pi'#249' valido in quanto abrogato dalla legge di stabilit'#224' 2' +
+        '015'
       '                                    </xsl:when>'
       '                                    <xsl:when test="$RF='#39'RF04'#39'">'
       
-        '                                      agricoltura e attivit'#195#160' co' +
-        'nnesse e pesca'
+        '                                      agricoltura e attivit'#224' con' +
+        'nesse e pesca'
       '                                    </xsl:when>'
       '                                    <xsl:when test="$RF='#39'RF05'#39'">'
       '                                      vendita sali e tabacchi'
@@ -3297,7 +3295,7 @@ object dmResources: TdmResources
       '                                    <xsl:when test="$RF='#39'RF10'#39'">'
       
         '                                      intrattenimenti, giochi e ' +
-        'altre attivit'#195#160' di cui alla tariffa allegata al DPR 640/72'
+        'altre attivit'#224' di cui alla tariffa allegata al DPR 640/72'
       '                                    </xsl:when>'
       '                                    <xsl:when test="$RF='#39'RF11'#39'">'
       '                                      agenzie viaggi e turismo'
@@ -3311,12 +3309,12 @@ object dmResources: TdmResources
       '                                    <xsl:when test="$RF='#39'RF14'#39'">'
       
         '                                      rivendita beni usati, ogge' +
-        'tti d'#226#8364#8482'arte, d'#226#8364#8482'antiquariato o da collezione'
+        'tti d'#8217'arte, d'#8217'antiquariato o da collezione'
       '                                    </xsl:when>'
       '                                    <xsl:when test="$RF='#39'RF15'#39'">'
       
-        '                                      agenzie di vendite all'#226#8364#8482'a' +
-        'sta di oggetti d'#226#8364#8482'arte, antiquariato o da collezione'
+        '                                      agenzie di vendite all'#8217'ast' +
+        'a di oggetti d'#8217'arte, antiquariato o da collezione'
       '                                    </xsl:when>'
       '                                    <xsl:when test="$RF='#39'RF16'#39'">'
       '                                      IVA per cassa P.A.'
@@ -3428,7 +3426,7 @@ object dmResources: TdmResources
       '                          </xsl:choose>'
       ''
       '                        </xsl:for-each>'
-      '                        '
+      ''
       
         '                        <!--INIZIO TerzoIntermediarioOSoggettoEm' +
         'ittente-->'
@@ -3548,14 +3546,14 @@ object dmResources: TdmResources
       ''
       ''
       '                             </xsl:for-each>'
-      '                          '
-      '                        '
+      ''
+      ''
       ''
       '                        </xsl:if>'
       
         '                        <!--FINE TerzoIntermediarioOSoggettoEmit' +
         'tente-->'
-      '                        '
+      ''
       '                      </div>'
       '                      <!--FINE CEDENTE PRESTATORE-->'
       ''
@@ -3573,7 +3571,7 @@ object dmResources: TdmResources
       '                <table class="tableHead">'
       '                  <tr>'
       '                    <td >'
-      '                     '
+      ''
       '                      <div class="headBorder" >'
       
         '                        <label class= "headerLabel"  >Cessionari' +
@@ -3968,7 +3966,7 @@ object dmResources: TdmResources
       '              </td>'
       '            </tr>'
       ''
-      '        '
+      ''
       '          </table>'
       ''
       ''
@@ -3985,7 +3983,7 @@ object dmResources: TdmResources
       ''
       ''
       '          <xsl:variable name="BodyIndex" select="position()"/>'
-      '          '
+      ''
       
         '          <!-- Conforme Standard AssoSoftware se altridatigestio' +
         'nali presenta ASWRELSTD   -->'
@@ -3994,7 +3992,7 @@ object dmResources: TdmResources
         '            <xsl:for-each select="DatiBeniServizi/DettaglioLinee' +
         '">'
       '              <xsl:variable name="DettaglioLinee" select="."/>'
-      '              '
+      ''
       
         '              <xsl:variable name="posDettaglioLinee" select="pos' +
         'ition()"/>'
@@ -4122,7 +4120,7 @@ object dmResources: TdmResources
       #9#9#9#9#9#9'<xsl:when test="$TD='#39'TD28'#39'">'
       #9#9#9#9#9#9#9'acquisti da San Marino con IVA (fattura cartacea)'
       #9#9#9#9#9#9'</xsl:when>'
-      #9#9#9#9#9#9
+      ''
       '                      <!--FPRS-->'
       '                      <xsl:when test="$TD='#39'TD07'#39'">'
       '                        fattura semplificata'
@@ -4322,9 +4320,9 @@ object dmResources: TdmResources
       ''
       '                <thead>'
       '                  <tr>'
-      '                    <th width="80px">Cod. articolo</th>'
+      '                    <th width="80">Cod. articolo</th>'
       '                    <th>Descrizione</th>'
-      '                    <th class="import2" >Quantit'#195#160'</th>'
+      '                    <th class="import2" >Quantit'#224'</th>'
       '                    <th class="import2">Prezzo unitario</th>'
       '                    <th class="perc2">UM</th>'
       '                    <th class="perc">Sconto o magg.</th>'
@@ -4339,7 +4337,7 @@ object dmResources: TdmResources
       
         '                  <xsl:if test="count(DatiGenerali/DatiOrdineAcq' +
         'uisto[not(./RiferimentoNumeroLinea) or normalize-space(./Riferim' +
-        'entoNumeroLinea)='#39#39']) + '
+        'entoNumeroLinea)='#39#39']) +'
       
         #9#9#9#9'  count(DatiGenerali/DatiContratto[not(./RiferimentoNumeroLi' +
         'nea) or normalize-space(./RiferimentoNumeroLinea)='#39#39']) +'
@@ -4409,7 +4407,7 @@ object dmResources: TdmResources
       
         '                        <xsl:with-param name="Prefix"   select='#39 +
         '"Convenzione "'#39'/>'
-      '                       '
+      ''
       '                      </xsl:call-template >'
       ''
       '                    </xsl:for-each>'
@@ -4763,8 +4761,8 @@ object dmResources: TdmResources
       '                  <tr >'
       ''
       
-        '                    <th colspan="3" >esigibilit'#195#160' iva / riferime' +
-        'nti normativi</th>'
+        '                    <th colspan="3" >esigibilit'#224' iva / riferimen' +
+        'ti normativi</th>'
       '                    <th class="perc">%IVA</th>'
       '                    <th>Spese accessorie</th>'
       #9#9#9#9#9' <th class="perc">Arr.</th>'
@@ -4797,10 +4795,10 @@ object dmResources: TdmResources
       '                              </xsl:variable>'
       '                              <xsl:choose>'
       '                                <xsl:when test="$EI='#39'I'#39'">'
-      '                                  (esigibilit'#195#160' immediata)'
+      '                                  (esigibilit'#224' immediata)'
       '                                </xsl:when>'
       '                                <xsl:when test="$EI='#39'D'#39'">'
-      '                                  (esigibilit'#195#160' differita)'
+      '                                  (esigibilit'#224' differita)'
       '                                </xsl:when>'
       '                                <xsl:when test="$EI='#39'S'#39'">'
       '                                  (scissione dei pagamenti)'
@@ -4910,7 +4908,7 @@ object dmResources: TdmResources
       '                      Sconto/Maggiorazione'
       '                    </th>'
       ''
-      '                '
+      ''
       ''
       #9#9#9#9#9' <th class="perc">Arr.</th>'
       '                    <th colspan="4" >'
@@ -4922,7 +4920,7 @@ object dmResources: TdmResources
       ''
       '                  <tr >'
       '                    <td colspan="2" class="import" >'
-      #9#9#9#9#9
+      ''
       
         #9#9#9#9#9' <xsl:if test="DatiGenerali/DatiGeneraliDocumento/DatiBollo' +
         '">'
@@ -4943,9 +4941,9 @@ object dmResources: TdmResources
         'DatiBollo/BolloVirtuale" />'
       #9#9#9#9#9#9'</xsl:when>'
       #9#9#9#9#9#9'<xsl:otherwise></xsl:otherwise>'
-      #9#9#9#9#9'  </xsl:choose>'#9#9#9#9#9#9
-      '                      </xsl:if>'#9#9#9#9#9
-      '                    '
+      #9#9#9#9#9'  </xsl:choose>'
+      '                      </xsl:if>'
+      ''
       '                    </td>'
       '                    <td colspan="3" class="import">'
       
@@ -4969,8 +4967,8 @@ object dmResources: TdmResources
       '                    </td>'
       ''
       ''
-      '                    '
-      #9#9#9#9#9
+      ''
+      ''
       #9#9#9#9#9'<td class="import">'
       ''
       
@@ -5012,7 +5010,7 @@ object dmResources: TdmResources
         '              <xsl:if test="DatiGenerali/DatiGeneraliDocumento/D' +
         'atiRitenuta">'
       '                <div class="separa"> </div>'
-      #9#9#9#9
+      ''
       #9#9#9#9'   <table class="tbFoglio">'
       ''
       #9#9#9#9#9'  <thead>'
@@ -5024,15 +5022,15 @@ object dmResources: TdmResources
       #9#9#9#9#9#9'</tr>'
       #9#9#9#9#9'  </thead>'
       #9#9#9#9#9'  <tbody>'
-      #9#9#9#9#9'  '
+      ''
       
         #9#9#9#9#9'   <xsl:for-each select="DatiGenerali/DatiGeneraliDocumento' +
         '/DatiRitenuta"  >'
       #9#9#9#9#9#9#9'<xsl:apply-templates select="." />'
       #9#9#9#9#9#9'</xsl:for-each>'
       #9#9#9#9#9'  </tbody>'
-      #9#9#9#9#9'</table>'#9#9#9#9
-      '                '
+      #9#9#9#9#9'</table>'
+      ''
       '              </xsl:if>'
       '              <!--  Fine Dati Ritenuta   -->'
       ''
@@ -5046,8 +5044,8 @@ object dmResources: TdmResources
       '                <thead>'
       '                  <tr>'
       
-        '                    <th style="width:200px">Modalit'#195#160' pagamento<' +
-        '/th>'
+        '                    <th style="width:200px">Modalit'#224' pagamento</' +
+        'th>'
       '                    <th>Dettagli</th>'
       '                    <th  style="width:180px">Scadenze</th>'
       '                    <th class="ximport">Importo</th>'
@@ -5127,7 +5125,7 @@ object dmResources: TdmResources
       '                              <xsl:when test="$MP='#39'MP15'#39'">'
       
         '                                Giroconto su conti di contabilit' +
-        #195#160' speciale'
+        #224' speciale'
       '                              </xsl:when>'
       '                              <xsl:when test="$MP='#39'MP16'#39'">'
       '                                Domiciliazione bancaria'
@@ -5148,9 +5146,7 @@ object dmResources: TdmResources
       '                                SEPA Direct Debit B2B'
       '                              </xsl:when>'
       '                              <xsl:when test="$MP='#39'MP22'#39'">'
-      
-        '                                Trattenuta su somme gi'#195#160' riscoss' +
-        'e'
+      '                                Trattenuta su somme gi'#224' riscosse'
       '                              </xsl:when>'
       #9#9#9#9#9#9#9'  <xsl:when test="$MP='#39'MP23'#39'">'
       #9#9#9#9#9#9#9#9'  PagoPA'
@@ -5169,7 +5165,7 @@ object dmResources: TdmResources
       '                          </xsl:if>'
       ''
       '                        </td>'
-      '                  '
+      ''
       ''
       '                          <td>'
       '                            <xsl:apply-templates select="."/>'
@@ -5192,7 +5188,7 @@ object dmResources: TdmResources
       '                            </xsl:if>'
       ''
       '                          </td>'
-      '                       '
+      ''
       '                        <td>'
       ''
       
@@ -5304,7 +5300,7 @@ object dmResources: TdmResources
       ''
       '          </xsl:if>'
       ''
-      '          <!--Definizione se fattura '#195#168' AssoSofware-->'
+      '          <!--Definizione se fattura '#232' AssoSofware-->'
       ''
       '          <xsl:if test="$posASWRELSTD &gt; 0 ">'
       '            <div class="dtASWRELSTD">'
@@ -5376,7 +5372,7 @@ object dmResources: TdmResources
       '          .headBorder'
       '          {'
       '          <!--border: 2px solid black;'
-      #9#9#9'width:100%; '
+      #9#9#9'width:100%;'
       #9#9#9'height: 210px;'
       #9#9#9'border-bottom-left-radius:30px;'
       #9#9#9'border-bottom-right-radius:30px; -->'
@@ -5440,7 +5436,7 @@ object dmResources: TdmResources
       '          border-collapse: collapse;'
       '          word-wrap:break-word;'
       '          }'
-      #9#9'  '
+      ''
       '          table.tbFoglio th {'
       '          padding-left: 5px;'
       '          padding-right: 5px;'
@@ -5573,13 +5569,13 @@ object dmResources: TdmResources
       ''
       #9#9'  table.tbNoBorder'
       '          {'
-      #9#9#9'  border-collapse: collapse;'#9#9#9
-      #9#9#9'  margin-bottom: 5px;'#9#9#9'  '
+      #9#9#9'  border-collapse: collapse;'
+      #9#9#9'  margin-bottom: 5px;'
       #9#9#9'  font-size:small;'
       #9#9#9'  text-align:center;'
       #9#9#9'  width:800px;'
       '          }'
-      #9#9'  '
+      ''
       '        </style>'
       '      </head>'
       '      <body>'
@@ -8221,7 +8217,7 @@ object dmResources: TdmResources
       ''
       '                <thead>'
       '                  <tr>'
-      '                    <th width="40">Cod. articolo</th>'
+      '                    <th width="80">Cod. articolo</th>'
       '                    <th>Descrizione</th>'
       '                    <th class="import2" >Quantit'#224'</th>'
       '                    <th class="import2">Prezzo unitario</th>'

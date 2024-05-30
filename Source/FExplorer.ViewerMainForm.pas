@@ -469,7 +469,7 @@ begin
     //Carica il contenuto HTML trasformato dentro l'HTML-Viewer
     HtmlViewer.DefFontSize := ASettings.HTMLFontSize;
     HtmlViewer.DefFontName := ASettings.HTMLFontName;
-    LStream := TStringStream.Create(FInvoice.HTML);
+    LStream := TStringStream.Create(FInvoice.HTML, TEncoding.UTF8);
     try
       HtmlViewer.LoadFromStream(LStream);
       HtmlViewer.Visible := True;
@@ -499,7 +499,7 @@ begin
     //Carica il contenuto HTML trasformato dentro l'HTML-Viewer
     HtmlViewer.DefFontSize := ASettings.HTMLFontSize;
     HtmlViewer.DefFontName := ASettings.HTMLFontName;
-    LStream := TStringStream.Create(FInvoice.HTML);
+    LStream := TStringStream.Create(FInvoice.HTML, TEncoding.UTF8);
     try
       HtmlViewer.LoadFromStream(LStream);
       HtmlViewer.Visible := True;
@@ -1784,8 +1784,7 @@ begin
   SaveDialog.Filter := 'Fattura Elettronica in HTML (*.htm)|*.htm';
   if SaveDialog.Execute then
   begin
-    LStream := TStringStream.Create(CurrentEditFile.HTMLViewer.Text,
-      TEncoding.UTF8);
+    LStream := TStringStream.Create(CurrentEditFile.HTMLViewer.Text, TEncoding.UTF8);
     try
       LStream.SaveToFile(SaveDialog.FileName);
       FileSavedAskToOpen(SaveDialog.FileName);

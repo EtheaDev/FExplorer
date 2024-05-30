@@ -2039,7 +2039,7 @@
 
                 <thead>
                   <tr>
-                    <th width="40">Cod. articolo</th>
+                    <th width="80">Cod. articolo</th>
                     <th>Descrizione</th>
                     <th class="import2" >Quantità</th>
                     <th class="import2">Prezzo unitario</th>
