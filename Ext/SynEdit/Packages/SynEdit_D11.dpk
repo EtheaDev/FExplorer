@@ -37,14 +37,6 @@ requires
 contains
   SynEditReg in '..\Source\SynEditReg.pas',
   SynEditPropertyReg in '..\Source\SynEditPropertyReg.pas',
-  SynEditDocumentManager in '..\Source\SynEditDocumentManager.pas',
-  SynHighlighterAsmMASM in '..\Source\SynHighlighterAsmMASM.pas',
-  SynHighlighterGo in '..\Source\SynHighlighterGo.pas',
-  SynHighlighterJSON in '..\Source\SynHighlighterJSON.pas',
-  SynHighlighterLLVM in '..\Source\SynHighlighterLLVM.pas',
-  SynHighlighterManager in '..\Source\SynHighlighterManager.pas',
-  SynHighlighterRexx in '..\Source\SynHighlighterRexx.pas',
-  SynHighlighterWebIDL in '..\Source\SynHighlighterWebIDL.pas',
-  SynHighlighterGLSL in '..\Source\SynHighlighterGLSL.pas';
+  SynHighlighterManager in '..\Source\SynHighlighterManager.pas';
 
 end.

@@ -59,7 +59,6 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
         <DCC_UsePackage>SynEdit_RXE6;SynEdit_RXE7;SynEdit_R10;SynEdit_R11_0;SynEdit_R11;$(DCC_UsePackage)</DCC_UsePackage>
-        <Icon_MainIcon>SynEdit_DXE_Icon.ico</Icon_MainIcon>
         <DCC_Namespace>System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
@@ -92,18 +91,10 @@
         </DelphiCompile>
         <DCCReference Include="..\Source\SynEditReg.dcr"/>
         <DCCReference Include="designide.dcp"/>
-        <DCCReference Include="SynEdit_R11.dcp"/>
+        <DCCReference Include="SynEdit_R12.dcp"/>
         <DCCReference Include="..\Source\SynEditReg.pas"/>
         <DCCReference Include="..\Source\SynEditPropertyReg.pas"/>
-        <DCCReference Include="..\Source\SynEditDocumentManager.pas"/>
-        <DCCReference Include="..\Source\SynHighlighterAsmMASM.pas"/>
-        <DCCReference Include="..\Source\SynHighlighterGo.pas"/>
-        <DCCReference Include="..\Source\SynHighlighterJSON.pas"/>
-        <DCCReference Include="..\Source\SynHighlighterLLVM.pas"/>
         <DCCReference Include="..\Source\SynHighlighterManager.pas"/>
-        <DCCReference Include="..\Source\SynHighlighterRexx.pas"/>
-        <DCCReference Include="..\Source\SynHighlighterWebIDL.pas"/>
-        <DCCReference Include="..\Source\SynHighlighterGLSL.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
@@ -151,8 +142,7 @@
                     <VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys>
                     <VersionInfoKeys Name="Comments"/>
                 </VersionInfoKeys>
-                <Excluded_Packages>
-                </Excluded_Packages>
+                <Excluded_Packages/>
             </Delphi.Personality>
             <Platforms>
                 <Platform value="Win32">True</Platform>

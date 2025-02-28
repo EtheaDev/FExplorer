@@ -2,7 +2,7 @@
 
 ## **Anteprima Fattura Elettronica (Viewer e Icone) integrato in Windows Explorer e Visualizzatore**
 
-### Versione attuale 2.3.1 ###
+### Versione attuale 2.4.0 del 28 Febbraio 2025
 
 **Una serie di strumenti per gestire i file xml contenenti Fatture Elettroniche in Windows:**
 
@@ -62,6 +62,10 @@ Per installare manualmente FExplorer.dll seguire questi step:
 5. Una volta registrato, puoi continuare a modificare il codice e ricompilare la dll (attenzione a chiudere tutte le istanze di Explorer ogni volta che si ricompila).
 
 ## Release Notes ##
+
+28 Febbraio 2025 - Versione 2.4.0
+- Aggiunta opzione "A capo automatico" per l'editor (attiva di default)
+- Aggiornato componente "Editor"
 
 30 mag 2024 - Versione 2.3.1
 - Fix visualizzazione colonna cod. Articolo

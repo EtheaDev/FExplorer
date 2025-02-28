@@ -31,25 +31,25 @@ object frmMain: TfrmMain
   TextHeight = 15
   object RightSplitter: TSplitter
     Left = 688
-    Top = 36
+    Top = 38
     Width = 6
-    Height = 535
+    Height = 533
     Align = alRight
     AutoSnap = False
     MinSize = 240
   end
   object ClientPanel: TPanel
     Left = 44
-    Top = 36
+    Top = 38
     Width = 644
-    Height = 535
+    Height = 533
     Align = alClient
     TabOrder = 5
     object PageControl: TPageControl
       Left = 1
       Top = 1
       Width = 642
-      Height = 533
+      Height = 531
       Align = alClient
       Images = VirtualImageList
       TabOrder = 0
@@ -113,9 +113,9 @@ object frmMain: TfrmMain
   end
   object ImagePanel: TPanel
     Left = 694
-    Top = 36
+    Top = 38
     Width = 250
-    Height = 535
+    Height = 533
     Align = alRight
     BevelOuter = bvNone
     Color = clWhite
@@ -126,7 +126,7 @@ object frmMain: TfrmMain
     StyleElements = []
     object StatusSplitter: TSplitter
       Left = 0
-      Top = 489
+      Top = 487
       Width = 250
       Height = 4
       Cursor = crVSplit
@@ -137,7 +137,7 @@ object frmMain: TfrmMain
       Left = 0
       Top = 172
       Width = 250
-      Height = 317
+      Height = 315
       AutoSize = False
       Align = alClient
       OnMouseMove = SVGIconImageMouseMove
@@ -236,7 +236,7 @@ object frmMain: TfrmMain
     end
     object StatusPanel: TPanel
       Left = 0
-      Top = 493
+      Top = 491
       Width = 250
       Height = 42
       Align = alBottom
@@ -257,8 +257,8 @@ object frmMain: TfrmMain
         AlignWithMargins = True
         Left = 36
         Top = 4
-        Width = 4
-        Height = 4
+        Width = 210
+        Height = 34
         Align = alClient
         Alignment = taCenter
         TabOrder = 0
@@ -283,6 +283,7 @@ object frmMain: TfrmMain
     OnClosing = SVClosing
     OnOpened = SVOpened
     OnOpening = SVOpening
+    OnResize = SVResize
     object catMenuItems: TStyledCategoryButtons
       Left = 0
       Top = 0
@@ -294,7 +295,7 @@ object frmMain: TfrmMain
       ButtonFlow = cbfVertical
       ButtonHeight = 36
       ButtonWidth = 36
-      ButtonOptions = [boFullSize, boShowCaptions, boBoldCaptions, boCaptionOnlyBorder]
+      ButtonOptions = [boFullSize, boBoldCaptions, boCaptionOnlyBorder]
       Categories = <
         item
           Caption = 'File'
@@ -396,7 +397,7 @@ object frmMain: TfrmMain
     Left = 0
     Top = 0
     Width = 944
-    Height = 36
+    Height = 38
     Align = alTop
     BevelOuter = bvNone
     ParentBackground = False
@@ -406,17 +407,18 @@ object frmMain: TfrmMain
       Left = 40
       Top = 3
       Width = 170
-      Height = 15
+      Height = 32
       Align = alLeft
       Caption = 'Visualizzatore Fattura Elettronica'
       Layout = tlCenter
+      ExplicitHeight = 15
     end
     object SettingsToolBar: TStyledToolbar
       AlignWithMargins = True
       Left = 741
       Top = 3
       Width = 200
-      Height = 30
+      Height = 32
       Align = alRight
       ButtonHeight = 32
       ButtonWidth = 32
@@ -465,7 +467,7 @@ object frmMain: TfrmMain
       Left = 3
       Top = 3
       Width = 31
-      Height = 30
+      Height = 32
       Align = alLeft
       ButtonHeight = 32
       ButtonWidth = 32

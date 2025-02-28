@@ -3,7 +3,7 @@
 {       FExplorer: Shell extensions per Fattura Elettronica                    }
 {       (Preview Panel, Thumbnail Icon, F.E.Viewer)                            }
 {                                                                              }
-{       Copyright (c) 2021-2024 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2021-2025 (Ethea S.r.l.)                                 }
 {       Author: Carlo Barazzetta                                               }
 {                                                                              }
 {       https://github.com/EtheaDev/FExplorer                                  }
@@ -122,6 +122,9 @@ type
     ToolbarRoundedCheckBox: TCheckBox;
     ButtonsRoundedCheckBox: TCheckBox;
     MenuRoundedCheckBox: TCheckBox;
+    ActiveLineColorGroupBox: TGroupBox;
+    DarkActiveLineColorColorBox: TColorBox;
+    LightActiveLineColorColorBox: TColorBox;
     procedure BoxElementsClick(Sender: TObject);
     procedure cbForegroundClick(Sender: TObject);
     procedure cbBackgroundClick(Sender: TObject);
@@ -340,6 +343,8 @@ begin
 {$ENDIF}
   SynEdit.Highlighter.Assign(dmResources.GetSynHighlighter(
     SelectedStyleIsDark, LBackGroundColor));
+  DarkActiveLineColorColorBox.Selected := default_darkactivelinecolor;
+  LightActiveLineColorColorBox.Selected := default_lightactivelinecolor;
 end;
 
 procedure TSVGSettingsForm.RefreshMap;
@@ -604,6 +609,8 @@ begin
   MarginRightEdit.ValueFloat := ASettings.PDFPageSettings.MarginRight;
   MarginTopEdit.ValueFloat := ASettings.PDFPageSettings.MarginTop;
   MarginBottomEdit.ValueFloat := ASettings.PDFPageSettings.MarginBottom;
+  DarkActiveLineColorColorBox.Selected := TEditorSettings(ASettings).DarkActiveLineColor;
+  LightActiveLineColorColorBox.Selected := TEditorSettings(ASettings).LightActiveLineColor;
 
   PopulateAvailThemes;
 end;
@@ -648,6 +655,8 @@ begin
     TEditorSettings(ASettings).AllowXSL := AllowXSLCheckBox.Checked;
     TEditorSettings(ASettings).AllowXSLToInvoice := AllowXSLToInvoiceCheckBox.Checked;
     TEditorSettings(ASettings).AllowXSLToSVG := AllowXSLtoSVGCheckBox.Checked;
+    TEditorSettings(ASettings).DarkActiveLineColor := DarkActiveLineColorColorBox.Selected;
+    TEditorSettings(ASettings).LightActiveLineColor := LightActiveLineColorColorBox.Selected;
   end;
 
   ASettings.StylesheetName := StylesheetComboBox.Text;
@@ -740,6 +749,8 @@ begin
     SelectThemeRadioGroup.OnClick := SelectThemeRadioGroupClick;
     SelectThemeRadioGroupClick(SelectThemeRadioGroup);
   end;
+  DarkActiveLineColorColorBox.Visible := not IsLight;
+  LightActiveLineColorColorBox.Visible := IsLight;
 end;
 
 procedure TSVGSettingsForm.ExitFromSettings(Sender: TObject);

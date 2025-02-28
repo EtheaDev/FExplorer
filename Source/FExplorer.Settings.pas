@@ -3,7 +3,7 @@
 {       FExplorer: Shell extensions per Fattura Elettronica                    }
 {       (Preview Panel, Thumbnail Icon, F.E.Viewer)                            }
 {                                                                              }
-{       Copyright (c) 2021-2024 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2021-2025 (Ethea S.r.l.)                                 }
 {       Author: Carlo Barazzetta                                               }
 {                                                                              }
 {       https://github.com/EtheaDev/FExplorer                                  }
@@ -44,6 +44,8 @@ uses
 const
   MaxfontSize = 30;
   MinfontSize = 8;
+  default_lightactivelinecolor = 15066597;
+  default_darkactivelinecolor = 0;
 
 resourcestring
   Background_Grayscale_Caption = 'Backlight %d%%';
@@ -154,6 +156,8 @@ type
     FAllowXSL: Boolean;
     FAllowXSLToInvoice: Boolean;
     FAllowXSLToSVG: Boolean;
+    FLightActiveLineColor: TColor;
+    FDarkActiveLineColor: TColor;
 
     procedure WriteSynEditorOptions(
       const ASynEditorOptions: TSynEditorOptionsContainer);
@@ -174,6 +178,8 @@ type
 
     property AllowEdit: Boolean read FAllowEdit write FAllowEdit;
     property AllowXSL: Boolean read FAllowXSL write FAllowXSL;
+    property LightActiveLineColor: TColor read FLightActiveLineColor write FLightActiveLineColor;
+    property DarkActiveLineColor: TColor read FDarkActiveLineColor write FDarkActiveLineColor;
     property AllowXSLToInvoice: Boolean read FAllowXSLToInvoice write FAllowXSLToInvoice;
     property AllowXSLToSVG: Boolean read FAllowXSLToSVG write FAllowXSLToSVG;
   end;
@@ -541,6 +547,14 @@ var
   LFileName: string;
 begin
   inherited;
+  //ActiveLine Color
+  DarkActiveLineColor := FIniFile.ReadInteger('Global', 'DarkActiveLineColor', default_darkactivelinecolor);
+  LightActiveLineColor := FIniFile.ReadInteger('Global', 'LightActiveLineColor', default_lightactivelinecolor);
+  if FUseDarkStyle then
+    ASynEditorOptions.ActiveLineColor := DarkActiveLineColor
+  else
+    ASynEditorOptions.ActiveLineColor := LightActiveLineColor;
+
   if ASynEditHighilighter = nil then
   begin
     //Leggo la lista dei files aperti di recente
@@ -575,11 +589,20 @@ end;
 procedure TeditorSettings.ReadSynEditorOptions(
   const ASynEditorOptions: TSynEditorOptionsContainer);
 
-  procedure UpdateEditorOptions(const AName: string; const AValue: TSynEditorOption;
+  procedure UpdateEditorOptions(const AName: string;
+    const AValue: TSynEditorOption;
     const ADefault: Boolean = True);
   begin
     if FIniFile.ReadBool(EDITOPTION_OPTIONS, AName, ADefault) then
       ASynEditorOptions.Options := ASynEditorOptions.Options + [AValue];
+  end;
+
+  procedure UpdateEditorScrollOptions(const AName: string;
+    const AValue: TSynEditorScrollOption;
+    const ADefault: Boolean = True);
+  begin
+    if FIniFile.ReadBool(EDITOPTION_OPTIONS, AName, ADefault) then
+      ASynEditorOptions.ScrollOptions := ASynEditorOptions.ScrollOptions + [AValue];
   end;
 
 begin
@@ -606,15 +629,13 @@ begin
   //Options
   ASynEditorOptions.Options := [];
   UpdateEditorOptions('AutoIndent', eoAutoIndent);
-  UpdateEditorOptions('AutoSizeMaxScrollWidth', eoAutoSizeMaxScrollWidth);
   UpdateEditorOptions('DragDropEditing',  eoDragDropEditing);
   UpdateEditorOptions('SmartTabs',  eoSmartTabs);
-  UpdateEditorOptions('AltSetsColumnMode',  eoAltSetsColumnMode);
-  UpdateEditorOptions('HalfPageScroll',  eoHalfPageScroll);
-  UpdateEditorOptions('ScrollByOneLess',  eoScrollByOneLess);
-  UpdateEditorOptions('ScrollPastEof',  eoScrollPastEof);
-  UpdateEditorOptions('ScrollPastEol',  eoScrollPastEol);
-  UpdateEditorOptions('ShowScrollHint',  eoShowScrollHint);
+  UpdateEditorScrollOptions('HalfPageScroll',  eoHalfPageScroll);
+  UpdateEditorScrollOptions('ScrollByOneLess',  eoScrollByOneLess);
+  UpdateEditorScrollOptions('ScrollPastEof',  eoScrollPastEof);
+  UpdateEditorScrollOptions('ScrollPastEol',  eoScrollPastEol);
+  UpdateEditorScrollOptions('ShowScrollHint',  eoShowScrollHint);
   UpdateEditorOptions('TabsToSpaces',  eoTabsToSpaces);
   UpdateEditorOptions('TrimTrailingSpaces',  eoTrimTrailingSpaces);
   UpdateEditorOptions('KeepCaretX',  eoKeepCaretX);
@@ -624,10 +645,11 @@ begin
   UpdateEditorOptions('EnhanceEndKey',  eoEnhanceEndKey);
   UpdateEditorOptions('GroupUndo',  eoGroupUndo);
   UpdateEditorOptions('TabIndent',  eoTabIndent);
-  UpdateEditorOptions('DisableScrollArrows',  eoDisableScrollArrows);
-  UpdateEditorOptions('HideShowScrollbars',  eoHideShowScrollbars);
-  UpdateEditorOptions('ShowSpecialChars',  eoShowSpecialChars, False);
+  UpdateEditorScrollOptions('DisableScrollArrows',  eoDisableScrollArrows);
+  UpdateEditorScrollOptions('HideShowScrollbars',  eoHideShowScrollbars);
   ASynEditorOptions.WantTabs := FIniFile.ReadBool(EDITOPTION_OPTIONS, 'WantTabs', False);
+  ASynEditorOptions.WordWrap := FIniFile.ReadBool(EDITOPTION_OPTIONS, 'WordWrap', True);
+
 (*
   //Caret
   cInsertCaret.ItemIndex := ord(ASynEditorOptions.InsertCaret);
@@ -663,6 +685,16 @@ var
   I: Integer;
 begin
   inherited;
+  if (DarkActiveLineColor <> default_darkactivelinecolor) then
+    FIniFile.WriteInteger('Global', 'DarkActiveLineColor', DarkActiveLineColor)
+  else
+    FIniFile.DeleteKey('Global', 'DarkActiveLineColor');
+
+  if (LightActiveLineColor <> default_lightactivelinecolor) then
+    FIniFile.WriteInteger('Global', 'LightActiveLineColor', LightActiveLineColor)
+  else
+    FIniFile.DeleteKey('Global', 'LightActiveLineColor');
+
   FIniFile.EraseSection(LAST_OPENED_SECTION);
   for I := 0 to HistoryFileList.Count -1 do
   begin
@@ -688,9 +720,16 @@ end;
 procedure TEditorSettings.WriteSynEditorOptions(
   const ASynEditorOptions: TSynEditorOptionsContainer);
 
-  procedure WriteEditorOptions(const AName: string; const AValue: TSynEditorOption);
+  procedure WriteEditorOptions(const AName: string;
+    const AValue: TSynEditorOption);
   begin
     FIniFile.WriteBool(EDITOPTION_OPTIONS, AName, AValue in ASynEditorOptions.Options);
+  end;
+
+  procedure WriteEditorScrollOptions(const AName: string;
+    const AValue: TSynEditorScrollOption);
+  begin
+    FIniFile.WriteBool(EDITOPTION_OPTIONS, AName, AValue in ASynEditorOptions.ScrollOptions);
   end;
 
 begin
@@ -714,15 +753,13 @@ begin
   FIniFile.WriteBool(EDITOPTION_BOOKMARK,'EnableKeys', ASynEditorOptions.BookMarkOptions.EnableKeys);
   FIniFile.WriteBool(EDITOPTION_BOOKMARK,'GlyphsVisible', ASynEditorOptions.BookMarkOptions.GlyphsVisible);
   WriteEditorOptions('AutoIndent', eoAutoIndent);
-  WriteEditorOptions('AutoSizeMaxScrollWidth', eoAutoSizeMaxScrollWidth);
   WriteEditorOptions('DragDropEditing',  eoDragDropEditing);
   WriteEditorOptions('SmartTabs',  eoSmartTabs);
-  WriteEditorOptions('AltSetsColumnMode',  eoAltSetsColumnMode);
-  WriteEditorOptions('HalfPageScroll',  eoHalfPageScroll);
-  WriteEditorOptions('ScrollByOneLess',  eoScrollByOneLess);
-  WriteEditorOptions('ScrollPastEof',  eoScrollPastEof);
-  WriteEditorOptions('ScrollPastEol',  eoScrollPastEol);
-  WriteEditorOptions('ShowScrollHint',  eoShowScrollHint);
+  WriteEditorScrollOptions('HalfPageScroll',  eoHalfPageScroll);
+  WriteEditorScrollOptions('ScrollByOneLess',  eoScrollByOneLess);
+  WriteEditorScrollOptions('ScrollPastEof',  eoScrollPastEof);
+  WriteEditorScrollOptions('ScrollPastEol',  eoScrollPastEol);
+  WriteEditorScrollOptions('ShowScrollHint',  eoShowScrollHint);
   WriteEditorOptions('TabsToSpaces',  eoTabsToSpaces);
   WriteEditorOptions('TrimTrailingSpaces',  eoTrimTrailingSpaces);
   WriteEditorOptions('KeepCaretX',  eoKeepCaretX);
@@ -732,10 +769,10 @@ begin
   WriteEditorOptions('EnhanceEndKey',  eoEnhanceEndKey);
   WriteEditorOptions('GroupUndo',  eoGroupUndo);
   WriteEditorOptions('TabIndent',  eoTabIndent);
-  WriteEditorOptions('DisableScrollArrows',  eoDisableScrollArrows);
-  WriteEditorOptions('HideShowScrollbars',  eoHideShowScrollbars);
-  WriteEditorOptions('ShowSpecialChars',  eoShowSpecialChars);
+  WriteEditorScrollOptions('DisableScrollArrows',  eoDisableScrollArrows);
+  WriteEditorScrollOptions('HideShowScrollbars',  eoHideShowScrollbars);
   FIniFile.WriteBool(EDITOPTION_OPTIONS, 'WantTabs', ASynEditorOptions.WantTabs);
+  FIniFile.WriteBool(EDITOPTION_OPTIONS, 'WordWrap', ASynEditorOptions.WordWrap);
 end;
 
 { TThemeAttribute }

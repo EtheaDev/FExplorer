@@ -3,7 +3,7 @@
 {       FExplorer: Shell extensions per Fattura Elettronica                    }
 {       (Preview Panel, Thumbnail Icon, F.E.Viewer)                            }
 {                                                                              }
-{       Copyright (c) 2021-2024 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2021-2025 (Ethea S.r.l.)                                 }
 {       Author: Carlo Barazzetta                                               }
 {                                                                              }
 {       https://github.com/EtheaDev/FExplorer                                  }
@@ -69,6 +69,8 @@ uses
 
 const
   SET_FILE_NAME = 'HiglightSettings';
+  SV_COLLAPSED_WIDTH = 38;
+  SV_COLLAPSED_WIDTH_WITH_SCROLLBARS = 50;
 
 resourcestring
   PAGE_HEADER_FIRST_LINE_LEFT = '$TITLE$';
@@ -317,6 +319,7 @@ type
     procedure acHTMLViewerUpdate(Sender: TObject);
     procedure AppDeactivate(Sender: TObject);
     procedure AppActivate(Sender: TObject);
+    procedure SVResize(Sender: TObject);
   private
     FEditingInProgress: Boolean;
     FirstAction: Boolean;
@@ -947,6 +950,14 @@ begin
   catMenuItems.ButtonOptions := catMenuItems.ButtonOptions + [boShowCaptions];
 end;
 
+procedure TfrmMain.SVResize(Sender: TObject);
+begin
+(*
+  StyledToolbar.Margins.Left :=
+    Round(SV.Width - (SV_COLLAPSED_WIDTH * ScaleFactor) + (3 * ScaleFactor));
+*)
+end;
+
 procedure TfrmMain.DestroyWindowHandle;
 begin
   FreeAndNil(FDropTarget);
@@ -1294,9 +1305,9 @@ begin
     LEditor.Parent := LTabSheet;
     LEditor.SearchEngine := SynEditSearch;
     LEditor.PopupMenu := popEditor;
+
     //Assegna le preferenze dell'utente
     FEditorOptions.AssignTo(LEditor);
-    LEditor.MaxScrollWidth := 3000;
     EditingFile.SynEditor := LEditor;
 
     LFEViewer := THtmlViewer.Create(nil);
@@ -2227,9 +2238,9 @@ procedure TfrmMain.AdjustCompactWidth;
 begin
   //Change size of compact because Scrollbars appears
   if (Height / ScaleFactor) > 900 then
-    SV.CompactWidth := Round(44 * ScaleFactor)
+    SV.CompactWidth := Round(SV_COLLAPSED_WIDTH * ScaleFactor)
   else
-    SV.CompactWidth := Round(66 * ScaleFactor);
+    SV.CompactWidth := Round(SV_COLLAPSED_WIDTH_WITH_SCROLLBARS * ScaleFactor);
   if (CurrentEditFile <> nil) and (CurrentEditFile.HTMLViewer <> nil) and (CurrentEditFile.HTMLViewer.Width > CurrentEditFile.TabSheet.Width) then
     CurrentEditFile.HTMLViewer.Width := width div 3;
 end;
@@ -2408,7 +2419,7 @@ begin
   //This is an event-handler for exceptions that replace Delphi standard handler
   if E is EAccessViolation then
   begin
-    if StyledMessageDlg(STR_UNEXPECTED_ERROR,
+    if StyledTaskMessageDlg(STR_UNEXPECTED_ERROR,
       Format('Unexpected Error: %s%s',[sLineBreak,E.Message]),
       TMsgDlgType.mtError,
       [TMsgDlgBtn.mbOK, TMsgDlgBtn.mbAbort], 0) = mrAbort then
@@ -2417,7 +2428,7 @@ begin
   else
   begin
 
-    StyledMessageDlg(STR_ERROR,
+    StyledTaskMessageDlg(STR_ERROR,
       Format('Error: %s%s',[sLineBreak,E.Message]),
       TMsgDlgType.mtError,
       [TMsgDlgBtn.mbOK, TMsgDlgBtn.mbHelp], 0);

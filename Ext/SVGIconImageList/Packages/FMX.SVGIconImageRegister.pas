@@ -3,7 +3,7 @@
 {       SVG Icon ImageList: An extended ImageList for Delphi                   }
 {       to simplify use of Icons (resize, opacity and more...)                 }
 {                                                                              }
-{       Copyright (c) 2019-2024 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2019-2025 (Ethea S.r.l.)                                 }
 {       Contributors:                                                          }
 {         Carlo Barazzetta                                                     }
 {                                                                              }
@@ -69,7 +69,7 @@ implementation
 uses
   FMX.SVGIconImageList
   {$IFDEF D10_3+}
-  , FmxAnimationEditors
+//  , FmxAnimationEditors
   {$ENDIF}
   , FMX.SVGIconImage
   , Winapi.ShellApi
@@ -95,7 +95,7 @@ begin
   end
   else
     ShellExecute(0, 'open',
-      PChar('https://github.com/EtheaDev/SVGIconImageList/wiki/Overview-(FMX)'), nil, nil,
+      PChar('https://ethea.it/docs/svgiconimagelist/Overview-(FMX).html'), nil, nil,
       SW_SHOWNORMAL)
 end;
 
@@ -138,7 +138,7 @@ begin
   end
   else
     ShellExecute(0, 'open',
-      PChar('https://github.com/EtheaDev/SVGIconImageList/wiki/Overview-(FMX)'), nil, nil,
+      PChar('https://ethea.it/docs/svgiconimagelist/Overview-(FMX).html'), nil, nil,
       SW_SHOWNORMAL)
 end;
 
@@ -199,11 +199,13 @@ end;
 procedure Register;
 begin
   {$IFDEF D10_3+}
+(*
   RegisterPropertyEditor(TypeInfo(Single), TSVGIconBitmapItem, '', TFmxFloatProperty);
   RegisterPropertyEditor(TypeInfo(Single), TSVGIconSourceItem, '', TFmxFloatProperty);
   RegisterPropertyEditor(TypeInfo(Single), TSVGIconImageList, '', TFmxFloatProperty);
   RegisterPropertyEditor(TypeInfo(string), TSVGIconImage, 'SVGText', TSVGTextPropertyFMX);
   RegisterPropertyEditor(TypeInfo(string), TSVGIconSourceItem, 'SVGText', TSVGTextPropertyFMX);
+*)
   {$ENDIF}
 
   RegisterComponents('Ethea',
