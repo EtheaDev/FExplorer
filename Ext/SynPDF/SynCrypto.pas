@@ -8,7 +8,7 @@ unit SynCrypto;
 (*
     This file is part of Synopse framework.
 
-    Synopse framework. Copyright (C) 2022 Arnaud Bouchez
+    Synopse framework. Copyright (c) Arnaud Bouchez
       Synopse Informatique - https://synopse.info
 
   *** BEGIN LICENSE BLOCK *****
@@ -27,7 +27,7 @@ unit SynCrypto;
 
   The Initial Developer of the Original Code is Arnaud Bouchez.
 
-  Portions created by the Initial Developer are Copyright (C) 2022
+  Portions created by the Initial Developer are Copyright (c)
   the Initial Developer. All Rights Reserved.
 
   Contributor(s):
@@ -6279,7 +6279,7 @@ begin
   with P do
     AES.DoBlocks(bIn,bOut,bIn,bOut,BlockCount,Encrypt);
   ExitThread(0);
-  result := 0; // make the compiler happy, but won't never be called
+  {$if compilerversion <= 36}result := 0;{$ifend} // make the compiler happy, but won't never be called
 end;
 
 procedure TAES.DoBlocksThread(var bIn, bOut: PAESBlock; Count: integer; doEncrypt: boolean);

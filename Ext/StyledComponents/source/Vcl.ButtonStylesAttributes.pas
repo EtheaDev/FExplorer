@@ -1,12 +1,12 @@
-{******************************************************************************}
+﻿{******************************************************************************}
 {                                                                              }
 {  TStyledButtonAttributes: a collection of Rendering attributes               }
 {  for Styled Components                                                       }
 {  TNotificationBadgeAttributes: a set of Rendering attributes for Badge       }
 {                                                                              }
-{  Copyright (c) 2022-2025 (Ethea S.r.l.)                                      }
+{  Copyright (c) 2022-2026 (Ethea S.r.l.)                                      }
 {  Author: Carlo Barazzetta                                                    }
-{  Contributors:                                                               }
+{  Contributors: Claude Code                                                   }
 {                                                                              }
 {  https://github.com/EtheaDev/StyledComponents                                }
 {                                                                              }
@@ -55,13 +55,26 @@ uses
   ;
 
 const
-  StyledComponentsVersion = '3.7.6';
+  /// <summary>Current version of the StyledComponents library</summary>
+  StyledComponentsVersion = '4.5.0';
+  /// <summary>Default corner radius for rounded buttons in pixels</summary>
   DEFAULT_RADIUS = 6;
+  //StyleShadowSize: -1 = the shadow of the style family (ShadowSize of the
+  //state attributes), 0 = no shadow, > 0 = the same shadow (pixels at 100%) in every state
+  DEFAULT_SHADOW_SIZE = -1;
+  //StyleBorderWidth: -1 = the border width of the style (BorderWidth of the
+  //state attributes), 0 = no border, > 0 = the same border (pixels at 100%) in every state
+  DEFAULT_BORDER_WIDTH = -1;
+  /// <summary>Resource name for the Windows shield admin icon</summary>
   RESOURCE_SHIELD_ICON = 'STYLED_BUTTON_SHIELD_ADMIN';
+  /// <summary>Default maximum value for notification badge counter</summary>
   DEFAULT_MAX_BADGE_VALUE = 99;
+  /// <summary>Default background color for notification badges</summary>
   DEFAULT_BADGE_COLOR = clRed;
+  /// <summary>Default font color for notification badges</summary>
   DEFAULT_BADGE_FONT_COLOR = clWhite;
-  DEFAULT_AUTOCLICK_DELAY = 5000; //Five Seconds
+  /// <summary>Default auto-click delay in milliseconds (5 seconds)</summary>
+  DEFAULT_AUTOCLICK_DELAY = 5000;
 
 resourcestring
   ERROR_FAMILY_NOT_FOUND = 'Styled Button Family "%s" not found';
@@ -69,37 +82,60 @@ resourcestring
   ERROR_VALUE_OUT_OF_RANGE = 'Error: Value "%d" for "%s" is out of Range (%d-%d)';
 
 Type
+  /// <summary>Exception class for styled attributes errors</summary>
   EStyledAttributesException = class(Exception);
 
-  //Windows Version
+  /// <summary>Enumeration of Windows versions for compatibility detection</summary>
   TWindowsVersion = (wvUndefined, wvWindowsXP, wvWindowsVista, wvWindows7,
     wvWindows8, wvWindows8_1, wvWindows10, wvWindows11);
 
+  /// <summary>Position of notification badge on a button</summary>
   TNotificationBadgePosition = (nbpTopRight, nbpTopLeft, nbpBottomRight, nbpBottomLeft);
+  /// <summary>Size of notification badge (normal counter or small dot)</summary>
   TNotificationBadgeSize = (nbsNormal, nbsSmallDot);
 
-  //string typed attributes
+  /// <summary>Style family name (e.g., 'Bootstrap', 'Angular-Light', 'Classic')</summary>
   TStyledButtonFamily = string;
+  /// <summary>Style class name within a family (e.g., 'Primary', 'Success', 'Danger')</summary>
   TStyledButtonClass = string;
+  /// <summary>Style appearance name (e.g., 'Normal', 'Outline', 'Flat')</summary>
   TStyledButtonAppearance = string;
 
-  //Type of border
+  /// <summary>Shape type for button drawing</summary>
+  /// <remarks>
+  ///   btRoundRect: Rectangle with rounded corners (radius controlled by StyleRadius)
+  ///   btRounded: Fully rounded ends (pill shape)
+  ///   btRect: Sharp rectangle corners
+  ///   btEllipse: Elliptical/circular shape
+  /// </remarks>
   TStyledButtonDrawType = (btRoundRect, btRounded, btRect, btEllipse);
+  /// <summary>Individual corner identifier for selective rounding</summary>
   TRoundedCorner = (rcTopLeft, rcTopRight, rcBottomRight, rcBottomLeft);
+  /// <summary>Set of corners to apply rounding to</summary>
   TRoundedCorners = set of TRoundedCorner;
 const
+  /// <summary>Constant representing all four corners rounded</summary>
   ALL_ROUNDED_CORNERS = [rcTopLeft, rcTopRight, rcBottomLeft, rcBottomRight];
 
 Type
-  //Type of Draw for Border
-  TBorderDrawStyle = (brdClear, brdSolid); //similar to Pen.psClear and Pen.psSolid
-  TButtonDrawStyle = (btnClear, btnSolid); //similar to Brush.bsClear and Brush.bsSolid
+  /// <summary>Border drawing style (clear/invisible or solid)</summary>
+  TBorderDrawStyle = (brdClear, brdSolid);
+  /// <summary>Button fill drawing style (clear/transparent or solid)</summary>
+  TButtonDrawStyle = (btnClear, btnSolid);
 
-  //List of available elements
+  /// <summary>Array of style family names</summary>
   TButtonFamilies = array of TStyledButtonFamily;
+  /// <summary>Array of style class names</summary>
   TButtonClasses = Array of TStyledButtonClass;
+  /// <summary>Array of style appearance names</summary>
   TButtonAppearances = Array of TStyledButtonAppearance;
 
+  /// <summary>Attributes for notification badge display on styled buttons</summary>
+  /// <remarks>
+  ///   TNotificationBadgeAttributes controls the appearance and content of notification
+  ///   badges (counter circles) that can be displayed on any styled button. Supports
+  ///   numeric counters, custom text, and small dot indicators.
+  /// </remarks>
   TNotificationBadgeAttributes = class(TComponent)
   private
     FNotificationCount: Integer;
@@ -125,25 +161,46 @@ Type
     function GetIsVisible: Boolean;
     function IsFontStyleStored: Boolean;
   public
+    /// <summary>Copies properties from another TNotificationBadgeAttributes instance</summary>
     procedure Assign(ASource: TPersistent); override;
+    /// <summary>Creates a new notification badge attributes instance</summary>
     constructor Create(AOwner: TComponent); override;
+    /// <summary>Returns True if any custom attributes are set</summary>
     function HasCustomAttributes: Boolean;
+    /// <summary>The text content to display in the badge</summary>
     property BadgeContent: string read GetBadgeContent;
+    /// <summary>Returns True if badge should be visible (has content)</summary>
     property IsVisible: Boolean read GetIsVisible;
+    /// <summary>The control that owns this badge</summary>
     property OwnerControl: TControl read FOwnerControl;
   published
+    /// <summary>Background color of the badge</summary>
     property Color: TColor read FColor write SetColor default DEFAULT_BADGE_COLOR;
+    /// <summary>Custom text to display instead of notification count</summary>
     property CustomText: string read FCustomText write SetCustomText;
+    /// <summary>Font color for the badge text</summary>
     property FontColor: TColor read FFontColor write SetFontColor default DEFAULT_BADGE_FONT_COLOR;
+    /// <summary>Font style for the badge text</summary>
     property FontStyle: TFontStyles read FFontStyle write SetFontStyle stored IsFontStyleStored;
+    /// <summary>Number of notifications to display (0 hides badge unless CustomText is set)</summary>
     property NotificationCount: Integer read FNotificationCount write SetNotificationCount default 0;
+    /// <summary>Maximum number to display before showing "99+" style text</summary>
     property MaxNotifications: Word read FMaxNotifications write SetMaxNotifications default DEFAULT_MAX_BADGE_VALUE;
+    /// <summary>Corner position for the badge</summary>
     property Position: TNotificationBadgePosition read FPosition write SetPosition default nbpTopRight;
+    /// <summary>Size type of the badge (normal counter or small dot)</summary>
     property Size: TNotificationBadgeSize read FSize write SetSize default nbsNormal;
-
+    /// <summary>Event fired when badge content changes</summary>
     property OnContentChange: TNotifyEvent read FOnContentChange write FOnContentChange;
   end;
 
+  /// <summary>Visual attributes for a styled button in a specific state</summary>
+  /// <remarks>
+  ///   TStyledButtonAttributes defines all the visual properties for rendering a button
+  ///   in a specific state (Normal, Pressed, Selected, Hot, Disabled). Each button
+  ///   maintains five instances of this class, one for each state. Properties can be
+  ///   inherited from the style family or customized individually.
+  /// </remarks>
   TStyledButtonAttributes = class(TComponent)
   private
     //Custom values
@@ -170,6 +227,8 @@ Type
     FButtonColor: TColor;
     FRadius: Integer;
     FRoundedCorners: TRoundedCorners;
+    //Provided by the style family (never custom): elevation of the button
+    FShadowSize: Integer;
 
     FOwnerControl: TControl;
     FHasCustomDrawType: Boolean;
@@ -194,6 +253,7 @@ Type
     procedure SetFontStyle(const AValue: TFontStyles);
     procedure SetRadius(const AValue: Integer);
     procedure SetRoundedCorners(const AValue: TRoundedCorners);
+    procedure SetShadowSize(const AValue: Integer);
     function GetBorderColor: TColor;
     function GetBorderDrawStyle: TBorderDrawStyle;
     function GetBorderWidth: Integer;
@@ -206,81 +266,186 @@ Type
     function GetRoundedCorners: TRoundedCorners;
     procedure SetCustomAttributes(const Value: Boolean);
   public
+    /// <summary>Creates a new button attributes instance</summary>
     constructor Create(AOwner: TComponent); override;
+    /// <summary>Returns True if any custom attribute has been set</summary>
     function HasCustomAttributes: Boolean;
+    /// <summary>Copies all properties from another attributes instance</summary>
     procedure Assign(ASource: TPersistent); override;
+    /// <summary>Returns the TPenStyle equivalent for the border draw style</summary>
     function PenStyle: TPenStyle;
+    /// <summary>Returns the TBrushStyle equivalent for the button draw style</summary>
     function BrushStyle: TBrushStyle;
+    /// <summary>Assigns styled attributes from source, returns True if changed</summary>
     function AssignStyledAttributes(const ASource: TStyledButtonAttributes): Boolean;
+    /// <summary>Resets all custom attributes to use family defaults</summary>
     procedure ResetCustomAttributes;
+    /// <summary>True if DrawType has been customized</summary>
     property HasCustomDrawType: Boolean read FHasCustomDrawType;
+    /// <summary>True if BorderWidth has been customized</summary>
     property HasCustomBorderWidth: Boolean read FHasCustomBorderWidth;
+    /// <summary>True if BorderDrawStyle has been customized</summary>
     property HasCustomBorderDrawStyle: Boolean read FHasCustomBorderDrawStyle;
+    /// <summary>True if ButtonDrawStyle has been customized</summary>
     property HasCustomButtonDrawStyle: Boolean read FHasCustomButtonDrawStyle;
+    /// <summary>True if BorderColor has been customized</summary>
     property HasCustomBorderColor: Boolean read FHasCustomBorderColor;
+    /// <summary>True if FontColor has been customized</summary>
     property HasCustomFontColor: Boolean read FHasCustomFontColor;
+    /// <summary>True if FontStyle has been customized</summary>
     property HasCustomFontStyle: Boolean read FHasCustomFontStyle;
+    /// <summary>True if ButtonColor has been customized</summary>
     property HasCustomButtonColor: Boolean read FHasCustomButtonColor;
+    /// <summary>True if Radius has been customized</summary>
     property HasCustomRadius: Boolean read FHasCustomRadius;
+    /// <summary>True if RoundedCorners has been customized</summary>
     property HasCustomRoundedCorners: Boolean read FHasCustomRoundedCorners;
+    /// <summary>
+    ///  Size in pixels (at 100% scale) of the shadow drawn around the button face,
+    ///  0 for no shadow. Set by the style family (e.g. the Elevated appearance of
+    ///  Angular-M3): the shadow is drawn inside the area of the control, so the face
+    ///  of the button is smaller by the shadow size of the biggest state.
+    /// </summary>
+    property ShadowSize: Integer read FShadowSize write SetShadowSize;
   published
+    /// <summary>Shape drawing type (btRoundRect, btRounded, btRect, btEllipse)</summary>
     property DrawType: TStyledButtonDrawType read GetDrawType write SetDrawType stored FHasCustomDrawType;
+    /// <summary>Width of the border in pixels</summary>
     property BorderWidth: Integer read GetBorderWidth write SetBorderWidth stored FHasCustomBorderWidth;
+    /// <summary>Border drawing style (clear or solid)</summary>
     property BorderDrawStyle: TBorderDrawStyle read GetBorderDrawStyle write SetBorderDrawStyle stored FHasCustomBorderDrawStyle;
+    /// <summary>Button fill drawing style (clear or solid)</summary>
     property ButtonDrawStyle: TButtonDrawStyle read GetButtonDrawStyle write SetButtonDrawStyle stored FHasCustomButtonDrawStyle;
+    /// <summary>Color of the button border</summary>
     property BorderColor: TColor read GetBorderColor write SetBorderColor stored FHasCustomBorderColor;
+    /// <summary>Color of the button text/caption</summary>
     property FontColor: TColor read GetFontColor write SetFontColor stored FHasCustomFontColor;
+    /// <summary>Font style for the button text</summary>
     property FontStyle: TFontStyles read GetFontStyle write SetFontStyle stored FHasCustomFontStyle;
+    /// <summary>Background fill color of the button</summary>
     property ButtonColor: TColor read GetButtonColor write SetButtonColor stored FHasCustomButtonColor;
+    /// <summary>Corner radius for btRoundRect draw type</summary>
     property Radius: Integer read GetRadius write SetRadius stored FHasCustomRadius;
+    /// <summary>Set of corners to apply rounding to</summary>
     property RoundedCorners: TRoundedCorners read GetRoundedCorners write SetRoundedCorners stored FHasCustomRoundedCorners;
+    /// <summary>Legacy property - use HasCustomAttributes instead</summary>
     property UseCustomAttributes: Boolean read HasCustomAttributes write SetCustomAttributes stored False;
   end;
 
-  //  Abstraction of Graphic Button Attributes
+  /// <summary>Interface for style family attribute providers</summary>
+  /// <remarks>
+  ///   Implement this interface to create custom style families.
+  ///   Each style family (Bootstrap, Angular, Classic, etc.) provides an implementation
+  ///   that defines colors and appearances for all button states.
+  /// </remarks>
   IStyledButtonAttributes = interface
     ['{C7BC98EE-D513-46B9-881A-2FDE8DE07786}']
+    /// <summary>Updates button attributes for all five states based on family/class/appearance</summary>
+    /// <param name="AFamily">The style family name</param>
+    /// <param name="AStyle">The style class within the family</param>
+    /// <param name="AAppearance">The appearance variant</param>
+    /// <param name="ANormalStyle">Output: attributes for normal state</param>
+    /// <param name="APressedStyle">Output: attributes for pressed state</param>
+    /// <param name="ASelectedStyle">Output: attributes for selected state</param>
+    /// <param name="AHotStyle">Output: attributes for hot/hover state</param>
+    /// <param name="ADisabledStyle">Output: attributes for disabled state</param>
     procedure UpdateAttributes(
       const AFamily:  TStyledButtonFamily;
       const AStyle: TStyledButtonClass;
       const AAppearance: TStyledButtonAppearance;
       var ANormalStyle, APressedStyle, ASelectedStyle,
       AHotStyle, ADisabledStyle: TStyledButtonAttributes);
+    /// <summary>Returns the name of this button family</summary>
     function ButtonFamilyName: string;
+    /// <summary>Returns array of available style classes in this family</summary>
     function GetButtonClasses: TButtonClasses;
+    /// <summary>Returns array of available appearances in this family</summary>
     function GetButtonAppearances: TButtonAppearances;
+    /// <summary>Gets the appropriate style class and appearance for a modal result</summary>
+    /// <param name="AModalResult">The modal result value</param>
+    /// <param name="AStyleClass">Output: recommended style class</param>
+    /// <param name="AStyleAppearance">Output: recommended appearance</param>
     procedure GetStyleByModalResult(
       const AModalResult: System.UITypes.TModalResult;
       var AStyleClass: TStyledButtonClass;
       var AStyleAppearance: TStyledButtonAppearance);
   end;
 
+  /// <summary>Container class for a registered button style family</summary>
   TButtonFamily = class(TObject)
   private
     FStyleFamily: TStyledButtonFamily;
     FCustomAttributes: IStyledButtonAttributes;
   public
+    /// <summary>The style attributes provider interface for this family</summary>
     property StyledAttributes: IStyledButtonAttributes read FCustomAttributes;
   end;
 
-//utilities
+// Utility functions
+
+/// <summary>Validates that a value is within the specified range</summary>
+/// <param name="AName">Property name for error message</param>
+/// <param name="AValue">Value to check</param>
+/// <param name="AMin">Minimum allowed value</param>
+/// <param name="AMax">Maximum allowed value</param>
+/// <exception cref="EStyledAttributesException">Raised if value is out of range</exception>
 procedure CheckValue(const AName: string; const AValue, AMin, AMax: Integer);
+/// <summary>Darkens a color by the specified percentage</summary>
+/// <param name="Color">The color to darken</param>
+/// <param name="Percent">Percentage to darken (0-100)</param>
+/// <returns>The darkened color</returns>
 function DarkenColor(Color:TColor; Percent:integer):TColor;
+/// <summary>Lightens a color by the specified percentage</summary>
+/// <param name="Color">The color to lighten</param>
+/// <param name="Percent">Percentage to lighten (0-100)</param>
+/// <returns>The lightened color</returns>
 function LightenColor(Color:TColor; Percent:integer):TColor;
+/// <summary>Converts an HTML color string to TColor</summary>
+/// <param name="Color">HTML color string (e.g., '#FF0000' or 'red')</param>
+/// <returns>The corresponding TColor value</returns>
 function HtmlToColor(Color: string): TColor;
+/// <summary>Converts a color to its grayscale equivalent</summary>
+/// <param name="AColor">The color to convert</param>
+/// <returns>The grayscale color</returns>
 function ColortoGrayscale(AColor : TColor): TColor;
+/// <summary>Determines if a color is considered light or dark</summary>
+/// <param name="Color">The color to test</param>
+/// <returns>True if the color is light, False if dark</returns>
 function ColorIsLight(Color: TColor): Boolean;
+/// <summary>Compares two button style attributes for equality</summary>
+/// <param name="Style1">First style to compare</param>
+/// <param name="Style2">Second style to compare</param>
+/// <returns>True if both styles have identical properties</returns>
 function SameStyledButtonStyle(Style1, Style2: TStyledButtonAttributes): Boolean;
+/// <summary>Compares two notification badge attributes for equality</summary>
+/// <param name="Attr1">First attributes to compare</param>
+/// <param name="Attr2">Second attributes to compare</param>
+/// <returns>True if both have identical properties</returns>
 function SameNotificationBadgeAttributes(Attr1, Attr2: TNotificationBadgeAttributes): Boolean;
+/// <summary>Creates a copy of button style attributes</summary>
+/// <param name="ASource">Source attributes to copy</param>
+/// <param name="ADest">Destination attributes (will be created if nil)</param>
 procedure CloneButtonStyle(const ASource: TStyledButtonAttributes;
   var ADest: TStyledButtonAttributes);
+/// <summary>Returns the active VCL style name for a control</summary>
+/// <param name="AControl">The control to check</param>
+/// <returns>The style name (e.g., 'Windows', 'Carbon', etc.)</returns>
 function GetActiveStyleName(const AControl: TControl): string;
+/// <summary>Detects the current Windows version</summary>
+/// <returns>The Windows version enumeration value</returns>
 function GetWindowsVersion: TWindowsVersion;
+/// <summary>Removes or cleans hyperlink references from a string</summary>
+/// <param name="Msg">The message containing hrefs</param>
+/// <param name="OnlyLinks">When True, only removes link tags</param>
+/// <param name="OnlyFileNotExists">When True, only removes links to non-existent files</param>
+/// <returns>The cleaned string</returns>
 function ClearHRefs(const Msg: string;  OnlyLinks: boolean = True;
   OnlyFileNotExists: boolean = False): string;
 
-//Calculate Image and Text Rect for Drawing using ImageAlignment and ImageMargins
-//for StyledButton and StyledGraphicButton
+// Drawing calculation functions
+
+/// <summary>Calculates image and text rectangles for drawing using ImageAlignment and ImageMargins</summary>
+/// <remarks>Used by TStyledButton and TStyledGraphicButton</remarks>
 procedure CalcImageAndTextRect(const ASurfaceRect: TRect;
   const ACaption: string;
   out ATextRect: TRect; out AImageRect: TRect;
@@ -290,31 +455,58 @@ procedure CalcImageAndTextRect(const ASurfaceRect: TRect;
   const ABorderWidth: Integer;
   const AScale: Single); overload;
 
-//Calculate Image and Text Rect for Drawing using ButtonLayout, Margin and Spacing
-//For StyledSpeedButton and StyledBitBtn
+/// <summary>Calculates image and text rectangles for drawing using ButtonLayout, Margin and Spacing</summary>
+/// <remarks>Used by TStyledSpeedButton and TStyledBitBtn for TSpeedButton/TBitBtn compatibility</remarks>
 procedure CalcImageAndTextRect(const ACanvas: TCanvas;
   const ACaption: string; const ASurfaceRect: TRect;
   const AOffset: TPoint;
-  out AGlyphPos: TPoint; out ATextBounds: TRect;
+  out AGlyphPos: TPoint; out ATextRect: TRect;
   const AImageWidth, AImageHeight: Integer;
   const ALayout: TButtonLayout;
-  const AMargin, ASpacing: Integer;
+  const AMargin, ASpacing, ABorderWidth: Integer;
   const ABiDiFlags: Cardinal); overload;
 
-//draw of Glyph
+type
+  /// <summary>Per-button cache of the TImageList built from a BitBtn glyph, one
+  /// image per TButtonState. Building the list on every paint cost about five
+  /// times the rest of the paint (see Test\Source\StyledPerfTests). Owned by
+  /// TStyledButtonRender, which invalidates it when the glyph, NumGlyphs or Kind
+  /// change; a size or transparent-colour change invalidates it on its own.</summary>
+  TStyledGlyphCache = class(TObject)
+  private
+    FImageList: TImageList;
+    FIndexes: array[TButtonState] of Integer;
+    FWidth, FHeight: Integer;
+    FTransparentColor: TColor;
+  public
+    destructor Destroy; override;
+    /// <summary>Drops the cached images (the glyph changed)</summary>
+    procedure Invalidate;
+    /// <summary>Draws the AState image of AOriginal (ANumGlyphs states side by
+    /// side) at ARect.TopLeft, building that image on first use</summary>
+    procedure Draw(const ACanvas: TCanvas; const ARect: TRect;
+      const AOriginal: TBitmap; const AState: TButtonState;
+      const ANumGlyphs: Integer; const ATransparentColor: TColor);
+  end;
+
+// Drawing functions
+
+/// <summary>Draws a BitBtn-style glyph with state-based image selection.
+/// With AGlyphCache the state images are built once and reused.</summary>
 procedure DrawBitBtnGlyph(const ACanvas: TCanvas; const ARect: TRect;
   const AKind: Vcl.Buttons.TBitBtnKind;
   const AState: TButtonState; const AEnabled: Boolean;
-  const AOriginal: TBitmap; const ANumGlyphs: Integer; const ATransparentColor: TColor);
+  const AOriginal: TBitmap; const ANumGlyphs: Integer; const ATransparentColor: TColor;
+  const AGlyphCache: TStyledGlyphCache = nil);
 
-//drawing a Text in a Canvas Using Alignment and Spacing
+/// <summary>Draws button text with alignment and spacing</summary>
 procedure DrawButtonText(const ACanvas: TCanvas;
   const AText: string; const AAlignment: TAlignment;
   const ASpacing, ABorderWidth: Integer;
   var ARect: TRect; ABidiFlags: Cardinal;
   const PreserveBorders: Boolean = True);
 
-//drawing a Notification Badge on a Canvas
+/// <summary>Draws a notification badge on a canvas</summary>
 procedure DrawButtonNotificationBadge(const ACanvas: TCanvas;
   const ASurfaceRect: TRect; const AScaleFactor: Single;
   const AValue: string;
@@ -322,64 +514,118 @@ procedure DrawButtonNotificationBadge(const ACanvas: TCanvas;
   const APosition: TNotificationBadgePosition;
   const AColor, AFontColor: TColor; const AFontStyle: TFontStyles);
 
-//drawing "old-style" with masked bitmap
+/// <summary>Draws a bitmap with transparency using mask technique</summary>
 procedure DrawBitmapTransparent(ACanvas: TCanvas; ARect: TRect;
   const AWidth, AHeight: Integer; AOriginal: TBitmap;
   AState: TButtonState; ANumGlyphs: Integer; const ATransparentColor: TColor);
 
-//drawing Command-Link Arrow (white or Black)
+/// <summary>Draws a command-link arrow icon (white or black based on style)</summary>
 procedure DrawIconFromCommandLinkRes(ACanvas: TCanvas; ARect: TRect;
   AVCLStyleName: string; AState: TButtonState; AEnabled: Boolean);
 
-//Draw rectangle and border into Canvas
+/// <summary>Draws a rectangle with border on canvas</summary>
 procedure DrawRect(ACanvas: TCanvas; var ARect: TRect);
 
-//draw Button into Canvas
+/// <summary>Draws a button shape using GDI+ with antialiasing</summary>
+/// <param name="ACanvas">The canvas to draw on</param>
+/// <param name="ARect">The bounding rectangle</param>
+/// <param name="ADrawType">The shape type to draw</param>
+/// <param name="ACornerRadius">Corner radius for rounded shapes</param>
+/// <param name="ARoundedCorners">Which corners to round</param>
+/// <param name="APreserveBorderSpace">When True, leaves space for border</param>
 procedure CanvasDrawShape(const ACanvas: TCanvas; ARect: TRect;
   const ADrawType: TStyledButtonDrawType; const ACornerRadius: Single;
   const ARoundedCorners: TRoundedCorners;
   const APreserveBorderSpace: Boolean = True);
 
-//draw Text into Canvas
+/// <summary>
+///  The face of a button that has a shadow: ARect without the AShadowSize rows at
+///  the bottom (already scaled), where the shadow is drawn: the shadow is seen only
+///  below the face, the rest of the control is unchanged. ARect when there is no
+///  shadow or when it is too small for it.
+/// </summary>
+function CalcShadowFaceRect(const ARect: TRect; const AShadowSize: Integer): TRect;
+
+/// <summary>
+///  Draws the soft shadow of a button: AFaceRect is the rectangle of the face of the
+///  button (the one that CanvasDrawShape will fill, see CalcShadowFaceRect). The shadow
+///  is seen only below the face, AShadowSize pixels deep. It must be called before
+///  drawing the face. Does nothing without GDI+ or when AShadowSize is 0.
+/// </summary>
+procedure CanvasDrawShadow(const ACanvas: TCanvas; const AFaceRect: TRect;
+  const ADrawType: TStyledButtonDrawType; const ACornerRadius: Single;
+  const ARoundedCorners: TRoundedCorners;
+  const AShadowSize: Integer);
+
+/// <summary>Draws text on canvas with BiDi support</summary>
 procedure CanvasDrawText(const ACanvas: TCanvas; ARect: TRect;
   const AText: string; ABiDiModeFlags: LongInt);
 
-//draw bar and triangle for SplitButton into Canvas
+/// <summary>Draws the separator bar and dropdown triangle for split buttons</summary>
 procedure CanvasDrawBarAndTriangle(const ACanvas: TCanvas; const ARect: TRect;
   const AScaleFactor: Single; ABarColor, ATriangleColor: TColor);
 
-//draw Vertical bar into Canvas
+/// <summary>Draws a vertical separator bar on canvas</summary>
 procedure CanvasDrawBar(const ACanvas: TCanvas; const ARect: TRect;
   const AScaleFactor: Single; ABarColor: TColor);
 
-//draw a triangle into Canvas
+/// <summary>Draws a dropdown triangle indicator on canvas</summary>
 procedure CanvasDrawTriangle(const ACanvas: TCanvas; const ARect: TRect;
   const AScaleFactor: Single; ATriangleColor: TColor);
 
-//ButtonFamily Factory
+// Button Family Factory functions
+
+/// <summary>Registers a new button style family</summary>
+/// <param name="AStyledButtonAttributes">The attributes interface implementation for the family</param>
 procedure RegisterButtonFamily(
   const AStyledButtonAttributes: IStyledButtonAttributes);
+/// <summary>Returns the list of all registered button families</summary>
 function GetButtonFamilies: TObjectList;
+/// <summary>Gets a button family by name</summary>
+/// <param name="AFamilyName">The family name to find</param>
+/// <returns>The TButtonFamily instance, or nil if not found</returns>
 function GetButtonFamilyClass(const AFamilyName: TStyledButtonFamily): TButtonFamily;
+/// <summary>Gets a button family name by index</summary>
 function GetButtonFamilyName(const Index: Integer): TStyledButtonFamily;
+/// <summary>Gets available style classes for a button family</summary>
 function GetButtonClasses(const AFamily: TButtonFamily): TButtonClasses;
+/// <summary>Gets available appearances for a button family</summary>
 function GetButtonAppearances(const AFamily: TButtonFamily): TButtonAppearances;
+/// <summary>Gets available style classes for a family by name</summary>
 function GetButtonFamilyClasses(const AFamily: TStyledButtonFamily): TButtonClasses;
+/// <summary>Gets available appearances for a family by name</summary>
 function GetButtonFamilyAppearances(const AFamily: TStyledButtonFamily): TButtonAppearances;
 
+/// <summary>Returns True if a button family with the given name is registered</summary>
+function StyleFamilyExists(const AFamily: TStyledButtonFamily): Boolean;
+
+/// <summary>True when an unregistered family should silently fall back to the
+/// Classic family (a deployed form streaming from a DFM) rather than raising.
+/// False at design time or on a direct assignment, where raising surfaces the
+/// missing style unit immediately.</summary>
+function StyleFamilyLoadingFallback(const AComponent: TComponent): Boolean;
+
+/// <summary>Validates and retrieves a button family, setting defaults if needed</summary>
+/// <returns>True if the family was found and validated</returns>
 function StyleFamilyCheckAttributes(
   const AFamily: TStyledButtonFamily;
   var AClass: TStyledButtonClass;
   var AAppearance: TStyledButtonAppearance;
   out AButtonFamily: TButtonFamily): Boolean;
 
-procedure StyleFamilyUpdateAttributes(
+/// <summary>Updates button attributes for all states based on family/class/appearance</summary>
+function StyleFamilyUpdateAttributes(
   const AFamily: TStyledButtonFamily;
   var AClass: TStyledButtonClass;
   var AAppearance: TStyledButtonAppearance;
   var ANormalStyle, APressedStyle,
-  ASelectedStyle, AHotStyle, ADisabledStyle: TStyledButtonAttributes);
+  ASelectedStyle, AHotStyle, ADisabledStyle: TStyledButtonAttributes): Boolean;
 
+/// <summary>Gets appropriate style class and appearance for a modal result</summary>
+/// <remarks>
+///   Maps modal results like mrOk, mrCancel, mrYes, mrNo to appropriate
+///   style classes (Success, Danger, etc.) based on the family's conventions
+/// </remarks>
 procedure StyleFamilyUpdateAttributesByModalResult(
   const AModalResult: TModalResult;
   const AFamily: TStyledButtonFamily;
@@ -391,6 +637,7 @@ implementation
 uses
   System.Win.Registry
   , System.Math
+  , System.Generics.Collections
 {$ifdef GDIPlusSupport}
   , Winapi.GDIPAPI
   , Winapi.GDIPOBJ
@@ -400,6 +647,74 @@ uses
 
 var
   _WindowsVersion: TWindowsVersion;
+  //Decoded resource images (BitBtn kind glyphs, command-link arrows), kept for
+  //the life of the process: decoding a PNG and scaling it on every paint cost
+  //about ten times the rest of a button paint (see Test\Source\StyledPerfTests).
+  {$IFDEF D10_4+}
+  _ResourceImages: TObjectDictionary<string, TWicImage>;
+  {$ELSE}
+  _ResourceImages: TObjectDictionary<string, TBitmap>;
+  {$ENDIF}
+
+{$IFDEF D10_4+}
+/// <summary>Returns the TWicImage of a resource decoded once per resource name
+/// and target size (TWicImage.Draw keeps one scaled buffer per instance, so
+/// instances are not shared across sizes). nil when the resource is missing.</summary>
+function GetResourceImage(const AResName: string;
+  const AWidth, AHeight: Integer): TWicImage;
+var
+  LKey: string;
+begin
+  LKey := Format('%s|%dx%d', [AResName, AWidth, AHeight]);
+  if not Assigned(_ResourceImages) then
+    _ResourceImages := TObjectDictionary<string, TWicImage>.Create([doOwnsValues]);
+  if not _ResourceImages.TryGetValue(LKey, Result) then
+  begin
+    Result := TWicImage.Create;
+    try
+      Result.InterpolationMode := wipmHighQualityCubic;
+      Result.LoadFromResourceName(HInstance, AResName);
+    except
+      on E: EResNotFound do
+        FreeAndNil(Result); //the miss is cached as well
+      else
+      begin
+        Result.Free;
+        raise;
+      end;
+    end;
+    _ResourceImages.Add(LKey, Result);
+  end;
+end;
+{$ELSE}
+/// <summary>Returns the bitmap of a resource loaded once per resource name.
+/// nil when the resource is missing.</summary>
+function GetResourceBitmap(const AResName: string): TBitmap;
+begin
+  if not Assigned(_ResourceImages) then
+    _ResourceImages := TObjectDictionary<string, TBitmap>.Create([doOwnsValues]);
+  if not _ResourceImages.TryGetValue(AResName, Result) then
+  begin
+    Result := TBitmap.Create;
+    try
+      Result.PixelFormat := pf32bit;
+      Result.LoadFromResourceName(HInstance, AResName);
+    except
+      on E: EResNotFound do
+        FreeAndNil(Result); //the miss is cached as well
+      else
+      begin
+        Result.Free;
+        raise;
+      end;
+    end;
+    _ResourceImages.Add(AResName, Result);
+  end;
+end;
+{$ENDIF}
+
+function GetButtonFamily(const AFamily: TStyledButtonFamily;
+  out AButtonFamily: TButtonFamily): Boolean; forward;
 
 procedure CheckValue(const AName: string; const AValue, AMin, AMax: Integer);
 begin
@@ -421,15 +736,21 @@ begin
     (Style1.FFontName = Style2.FFontName) and
     (Style1.FButtonColor = Style2.FButtonColor) and
     (Style1.FRadius = Style2.FRadius) and
-    (Style1.FRoundedCorners = Style2.FRoundedCorners);
+    (Style1.FRoundedCorners = Style2.FRoundedCorners) and
+    (Style1.FShadowSize = Style2.FShadowSize);
 end;
 
 function SameNotificationBadgeAttributes(Attr1, Attr2: TNotificationBadgeAttributes): Boolean;
 begin
   Result :=
     (Attr1.FNotificationCount = Attr2.FNotificationCount) and
+    (Attr1.FCustomText = Attr2.FCustomText) and
     (Attr1.FMaxNotifications = Attr2.FMaxNotifications) and
-    (Attr1.FPosition = Attr2.FPosition);
+    (Attr1.FPosition = Attr2.FPosition) and
+    (Attr1.FSize = Attr2.FSize) and
+    (Attr1.FColor = Attr2.FColor) and
+    (Attr1.FFontColor = Attr2.FFontColor) and
+    (Attr1.FFontStyle = Attr2.FFontStyle);
 end;
 
 function ColortoGrayscale(AColor : TColor): TColor;
@@ -488,6 +809,10 @@ procedure CloneButtonStyle(
   const ASource: TStyledButtonAttributes;
   var ADest: TStyledButtonAttributes);
 begin
+  //Honour the documented contract: create the destination if it is nil
+  //(the caller then owns the returned instance).
+  if not Assigned(ADest) then
+    ADest := TStyledButtonAttributes.Create(nil);
   ADest.FDrawType := ASource.FDrawType;
   ADest.FBorderWidth := ASource.FBorderWidth;
   ADest.FBorderDrawStyle := ASource.FBorderDrawStyle;
@@ -498,6 +823,7 @@ begin
   ADest.FButtonColor := ASource.FButtonColor;
   ADest.FRadius := ASource.FRadius;
   ADest.FRoundedCorners := ASource.FRoundedCorners;
+  ADest.FShadowSize := ASource.FShadowSize;
 
   ADest.FCustomDrawType := ASource.FCustomDrawType;
   ADest.FCustomBorderWidth := ASource.FCustomBorderWidth;
@@ -523,70 +849,63 @@ begin
 end;
 
 function GetActiveStyleName(const AControl: TControl): string;
+{$IFDEF D10_4+}
+var
+  LServices: TCustomStyleServices;
+{$ENDIF}
 begin
-  {$IFDEF D10_4+}
-  Result := AControl.GetStyleName;
+  {$IFDEF D11+}
+  //Vcl.Themes.StyleServices(AControl) resolves the effective style for the specific control: it walks the parent chain to honor an inherited
+  LServices := StyleServices(AControl);
+  if Assigned(LServices) then
+    Result := LServices.Name
+  else
+    Result := '';
   if Result = '' then
   begin
-    {$IFDEF D11+}
     if (csDesigning in AControl.ComponentState) then
       Result := TStyleManager.ActiveDesigningStyle.Name
     else
       Result := TStyleManager.ActiveStyle.Name;
-    {$ELSE}
-      Result := TStyleManager.ActiveStyle.Name;
-    {$ENDIF}
   end;
   {$ELSE}
   Result := TStyleManager.ActiveStyle.Name;
   {$ENDIF}
-  if (csDesigning in AControl.ComponentState) then
-  begin
-    if (Result = 'Windows Designer Dark') or
-      (Result = 'Win10IDE_Dark') or
-      (Result = 'Win10IDE_Light') or
-      (Result = 'Mountain_Mist' ) then
-      Result := 'Windows';
-  end;
+  //Map IDE-only "Designer" styles
+  if (Result = '') or
+     (Result = 'Windows Designer') or
+     (Result = 'Windows Designer Dark') or
+     (Result = 'Windows Designer Modern') or
+     (Result = 'Windows Designer Dark Modern') or
+     (Result = 'Win10IDE_Dark') or
+     (Result = 'Win10IDE_Light') or
+     (Result = 'Mountain_Mist' ) then
+    Result := 'Windows';
 end;
 
 function GetWindowsVersion: TWindowsVersion;
 var
-  Reg: TRegistry;
-  VersionInfo: TOSVersionInfo;
   LBuildNumber: Integer;
 begin
   if _WindowsVersion = wvUndefined then
   begin
-    VersionInfo.dwOSVersionInfoSize := sizeOf(TOSVersionInfo);
-    Reg := TRegistry.Create;
-    Try
-      Reg.RootKey := HKEY_LOCAL_MACHINE;
-      case VersionInfo.dwPlatformID of
-        VER_PLATFORM_WIN32_WINDOWS:
-          Reg.OpenKeyReadOnly('\Software\Microsoft\Windows\CurrentVersion');
-      else
-        Reg.OpenKeyReadOnly('\Software\Microsoft\Windows NT\CurrentVersion');
-      end;
-      LBuildNumber := StrToIntDef(Reg.ReadString('CurrentBuild'), 0);
-      if LBuildNumber >= 22000 then
-        _WindowsVersion := wvWindows11
-      else if LBuildNumber >= 10240 then
-        _WindowsVersion := wvWindows10
-      else if LBuildNumber >= 9600 then
-        _WindowsVersion := wvWindows8_1
-      else if LBuildNumber >= 9200 then
-        _WindowsVersion := wvWindows8
-      else if LBuildNumber >= 7600 then
-        _WindowsVersion := wvWindows7
-      else if LBuildNumber >= 6000 then
-        _WindowsVersion := wvWindowsVista
-      else if LBuildNumber >= 2600 then
-        _WindowsVersion := wvWindowsXP;
-      Reg.CloseKey;
-    Finally
-      Reg.Free;
-    End;
+    //Use TOSVersion (System.SysUtils) for the OS build number: avoids the
+    //uninitialized version record and the registry access that could raise.
+    LBuildNumber := TOSVersion.Build;
+    if LBuildNumber >= 22000 then
+      _WindowsVersion := wvWindows11
+    else if LBuildNumber >= 10240 then
+      _WindowsVersion := wvWindows10
+    else if LBuildNumber >= 9600 then
+      _WindowsVersion := wvWindows8_1
+    else if LBuildNumber >= 9200 then
+      _WindowsVersion := wvWindows8
+    else if LBuildNumber >= 7600 then
+      _WindowsVersion := wvWindows7
+    else if LBuildNumber >= 6000 then
+      _WindowsVersion := wvWindowsVista
+    else if LBuildNumber >= 2600 then
+      _WindowsVersion := wvWindowsXP;
   end;
   Result := _WindowsVersion;
 end;
@@ -623,10 +942,11 @@ begin
   //input: '<A HREF="c:\windows\system32\Notepad.exe'>Editor</A>'
   //output: 'Editor (c:\windows\system32\Notepad.exe)';
 
-  if ExtractHrefValues(HRef, DisplayLabel, LinkStr) then
+  //LinkStr receives the URL, DisplayLabel the visible text
+  if ExtractHrefValues(HRef, LinkStr, DisplayLabel) then
   begin
     if not SameText(DisplayLabel, LinkStr) then
-      Result := Format('%s (%s)',[LinkStr,DisplayLabel])
+      Result := Format('%s (%s)',[DisplayLabel,LinkStr])
     else
       Result := LinkStr;
   end
@@ -640,11 +960,10 @@ var
   LinkStr: string;
 begin
   //input: '<A HREF="c:\windows\system32\Notepad.exe'>Editor</A>'
-  //output: 'Editor';
-  if ExtractHrefValues(HRef, DisplayLabel, LinkStr) then
-  begin
-    Result := LinkStr;
-  end
+  //output: 'c:\windows\system32\Notepad.exe';
+  //Return the link itself: LinkStr receives the URL, DisplayLabel the visible text
+  if ExtractHrefValues(HRef, LinkStr, DisplayLabel) then
+    Result := LinkStr
   else
     Result := HRef;
 end;
@@ -760,19 +1079,23 @@ begin
       AAppearance := LDefaultAppearance;
       Result := False;
     end;
-  end;
+  end
+  else
+    //Family not registered: report failure instead of a false success
+    Result := False;
 end;
 
-procedure StyleFamilyUpdateAttributes(
+function StyleFamilyUpdateAttributes(
   const AFamily: TStyledButtonFamily;
   var AClass: TStyledButtonClass;
   var AAppearance: TStyledButtonAppearance;
   var ANormalStyle, APressedStyle,
-  ASelectedStyle, AHotStyle, ADisabledStyle: TStyledButtonAttributes);
+  ASelectedStyle, AHotStyle, ADisabledStyle: TStyledButtonAttributes): Boolean;
 var
   LButtonFamily: TButtonFamily;
   LNormalStyle, LPressedStyle, LSelectedStyle, LHotStyle, LDisabledStyle: TStyledButtonAttributes;
 begin
+  Result := False;
   if GetButtonFamily(AFamily, LButtonFamily) then
   begin
     LNormalStyle := TStyledButtonAttributes.Create(nil);
@@ -786,11 +1109,11 @@ begin
         LNormalStyle, LPressedStyle, LSelectedStyle,
         LHotStyle, LDisabledStyle);
 
-      ANormalStyle.AssignStyledAttributes(LNormalStyle);
-      APressedStyle.AssignStyledAttributes(LPressedStyle);
-      ASelectedStyle.AssignStyledAttributes(LSelectedStyle);
-      AHotStyle.AssignStyledAttributes(LHotStyle);
-      ADisabledStyle.AssignStyledAttributes(LDisabledStyle);
+      if ANormalStyle.AssignStyledAttributes(LNormalStyle) then Result := True;
+      if APressedStyle.AssignStyledAttributes(LPressedStyle) then Result := True;
+      if ASelectedStyle.AssignStyledAttributes(LSelectedStyle) then Result := True;
+      if AHotStyle.AssignStyledAttributes(LHotStyle) then Result := True;
+      if ADisabledStyle.AssignStyledAttributes(LDisabledStyle) then Result := True;
     finally
       LNormalStyle.Free;
       LPressedStyle.Free;
@@ -839,6 +1162,20 @@ function GetButtonFamilyClass(const AFamilyName: TStyledButtonFamily): TButtonFa
 begin
   if not GetButtonFamily(AFamilyName, Result) then
     raise EStyledAttributesException.CreateFmt(ERROR_FAMILY_NOT_FOUND,[AFamilyName]);
+end;
+
+function StyleFamilyExists(const AFamily: TStyledButtonFamily): Boolean;
+var
+  LButtonFamily: TButtonFamily;
+begin
+  Result := GetButtonFamily(AFamily, LButtonFamily);
+end;
+
+function StyleFamilyLoadingFallback(const AComponent: TComponent): Boolean;
+begin
+  Result := Assigned(AComponent)
+    and (csLoading in AComponent.ComponentState)
+    and not (csDesigning in AComponent.ComponentState);
 end;
 
 function GetButtonClasses(const AFamily: TButtonFamily): TButtonClasses;
@@ -891,6 +1228,8 @@ begin
     Color := LSource.FColor;
     FontColor := LSource.FFontColor;
     Size := LSource.FSize;
+    CustomText := LSource.FCustomText;
+    FontStyle := LSource.FFontStyle;
   end
   else
     inherited Assign(ASource);
@@ -1106,31 +1445,33 @@ end;
 function TStyledButtonAttributes.AssignStyledAttributes(
   const ASource: TStyledButtonAttributes): Boolean;
 begin
-  //Assign internal "custom" variable
-(*
-  FCustomDrawType := ASource.FCustomDrawType;
-  FCustomBorderWidth := ASource.FCustomBorderWidth;
-  FCustomBorderDrawStyle := ASource.FCustomBorderDrawStyle;
-  FCustomButtonDrawStyle := ASource.FCustomButtonDrawStyle;
-  FCustomBorderColor := ASource.FCustomBorderColor;
-  FCustomFontColor := ASource.FCustomFontColor;
-  FCustomFontStyle := ASource.FCustomFontStyle;
-  FCustomButtonColor := ASource.FCustomButtonColor;
-  FCustomRadius := ASource.FCustomRadius;
-  FCustomRoundedCorners := ASource.FCustomRoundedCorners;
-*)
   //Assign internal variable
-  FDrawType := ASource.FDrawType;
-  FBorderWidth := ASource.FBorderWidth;
-  FBorderDrawStyle := ASource.FBorderDrawStyle;
-  FButtonDrawStyle := ASource.FButtonDrawStyle;
-  FBorderColor := ASource.FBorderColor;
-  FFontColor := ASource.FFontColor;
-  FFontStyle := ASource.FFontStyle;
-  FButtonColor := ASource.FButtonColor;
-  FRadius := ASource.FRadius;
-  FRoundedCorners := ASource.FRoundedCorners;
-  Result := True;
+  Result :=
+    (FDrawType <> ASource.FDrawType) or
+    (FBorderWidth <> ASource.FBorderWidth) or
+    (FBorderDrawStyle <> ASource.FBorderDrawStyle) or
+    (FButtonDrawStyle <> ASource.FButtonDrawStyle) or
+    (FBorderColor <> ASource.FBorderColor) or
+    (FFontColor <> ASource.FFontColor) or
+    (FFontStyle <> ASource.FFontStyle) or
+    (FButtonColor <> ASource.FButtonColor) or
+    (FRadius <> ASource.FRadius) or
+    (FRoundedCorners <> ASource.FRoundedCorners) or
+    (FShadowSize <> ASource.FShadowSize);
+  if Result then
+  begin
+    FDrawType := ASource.FDrawType;
+    FBorderWidth := ASource.FBorderWidth;
+    FBorderDrawStyle := ASource.FBorderDrawStyle;
+    FButtonDrawStyle := ASource.FButtonDrawStyle;
+    FBorderColor := ASource.FBorderColor;
+    FFontColor := ASource.FFontColor;
+    FFontStyle := ASource.FFontStyle;
+    FButtonColor := ASource.FButtonColor;
+    FRadius := ASource.FRadius;
+    FRoundedCorners := ASource.FRoundedCorners;
+    FShadowSize := ASource.FShadowSize;
+  end;
 end;
 
 function TStyledButtonAttributes.BrushStyle: TBrushStyle;
@@ -1450,6 +1791,15 @@ begin
   end;
 end;
 
+procedure TStyledButtonAttributes.SetShadowSize(const AValue: Integer);
+begin
+  if FShadowSize <> AValue then
+  begin
+    FShadowSize := AValue;
+    InvalidateControl;
+  end;
+end;
+
 procedure TStyledButtonAttributes.SetRoundedCorners(const AValue: TRoundedCorners);
 begin
   if Assigned(FOwnerControl) then
@@ -1548,6 +1898,9 @@ begin
     w := ARectangle.Width;
     h := ARectangle.Height;
     d := ARadius / 2;
+    //d is the bounding box of each quarter arc, which only spans half of it
+    //(x in [l, l+d/2]): opposite arcs meet when d equals the short side, so
+    //that is the clamp. Halving it turned btRounded pills into round-rects.
     d := Min(d, Min(ARectangle.Width, ARectangle.Height));
     // topleft
     if rcTopLeft in ARoundedCorners then
@@ -1616,6 +1969,9 @@ begin
   //Text Rect as whole surface Rect (if there is no Image)
   ATextRect := ASurfaceRect;
 
+  //Reduce ATextRect inside Border of button
+  InflateRect(ATextRect, -ABorderWidth, -ABorderWidth);
+
   //Calc Image Rect and Change ATextRect
   IH := AImageHeight;
   IW := AImageWidth;
@@ -1677,45 +2033,19 @@ begin
   AImageRect.Height := IH;
 
   if ATextRect.IsEmpty then
+  begin
     ATextRect := ASurfaceRect;
-
-  //Preserve Border Spacing for ATextRect
-  if (LImageAlignment = iaCenter) or (AImageWidth = 0) then
-  begin
-    if ATextRect.Right > (ASurfaceRect.Right - ABorderWidth) then
-      ATextRect.Right := ASurfaceRect.Right - ABorderWidth;
-    if ATextRect.Left < (ASurfaceRect.Left + ABorderWidth) then
-      ATextRect.Left := ASurfaceRect.Left + ABorderWidth;
-  end;
-  if LImageAlignment = iaLeft then
-  begin
-    if ATextRect.Right > (ASurfaceRect.Width - ABorderWidth) then
-      ATextRect.Right := ASurfaceRect.Width - ABorderWidth;
-  end;
-  if LImageAlignment = iaRight then
-  begin
-    if ATextRect.Left < (ASurfaceRect.Left + ABorderWidth) then
-      ATextRect.Left := ASurfaceRect.Left + ABorderWidth;
-  end;
-  if LImageAlignment = iaTop then
-  begin
-    if ATextRect.Bottom > (ASurfaceRect.Height - ABorderWidth) then
-      ATextRect.Bottom := ASurfaceRect.Height - ABorderWidth;
-  end;
-  if LImageAlignment = iaBottom then
-  begin
-    if ATextRect.Top < (ASurfaceRect.Top + ABorderWidth) then
-      ATextRect.Top := ASurfaceRect.Top + ABorderWidth;
+    InflateRect(ATextRect, -ABorderWidth, -ABorderWidth);
   end;
 end;
 
 procedure CalcImageAndTextRect(const ACanvas: TCanvas;
   const ACaption: string; const ASurfaceRect: TRect;
   const AOffset: TPoint;
-  out AGlyphPos: TPoint; out ATextBounds: TRect;
+  out AGlyphPos: TPoint; out ATextRect: TRect;
   const AImageWidth, AImageHeight: Integer;
   const ALayout: TButtonLayout;
-  const AMargin, ASpacing: Integer;
+  const AMargin, ASpacing, ABorderWidth: Integer;
   const ABiDiFlags: Cardinal);
 var
   LTextPos: TPoint;
@@ -1742,16 +2072,17 @@ begin
 
   if Length(ACaption) > 0 then
   begin
-    ATextBounds := Rect(0, 0, ASurfaceRect.Right - ASurfaceRect.Left, 0);
-    DrawText(ACanvas.Handle, ACaption, Length(ACaption), ATextBounds,
+    ATextRect := Rect(0, 0, ASurfaceRect.Right - ASurfaceRect.Left, 0);
+    //InflateRect(ATextRect, -ABorderWidth, -ABorderWidth);
+    DrawText(ACanvas.Handle, ACaption, Length(ACaption), ATextRect,
       DT_CALCRECT or ABiDiFlags);
     LTextSize := Point(
-      ATextBounds.Right - ATextBounds.Left,
-      ATextBounds.Bottom - ATextBounds.Top);
+      ATextRect.Right - ATextRect.Left,
+      ATextRect.Bottom - ATextRect.Top);
   end
   else
   begin
-    ATextBounds := Rect(0, 0, 0, 0);
+    ATextRect := Rect(0, 0, 0, 0);
     LTextSize := Point(0,0);
   end;
 
@@ -1839,7 +2170,7 @@ begin
   Inc(AGlyphPos.X, ASurfaceRect.Left + AOffset.X);
   Inc(AGlyphPos.Y, ASurfaceRect.Top + AOffset.Y);
 
-  OffsetRect(ATextBounds, LTextPos.X + ASurfaceRect.Left + AOffset.X,
+  OffsetRect(ATextRect, LTextPos.X + ASurfaceRect.Left + AOffset.X,
     LTextPos.Y + ASurfaceRect.Top + AOffset.Y);
 end;
 
@@ -1878,44 +2209,26 @@ begin
         LResName := 'STYLED_CMD_LINK_ARROW_WHITE';
     end;
   end;
+  //Decoded once per resource (and size), see GetResourceImage
   {$IFDEF D10_4+}
-  LImage := TWicImage.Create;
-  try try
-    LImage.InterpolationMode := wipmHighQualityCubic;
-    LImage.LoadFromResourceName(HInstance, LResName);
+  LImage := GetResourceImage(LResName, ARect.Width, ARect.Height);
+  if Assigned(LImage) then
     ACanvas.StretchDraw(ARect, LImage);
-    Exit;
-  except
-    on E: EResNotFound do ; //ignore Exception
-    else
-      raise;
-  end;  
-  finally
-    LImage.Free;
-  end;
   {$ELSE}
-  LBitmap := TBitmap.Create;
-  try
-    LBitmap.PixelFormat := pf32bit;
-    //LBitmap.TransparentMode := tmFixed;
-    LBitmap.LoadFromResourceName(HInstance, LResName);
-    //ACanvas.StretchDraw(ARect, LBitmap);
-    //LBitmapRect := TRect.Create(ARect.Top, ARect.Left, LBitmap.Width, LBitmap.Height);
+  LBitmap := GetResourceBitmap(LResName);
+  if Assigned(LBitmap) then
     DrawBitmapTransparent(ACanvas, ARect, ARect.Width, ARect.Height, LBitmap, bsUp, 1, clBlack);
-    Exit;
-  finally
-    LBitmap.Free;
-  end;
-  {$ENDIF}
+{$ENDIF}
 end;
 
-procedure DrawBitmapTransparent(ACanvas: TCanvas; ARect: TRect;
+/// <summary>Builds the AState image of a BitBtn glyph (masked, disabled
+/// rendering included) and adds it to AImageList; returns its index.</summary>
+function AddGlyphToImageList(const IL: TImageList;
   const AWidth, AHeight: Integer; AOriginal: TBitmap;
-  AState: TButtonState; ANumGlyphs: Integer; const ATransparentColor: TColor);
+  AState: TButtonState; ANumGlyphs: Integer; const ATransparentColor: TColor): Integer;
 const
   ROP_DSPDxax = $00E20746;
 var
-  IL: TImageList;
   TmpImage, MonoBmp, DDB: TBitmap;
   IRect, ORect: TRect;
   I: TButtonState;
@@ -1923,13 +2236,10 @@ var
   LIndex: Integer;
 begin
   LIndex := -1;
-  TmpImage := nil;
-  IL := nil;
+  TmpImage := TBitmap.Create;
   try
-    TmpImage := TBitmap.Create;
     TmpImage.Width := AWidth;
     TmpImage.Height := AHeight;
-    IL := TImageList.CreateSize(TmpImage.Width, TmpImage.Height);
     IRect := Rect(0, 0, AWidth, AHeight);
     TmpImage.Canvas.Brush.Color := clBtnFace;
     TmpImage.Palette := CopyPalette(AOriginal.Palette);
@@ -2034,12 +2344,71 @@ begin
           LIndex := IL.AddMasked(TmpImage, clDefault);
         end;
     end;
+  finally
+    TmpImage.Free;
+  end;
+  Result := LIndex;
+end;
+
+procedure DrawBitmapTransparent(ACanvas: TCanvas; ARect: TRect;
+  const AWidth, AHeight: Integer; AOriginal: TBitmap;
+  AState: TButtonState; ANumGlyphs: Integer; const ATransparentColor: TColor);
+var
+  IL: TImageList;
+  LIndex: Integer;
+begin
+  IL := TImageList.CreateSize(AWidth, AHeight);
+  try
+    LIndex := AddGlyphToImageList(IL, AWidth, AHeight, AOriginal, AState, ANumGlyphs, ATransparentColor);
     ImageList_DrawEx(IL.Handle, LIndex, ACanvas.Handle, ARect.Left, ARect.Top, AWidth, AHeight,
       clNone, clNone, ILD_Transparent);
   finally
     IL.Free;
-    TmpImage.Free;
   end;
+end;
+
+{ TStyledGlyphCache }
+
+destructor TStyledGlyphCache.Destroy;
+begin
+  Invalidate;
+  inherited;
+end;
+
+procedure TStyledGlyphCache.Invalidate;
+begin
+  FreeAndNil(FImageList);
+end;
+
+procedure TStyledGlyphCache.Draw(const ACanvas: TCanvas; const ARect: TRect;
+  const AOriginal: TBitmap; const AState: TButtonState;
+  const ANumGlyphs: Integer; const ATransparentColor: TColor);
+var
+  LWidth, LHeight: Integer;
+  LState: TButtonState;
+begin
+  if not Assigned(AOriginal) or (ANumGlyphs <= 0) or
+    (AOriginal.Width = 0) or (AOriginal.Height = 0) then
+    Exit;
+  LWidth := AOriginal.Width div ANumGlyphs;
+  LHeight := AOriginal.Height;
+  if Assigned(FImageList) and ((FWidth <> LWidth) or (FHeight <> LHeight) or
+    (FTransparentColor <> ATransparentColor)) then
+    Invalidate;
+  if not Assigned(FImageList) then
+  begin
+    FImageList := TImageList.CreateSize(LWidth, LHeight);
+    FWidth := LWidth;
+    FHeight := LHeight;
+    FTransparentColor := ATransparentColor;
+    for LState := Low(TButtonState) to High(TButtonState) do
+      FIndexes[LState] := -1;
+  end;
+  if FIndexes[AState] < 0 then
+    FIndexes[AState] := AddGlyphToImageList(FImageList, LWidth, LHeight,
+      AOriginal, AState, ANumGlyphs, ATransparentColor);
+  ImageList_DrawEx(FImageList.Handle, FIndexes[AState], ACanvas.Handle,
+    ARect.Left, ARect.Top, LWidth, LHeight, clNone, clNone, ILD_Transparent);
 end;
 
 procedure DrawButtonText(const ACanvas: TCanvas;
@@ -2051,14 +2420,14 @@ var
   R: TRect;
   LOldBKMode: Integer;
 begin
-(* for test
+{$IFDEF DEBUG_TEST}
   ACanvas.Brush.Color := clYellow;
   ACanvas.FillRect(ARect);
   ACanvas.Pen.Color := clRed;
   ACanvas.Pen.Width := 1;
   ACanvas.Pen.Style := psSolid;
   ACanvas.Rectangle(ARect);
-*)
+{$ENDIF}
   R := ARect;
   Winapi.Windows.DrawText(ACanvas.Handle, PChar(AText), Length(AText),
     R, ABidiFlags or DT_CALCRECT);
@@ -2080,13 +2449,10 @@ begin
           R.Top := ARect.Top + ABorderWidth + ASpacing ;
         if R.Bottom > ARect.Bottom - ABorderWidth - Aspacing then
           R.Bottom := ARect.Bottom - ABorderWidth - Aspacing;
-        (* for test
+        {$IFDEF DEBUG_TEST}
         ACanvas.Brush.Color := clRed;
         ACanvas.FillRect(R);
-        ACanvas.Pen.Color := clBlue;
-        ACanvas.Pen.Width := 1;
-        ACanvas.Rectangle(R);
-        *)
+        {$ENDIF}
         Winapi.Windows.DrawText(ACanvas.Handle, PChar(AText),
           Length(AText), R, ABidiFlags or DT_END_ELLIPSIS);
       end
@@ -2116,8 +2482,24 @@ var
   LRect: TRect;
   W, H, LBadgeChars, LBadgeBorderSize: Integer;
   LFlags: Cardinal;
+  LOldPenStyle: TPenStyle;
+  LOldPenWidth: Integer;
+  LOldBrushColor, LOldFontColor: TColor;
+  LOldFontStyle: TFontStyles;
 begin
+  //Save the shared canvas state: this helper draws on the control's canvas and
+  //must not leak pen/brush/font changes to items painted afterwards.
+  LOldPenStyle := ACanvas.Pen.Style;
+  LOldPenWidth := ACanvas.Pen.Width;
+  LOldBrushColor := ACanvas.Brush.Color;
+  LOldFontColor := ACanvas.Font.Color;
+  LOldFontStyle := ACanvas.Font.Style;
+  try
   ACanvas.Pen.Style := psClear;
+  //The badge has no border: CanvasDrawShape derives the btRounded corner radius
+  //from Height - Pen.Width, so the border width left on the canvas by the
+  //button just painted would flatten the pill into a round-rect.
+  ACanvas.Pen.Width := 1;
   ACanvas.Brush.Color := AColor;
   ACanvas.Font.Color := AFontColor;
   ACanvas.Font.Style := AFontStyle;
@@ -2172,13 +2554,22 @@ begin
   if ASizeType <> nbsSmallDot then
     DrawButtonText(ACanvas, AValue, taCenter, 0, 0, LRect,
       DT_NOCLIP or DT_CENTER or DT_VCENTER);
+  finally
+    //Restore the shared canvas state
+    ACanvas.Pen.Style := LOldPenStyle;
+    ACanvas.Pen.Width := LOldPenWidth;
+    ACanvas.Brush.Color := LOldBrushColor;
+    ACanvas.Font.Color := LOldFontColor;
+    ACanvas.Font.Style := LOldFontStyle;
+  end;
 end;
 
 procedure DrawBitBtnGlyph(const ACanvas: TCanvas; const ARect: TRect;
   const AKind: Vcl.Buttons.TBitBtnKind;
   const AState: TButtonState; const AEnabled: Boolean;
   const AOriginal: TBitmap; const ANumGlyphs: Integer;
-  const ATransparentColor: TColor);
+  const ATransparentColor: TColor;
+  const AGlyphCache: TStyledGlyphCache = nil);
 var
   LResName: String;
   LOriginal: TBitmap;
@@ -2188,7 +2579,6 @@ var
   {$ENDIF}
   LState: TButtonState;
 begin
-  LOriginal := nil;
   try
     try
       if AKind = bkCustom then
@@ -2205,20 +2595,15 @@ begin
         {$IFDEF D10_4+}
         if not AEnabled then
           LResName := LResName+'_DISABLED';
-        LImage := TWicImage.Create;
-        try
-          LImage.InterpolationMode := wipmHighQualityCubic;
-          LImage.LoadFromResourceName(HInstance, LResName);
+        //Decoded once per resource and size, see GetResourceImage
+        LImage := GetResourceImage(LResName, ARect.Width, ARect.Height);
+        if Assigned(LImage) then
           ACanvas.StretchDraw(ARect, LImage);
-          Exit;
-        finally
-          LImage.Free;
-        end;
+        Exit;
         {$ELSE}
-          LOriginal := TBitmap.Create;
+          //Loaded once per resource, see GetResourceBitmap (not owned here)
+          LOriginal := GetResourceBitmap(LResName);
           LNumGlyphs := 2;
-          LOriginal.PixelFormat := pf32bit;
-          LOriginal.LoadFromResourceName(HInstance, LResName);
         {$ENDIF}
       end;
       if not Assigned(LOriginal) or ((LOriginal.Width = 0) or (LOriginal.Height = 0)) then
@@ -2227,11 +2612,14 @@ begin
         LState := AState
       else
         LState := bsDisabled;
-      DrawBitmapTransparent(ACanvas, ARect, LOriginal.Width div LNumGlyphs, LOriginal.Height, LOriginal,
-        LState, LNumGlyphs, ATransparentColor);
+      if Assigned(AGlyphCache) then
+        //State images built once per button, see TStyledGlyphCache
+        AGlyphCache.Draw(ACanvas, ARect, LOriginal, LState, LNumGlyphs, ATransparentColor)
+      else
+        DrawBitmapTransparent(ACanvas, ARect, LOriginal.Width div LNumGlyphs, LOriginal.Height, LOriginal,
+          LState, LNumGlyphs, ATransparentColor);
     finally
-      if AKind <> bkCustom then
-        LOriginal.Free;
+      //LOriginal is the caller's glyph or a cached resource bitmap: not owned here
     end;
   except
     on E: EResNotFound do ; //ignore Exception
@@ -2271,7 +2659,9 @@ begin
   LWidth  := LRect.Width - 8;
   LRect.Left := ARect.Left + 2;
   LRect.Right := LRect.Left + LWidth - 2;
-  LRect.Top := LMargin;
+  //Offset by ARect.Top: LMargin alone would place the triangle relative to the
+  //canvas top, drawing it ARect.Top pixels too high inside a non-zero-top rect.
+  LRect.Top := ARect.Top + LMargin;
   LRect.Bottom := LRect.Top + LHeight;
   Points3[0] := Point(LRect.Left + LWidth, LRect.Top);
   Points3[1] := Point(LRect.Left, LRect.Top);
@@ -2292,6 +2682,77 @@ begin
 end;
 
 {$ifdef GDIPlusSupport}
+function CalcShadowFaceRect(const ARect: TRect; const AShadowSize: Integer): TRect;
+begin
+  Result := ARect;
+  if AShadowSize > 0 then
+  begin
+    Dec(Result.Bottom, AShadowSize);
+    //too small for its shadow: the face uses the whole area
+    if Result.Height <= 0 then
+      Result := ARect;
+  end;
+end;
+
+procedure CanvasDrawShadow(const ACanvas: TCanvas; const AFaceRect: TRect;
+  const ADrawType: TStyledButtonDrawType; const ACornerRadius: Single;
+  const ARoundedCorners: TRoundedCorners;
+  const AShadowSize: Integer);
+const
+  //Opacity of each of the layers: the layers overlap near the face, so the
+  //shadow is darker there and fades out to the outside
+  LAYER_ALPHA = 24;
+var
+  LGraphics: TGPGraphics;
+  LBrush: TGPSolidBrush;
+  LPath: TGPGraphicsPath;
+  LRect: TGPRectF;
+  K: Integer;
+  X, Y, W, H, LRadius: Single;
+begin
+  if (AShadowSize <= 0) or (AFaceRect.Width <= 0) or (AFaceRect.Height <= 0) then
+    Exit;
+  LGraphics := nil;
+  LBrush := nil;
+  try
+    LGraphics := TGPGraphics.Create(ACanvas.Handle);
+    LGraphics.SetSmoothingMode(SmoothingModeAntiAlias);
+    LBrush := TGPSolidBrush.Create(MakeColor(LAYER_ALPHA, 0, 0, 0));
+    //the shadow is seen only below the face: the shape of the face is repeated
+    //moved down by 1..AShadowSize pixels, from the lowest layer to the nearest one
+    for K := AShadowSize downto 1 do
+    begin
+      X := AFaceRect.Left;
+      Y := AFaceRect.Top + K;
+      W := AFaceRect.Width - 1;
+      H := AFaceRect.Height; //down to the last row of the shadow
+      LRect := Winapi.GDIPAPI.MakeRect(X, Y, W, H);
+      case ADrawType of
+        btRect:
+          LGraphics.FillRectangle(LBrush, LRect);
+        btEllipse:
+          LGraphics.FillEllipse(LBrush, LRect);
+      else
+        begin
+          if ADrawType = btRoundRect then
+            LRadius := ACornerRadius
+          else
+            LRadius := LRect.Height; //pill: clamped by the path
+          LPath := GetRoundedCornersPath(LRect, LRadius * 2, ARoundedCorners);
+          try
+            LGraphics.FillPath(LBrush, LPath);
+          finally
+            LPath.Free;
+          end;
+        end;
+      end;
+    end;
+  finally
+    LBrush.Free;
+    LGraphics.Free;
+  end;
+end;
+
 procedure CanvasDrawShape(const ACanvas: TCanvas; ARect: TRect;
   const ADrawType: TStyledButtonDrawType; const ACornerRadius: Single;
   const ARoundedCorners: TRoundedCorners;
@@ -2317,6 +2778,14 @@ var
   end;
 
 begin
+  //btRect is rendered entirely by DrawRect, which owns its own GDI+ context.
+  //Creating a second TGPGraphics here on the same HDC is unsupported by GDI+
+  //(and the objects below would be built and discarded on every rectangular paint).
+  if ADrawType in [btRect] then
+  begin
+    DrawRect(ACanvas, ARect);
+    Exit;
+  end;
   LGraphics := nil;
   LPen := nil;
   LBrush := nil;
@@ -2338,11 +2807,7 @@ begin
     else
       LPen := TGPPen.Create(LPenColor, LBorderWidth);
 
-    if (ADrawType in [btRect]) then
-    begin
-      DrawRect(ACanvas, ARect);
-    end
-    else if (ADrawType in [btRounded, btRoundRect]) then
+    if (ADrawType in [btRounded, btRoundRect]) then
     begin
       //Reduce canvas to draw a rounded rectangle of Pen Width
       if APreserveBorderSpace then
@@ -2381,6 +2846,14 @@ begin
   end;
 end;
 {$else}
+procedure CanvasDrawShadow(const ACanvas: TCanvas; const AFaceRect: TRect;
+  const ADrawType: TStyledButtonDrawType; const ACornerRadius: Single;
+  const ARoundedCorners: TRoundedCorners;
+  const AShadowSize: Integer);
+begin
+  //The shadow needs GDI+ (alpha blending): nothing to draw
+end;
+
 procedure CanvasDrawShape(const ACanvas: TCanvas; ARect: TRect;
   const ADrawType: TStyledButtonDrawType; const ACornerRadius: Single;
   const APreserveBorderSpace: Boolean = True);
@@ -2506,6 +2979,7 @@ begin
   LGraphics := nil;
   LFontFamily := nil;
   LFont := nil;
+  LSolidBrush := nil;
   try
     LGraphics := TGPGraphics.Create(ACanvas.Handle);
     LFontFamily := TGPFontFamily.Create(ACanvas.Font.Name);
@@ -2522,6 +2996,7 @@ begin
     LGraphics.Free;
     LFontFamily.Free;
     LFont.Free;
+    LSolidBrush.Free;
   end;
 end;
 {$else}
@@ -2538,5 +3013,6 @@ initialization
 
 finalization
   FFamilies.Free;
+  FreeAndNil(_ResourceImages);
 
 end.

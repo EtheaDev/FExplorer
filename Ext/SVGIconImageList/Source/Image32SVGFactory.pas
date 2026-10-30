@@ -1,6 +1,6 @@
 {-----------------------------------------------------------------------------
  Unit Name: Image32SVGFactory
- Author:    Carlo Barazzxetta
+ Author:    Carlo Barazzetta
  Purpose:   High-level encapsuation of Svg functionality for Image32 Library
  History:
 -----------------------------------------------------------------------------}
@@ -28,6 +28,7 @@ Uses
   System.UITypes,
   System.SysUtils,
   System.Classes,
+  System.Math,
   Img32,             //Warning: from version 2.3 the default rendering engine is Image32
   Img32.SVG.Core,    //because is the best engine available with SVGIconImageList.
   Img32.SVG.Reader,  //If you don't want to use it change SVGIconImageList.inc
@@ -84,10 +85,8 @@ type
 
 { TImage32SVG }
 procedure TImage32SVG.Clear;
-Const
-  EmptySvg = '<svg xmlns="http://www.w3.org/2000/svg"></svg>';
 begin
-  SetSource(EmptySvg);
+  SetSource('');
 end;
 
 constructor TImage32SVG.Create;
@@ -160,14 +159,15 @@ begin
 end;
 
 procedure TImage32SVG.UpdateSizeInfo;
+var
+  LSize: TSize;
 begin
   //nb: default widths should be the target image's dimensions
   //since these values will be used for SVG images that simply
   //specify their widths and heights as percentages
-  if fSvgReader.RootElement.viewboxWH.IsEmpty then
-    fSvgReader.CalcViewBoxOfRootElement;
-  FWidth := fSvgReader.RootElement.viewboxWH.Width;
-  FHeight := fSvgReader.RootElement.viewboxWH.Height;
+  LSize := fSvgReader.GetImageSize;
+  FWidth := LSize.cx;
+  FHeight := LSize.cy;
 end;
 
 procedure TImage32SVG.LoadFromSource;
@@ -175,8 +175,19 @@ begin
   if FSource <> '' then
   begin
     if not fSvgReader.LoadFromString(FSource) then
+    begin
+      FWidth := 0;
+      FHeight := 0;
       raise ESVGException.Create(IMAGE32_ERROR_PARSING_SVG_TEXT);
+    end;
     UpdateSizeInfo;
+  end
+  else
+  begin
+    //An empty Source is an empty document: forget the previous one
+    fSvgReader.Clear;
+    FWidth := 0;
+    FHeight := 0;
   end;
 end;
 
@@ -189,9 +200,9 @@ begin
   SourceFromStream(Stream);
   // Restore Position
   Stream.Position := OldPos;
-  // Now create the SVG
-  fSvgReader.LoadFromStream(Stream);
-  UpdateSizeInfo;
+  // Now create the SVG from the Source just read (raises ESVGException
+  // if the stream does not contain a valid SVG)
+  LoadFromSource;
 end;
 
 procedure TImage32SVG.PaintTo(DC: HDC; R: TRectF; KeepAspectRatio: Boolean);
@@ -203,6 +214,9 @@ begin
   //Define Image32 output size
   FImage32.SetSize(Round(R.Width), Round(R.Height));
 
+  if fSvgReader.IsEmpty then
+    Exit;
+
   //Update FsvgReader BEFORE calling FsvgReader.DrawImage
   //to apply fixed color to root only
   if FApplyFixedColorToRootOnly and not FGrayScale and
@@ -211,9 +225,13 @@ begin
   begin
     LFixedColor := Color32(FFixedColor);
     dd := fSvgReader.RootElement.DrawData;
-    dd.FillColor := LFixedColor;
-    if dd.strokeColor <> clInvalid then
+    //fill="none" (outline icons) must stay none
+    if dd.FillColor <> clNone32 then
+      dd.FillColor := LFixedColor;
+    if (dd.strokeColor <> clInvalid) and (dd.strokeColor <> clNone32) then
       dd.strokeColor := LFixedColor;
+    //the color inherited by "currentColor"
+    dd.currentColor := LFixedColor;
     fSvgReader.RootElement.DrawData := dd;
   end;
 
@@ -230,6 +248,7 @@ begin
   if FGrayScale then
     FImage32.Grayscale
   else if (FFixedColor <> TColors.SysDefault) and
+    (FFixedColor <> TColors.SysNone) and
     not FApplyFixedColorToRootOnly then
       FImage32.SetRGB(Color32(FFixedColor));
 
@@ -302,7 +321,7 @@ end;
 
 procedure TImage32SVG.SetOpacity(const Opacity: Single);
 begin
-  FOpacity := Opacity;
+  FOpacity := EnsureRange(Opacity, 0, 1);
 end;
 
 procedure TImage32SVG.SetSource(const ASource: string);
@@ -318,7 +337,6 @@ procedure TImage32SVG.SourceFromStream(Stream: TStream);
 var
   LStream: TStringStream;
 begin
-  fSvgReader.LoadFromStream(Stream);
   LStream := TStringStream.Create('', TEncoding.UTF8);
   try
     Stream.Position := 0;
@@ -346,5 +364,6 @@ initialization
   FontManager.LoadFontReaderFamily('Times New Roman');
   FontManager.LoadFontReaderFamily('Segoe UI');
   FontManager.LoadFontReaderFamily('Segoe UI Emoji');
+  FontManager.LoadFontReaderFamily('Webdings');
 
 end.

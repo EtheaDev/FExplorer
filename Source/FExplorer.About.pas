@@ -3,7 +3,7 @@
 {       FExplorer: Shell extensions per Fattura Elettronica                    }
 {       (Preview Panel, Thumbnail Icon, F.E.Viewer)                            }
 {                                                                              }
-{       Copyright (c) 2021-2025 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2021-2026 (Ethea S.r.l.)                                 }
 {       Author: Carlo Barazzetta                                               }
 {                                                                              }
 {       https://github.com/EtheaDev/FExplorer                                  }
@@ -86,6 +86,8 @@ implementation
 
 uses
   ShellApi, uMisc, PKCS7Extractor;
+
+{$I FExplorer.Credits.inc}
 
 {$R *.dfm}
 
@@ -173,6 +175,7 @@ procedure TFrmAbout.FormCreate(Sender: TObject);
 var
   FileVersionStr: string;
 begin
+  MemoCopyRights.Lines.Text := CreditsText;
   TitleLabel.Font.Height := Round(TitleLabel.Font.Height * 1.6);
 
   FileVersionStr:=uMisc.GetFileVersion(GetModuleLocation());

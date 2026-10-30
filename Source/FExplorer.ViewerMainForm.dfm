@@ -542,6 +542,20 @@ object frmMain: TfrmMain
       OnExecute = acSearchAgainExecute
       OnUpdate = acSearchAgainUpdate
     end
+    object acWordWrap: TAction
+      Category = 'Edit'
+      Caption = 'A capo automatico'
+      Hint = 'Manda a capo le righe lunghe nell'#39'editor'
+      OnExecute = acWordWrapExecute
+      OnUpdate = acWordWrapUpdate
+    end
+    object acShowLineNumbers: TAction
+      Category = 'Edit'
+      Caption = 'Mostra numeri di riga'
+      Hint = 'Mostra i numeri di riga nell'#39'editor'
+      OnExecute = acShowLineNumbersExecute
+      OnUpdate = acShowLineNumbersUpdate
+    end
     object acClose: TAction
       Category = 'File'
       Caption = 'Chiudi'
@@ -837,6 +851,12 @@ object frmMain: TfrmMain
     end
     object N1: TMenuItem
       Caption = '-'
+    end
+    object WordWrapMenuItem: TMenuItem
+      Action = acWordWrap
+    end
+    object ShowLineNumbersMenuItem: TMenuItem
+      Action = acShowLineNumbers
     end
   end
   object PrinterSetupDialog: TPrinterSetupDialog

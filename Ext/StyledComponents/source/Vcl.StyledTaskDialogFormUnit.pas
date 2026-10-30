@@ -1,8 +1,8 @@
-{******************************************************************************}
+﻿{******************************************************************************}
 {                                                                              }
 {  StyledTaskDialogForm: a Task Dialog Form with StyleButtons                  }
 {                                                                              }
-{  Copyright (c) 2022-2025 (Ethea S.r.l.)                                      }
+{  Copyright (c) 2022-2026 (Ethea S.r.l.)                                      }
 {  Author: Carlo Barazzetta                                                    }
 {  Contributors:                                                               }
 {                                                                              }
@@ -37,6 +37,7 @@ uses
   System.Classes,
   Vcl.Graphics,
   Vcl.Controls,
+  Vcl.ComCtrls,
   Vcl.Forms,
   Vcl.Dialogs,
   Vcl.StdCtrls,
@@ -53,13 +54,28 @@ uses
   Vcl.ButtonGroup;
 
 type
+  /// <summary>Default implementation of ITaskDialogLauncher interface</summary>
+  /// <remarks>Handles the execution and display of styled task dialogs</remarks>
   TTaskDialogLauncherHandler = class(TInterfacedObject, ITaskDialogLauncher)
+    /// <summary>Executes and displays the task dialog</summary>
+    /// <param name="ParentWnd">Handle to the parent window</param>
+    /// <param name="ADialogType">The type of dialog to display</param>
+    /// <param name="ATaskDialog">The TStyledTaskDialog instance</param>
+    /// <param name="ADialogBtnFamily">The button style family</param>
+    /// <returns>True if dialog was executed successfully</returns>
     function DoExecute(ParentWnd: HWND;
       const ADialogType: TMsgDlgType;
       const ATaskDialog: TStyledTaskDialog;
       const ADialogBtnFamily: TStyledButtonFamily): Boolean;
   end;
 
+  /// <summary>Base form class for styled task dialogs</summary>
+  /// <remarks>
+  ///   TStyledTaskDialogForm is the visual form that displays styled task dialogs.
+  ///   It contains all the UI elements including buttons, icons, text labels,
+  ///   progress bars, radio buttons, and more. Inherit from this class to create
+  ///   custom dialog forms with different visual appearances.
+  /// </remarks>
   TStyledTaskDialogForm = class(TForm)
     FooterPanel: TPanel;
     ButtonsPanel: TPanel;
@@ -91,6 +107,8 @@ type
     VerificationCheckBox: TCheckBox;
     ExpandButton: TStyledButton;
     ExpandLabel: TLabel;
+    ProgressBarPanel: TPanel;
+    InternalProgressBar: TProgressBar;
     procedure FormCreate(Sender: TObject);
     procedure ButtonClick(Sender: TObject);
     procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
@@ -111,6 +129,15 @@ type
     FButtonsWidth: Integer;
     FButtonsHeight: Integer;
     FDialogBtnFamily: TStyledButtonFamily;
+    //Form that launched the dialog: reference for the position, NOT the popup parent
+    //(it can be destroyed while the dialog is modal)
+    FReferenceForm: TCustomForm;
+    //Position requested by the dialog (screen or owner centering): the VCL one is
+    //replaced by CenterOverReferenceForm, so Position itself stays poDesigned
+    FDesiredPosition: TPosition;
+    FDialogBtnDrawType: TStyledButtonDrawType;
+    FDialogBtnRadius: Integer;
+    FDialogBtnRoundedCorners: TRoundedCorners;
     FCommonButtons: TTaskDialogCommonButtons;
     FDefaultButton: TTaskDialogCommonButton;
     FUseMessageDefaultButton: Boolean;
@@ -125,12 +152,17 @@ type
     FAutoClick: Boolean;
     FAutoClickDelay: Integer;
     FRadioButton: TTaskDialogRadioButtonItem;
+    FProgressBar: TTaskDialogProgressBar;
     FFlags: TTaskDialogFlags;
     FExpandButtonCaption: string;
     FText: string;
     FExpandedText: string;
-    FHandle: HWND;
     FTaskDialogExpanded: TNotifyEvent;
+    FTimer: TTimer;
+    FTickCount: Cardinal;
+    FMainIconSize: Integer;
+    FAnimationLoop: Boolean;
+    FAnimationInverse: Boolean;
     //procedure GetIconNameAndIndex(ATaskDialog: TMsgDlgType;
     //  out AImageName: string; out AImageIndex: Integer); overload;
     procedure TaskDialogExpanded(Sender: TObject);
@@ -157,23 +189,36 @@ type
     procedure SetExpandedText(const AValue: string);
     function GetVerificationText: string;
     function GetFocusedButton: TStyledButton;
+    procedure CollectOrderedButtons(const AButtons: TList);
+    procedure CopyContentToClipboard;
     procedure InitDlgButtonsWithFamily(const AFamily: TStyledButtonFamily);
     procedure UpdateButtonsVisibility;
     procedure UpdateButtonsSize;
+    procedure UpdateButtonsStyle;
     procedure SetFooterIcon(const AValue: TTaskDialogIcon);
     procedure SetCustomMainIcon(const AValue: TIcon);
     procedure SetCustomFooterIcon(const AValue: TIcon);
     procedure SetMainIcon(const AValue: TTaskDialogIcon);
     procedure AddCustomButtons(const AButtons: TTaskDialogButtons);
     procedure SetMainIconSize(const AValue: Integer);
-    function GetMainIconSize: Integer;
     procedure SetRadioButtons(const AValue: TTaskDialogButtons);
     function UsingCommandLinks: Boolean;
     procedure SetFlags(const AValue: TTaskDialogFlags);
     procedure SetExpandButtonCaption(const Value: string);
     function GetExpanded: Boolean;
     procedure CalcMessageText(const AExpanded: Boolean);
+    procedure SetProgressBar(const AValue: TTaskDialogProgressBar);
+    procedure SetReferenceForm(const AValue: TCustomForm);
+    procedure CenterOverReferenceForm;
+    function GetDialogBtnFamily: TStyledButtonFamily;
+    procedure SetDialogBtnFamily(const AValue: TStyledButtonFamily);
   protected
+    procedure WndProc(var Message: TMessage); override;
+    procedure TimerEvent(Sender: TObject);
+    /// <summary>Window the dialog is positioned relative to (popup parent,
+    /// else active form, else the application window)</summary>
+    function GetReferenceWnd: HWND; virtual;
+    procedure Notification(AComponent: TComponent; Operation: TOperation); override;
   	function GetScaleFactor: Single; virtual;
     class function CanUseAnimations: Boolean; virtual; abstract;
     function GetButtonsHeight: Integer; virtual;
@@ -193,63 +238,110 @@ type
     function GetDefaultButton(const ADefaultButton: TTaskDialogCommonButton): TStyledButton; virtual;
     property TaskDialog: TCustomTaskDialog read FTaskDialog;
   public
+    /// <summary>Converts a modal result to a task dialog common button</summary>
+    /// <param name="AModalResult">The modal result to convert</param>
+    /// <param name="ACommonButton">Output: the corresponding common button</param>
+    /// <returns>True if conversion was successful</returns>
     function ModalResultToCommonButton(const AModalResult: TModalResult;
       out ACommonButton: TTaskDialogCommonButton): Boolean;
+    /// <summary>Finds a button by its modal result value</summary>
+    /// <param name="AModalResult">The modal result to search for</param>
+    /// <returns>The TStyledButton with the specified modal result, or nil</returns>
     function FindButton(const AModalResult: TModalResult): TStyledButton;
+    /// <summary>Sets the font for all dialog elements</summary>
+    /// <param name="AFont">The font to apply</param>
     procedure SetDialogFont(const AFont: TFont); virtual;
+    /// <summary>Creates a new instance of the dialog form</summary>
+    /// <param name="AOwner">The component owner</param>
     constructor Create(AOwner: TComponent); override;
+    /// <summary>Destroys the dialog form instance</summary>
     destructor Destroy; override;
+    /// <summary>Sets the screen position of the dialog</summary>
+    /// <param name="X">X coordinate in screen pixels</param>
+    /// <param name="Y">Y coordinate in screen pixels</param>
+    procedure SetPosition(const X, Y: Integer); virtual;
+    /// <summary>Enables automatic button click after a delay</summary>
     property AutoClick: Boolean read FAutoClick write FAutoClick default False;
+    /// <summary>Delay in milliseconds before auto-clicking the default button</summary>
     property AutoClickDelay: Integer read FAutoClickDelay write FAutoClickDelay default DEFAULT_AUTOCLICK_DELAY;
+    /// <summary>Width of dialog buttons in pixels</summary>
     property ButtonsWidth: Integer read GetButtonsWidth write SetButtonsWidth;
+    /// <summary>Height of dialog buttons in pixels</summary>
     property ButtonsHeight: Integer read GetButtonsHeight write SetButtonsHeight;
+    /// <summary>Collection of custom buttons for the dialog</summary>
     property Buttons: TTaskDialogButtons read FButtons write SetButtons;
+    /// <summary>Collection of radio buttons for the dialog</summary>
     property RadioButtons: TTaskDialogButtons read FRadioButtons write SetRadioButtons;
+    /// <summary>Standard common buttons to display (Ok, Cancel, Yes, No, etc.)</summary>
     property CommonButtons: TTaskDialogCommonButtons read FCommonButtons write FCommonButtons default [tcbOk, tcbCancel];
+    /// <summary>The StyleFamily attribute for Dialog Buttons</summary>
+    property DialogBtnFamily: TStyledButtonFamily read GetDialogBtnFamily write SetDialogBtnFamily;
+    /// <summary>The default button that receives focus</summary>
     property DefaultButton: TTaskDialogCommonButton read FDefaultButton write FDefaultButton default TTaskDialogCommonButton.tcbOk;
+    /// <summary>Default button when using message dialog style</summary>
     property MessageDefaultButton: TMsgDlgBtn read FMessageDefaultButton write FMessageDefaultButton default TMsgDlgBtn.mbOK;
+    /// <summary>Caption for the expand/collapse button</summary>
     property ExpandButtonCaption: string read FExpandButtonCaption write SetExpandButtonCaption;
+    /// <summary>Returns True if the expandable content is currently shown</summary>
     property Expanded: Boolean read GetExpanded;
+    /// <summary>Additional text shown when dialog is expanded</summary>
     property ExpandedText: string read FExpandedText write SetExpandedText;
-    property Handle: HWND read FHandle;
+    /// <summary>Progress bar settings for the dialog</summary>
+    property ProgressBar: TTaskDialogProgressBar read FProgressBar write SetProgressBar;
 (*
-    property ProgressBar: TTaskDialogProgressBar read FProgressBar write FProgressBar;
     property URL: string read FURL;
 *)
+    /// <summary>Dialog behavior flags</summary>
     property Flags: TTaskDialogFlags read FFlags write SetFlags default [tfAllowDialogCancellation];
+    /// <summary>Main icon displayed in the dialog (tdiWarning, tdiError, tdiInformation, etc.)</summary>
     property MainIcon: TTaskDialogIcon read FMainIcon write SetMainIcon default tdiInformation;
+    /// <summary>Custom icon to display instead of standard icons</summary>
     property CustomMainIcon: TIcon read FCustomMainIcon write SetCustomMainIcon;
-    property MainIconSize: Integer read GetMainIconSize write SetMainIconSize default DEFAULT_MAIN_ICON_SIZE;
+    /// <summary>Size of the main icon in pixels</summary>
+    property MainIconSize: Integer read FMainIconSize write SetMainIconSize default DEFAULT_MAIN_ICON_SIZE;
+    /// <summary>Custom icon for the footer area</summary>
     property CustomFooterIcon: TIcon read FCustomFooterIcon write SetCustomFooterIcon;
+    /// <summary>Standard icon displayed in the footer</summary>
     property FooterIcon: TTaskDialogIcon read FFooterIcon write SetFooterIcon default tdiNone;
+    /// <summary>Text displayed in the footer area</summary>
     property FooterText: string read GetFooterText write SetFooterText;
+    /// <summary>Text for the verification checkbox</summary>
     property VerificationText: string read GetVerificationText write SetVerificationText;
+    /// <summary>Help context ID for F1 help</summary>
     property HelpContext: Integer read GetHelpContext write SetHelpContext default 0;
+    /// <summary>The currently selected radio button item</summary>
     property RadioButton: TTaskDialogRadioButtonItem read FRadioButton;
+    /// <summary>The main message text displayed in the dialog</summary>
     property TextMessage: string read GetText write SetText;
+    /// <summary>The title/instruction text displayed at the top</summary>
     property TitleMessage: string read GetTitle write SetTitle;
+    /// <summary>Timer event fired periodically while dialog is shown</summary>
     property OnTimer: TTaskDlgTimerEvent read FOnTimer write FOnTimer;
+    /// <summary>When True, loops the icon animation continuously (requires Skia4Delphi)</summary>
+    property AnimationLoop: Boolean read FAnimationLoop write FAnimationLoop;
+    /// <summary>When True, plays the icon animation in reverse (requires Skia4Delphi)</summary>
+    property AnimationInverse: Boolean read FAnimationInverse write FAnimationInverse;
   end;
 
+  /// <summary>Class reference type for TStyledTaskDialogForm descendants</summary>
   TStyledTaskDialogFormClass = class of TStyledTaskDialogForm;
 
-/// <summary>
-///  To activate or deactivate use of Custom Task Dialog
-/// </summary>
+/// <summary>Activates or deactivates use of styled task dialogs</summary>
+/// <param name="AActivate">True to use styled dialogs, False to use standard Windows dialogs</param>
 procedure UseStyledDialogForm(const AActivate: Boolean);
 
-/// <summary>
-///  Register the custom StyledTaskDialog passing the Form Class
-///  The Form must inherits from TStyledTaskDialogForm
-/// </summary>
-procedure RegisterTaskDialogFormClass(
-  AFormClass: TStyledTaskDialogFormClass);
+/// <summary>Registers a custom styled task dialog form class</summary>
+/// <param name="AFormClass">The form class to register (must inherit from TStyledTaskDialogForm)</param>
+/// <remarks>Use this to register custom dialog forms or animated dialog forms</remarks>
+procedure RegisterTaskDialogFormClass(AFormClass: TStyledTaskDialogFormClass);
 
-/// <summary>
-///  Unregister the custom StyledTaskDialog to use Standard Task Dialog
-/// </summary>
-procedure UnRegisterTaskDialogFormClass(
-  AFormClass: TStyledTaskDialogFormClass);
+/// <summary>Unregisters a previously registered task dialog form class</summary>
+/// <param name="AFormClass">The form class to unregister</param>
+procedure UnRegisterTaskDialogFormClass(AFormClass: TStyledTaskDialogFormClass);
+
+/// <summary>Returns True if an animated task dialog form is registered</summary>
+/// <returns>True if an animated form class (with Skia4Delphi support) is registered</returns>
+function AnimatedTaskDialogFormRegistered: Boolean;
 
 implementation
 
@@ -260,8 +352,12 @@ uses
   , Vcl.Themes
   , System.HelpIntfs
   , Winapi.ShellAPI
+  , Winapi.CommCtrl
+  , Winapi.MultiMon
   , Vcl.StyledCmpMessages
   , System.Typinfo
+  , Vcl.Clipbrd
+  , Vcl.Menus
   ;
 
 var
@@ -271,15 +367,24 @@ var
   _DlgButtonClasses: TButtonClasses;
   _DialogPosition: Vcl.Forms.TPosition;
 
+function AnimatedTaskDialogFormRegistered: Boolean;
+begin
+  Result := Assigned(_AnimatedTaskDialogFormClass);
+end;
+
 procedure UnRegisterTaskDialogFormClass(
   AFormClass: TStyledTaskDialogFormClass);
 begin
-  //Unregister handle
-  _DialogLauncher := nil;
   if AFormClass = _AnimatedTaskDialogFormClass then
     _AnimatedTaskDialogFormClass := nil;
   if AFormClass = _TaskDialogFormClass then
     _TaskDialogFormClass := nil;
+  //Drop the shared launcher only when no form class remains registered:
+  //unregistering one form (e.g. the animated one to fall back to the standard
+  //form) must not destroy the launcher the other form still needs.
+  if not Assigned(_AnimatedTaskDialogFormClass) and
+     not Assigned(_TaskDialogFormClass) then
+    _DialogLauncher := nil;
 end;
 
 procedure RegisterTaskDialogFormClass(
@@ -308,16 +413,21 @@ procedure TStyledTaskDialogForm.SetRadioButtons(const AValue: TTaskDialogButtons
 var
   I: Integer;
   LTaskDialogRadioButtonItem: TTaskDialogRadioButtonItem;
-  LRadioButton, LLastButton: TRadioButton;
+  LRadioButton, LLastButton, LFirstButton: TRadioButton;
   LHeight: Integer;
+  LDefaultAssigned: Boolean;
 begin
   LHeight := RadioGroupPanel.Height;
   FRadioButtons := AValue;
   LLastButton := nil;
+  LFirstButton := nil;
+  LDefaultAssigned := False;
   for I := 0 to FRadioButtons.Count -1 do
   begin
     LTaskDialogRadioButtonItem := FRadioButtons[I] as TTaskDialogRadioButtonItem;
     LRadioButton := TRadioButton.Create(Self);
+    if I = 0 then
+      LFirstButton := LRadioButton;
     LRadioButton.Tag := 100+I;
     LRadioButton.Caption := LTaskDialogRadioButtonItem.Caption;
     LRadioButton.Parent := RadioGroupPanel;
@@ -327,10 +437,19 @@ begin
       LRadioButton.Top := LLastButton.Top + LLastButton.Height;
     LRadioButton.OnClick := RadioButtonClick;
     if LTaskDialogRadioButtonItem.Default then
+    begin
       LRadioButton.Checked := True;
+      LDefaultAssigned := True;
+    end;
     RadioGroupPanel.Visible := True;
     RadioGroupPanel.Height := LHeight * (I+1);
     LLastButton := LRadioButton;
+  end;
+  if (FRadioButtons.Count > 0) then
+  begin
+    RadioGroupPanel.Height := RadioGroupPanel.Height + (LHeight div 3);
+    if not LDefaultAssigned then
+      LFirstButton.Checked := True;
   end;
 end;
 
@@ -385,9 +504,11 @@ end;
 
 procedure TStyledTaskDialogForm.SetButtonsWidth(const AValue: Integer);
 begin
-  if FButtonsHeight <> AValue then
+  //Write the width field: this setter must update FButtonsWidth (FButtonsHeight
+  //has its own setter).
+  if FButtonsWidth <> AValue then
   begin
-    FButtonsHeight := AValue;
+    FButtonsWidth := AValue;
     UpdateButtonsSize;
   end;
 end;
@@ -405,7 +526,9 @@ procedure TStyledTaskDialogForm.SetCustomFooterIcon(const AValue: TIcon);
 begin
   if FCustomFooterIcon <> AValue then
   begin
-    FCustomMainIcon := AValue;
+    //Write the footer icon field (not FCustomMainIcon) so the footer icon loads
+    //from the new value.
+    FCustomFooterIcon := AValue;
     LoadCustomFooterIcon(FCustomFooterIcon, FfooterIcon);
   end;
 end;
@@ -416,6 +539,9 @@ begin
   begin
     FFlags := AValue;
     FTaskDialog.Flags := AValue;
+    ProgressBarPanel.Visible := (tfShowProgressBar in Flags) or (tfShowMarqueeProgressBar in Flags);
+    if tfShowMarqueeProgressBar in Flags then
+      InternalProgressBar.Style := pbstMarquee;
   end;
 end;
 
@@ -430,11 +556,19 @@ end;
 
 procedure TStyledTaskDialogForm.SetMainIconSize(const AValue: Integer);
 begin
-  if AValue <> ImagePanel.Width then
-  begin
-    ImagePanel.Width := AValue;
-    IconContainer.Height := AValue;
-  end;
+  if AValue <> FMainIconSize then
+    FMainIconSize := AValue;
+end;
+
+procedure TStyledTaskDialogForm.SetProgressBar(
+  const AValue: TTaskDialogProgressBar);
+begin
+  FProgressBar := AValue;
+  InternalProgressBar.Min := FProgressBar.Min;
+  InternalProgressBar.Max := FProgressBar.Max;
+  InternalProgressBar.Position := FProgressBar.Position;
+  InternalProgressBar.MarqueeInterval := FProgressBar.MarqueeSpeed;
+  InternalProgressBar.State := FProgressBar.State;
 end;
 
 procedure TStyledTaskDialogForm.SetFooterIcon(const AValue: TTaskDialogIcon);
@@ -518,6 +652,14 @@ begin
   end;
 end;
 
+function TStyledTaskDialogForm.GetDialogBtnFamily: TStyledButtonFamily;
+begin
+  if FDialogBtnFamily <> '' then
+    Result := FDialogBtnFamily
+  else
+    Result := DEFAULT_CLASSIC_FAMILY;
+end;
+
 function TStyledTaskDialogForm.GetExpanded: Boolean;
 begin
   Result := FTaskDialog.Expanded;
@@ -538,6 +680,16 @@ begin
       LButton.AutoClick := FAutoClick;
       LButton.AutoClickDelay := FAutoClickDelay;
     end;
+  end;
+end;
+
+procedure TStyledTaskDialogForm.SetDialogBtnFamily(
+  const AValue: TStyledButtonFamily);
+begin
+  if (AValue <> '') and (AValue <> FDialogBtnFamily) then
+  begin
+    FDialogBtnFamily := AValue;
+    UpdateButtonsStyle;
   end;
 end;
 
@@ -566,8 +718,10 @@ procedure TStyledTaskDialogForm.AdjustHeight;
 var
   LTitleHeight: Integer;
   LRadioGroupPanelHeight: Integer;
+  LImagePanelHeight: Integer;
   LCommandLinksPanelHeight: Integer;
   LVerificationPanelHeight: Integer;
+  LProgressBarPanelHeight: Integer;
   LExpandedPanelHeight: Integer;
   LButtonsPanelHeight: Integer;
   LFooterPanelHeight: Integer;
@@ -576,15 +730,19 @@ var
 begin
   LMargins := CenterPanel.Margins.Top * 2;
   DefaultDialogSize(LWidth, LHeight, LImageSize);
+  LImagePanelHeight := LImageSize +
+    IconContainer.Margins.Top + IconContainer.Margins.Bottom +
+    ImagePanel.Margins.Top + ImagePanel.Margins.Bottom;
 
   //Height of Buttons
   if FButtonsHeight <> DEFAULT_STYLEDDIALOG_BUTTONSHEIGHT then
-    ButtonsPanel.Height := FButtonsHeight + LMargins + 2;
+    ButtonsPanel.Height := FButtonsHeight;
 
   //Calculate Height of Form, based on Visible Components
   if TitleLabel.Caption <> '' then
   begin
-    LTitleHeight := TitleLabel.Height + LMargins;
+    LTitleHeight := TitleLabel.Height +
+      TitleLabel.Margins.Top + TitleLabel.Margins.Bottom;
   end
   else
   begin
@@ -593,36 +751,47 @@ begin
   end;
 
   if RadioGroupPanel.Visible then
-    LRadioGroupPanelHeight := RadioGroupPanel.Height + LMargins
+    LRadioGroupPanelHeight := RadioGroupPanel.Height
   else
     LRadioGroupPanelHeight := 0;
 
   if FooterPanel.Visible then
-    LFooterPanelHeight := FooterPanel.Height + LMargins
+    LFooterPanelHeight := FooterPanel.Height
   else
     LFooterPanelHeight := 0;
 
   if VerificationPanel.Visible then
-    LVerificationPanelHeight := VerificationPanel.Height + LMargins
+    LVerificationPanelHeight := VerificationPanel.Height
   else
     LVerificationPanelHeight := 0;
 
+  if ProgressBarPanel.Visible then
+    LProgressBarPanelHeight := ProgressBarPanel.Height
+  else
+    LProgressBarPanelHeight := 0;
+
   if ExpandedPanel.Visible then
-    LExpandedPanelHeight := ExpandedPanel.Height + LMargins
+    LExpandedPanelHeight := ExpandedPanel.Height
   else
     LExpandedPanelHeight := 0;
 
   if CommandLinksPanel.Visible then
-    LCommandLinksPanelHeight := CommandLinksPanel.Height + (LMargins * 2)
+    LCommandLinksPanelHeight := CommandLinksPanel.Height + LMargins
   else
     LCommandLinksPanelHeight := 0;
 
   if ButtonsPanel.Visible then
-    LButtonsPanelHeight := ButtonsPanel.Height + LMargins
+    LButtonsPanelHeight := ButtonsPanel.Height
   else
     LButtonsPanelHeight := 0;
 
-  LMessageHeight := AutoSizeLabel.Height + LMargins;
+  LMessageHeight := AutoSizeLabel.Height +
+    AutoSizeLabel.Margins.Top + AutoSizeLabel.Margins.Bottom +
+    MessageScrollBox.Margins.Top + MessageScrollBox.Margins.Bottom +
+    LMargins;
+
+  LMessageHeight := Max(LMessageHeight,
+    LImagePanelHeight - LTitleHeight);
 
   //Actual Height based on size of Message
   LCalcHeight :=
@@ -632,27 +801,31 @@ begin
     LRadioGroupPanelHeight +
     LFooterPanelHeight +
     LVerificationPanelHeight +
+    LProgressBarPanelHeight +
     LButtonsPanelHeight +
     LCommandLinksPanelHeight;
 
   //Minumum Height based on size of Image
-  LMinHeight :=
+  LMinHeight := Max(
+    LImagePanelHeight +
+    LButtonsPanelHeight
+    ,
     LTitleHeight +
-    LImageSize + LMargins +
     LExpandedPanelHeight +
     LRadioGroupPanelHeight +
     LFooterPanelHeight +
     LVerificationPanelHeight +
+    LProgressBarPanelHeight +
     LButtonsPanelHeight +
-    LCommandLinksPanelHeight;
+    LCommandLinksPanelHeight);
 
-  Constraints.MinHeight := LMinHeight +
-    Height - ClientHeight;
-
-  LHeight := Min(Self.Monitor.Height - 100,
+  LHeight := Min(Self.Monitor.Height - Round(150 * GetScaleFactor),
     Max(LCalcHeight, LMinHeight));
 
   ClientHeight := LHeight;
+
+  Constraints.MinHeight := LMinHeight +
+    Height - ClientHeight;
 
   TextLabel.Font.Assign(AutoSizeLabel.Font);
   TextLabel.Height := LMessageHeight;
@@ -668,7 +841,11 @@ begin
     TextLabel.Align := alClient;
   end
   else
+  begin
     MessageScrollBox.VertScrollBar.Visible := False;
+    TextLabel.Margins.Top := Max(0,
+      (CenterPanel.Height - AutoSizeLabel.Height - LTitleHeight) div 2);
+  end;
 
   AutoSizeLabel.Visible := False;
 end;
@@ -681,6 +858,8 @@ var
   LImageSize, LWidth, LHeight: Integer;
 begin
   DefaultDialogSize(LWidth, LHeight, LImageSize);
+
+  ImagePanel.Width := Round(LImageSize * GetScaleFactor);
   LMargins := ButtonsPanel.Margins.Left;
   LFormWidth := LMargins;
   if ButtonsPanel.Visible then
@@ -817,6 +996,7 @@ begin
     Inc(LMargins, ImagePanel.Width);
   RadioGroupPanel.Margins.Left := LMargins;
   CommandLinksPanel.Margins.Left := LMargins;
+  ProgressBarPanel.Margins.Left := LMargins;
 end;
 
 function TStyledTaskDialogForm.FindButton(const AModalResult: TModalResult): TStyledButton;
@@ -910,10 +1090,46 @@ begin
   end;
 end;
 
+procedure TStyledTaskDialogForm.UpdateButtonsStyle;
+var
+  I: Integer;
+  LTaskDialogButtonItem: TTaskDialogBaseButtonItem;
+  LStyledButton: TStyledButton;
+begin
+  for I := FButtons.Count -1 downto 0 do
+  begin
+    LTaskDialogButtonItem := FButtons[I];
+    if Assigned(LTaskDialogButtonItem) then
+    begin
+      case LTaskDialogButtonItem.ModalResult of
+        mrYes: LStyledButton := YesButton;
+        mrNo: LStyledButton := NoButton;
+        mrOk: LStyledButton := OKButton;
+        mrCancel: LStyledButton := CancelButton;
+        mrAbort: LStyledButton := AbortButton;
+        mrRetry: LStyledButton := RetryButton;
+        mrIgnore: LStyledButton := IgnoreButton;
+        mrAll: LStyledButton := AllButton;
+        mrNoToAll: LStyledButton := NoToAllButton;
+        mrYesToAll: LStyledButton := YesToAllButton;
+        mrClose: LStyledButton := CloseButton;
+        mrHelp: LStyledButton := HelpButton;
+      else
+        begin
+          LStyledButton := nil;
+        end;
+      end;
+      if Assigned(LStyledButton) then
+      begin
+        LStyledButton.SetButtonStyle(FDialogBtnFamily, LTaskDialogButtonItem.ModalResult);
+      end;
+    end;
+  end;
+end;
+
 function TStyledTaskDialogForm.UsingCommandLinks: Boolean;
 begin
-  Result := (tfUseCommandLinks in FTaskDialog.Flags) and
-    (FTaskDialog.Title <> '');
+  Result := (tfUseCommandLinks in FTaskDialog.Flags);
 end;
 
 procedure TStyledTaskDialogForm.AddCustomButtons(const AButtons: TTaskDialogButtons);
@@ -951,6 +1167,9 @@ begin
       LStyledButton := TStyledButton.Create(Self);
       LStyledButton.OnClick := ButtonClick;
       LStyledButton.SetButtonStyle(FDialogBtnFamily, LButtonItem.ModalResult);
+      LStyledButton.StyleDrawType := FDialogBtnDrawType;
+      LStyledButton.StyleRadius := FDialogBtnRadius;
+      LStyledButton.StyleRoundedCorners := FDialogBtnRoundedCorners;
     end
     else
     begin
@@ -973,12 +1192,6 @@ begin
       LStyledButton.CommandLinkHint := LButtonItem.CommandLinkHint;
       LStyledButton.Height := LCommandLinkHeight - 2;
       CommandLinksPanel.Height := CommandLinksPanel.Height + LCommandLinkHeight;
-      if LButtonItem.Default then
-      begin
-        LStyledButton.Default := True;
-        Self.ActiveControl := LStyledButton;
-        FFocusedButton := LStyledButton;
-      end;
       if Assigned(LLastButton) then
       begin
         LStyledButton.TabOrder := LLastButton.TabOrder +1;
@@ -1009,6 +1222,13 @@ begin
       end;
       LLastButton := LStyledButton;
     end;
+    if Assigned(LButtonItem) and (LButtonItem.Default) and
+      Assigned(LStyledButton) and (LStyledButton.Visible) then
+    begin
+      LStyledButton.Default := True;
+      Self.ActiveControl := LStyledButton;
+      FFocusedButton := LStyledButton;
+    end;
   end;
   //Set Focus to Button assigning ActiveControl
   if (Self.ActiveControl = nil) and Assigned(LLastButton) and (LLastButton.CanFocus) then
@@ -1034,8 +1254,6 @@ var
     begin
       AControl.Top := LTop+1;
       Inc(LTop, AControl.Height);
-//      if AControl.AlignWithMargins then
-//        Inc(LTop, AControl.Margins.Top + AControl.Margins.Bottom);
     end;
   end;
 
@@ -1068,7 +1286,11 @@ begin
   FTaskDialogExpanded := FTaskDialog.OnExpanded;
   FTaskDialog.OnExpanded := TaskDialogExpanded;
 
-  Caption := FTaskDialog.Caption;
+  if FTaskDialog.Caption <> '' then
+    Caption := FTaskDialog.Caption
+  else
+    Caption := ExtractFileName(Application.ExeName);
+
   HelpContext := FTaskDialog.HelpContext;
   CommonButtons := FTaskDialog.CommonButtons;
   DefaultButton := FTaskDialog.DefaultButton;
@@ -1084,27 +1306,25 @@ begin
     ButtonsHeight := LStyledDialog.ButtonsHeight;
   end;
   Buttons := FTaskDialog.Buttons;
-  //RadioButtons := FTaskDialog.RadioButtons;
+  RadioButtons := FTaskDialog.RadioButtons;
   AddCustomButtons(FTaskDialog.Buttons);
 
   UpdateButtonsVisibility;
   UpdateButtonsSize;
 
-  if FDialogBtnFamily <> '' then
-    InitDlgButtonsWithFamily(FDialogBtnFamily);
+  InitDlgButtonsWithFamily(DialogBtnFamily);
 
   MainIcon := FTaskDialog.MainIcon;
   CustomMainIcon := FTaskDialog.CustomMainIcon;
-  FFlags := FTaskDialog.Flags;
+  Flags := FTaskDialog.Flags;
   ExpandButtonCaption := FTaskDialog.ExpandButtonCaption;
   ExpandedText := FTaskDialog.ExpandedText;
-  FHandle := FTaskDialog.Handle;
   CustomFooterIcon := FTaskDialog.CustomFooterIcon;
   FooterIcon := FTaskDialog.FooterIcon;
   FooterText := FTaskDialog.FooterText;
   FRadioButton := FTaskDialog.RadioButton;
+  ProgressBar := FTaskDialog.ProgressBar;
 (*
-    property ProgressBar: TTaskDialogProgressBar read FProgressBar write FProgressBar;
     property URL: string read FURL;
 *)
   TextMessage := FTaskDialog.Text;
@@ -1160,6 +1380,21 @@ begin
     ShellExecute(Self.Handle, 'open' , PChar(Link), nil, nil, SW_SHOW );
 end;
 
+procedure TStyledTaskDialogForm.TimerEvent(Sender: TObject);
+var
+  LReset: Boolean;
+begin
+  Inc(FTickCount, FTimer.Interval);
+  LReset := False;
+  //OnTimer and tfCallbackTimer are independent: FOnTimer may be nil, so guard it
+  //(otherwise [tfShowProgressBar, tfCallbackTimer] without a handler AVs ~200ms
+  //after the dialog opens).
+  if Assigned(FOnTimer) then
+    FOnTimer(Sender, FTickCount, LReset);
+  if LReset then
+    FTickCount := 0;
+end;
+
 procedure TStyledTaskDialogForm.VerificationCheckBoxClick(Sender: TObject);
 begin
   if VerificationCheckBox.Checked then
@@ -1168,6 +1403,15 @@ begin
     FTaskDialog.Flags := FTaskDialog.Flags - [tfVerificationFlagChecked];
   if Assigned(FTaskDialog.OnVerificationClicked) then
     FTaskDialog.OnVerificationClicked(FTaskDialog);
+end;
+
+procedure TStyledTaskDialogForm.WndProc(var Message: TMessage);
+begin
+  inherited;
+  if Message.Msg = TDM_SET_PROGRESS_BAR_POS then
+  begin
+    InternalProgressBar.Position := Message.WParam;
+  end;
 end;
 
 procedure TStyledTaskDialogForm.ButtonClick(Sender: TObject);
@@ -1185,6 +1429,9 @@ begin
   FCommonButtons := [tcbOk, tcbCancel];
   FDefaultButton := tcbOk;
   FDialogBtnFamily := DEFAULT_CLASSIC_FAMILY;
+  FDialogBtnDrawType := btRoundRect;
+  FDialogBtnRadius := DEFAULT_RADIUS;
+  FDialogBtnRoundedCorners := ALL_ROUNDED_CORNERS;
 end;
 
 procedure TStyledTaskDialogForm.DefaultDialogSize(out AClientWidth, AClientHeight, AImageSize: Integer);
@@ -1194,8 +1441,8 @@ begin
   LScaleFactor := GetScaleFactor;
   //Values for 96 DPI
   AClientWidth := Round(DEFAULT_STYLEDDIALOG_MIN_WIDTH * LScaleFactor);
-  AClientHeight := Round(DEFAULT_STYLEDDIALOG_MIN_HEIGHT * LScaleFactor);
-  AImageSize := Round(DEFAULT_MAIN_ICON_SIZE * LScaleFactor);
+  AClientHeight := Round(DEFAULT_STYLEDDIALOG_MIN_HEIGHT);
+  AImageSize := Round(MainIconSize * LScaleFactor);
 end;
 
 destructor TStyledTaskDialogForm.Destroy;
@@ -1223,7 +1470,7 @@ end;
 
 procedure TStyledTaskDialogForm.FormCreate(Sender: TObject);
 begin
-  ;
+  TextLabel.Caption := '';
 end;
 
 procedure TStyledTaskDialogForm.FormDestroy(Sender: TObject);
@@ -1235,6 +1482,7 @@ begin
   FCustomIcons[mtConfirmation].Free;
   FCustomIcons[mtCustom].Free;
   FTaskDialog.OnExpanded := FTaskDialogExpanded;
+  FTimer.Free;
 end;
 
 function TStyledTaskDialogForm.GetFocusedButton: TStyledButton;
@@ -1257,7 +1505,13 @@ procedure TStyledTaskDialogForm.FormKeyDown(Sender: TObject; var Key: Word; Shif
 var
   LButton: TStyledButton;
 begin
-  if Key = VK_ESCAPE then
+  //Ctrl+C / Ctrl+Ins: copy the dialog text to the clipboard, like the system dialogs
+  if (ssCtrl in Shift) and ((Key = Ord('C')) or (Key = VK_INSERT)) then
+  begin
+    CopyContentToClipboard;
+    Key := 0;
+  end
+  else if Key = VK_ESCAPE then
     CancelButton.Click
   else if Key = VK_RETURN then
   begin
@@ -1269,11 +1523,94 @@ begin
   end;
 end;
 
+procedure TStyledTaskDialogForm.CollectOrderedButtons(const AButtons: TList);
+var
+  I, J: Integer;
+  LBtnI, LBtnJ: TStyledButton;
+
+  procedure CollectFrom(const APanel: TWinControl);
+  var
+    K: Integer;
+  begin
+    if (not Assigned(APanel)) or (not APanel.Visible) then
+      Exit;
+    for K := 0 to APanel.ControlCount - 1 do
+      if (APanel.Controls[K] is TStyledButton) and APanel.Controls[K].Visible then
+        AButtons.Add(APanel.Controls[K]);
+  end;
+
+begin
+  CollectFrom(ButtonsPanel);
+  CollectFrom(CommandLinksPanel);
+  //Order the buttons as they appear on screen (top-to-bottom, left-to-right)
+  for I := 0 to AButtons.Count - 2 do
+    for J := I + 1 to AButtons.Count - 1 do
+    begin
+      LBtnI := TStyledButton(AButtons[I]);
+      LBtnJ := TStyledButton(AButtons[J]);
+      if (LBtnJ.Top < LBtnI.Top) or
+         ((LBtnJ.Top = LBtnI.Top) and (LBtnJ.Left < LBtnI.Left)) then
+        AButtons.Exchange(I, J);
+    end;
+end;
+
+procedure TStyledTaskDialogForm.CopyContentToClipboard;
+var
+  LText: TStringBuilder;
+  LButtons: TList;
+  I: Integer;
+
+  procedure AddSection(const AHeader, AValue: string);
+  begin
+    if AValue = '' then
+      Exit;
+    if LText.Length > 0 then
+      LText.AppendLine;
+    LText.AppendLine('[' + AHeader + ']');
+    LText.AppendLine(AValue);
+  end;
+
+begin
+  //Copy the content in the native TaskDialog layout: [Section] headers,
+  //one [Caption] per button.
+  LText := TStringBuilder.Create;
+  try
+    AddSection('Window Title', Caption);
+    AddSection('Main Instruction', TitleLabel.Caption);
+    AddSection('Content', AutoSizeLabel.Caption);
+    if Assigned(FTaskDialog) then
+      AddSection('Expanded Information', FTaskDialog.ExpandedText);
+    if FooterPanel.Visible then
+      AddSection('Footer', ClearHRefs(FooterTextLabel.Caption));
+    if VerificationPanel.Visible then
+      AddSection('Verification Text', VerificationCheckBox.Caption);
+    LButtons := TList.Create;
+    try
+      CollectOrderedButtons(LButtons);
+      if LButtons.Count > 0 then
+      begin
+        if LText.Length > 0 then
+          LText.AppendLine;
+        for I := 0 to LButtons.Count - 1 do
+          LText.AppendLine('[' + StripHotkey(TStyledButton(LButtons[I]).Caption) + ']');
+      end;
+    finally
+      LButtons.Free;
+    end;
+    Clipboard.AsText := LText.ToString;
+  finally
+    LText.Free;
+  end;
+end;
+
 procedure TStyledTaskDialogForm.PlayMessageDlgSound;
 const
-  Sounds: array [TMsgDlgType] of integer = (
-    MB_ICONEXCLAMATION, MB_ICONHAND, MB_OK,
-    MB_ICONQUESTION, MB_ICONASTERISK);
+  Sounds: array[TMsgDlgType] of Integer = (
+    MB_ICONEXCLAMATION, // mtWarning
+    MB_ICONHAND,        // mtError
+    MB_ICONASTERISK,    // mtInformation
+    MB_ICONASTERISK,    // mtConfirmation: MB_ICONQUESTION because is muted on Vista+
+    MB_OK);             // mtCustom
 begin
   MessageBeep(Sounds[FDialogType]);
 end;
@@ -1293,6 +1630,12 @@ procedure TStyledTaskDialogForm.FormShow(Sender: TObject);
 begin
   Screen.Cursor := crHourGlass;
   try
+    if FTaskDialog is TStyledTaskDialog then
+    begin
+      TStyledTaskDialog(FTaskDialog).Handle := Self.Handle;
+      //Assign Size of Main Icon
+      MainIconSize := TStyledTaskDialog(FTaskDialog).MainIconSize;
+    end;
     AdjustButtonsCaption;
     ShowDialogForm;
     AdjustWidth;
@@ -1301,7 +1644,9 @@ begin
     if AutoSizeLabel.Height > Self.Monitor.Height then
     begin
       AutoSizeLabel.AutoSize := False;
-      Width := Round(Self.Monitor.Height - 100 * GetScaleFactor);
+      //Widen the form (using the monitor width, not its height) so a very long
+      //message wraps and becomes shorter.
+      Width := Round(Self.Monitor.Width - 100 * GetScaleFactor);
       AutoSizeLabel.AutoSize := True;
     end;
 
@@ -1314,11 +1659,23 @@ begin
     PlayMessageDlgSound;
     FocusDefaultButton;
     VerificationCheckBox.Checked := tfVerificationFlagChecked in TaskDialog.Flags;
+    //Call event handler OnDialogCreated
     if Assigned(FTaskDialog.OnDialogCreated) then
       FTaskDialog.OnDialogCreated(FTaskDialog);
     if (FTaskDialog is TStyledTaskDialog) and
       Assigned(TStyledTaskDialog(FTaskDialog).OnDialogShow) then
       TStyledTaskDialog(FTaskDialog).OnDialogShow(Self);
+
+    //Start Timer for ProgressBar
+    if ProgressBarPanel.Visible and (tfCallbackTimer in FFlags) then
+    begin
+      FTimer := TTimer.Create(Self);
+      FTimer.Interval := 200;
+      FTimer.OnTimer := TimerEvent;
+      FTickCount := 0;
+      FTimer.Enabled := True;
+    end;
+    CenterOverReferenceForm;
   finally
     Screen.Cursor := crDefault;
   end;
@@ -1339,11 +1696,6 @@ procedure TStyledTaskDialogForm.GetIconNameAndIndex(
 begin
   AImageIndex := TaskDialogIconToImageIndex(ATaskDialogIcon);
   AImageName := TaskDialogIconToImageName(ATaskDialogIcon);
-end;
-
-function TStyledTaskDialogForm.GetMainIconSize: Integer;
-begin
-  Result := ImagePanel.Width;
 end;
 
 function TStyledTaskDialogForm.GetScaleFactor: Single;
@@ -1390,7 +1742,16 @@ end;
 
 procedure TStyledTaskDialogForm.Loaded;
 begin
-  Position := _DialogPosition;
+  //The VCL centers poScreenCenter/poOwnerFormCenter after OnShow, on the monitor of
+  //the popup parent or over the Owner: here the popup parent is the main form and
+  //the owner is Application, so the position is resolved by CenterOverReferenceForm
+  //(called from FormShow, against the form that launched the dialog). Position is
+  //set while the window does not exist yet: changing it later recreates the window.
+  FDesiredPosition := _DialogPosition;
+  if _DialogPosition in [poScreenCenter, poOwnerFormCenter] then
+    Position := poDesigned
+  else
+    Position := _DialogPosition;
   TextLabel.Align := alTop;
   inherited;
 end;
@@ -1417,7 +1778,12 @@ procedure TStyledTaskDialogForm.InitDlgButtonsWithFamily(const AFamily: TStyledB
   procedure UpdateButtonStyle(const AButton: TStyledButton);
   begin
     if AButton.Visible then
+    begin
       AButton.SetButtonStyle(AFamily, AButton.ModalResult);
+      AButton.StyleDrawType := FDialogBtnDrawType;
+      AButton.StyleRadius := FDialogBtnRadius;
+      AButton.StyleRoundedCorners := FDialogBtnRoundedCorners;
+    end;
   end;
 
 begin
@@ -1435,6 +1801,115 @@ begin
   UpdateButtonStyle(CloseButton);
 end;
 
+procedure TStyledTaskDialogForm.SetReferenceForm(const AValue: TCustomForm);
+begin
+  if FReferenceForm <> AValue then
+  begin
+    if Assigned(FReferenceForm) then
+      FReferenceForm.RemoveFreeNotification(Self);
+    FReferenceForm := AValue;
+    if Assigned(FReferenceForm) then
+      FReferenceForm.FreeNotification(Self);
+  end;
+end;
+
+procedure TStyledTaskDialogForm.Notification(AComponent: TComponent;
+  Operation: TOperation);
+begin
+  inherited;
+  //The form that launched the dialog can be destroyed while the dialog is modal
+  if (Operation = opRemove) and (AComponent = FReferenceForm) then
+    FReferenceForm := nil;
+end;
+
+procedure TStyledTaskDialogForm.CenterOverReferenceForm;
+var
+  LRect: TRect;
+  LCenterForm: TCustomForm;
+  LMonitor: TMonitor;
+  LLeft, LTop: Integer;
+begin
+  //Only for the positions replaced in Loaded (Position = poDesigned): an explicit
+  //position (SetPosition, poDefault) is left alone.
+  if (Position <> poDesigned) or
+    not (FDesiredPosition in [poScreenCenter, poOwnerFormCenter]) then
+    Exit;
+  //Form the dialog is centered on: the one that launched it, else the main form
+  LCenterForm := FReferenceForm;
+  if not Assigned(LCenterForm) or not LCenterForm.HandleAllocated then
+    LCenterForm := Application.MainForm;
+  if Assigned(LCenterForm) and not LCenterForm.HandleAllocated then
+    LCenterForm := nil;
+  if Assigned(LCenterForm) then
+    LMonitor := Screen.MonitorFromWindow(LCenterForm.Handle)
+  else
+    LMonitor := Monitor;
+  if (FDesiredPosition = poOwnerFormCenter) and Assigned(LCenterForm) then
+    //centered over that form (as the native task dialog with the position flag)
+    LRect := LCenterForm.BoundsRect
+  else if Assigned(LMonitor) then
+    //centered on the monitor of that form (as the native task dialog without it)
+    LRect := LMonitor.WorkareaRect
+  else
+    Exit;
+  LLeft := LRect.Left + ((LRect.Right - LRect.Left) - Width) div 2;
+  LTop := LRect.Top + ((LRect.Bottom - LRect.Top) - Height) div 2;
+  if Assigned(LMonitor) then
+  begin
+    if LLeft + Width > LMonitor.WorkareaRect.Right then
+      LLeft := LMonitor.WorkareaRect.Right - Width;
+    if LTop + Height > LMonitor.WorkareaRect.Bottom then
+      LTop := LMonitor.WorkareaRect.Bottom - Height;
+    if LLeft < LMonitor.WorkareaRect.Left then
+      LLeft := LMonitor.WorkareaRect.Left;
+    if LTop < LMonitor.WorkareaRect.Top then
+      LTop := LMonitor.WorkareaRect.Top;
+  end;
+  SetBounds(LLeft, LTop, Width, Height);
+end;
+
+function TStyledTaskDialogForm.GetReferenceWnd: HWND;
+begin
+  //Prefer the popup parent (the form that launched the dialog), then the active
+  //form, then the application window, so positioning has a real reference window.
+  if Assigned(FReferenceForm) and FReferenceForm.HandleAllocated then
+    Result := FReferenceForm.Handle
+  else if Assigned(PopupParent) and PopupParent.HandleAllocated then
+    Result := PopupParent.Handle
+  else if Assigned(Screen.ActiveForm) and Screen.ActiveForm.HandleAllocated then
+    Result := Screen.ActiveForm.Handle
+  else
+    Result := Application.Handle;
+end;
+
+procedure TStyledTaskDialogForm.SetPosition(const X, Y: Integer);
+var
+  Rect: TRect;
+  LX, LY: Integer;
+  LHandle: HMONITOR;
+  LMonitorInfo: TMonitorInfo;
+begin
+  LX := X;
+  LY := Y;
+  //Resolve the monitor from the reference window (the caller's form), not from
+  //the dialog's own window: the latter defaults to the primary monitor, which
+  //would place explicit coordinates on the wrong monitor on a multi-monitor desktop.
+  LHandle := MonitorFromWindow(GetReferenceWnd, MONITOR_DEFAULTTONEAREST);
+  LMonitorInfo.cbSize := SizeOf(LMonitorInfo);
+  if GetMonitorInfo(LHandle, {$IFNDEF CLR}@{$ENDIF}LMonitorInfo) then
+    with LMonitorInfo do
+    begin
+      GetWindowRect(Self.Handle, Rect);
+      if LX < 0 then
+        LX := ((rcWork.Right - rcWork.Left) - (Rect.Right - Rect.Left)) div 2;
+      if LY < 0 then
+        LY := ((rcWork.Bottom - rcWork.Top) - (Rect.Bottom - Rect.Top)) div 2;
+      Inc(LX, rcWork.Left);
+      Inc(LY, rcWork.Top);
+      SetWindowPos(Handle, 0, LX, LY, 0, 0, SWP_NOACTIVATE or SWP_NOSIZE or SWP_NOZORDER);
+    end;
+end;
+
 { TTaskDialogLauncherHandler }
 
 function TTaskDialogLauncherHandler.DoExecute(ParentWnd: HWND;
@@ -1443,8 +1918,9 @@ function TTaskDialogLauncherHandler.DoExecute(ParentWnd: HWND;
   const ADialogBtnFamily: TStyledButtonFamily): Boolean;
 var
   LForm: TStyledTaskDialogForm;
+  LParentControl: TControl;
+  LOwnerForm: TForm;
   LFont: TFont;
-  LDlgBtnFamily: TStyledButtonFamily;
 begin
   //At least OK Button
   if (ATaskDialog.Buttons.Count = 0) and (ATaskDialog.CommonButtons = []) then
@@ -1454,32 +1930,78 @@ begin
     _DialogPosition := poOwnerFormCenter
   else
     _DialogPosition := poScreenCenter;
+
+  LOwnerForm := nil;
+  if ParentWnd <> 0 then
+  begin
+    LParentControl := FindControl(ParentWnd);
+    while Assigned(LParentControl) do
+    begin
+      if LParentControl is TForm then
+        LOwnerForm := TForm(LParentControl);
+      LParentControl := LParentControl.Parent;
+    end;
+  end;
+  //Fall back to the active form, then the main form, so poOwnerFormCenter
+  //(tfPositionRelativeToWindow) and multi-monitor centering resolve to the form
+  //the dialog was launched from rather than defaulting to the primary monitor.
+  if not Assigned(LOwnerForm) then
+    LOwnerForm := Screen.ActiveForm;
+  if not Assigned(LOwnerForm) then
+    LOwnerForm := Application.MainForm;
+
   if ATaskDialog.UseAnimations then
   begin
-    if not Assigned(_AnimatedTaskDialogFormClass) then
+    if not AnimatedTaskDialogFormRegistered then
       raise EStyledTaskDialogException.CreateFmt(
         ERR_DIALOG_FORM_NOT_REGISTERED,
-        ['Skia.Vcl.StyledTaskDialogAnimatedUnit.pas'])
+        ['Skia.Vcl.StyledTaskDialogAnimatedUnit'])
     else
-      LForm := _AnimatedTaskDialogFormClass.Create(nil)
+    begin
+      LForm := _AnimatedTaskDialogFormClass.Create(Application);
+      TStyledTaskDialogForm(LForm).AnimationLoop := ATaskDialog.UseAnimationLoop;
+      TStyledTaskDialogForm(LForm).AnimationInverse := ATaskDialog.UseAnimationInverse;
+    end;
   end
   else
-    LForm := _TaskDialogFormClass.Create(nil);
+    LForm := _TaskDialogFormClass.Create(Application);
   try
+    //The dialog must not depend on the form that launched it: if that form is
+    //destroyed while the dialog is modal, a dialog owned by it (Delphi owner) or
+    //popup-parented to it (Win32 owner window) is destroyed with it, and the Free
+    //below then freed it a second time. Delphi owner: Application. Popup parent:
+    //the main form, when it is alive. The launching form is kept only as a
+    //reference for the position (with a free notification).
+    if Assigned(Application.MainForm) and
+      not (csDestroying in Application.MainForm.ComponentState) then
+    begin
+      LForm.PopupMode := pmExplicit;
+      LForm.PopupParent := Application.MainForm;
+    end
+    else
+      LForm.PopupParent := nil;
+    LForm.SetReferenceForm(LOwnerForm);
+    //Call event handler OnDialogConstructed
     if Assigned(ATaskDialog.OnDialogConstructed) then
       ATaskDialog.OnDialogConstructed(ATaskDialog);
 
-    //Assign all events of TaskDialog
-    LForm.OnTimer := ATaskDialog.OnTimer;
+    if ATaskDialog.IsCustomPosition then
+    begin
+      LForm.Position := poDefault;
+      LForm.SetPosition(ATaskDialog.Position.X, ATaskDialog.Position.Y);
+    end;
 
     //Assign called TaskDialog component
     LForm.FTaskDialog := ATaskDialog;
 
-    //Assign Size of Main Icon
-    LForm.MainIconSize := ATaskDialog.MainIconSize;
-
+    //Assign all events of TaskDialog
+    LForm.OnTimer := ATaskDialog.OnTimer;
     LForm.FDialogType := ADialogType;
-    LForm.FDialogBtnFamily := ADialogBtnFamily;
+    if ADialogBtnFamily <> '' then
+      LForm.FDialogBtnFamily := ADialogBtnFamily;
+    LForm.FDialogBtnDrawType := ATaskDialog.DialogButtonsDrawType;
+    LForm.FDialogBtnRadius := ATaskDialog.DialogButtonsRadius;
+    LForm.FDialogBtnRoundedCorners := ATaskDialog.DialogButtonsRoundedCorners;
     LForm.FButtonsWidth := ATaskDialog.ButtonsWidth;
     LForm.FButtonsHeight := ATaskDialog.ButtonsHeight;
     LForm.FAutoClickDelay := ATaskDialog.AutoClickDelay;
@@ -1487,7 +2009,9 @@ begin
     LFont := GetDialogFont;
     LForm.AlphaBlendValue := ATaskDialog.AlphaBlendValue;
     LForm.AlphaBlend := LForm.AlphaBlendValue <> DEFAULT_STYLEDDIALOG_ALPHABLEND;
-    LDlgBtnFamily := GetDialogBtnFamily;
+    //The dialog button family is now resolved in TStyledTaskDialog.DoExecute and
+    //passed as ADialogBtnFamily (assigned to LForm.FDialogBtnFamily above), so the
+    //old dead `LDlgBtnFamily := GetDialogBtnFamily` has been removed.
     if Assigned(LFont) then
       LForm.SetDialogFont(LFont)
     else
@@ -1499,15 +2023,14 @@ begin
     ATaskDialog.ModalResult := LForm.ModalResult;
     ATaskDialog.Button := TTaskDialogButtonItem(ATaskDialog.Buttons.FindButton(ATaskDialog.ModalResult));
     //ATaskDialog.RadioButton := TTaskDialogRadioButtonItem(ATaskDialog.RadioButtons.FindButton(LRadioButton));
-(*
-    if LVerificationChecked then
-      Include(FFlags, tfVerificationFlagChecked)
-    else
-      Exclude(FFlags, tfVerificationFlagChecked);
-*)
     Result := True;
   finally
     LForm.Free;
+    //Clear the HWND poked into TCommonDialog.FHandle during show: otherwise the
+    //RTL property setters keep SendMessage-ing to the destroyed (or recycled)
+    //window on any post-close property assignment.
+    if ATaskDialog is TStyledTaskDialog then
+      TStyledTaskDialog(ATaskDialog).Handle := 0;
     if Assigned(ATaskDialog.OnDialogDestroyed) then
       ATaskDialog.OnDialogDestroyed(ATaskDialog);
   end;

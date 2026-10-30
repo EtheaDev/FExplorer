@@ -3,7 +3,7 @@
 {       FExplorer: Shell extensions per Fattura Elettronica                    }
 {       (Preview Panel, Thumbnail Icon, F.E.Viewer)                            }
 {                                                                              }
-{       Copyright (c) 2021-2025 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2021-2026 (Ethea S.r.l.)                                 }
 {       Author: Carlo Barazzetta                                               }
 {                                                                              }
 {       https://github.com/EtheaDev/FExplorer                                  }
@@ -43,7 +43,6 @@ uses
   {$IFNDEF NO_VCL_STYLES}
   , Vcl.Styles.Fixes
   , Vcl.Styles.FormStyleHooks
-  , Vcl.Styles.NC
   , Vcl.Styles.OwnerDrawFix
   , Vcl.Styles.Utils.ScreenTips
   , Vcl.Styles.Utils.SysStyleHook
@@ -71,6 +70,10 @@ const
   SET_FILE_NAME = 'HiglightSettings';
   SV_COLLAPSED_WIDTH = 38;
   SV_COLLAPSED_WIDTH_WITH_SCROLLBARS = 50;
+  //Height of the menu at 96 dpi (dfm of catMenuItems): 21 buttons of 36 px
+  //plus 3 categories of 5 px border + 16 px caption gutter (Segoe UI -12):
+  //below it the vertical scrollbar of catMenuItems appears
+  SV_MENU_HEIGHT = 819;
 
 resourcestring
   PAGE_HEADER_FIRST_LINE_LEFT = '$TITLE$';
@@ -209,6 +212,10 @@ type
     Reformattext1: TMenuItem;
     ImagePreviewPanel: TPanel;
     N1: TMenuItem;
+    acWordWrap: TAction;
+    acShowLineNumbers: TAction;
+    WordWrapMenuItem: TMenuItem;
+    ShowLineNumbersMenuItem: TMenuItem;
     StatusPanel: TPanel;
     StatusImage: TSVGIconImage;
     StatusStaticText: TStaticText;
@@ -257,6 +264,10 @@ type
     procedure acAboutExecute(Sender: TObject);
     procedure acSearchAgainExecute(Sender: TObject);
     procedure acSearchAgainUpdate(Sender: TObject);
+    procedure acWordWrapExecute(Sender: TObject);
+    procedure acWordWrapUpdate(Sender: TObject);
+    procedure acShowLineNumbersExecute(Sender: TObject);
+    procedure acShowLineNumbersUpdate(Sender: TObject);
     procedure actnPrinterSetupExecute(Sender: TObject);
     procedure actnPrintPreviewExecute(Sender: TObject);
     procedure actnPrintExecute(Sender: TObject);
@@ -1697,6 +1708,33 @@ begin
   DoSearchReplaceText(False, gbSearchBackwards);
 end;
 
+//Word wrap and line numbers are editor options (also in the Editor options
+//dialog): the context menu toggles them for every open editor, and they
+//are saved with the other editor options when the application closes
+procedure TfrmMain.acWordWrapExecute(Sender: TObject);
+begin
+  FEditorOptions.WordWrap := not FEditorOptions.WordWrap;
+  UpdateEditorsOptions;
+end;
+
+procedure TfrmMain.acWordWrapUpdate(Sender: TObject);
+begin
+  acWordWrap.Enabled := CurrentEditor <> nil;
+  acWordWrap.Checked := FEditorOptions.WordWrap;
+end;
+
+procedure TfrmMain.acShowLineNumbersExecute(Sender: TObject);
+begin
+  FEditorOptions.Gutter.ShowLineNumbers := not FEditorOptions.Gutter.ShowLineNumbers;
+  UpdateEditorsOptions;
+end;
+
+procedure TfrmMain.acShowLineNumbersUpdate(Sender: TObject);
+begin
+  acShowLineNumbers.Enabled := CurrentEditor <> nil;
+  acShowLineNumbers.Checked := FEditorOptions.Gutter.ShowLineNumbers;
+end;
+
 procedure TfrmMain.acSearchAgainUpdate(Sender: TObject);
 begin
   acSearchAgain.Enabled := gsSearchText <> '';
@@ -2237,7 +2275,7 @@ end;
 procedure TfrmMain.AdjustCompactWidth;
 begin
   //Change size of compact because Scrollbars appears
-  if (Height / ScaleFactor) > 900 then
+  if (SV.Height / ScaleFactor) >= SV_MENU_HEIGHT then
     SV.CompactWidth := Round(SV_COLLAPSED_WIDTH * ScaleFactor)
   else
     SV.CompactWidth := Round(SV_COLLAPSED_WIDTH_WITH_SCROLLBARS * ScaleFactor);

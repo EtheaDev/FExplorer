@@ -90,6 +90,8 @@ type
     FSourceList, FSearchList, FSelectedList: TSVGIconImageList;
     FSVG: ISVG;
     FReplaceIndex: Integer;
+    FSingleIcon: Boolean;
+    FSingleSVGText: string;
     FCollections: TIconifyCollections;
     procedure AddImage(AStream: TStream; const AName: string);
     procedure SetIconsSize(const AValue: Integer);
@@ -99,6 +101,7 @@ type
     procedure MoveIconToSelectView(const AIndex: Integer);
     procedure Apply;
     procedure SetReplaceIndex(const AValue: Integer);
+    procedure SetSingleIcon(const AValue: Boolean);
     procedure LoadCollections;
     function GetIconList: TArray<string>;
   protected
@@ -108,17 +111,18 @@ type
     destructor Destroy; override;
     property IconsSize: Integer read FIconsSize write SetIconsSize;
     property ReplaceIndex: Integer read FReplaceIndex write SetReplaceIndex;
+    property SingleIcon: Boolean read FSingleIcon write SetSingleIcon;
   end;
-
-var
-  SearchSavedBounds: TRect = (Left: 0; Top: 0; Right: 0; Bottom: 0);
-  paSelectedGroupWidth: Integer;
-  MaxIcons: Integer;
 
 function SearchSVGIconsFromWeb(var AImageList: TSVGIconImageList;
   const AReplaceIndex: Integer = -1): Boolean;
 
+function SearchSVGIconFromWeb(out ASVGText: string;
+  const AIconSize: Integer): Boolean;
+
 implementation
+
+{$R *.dfm}
 
 uses
   WinApi.ShellAPI
@@ -134,7 +138,37 @@ uses
 {$ENDIF}
   ;
 
-{$R *.dfm}
+
+var
+  SearchSavedBounds: TRect = (Left: 0; Top: 0; Right: 0; Bottom: 0);
+  paSelectedGroupWidth: Integer;
+  MaxIcons: Integer;
+
+
+function SearchSVGIconFromWeb(out ASVGText: string;
+  const AIconSize: Integer): Boolean;
+var
+  LForm: TSVGRESTClientSearchForm;
+begin
+  LForm := TSVGRESTClientSearchForm.Create(nil);
+  try
+    Screen.Cursor := crHourglass;
+    try
+      LForm.FSourceList := nil;
+      LForm.SingleIcon := True;
+      LForm.IconsSize := AIconSize;
+    finally
+      Screen.Cursor := crDefault;
+    end;
+    Result := LForm.ShowModal = mrOk;
+    SearchSavedBounds := LForm.BoundsRect;
+    MaxIcons := LForm.MaxIconsEdit.Value;
+    if Result then
+      ASVGText := LForm.FSingleSVGText;
+  finally
+    LForm.Free;
+  end;
+end;
 
 function SearchSVGIconsFromWeb(var AImageList: TSVGIconImageList;
   const AReplaceIndex: Integer = -1): Boolean;
@@ -169,7 +203,7 @@ end;
 procedure TSVGRESTClientSearchForm.UpdateGUI;
 begin
   OKButton.Enabled := FSelectedList.Count > 0;
-  SearchButton.Enabled := (SearchEdit.Text <> '') or (CollectionsCombo.ItemHeight >= 0);
+  SearchButton.Enabled := (SearchEdit.Text <> '') or (CollectionsCombo.ItemIndex > 0);
 end;
 
 procedure TSVGRESTClientSearchForm.AddImage(AStream: TStream;
@@ -188,8 +222,8 @@ var
 begin
   Result := [];
   LPrefix := '';
-  if CollectionsCombo.ItemIndex >= 0 then
-    LPrefix := FCollections[CollectionsCombo.ItemIndex].Prefix;
+  if CollectionsCombo.ItemIndex > 0 then
+    LPrefix := FCollections[CollectionsCombo.ItemIndex - 1].Prefix;
 
   if SearchEdit.Text <> '' then
   begin
@@ -201,7 +235,7 @@ begin
       LSearch.Free;
     end;
   end
-  else if CollectionsCombo.ItemIndex >= 0 then
+  else if CollectionsCombo.ItemIndex > 0 then
   begin
     LCollectionIcons := TIconifyCollectionIcons.Create;
     try
@@ -256,7 +290,7 @@ procedure TSVGRESTClientSearchForm.CollectionsComboKeyDown(Sender: TObject;
   var Key: Word; Shift: TShiftState);
 begin
   if (key = VK_BACK) or (key = VK_DELETE) then
-    CollectionsCombo.ItemIndex := -1;
+    CollectionsCombo.ItemIndex := 0;
 end;
 
 constructor TSVGRESTClientSearchForm.Create(AOwner: TComponent);
@@ -376,8 +410,10 @@ begin
     FCollections.Clear;
     CollectionsCombo.Clear;
     FIconify.Collections(FCollections);
+    CollectionsCombo.Items.Add('(All collections)');
     for LCollection in FCollections do
       CollectionsCombo.Items.Add(LCollection.Name);
+    CollectionsCombo.ItemIndex := 0;
   end;
 end;
 
@@ -397,20 +433,28 @@ var
 begin
   Screen.Cursor := crHourGlass;
   try
-    if ReplaceIndex <> -1 then
+    if not FSingleIcon then
     begin
-      Item := FSourceList.SVGIconItems[ReplaceIndex];
-      LSourceIcon := FSearchList.SVGIconItems[SearchView.ItemIndex];
-      Item.SVG.Source := LSourceIcon.SVG.Source;
+      if (ReplaceIndex <> -1) then
+      begin
+        Item := FSourceList.SVGIconItems[ReplaceIndex];
+        LSourceIcon := FSearchList.SVGIconItems[SearchView.ItemIndex];
+        Item.SVG.Source := LSourceIcon.SVG.Source;
+      end
+      else
+      begin
+        for I := 0 to FSelectedList.count -1 do
+        begin
+          LSourceIcon := FSelectedList.SVGIconItems[I];
+          FSourceList.Add(LSourceIcon.SVG, LSourceIcon.IconName,
+            LSourceIcon.Category);
+        end;
+      end;
     end
     else
     begin
-      for I := 0 to FSelectedList.count -1 do
-      begin
-        LSourceIcon := FSelectedList.SVGIconItems[I];
-        FSourceList.Add(LSourceIcon.SVG, LSourceIcon.IconName,
-          LSourceIcon.Category);
-      end;
+      LSourceIcon := FSelectedList.SVGIconItems[0];
+      FSingleSVGText := LSourceIcon.SVG.Source;
     end;
   finally
     Screen.Cursor := crDefault;
@@ -516,6 +560,13 @@ procedure TSVGRESTClientSearchForm.SetReplaceIndex(const AValue: Integer);
 begin
   FReplaceIndex := AValue;
   SelectedGroupBox.Visible := FReplaceIndex = -1;
+end;
+
+procedure TSVGRESTClientSearchForm.SetSingleIcon(const AValue: Boolean);
+begin
+  FSingleIcon := AValue;
+  SelectedGroupBox.Visible := not FSingleIcon;
+  SearchView.MultiSelect := not FSingleIcon;
 end;
 
 procedure TSVGRESTClientSearchForm.TrackBarChange(Sender: TObject);

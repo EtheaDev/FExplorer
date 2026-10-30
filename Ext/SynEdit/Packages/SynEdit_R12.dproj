@@ -4,7 +4,7 @@
         <MainSource>SynEdit_R12.dpk</MainSource>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Release</Config>
-        <TargetedPlatforms>1</TargetedPlatforms>
+        <TargetedPlatforms>3</TargetedPlatforms>
         <AppType>Package</AppType>
         <FrameworkType>VCL</FrameworkType>
         <ProjectVersion>20.2</ProjectVersion>
@@ -148,6 +148,7 @@
         <DCCReference Include="..\Source\SynEditTypes.pas"/>
         <DCCReference Include="..\Source\SynEditUndo.pas"/>
         <DCCReference Include="..\Source\SynEditWordWrap.pas"/>
+        <DCCReference Include="..\Source\SynEditActionsResource.pas"/>
         <DCCReference Include="..\Source\SynExportHTML.pas"/>
         <DCCReference Include="..\Source\SynExportRTF.pas"/>
         <DCCReference Include="..\Source\SynExportTeX.pas"/>
@@ -220,6 +221,7 @@
             <Form>$IFNDEF CPUX64</Form>
         </DCCReference>
         <DCCReference Include="..\Source\SynURIOpener.pas"/>
+        <DCCReference Include="..\Source\SynHighlighterMarkdown.pas"/>
         <DCCReference Include="..\Source\SynEditHighlighterOptions.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
@@ -272,7 +274,7 @@
             </Delphi.Personality>
             <Platforms>
                 <Platform value="Win32">True</Platform>
-                <Platform value="Win64">False</Platform>
+                <Platform value="Win64">True</Platform>
                 <Platform value="Win64x">False</Platform>
             </Platforms>
             <ModelSupport>False</ModelSupport>

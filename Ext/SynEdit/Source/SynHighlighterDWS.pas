@@ -334,7 +334,10 @@ begin
       Result := Result * 692 + C * 171;
       Inc(Str);
    end;
-   fStringLen := Str - fToIdent;
+   if Str <> '' then
+     fStringLen := Str - fToIdent
+   else
+     fStringLen := 0;
    Result := Result mod Cardinal(Length(fIdentFuncTable));
 end;
 {$IFDEF OVERFLOWCHECK_ON}
@@ -1059,11 +1062,21 @@ var
 
   function BlockDelimiter(Line: Integer): Boolean;
   var
+    StructureHighlight: Boolean;
+
+    function Indent: Integer;
+    begin
+      if StructureHighlight then
+        Result := LeftSpaces(CurLine, True, TabWidth(LinesToScan))
+      else
+        Result := -1;
+    end;
+
+  var
     BeginIndex: Integer;
     EndIndex: Integer;
     Match: TMatch;
     MatchValue: string;
-    StructureHighlight: Boolean;
   begin
     BeginIndex := 0;
     EndIndex := 0;
@@ -1097,15 +1110,13 @@ var
     if (BeginIndex <= 0) and (EndIndex <= 0) then
       Result := False
     else if (BeginIndex > 0) and (EndIndex <= 0) then
-      FoldRanges.StartFoldRange(Line + 1, FT_Standard,
-      IfThen(StructureHighlight,
-      LeftSpaces(CurLine, True, TabWidth(LinesToScan)), 0))
+      FoldRanges.StartFoldRange(Line + 1, FT_Standard, Indent)
     else if (BeginIndex <= 0) and (EndIndex > 0) then
       FoldRanges.StopFoldRange(Line + 1, FT_Standard)
     else if EndIndex >= BeginIndex then
       Result := False  // begin end on the same line - ignore
     else // end begin  as in "end else begin"
-      FoldRanges.StopStartFoldRange(Line + 1, FT_Standard);
+      FoldRanges.StopStartFoldRange(Line + 1, FT_Standard, Indent);
   end;
 
   function FoldRegion(Line: Integer): Boolean;

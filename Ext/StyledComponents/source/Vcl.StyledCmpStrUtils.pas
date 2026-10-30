@@ -1,8 +1,8 @@
-{******************************************************************************}
+ï»¿{******************************************************************************}
 {                                                                              }
 {  StyledCmpStrUtils: String utils for Styled Component                        }
 {                                                                              }
-{  Copyright (c) 2022-2025 (Ethea S.r.l.)                                      }
+{  Copyright (c) 2022-2026 (Ethea S.r.l.)                                      }
 {  Author: Carlo Barazzetta                                                    }
 {  Contributors:                                                               }
 {                                                                              }
@@ -38,7 +38,6 @@ function ClearHRefs(const Msg: string; OnlyFileNotExists: boolean = False): stri
 function GetErrorClassNameDesc(const ExceptionClassName : string;
   IsAccessViolation: boolean) : string;
 function GetProjectURL: string;
-function GetProjectWikiURL: string;
 
 implementation
 
@@ -49,12 +48,7 @@ uses
 
 function GetProjectURL: string;
 begin
-  Result := 'https://github.com/EtheaDev/StyledComponents';
-end;
-
-function GetProjectWikiURL: string;
-begin
-  Result := 'https://github.com/EtheaDev/StyledComponents/wiki';
+  Result := 'https://ethea.it/docs/styledcomponents/';
 end;
 
 function HRefToString(const HRef: string): string;
@@ -65,11 +59,11 @@ begin
   //Esempio: stringa in input: '<A HREF="c:\windows\system32\Notepad.exe'>Editor</A>'
   //risultato: Editor (c:\windows\system32\Notepad.exe)';
 
-  if ExtractHrefValues(HRef, DisplayLabel, LinkStr) then
+  if ExtractHrefValues(HRef, LinkStr, DisplayLabel) then
   begin
-    //la stringa è coerente con la sintassi HREF: Calcolo DisplayLabel e LinkStr
+    //la stringa Ã¨ coerente con la sintassi HREF: Calcolo DisplayLabel e LinkStr
     if not SameText(DisplayLabel, LinkStr) then
-      Result := Format('%s (%s)',[LinkStr,DisplayLabel])
+      Result := Format('%s (%s)',[DisplayLabel,LinkStr])
     else
       Result := LinkStr;
   end
@@ -103,12 +97,12 @@ begin
   p1 := pos('>', HRef);
   p2 := Length(HRef)-3;
   p3 := pos('">',HRef);
-  //controllo congruità
+  //controllo congruitÃ 
   if (p1 > 0) and (p3 > 0) and
     SameText(Copy(HRef,1,9),'<A HREF="') and
     SameText(Copy(HRef,p2,4),'</A>') then
   begin
-    //la stringa è coerente con la sintassi HREF: Calcolo DisplayLabel e LinkStr
+    //la stringa Ã¨ coerente con la sintassi HREF: Calcolo DisplayLabel e LinkStr
     DisplayLabel := Copy(HRef,p1+1,p2-p1-1);
     LinkStr := Copy(HRef,10,p1-11);
     Result := True;

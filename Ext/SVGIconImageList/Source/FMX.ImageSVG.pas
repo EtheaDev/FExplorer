@@ -3,7 +3,7 @@
 {       SVGIconImageList: An extended ImageList for Delphi/FMX                 }
 {       to simplify use of SVG Icons (resize, opacity and more...)             }
 {                                                                              }
-{       Copyright (c) 2019-2025 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2019-2026 (Ethea S.r.l.)                                 }
 {       Author: Carlo Barazzetta                                               }
 {       Contributors:                                                          }
 {                                                                              }
@@ -190,7 +190,8 @@ end;
 
 procedure TFmxImageSVG.SetApplyFixedColorToRootOnly(Value: Boolean);
 var
-  Color: TColor;
+  //TAlphaColor, not TColor: an opaque color does not fit a signed Integer
+  Color: TAlphaColor;
 begin
   if FApplyFixedColorToRootOnly <> Value then
   begin

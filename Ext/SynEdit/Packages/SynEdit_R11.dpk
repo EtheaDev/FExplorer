@@ -25,7 +25,7 @@ package SynEdit_R11;
 {$IMAGEBASE $400000}
 {$DEFINE RELEASE}
 {$ENDIF IMPLICITBUILDING}
-{$DESCRIPTION 'TurboPack SynEdit Delphi runtime package'}
+{$DESCRIPTION 'SynEdit component suite runtime'}
 {$RUNONLY}
 {$IMPLICITBUILD OFF}
 
@@ -74,6 +74,7 @@ contains
   SynEditTypes in '..\Source\SynEditTypes.pas',
   SynEditUndo in '..\Source\SynEditUndo.pas',
   SynEditWordWrap in '..\Source\SynEditWordWrap.pas',
+  SynEditActionsResource in '..\Source\SynEditActionsResource.pas',
   SynExportHTML in '..\Source\SynExportHTML.pas',
   SynExportRTF in '..\Source\SynExportRTF.pas',
   SynExportTeX in '..\Source\SynExportTeX.pas',
@@ -144,6 +145,7 @@ contains
   SynSpellCheck in '..\Source\SynSpellCheck.pas',
   SynUnicode in '..\Source\SynUnicode.pas',
   SynURIOpener in '..\Source\SynURIOpener.pas',
+  SynHighlighterMarkdown in '..\Source\SynHighlighterMarkdown.pas',
   SynEditHighlighterOptions in '..\Source\SynEditHighlighterOptions.pas'; //Ethea
 
 end.

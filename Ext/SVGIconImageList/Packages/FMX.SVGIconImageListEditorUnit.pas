@@ -3,7 +3,7 @@
 {       SVG Icon ImageList: An extended ImageList for Delphi/VLC+FMX           }
 {       to simplify use of Icons (resize, opacity and more...)                 }
 {                                                                              }
-{       Copyright (c) 2019-2025 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2019-2026 (Ethea S.r.l.)                                 }
 {       Author: Carlo Barazzetta                                               }
 {       Contributors: Volodymyr B.                                             }
 {                                                                              }
@@ -35,11 +35,11 @@ uses
   System.Actions, System.ImageList, System.UIConsts, FMX.Forms, FMX.Graphics, FMX.ActnList, FMX.StdCtrls, FMX.Colors, FMX.ListBox,
   FMX.Controls.Presentation, FMX.ImgList, FMX.Types, FMX.Layouts,
   FMX.SVGIconImageList, FMX.Edit, FMX.EditBox, FMX.SpinBox,
-  FMX.ScrollBox, FMX.Memo, FMX.Dialogs, FMX.Memo.Types, FMX.ComboEdit;
+  FMX.ScrollBox, FMX.Memo, FMX.Dialogs, FMX.Memo.Types, FMX.ComboEdit,
+  FMX.Objects, FMX.Design.Utils;
 
 type
   TSVGIconImageListEditorFMX = class(TForm)
-    ListBoxItemStyleBook: TStyleBook;
     OpenDialog: TOpenDialog;
     BottomPanel: TPanel;
     OKButton: TButton;
@@ -90,6 +90,9 @@ type
     IconControlsPanel: TPanel;
     ApplyToRootOnlyItemCheckBox: TCheckBox;
     AddWebButton: TButton;
+    BackgroundTrackBar: TTrackBar;
+    IconBackGround: TRectangle;
+    btnExportAll: TButton;
     procedure ClearAllButtonClick(Sender: TObject);
     procedure DeleteButtonClick(Sender: TObject);
     procedure AddButtonClick(Sender: TObject);
@@ -124,11 +127,15 @@ type
     procedure FixedColorItemComboColorBoxChange(Sender: TObject);
     procedure FixedColorItemEditChange(Sender: TObject);
     procedure AddWebButtonClick(Sender: TObject);
+    procedure BackgroundTrackBarTracking(Sender: TObject);
+    procedure btnExportAllClick(Sender: TObject);
   private
     FIconIndexLabel: string;
     FTotIconsLabel: string;
+    FSvgExpDir : string;
     FUpdating: Boolean;
     FEditingList: TSVGIconImageList;
+    procedure UpdateIconBackgroundColour;
     procedure AddNewItem;
     procedure DeleteSelectedItem;
     procedure ClearAllImages;
@@ -137,6 +144,10 @@ type
     procedure SetImageIconName(IconName: String);
     function SelectedSVGIcon: TSVGIconSourceItem;
     function GetClearAlphaColorString(AColor: TAlphaColor): string;
+    procedure svgIconExport(idx : Integer; const dir : String;
+      const enc : TEncoding);
+    procedure svgIconsExport(const dir : String);
+  protected
   public
     destructor Destroy; override;
   end;
@@ -152,17 +163,20 @@ uses
   , Winapi.Windows
   , Winapi.shellApi
   , Xml.XMLDoc
-  {$IFDEF Image32_SVGEngine}
+  {$IFDEF FMX_Image32_SVGEngine}
   , Img32.SVG.Core
   {$ENDIF}
   , FMX.SVGIconsUtils
   , System.Math
+  , System.IOUtils
   , FMX.SVGRESTClientFormUnit
   ;
 
 var
   SavedBounds: TRect = (Left: 0; Top: 0; Right: 0; Bottom: 0);
+  SavedWindowState: TWindowState = TWindowState.wsNormal;
   ItemPanelHeight: Single;
+  TrackaBarPosition: Single;
 
 function UpdateSVGIconListViewCaptions(const AListBox: TListBox;
   const AShowCaption: Boolean = True): Integer;
@@ -208,7 +222,6 @@ begin
         ZoomSpinBox.Value := FEditingList.Zoom;
         ImageView.Images := FEditingList;
         UpdateSVGIconListView(ImageView);
-        //UpdateGUI;
         if ImageView.Items.Count > 0 then
           ImageView.ItemIndex := 0;
 
@@ -225,8 +238,17 @@ begin
           //Screen.Cursor := crDefault;
         end;
       end;
-      SavedBounds := Bounds;
+      //Bounds of the normal window only: the ones of a maximized window,
+      //restored on a normal one, give a window as big as the screen but not
+      //maximized
+      if WindowState = TWindowState.wsNormal then
+        SavedBounds := Bounds;
+      if WindowState = TWindowState.wsMaximized then
+        SavedWindowState := TWindowState.wsMaximized
+      else
+        SavedWindowState := TWindowState.wsNormal;
       ItemPanelHeight := ItemPanel.Height;
+      TrackaBarPosition := BackgroundTrackBar.Value;
     finally
       Free;
     end;
@@ -256,10 +278,75 @@ begin
   end;
 end;
 
+procedure TSVGIconImageListEditorFMX.svgIconExport(idx: Integer;
+  const dir: String; const enc : TEncoding);
+begin
+  if not Assigned(FEditingList) then
+    Exit();
+
+  var aicon := FEditingList.GetIcon(idx);
+  if
+    not Assigned(aicon) or
+    aicon.SVGText.IsEmpty
+  then
+    Exit();
+
+  var fname := TPath.Combine(
+    dir,
+    idx.ToString() + '.' + aicon.IconName + '.svg'
+  );
+
+  TFile.WriteAllText(
+    fname,
+    aicon.SVGText,
+    enc
+  );
+end;
+
+procedure TSVGIconImageListEditorFMX.svgIconsExport(const dir: String);
+begin
+  var utf8NoBom : TEncoding;
+  try
+    utf8NoBom := TUTF8Encoding.Create(false);
+
+    for var idx := 0 to FEditingList.Count-1 do
+      svgIconExport(
+        idx,
+        dir,
+        utf8NoBom
+      );
+  finally
+    FreeAndNil(utf8NoBom);
+  end;
+end;
+
 procedure TSVGIconImageListEditorFMX.SVGTextExit(Sender: TObject);
 begin
   SelectedSVGIcon.SVGText := SVGText.Lines.Text;
   UpdateGUI;
+end;
+
+procedure TSVGIconImageListEditorFMX.BackgroundTrackBarTracking(Sender: TObject);
+begin
+  UpdateIconBackgroundColour;
+end;
+
+procedure TSVGIconImageListEditorFMX.btnExportAllClick(Sender: TObject);
+begin
+  if
+    not Assigned(FEditingList) or
+    (0 = FEditingList.Count)
+  then
+    Exit();
+
+  if
+    SelectDirectory(
+      'Select a SVG files destination folder',
+      EmptyStr,
+      FSvgExpDir
+    )
+  then
+    svgIconsExport(FSvgExpDir);
 end;
 
 procedure TSVGIconImageListEditorFMX.AutoSizeCheckBoxClick(Sender: TObject);
@@ -300,6 +387,7 @@ begin
     OpacitySpinBox.Enabled := LIsItemSelected;
     IconName.Enabled := LIsItemSelected;
     SVGText.Enabled := LIsItemSelected;
+    IconControlsPanel.Enabled := LIsItemSelected;
     //ShowCharMapButton.Enabled := (FEditingList.FontName <> '');
     IconsGroupBox.Text := Format(FTotIconsLabel, [FEditingList.Count]);
     SizeSpinBox.Value := FEditingList.Size;
@@ -337,6 +425,14 @@ begin
   finally
     FUpdating := False;
   end;
+end;
+
+procedure TSVGIconImageListEditorFMX.UpdateIconBackgroundColour;
+var
+  LGrayValue: Byte;
+begin
+  LGrayValue := Round(BackgroundTrackBar.Value);
+  IconBackGround.Fill.Color := MakeColor(LGrayValue, LGrayValue, LGrayValue);
 end;
 
 procedure TSVGIconImageListEditorFMX.ZoomChange(Sender: TObject);
@@ -568,6 +664,7 @@ end;
 
 procedure TSVGIconImageListEditorFMX.FormCreate(Sender: TObject);
 begin
+  UpdateFormStyleFromIDE(Self);
   Caption := Format(Caption, [SVGIconImageListVersion]);
   {$IFDEF D11+}
   Constraints.MinHeight := 500;
@@ -579,6 +676,7 @@ begin
   FTotIconsLabel := IconsGroupBox.Text;
   IconImage.Images := FEditingList;
   BottomSplitter.Position.X := 1;
+  UpdateIconBackgroundColour;
 end;
 
 procedure TSVGIconImageListEditorFMX.FormDestroy(Sender: TObject);
@@ -638,9 +736,17 @@ procedure TSVGIconImageListEditorFMX.FormShow(Sender: TObject);
 begin
   if SavedBounds.Right - SavedBounds.Left > 0 then
     SetBounds(SavedBounds.Left, SavedBounds.Top, SavedBounds.Width, SavedBounds.Height);
+  //After the normal bounds, so that "Restore" goes back to them
+  if SavedWindowState = TWindowState.wsMaximized then
+    WindowState := TWindowState.wsMaximized;
 
   if ItemPanelHeight <> 0 then
     ItemPanel.Height := ItemPanelHeight;
+
+  if TrackaBarPosition <> -1 then
+    BackgroundTrackBar.Value := TrackaBarPosition
+  else
+    BackgroundTrackBar.Value := 128;
 
   if ImageView.CanFocus then
     ImageView.SetFocus;
@@ -697,5 +803,6 @@ end;
 
 initialization
   ItemPanelHeight := 0;
+  TrackaBarPosition := -1;
 
 end.

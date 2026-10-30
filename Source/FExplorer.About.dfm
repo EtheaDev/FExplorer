@@ -304,64 +304,6 @@ object FrmAbout: TFrmAbout
     Height = 109
     Anchors = [akLeft, akTop, akBottom]
     Color = clBtnFace
-    Lines.Strings = (
-      'Autori:'
-      'Carlo Barazzetta & Andrea Magni'
-      'https://github.com/EtheaDev/FExplorer'
-      'Copyright '#169' 2021-2023 all rights reserved.'
-      ''
-      'Librerie di terze parti di Ethea:'
-      'SVGIconImageList'
-      'https://github.com/EtheaDev/SVGIconImageList/'
-      ''
-      'StyledComponents'
-      'https://github.com/EtheaDev/StyledComponents'
-      ''
-      'PKCS7Extractor'
-      'https://github.com/DelphiClubItalia/PKCS7Extractor'
-      'Copyright '#169' 2018 Delphi Club Italia - LGPL v3'
-      'Original authors:'
-      '  Christian Cristofori - github@christiancristofori.it'
-      '  Giancarlo Oneglio - giancarlo.oneglio@gmail.com'
-      ''
-      'OpenSLL Library: Cryptography and SSL/TLS Toolkit'
-      'Copyright '#169' 1998-2018 The OpenSSL Project.  All rights reserved.'
-      ''
-      'Delphi Preview Handler'
-      'https://github.com/RRUZ/delphi-preview-handler'
-      'The Initial Developer of the Original Code is Rodrigo Ruz V.'
-      
-        'Portions created by Rodrigo Ruz V. are Copyright '#169' 2011-2023 Rod' +
-        'rigo Ruz V.'
-      ''
-      'Librerie di terze parti utilizzate'
-      'SynEdit http://synedit.svn.sourceforge.net/viewvc/synedit/'
-      'all rights reserved.'
-      ''
-      'Synopse/SynPDF https://github.com/synopse/SynPDF'
-      'Copyright '#169' Synopse: all right reserved.'
-      ''
-      'HtmlToPdf https://github.com/MuzioValerio/HtmlToPdf'
-      'Copyright '#169' Muzio Valerio.'
-      ''
-      
-        'Image32 Library - http://www.angusj.com/delphi/image32/Docs/_Bod' +
-        'y.htm'
-      'Copyright '#169'2019-2023 Angus Johnson.'
-      ''
-      
-        '- StyleSheet FatturaPA in South-Tyrol - https://github.com/provb' +
-        'z/fatturapa-xsl-'
-      'southtyrol'
-      'Copyright '#169'2017 Ferdinand Tavernini'
-      ''
-      'HTMLViewer - https://github.com/BerndGabriel/HtmlViewer'
-      'Copyright (c) 1995 - 2008 by L. David Baldwin'
-      'Copyright (c) 1995 - 2023 by Anders Melander (DitherUnit.pas)'
-      'Copyright (c) 1995 - 2023 by Ron Collins (HtmlGif1.pas)'
-      'Copyright (c) 2008 - 2009 by Sebastian Zierer (Delphi 2009 Port)'
-      'Copyright (c) 2008 - 2010 by Arvid Winkelsdorf (Fixes)'
-      'Copyright (c) 2009 - 2023 by HtmlViewer Team')
     ReadOnly = True
     ScrollBars = ssVertical
     TabOrder = 1

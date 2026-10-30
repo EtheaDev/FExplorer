@@ -1,11 +1,11 @@
-{******************************************************************************}
+﻿{******************************************************************************}
 {                                                                              }
 {  TemplateButtonStyles: A base unit to create Button Styles attributes:       }
 {  family/classes/appearance                                                   }
 {  In this simple example a "semaphore" Family with four classes:              }
 {  Green, Yellow, Red, Off in two appearance: Normal and Outline               }
 {                                                                              }
-{  Copyright (c) 2022-2025 (Ethea S.r.l.)                                      }
+{  Copyright (c) 2022-2026 (Ethea S.r.l.)                                      }
 {  Author: Carlo Barazzetta                                                    }
 {  Contributors:                                                               }
 {                                                                              }
@@ -175,6 +175,9 @@ begin
   ANormalStyle.FontStyle := [fsBold];
     ANormalStyle.FontColor := LButtonColor;
     ANormalStyle.BorderColor := LightenColor(LButtonColor, 50);
+    //Outline does not paint ButtonColor, but assign it anyway (light tint):
+    //TStyledPanel without ParentBackground and the AutoClick bar read it
+    ANormalStyle.ButtonColor := ANormalStyle.BorderColor;
   end
   else
   begin

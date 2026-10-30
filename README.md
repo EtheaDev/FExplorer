@@ -2,7 +2,7 @@
 
 ## **Anteprima Fattura Elettronica (Viewer e Icone) integrato in Windows Explorer e Visualizzatore**
 
-### Versione attuale 2.4.0 del 28 Febbraio 2025
+### Versione attuale 2.4.1 del 30 Ottobre 2026
 
 **Una serie di strumenti per gestire i file xml contenenti Fatture Elettroniche in Windows:**
 
@@ -62,6 +62,15 @@ Per installare manualmente FExplorer.dll seguire questi step:
 5. Una volta registrato, puoi continuare a modificare il codice e ricompilare la dll (attenzione a chiudere tutte le istanze di Explorer ogni volta che si ricompila).
 
 ## Release Notes ##
+
+30 Ottobre 2026 - Versione 2.4.1
+- Editor: nel menu contestuale le voci "A capo automatico" e "Mostra numeri di riga", con il segno di spunta: valgono per tutti gli editor aperti e vengono salvate con le altre opzioni dell'editor
+- Visualizzatore: la larghezza del menu laterale compresso dipende dall'altezza del menu, così non compare più la barra di scorrimento verticale con il menu stretto
+- Setup: nessuna scelta della lingua, l'installazione usa la lingua di Windows
+- Licenze e crediti: lo stesso elenco delle librerie di terze parti nel setup, nel README e nella finestra Informazioni
+- Nuovi logo, scatola e immagine del wizard di setup
+- Copyright aggiornato al 2026; progetti compilabili anche con l'IDE a 64 bit di Delphi 12
+- Usa StyledComponents 4.5.0
 
 28 Febbraio 2025 - Versione 2.4.0
 - Aggiunta opzione "A capo automatico" per l'editor (attiva di default)
@@ -165,6 +174,52 @@ Rilasciato sotto licenza [Apache License, Version 2.0][9] (the "License");
 
 A meno che non sia richiesto dalla legge applicabile o concordato per iscritto, il software distribuito in base alla Licenza è distribuito "COSÌ COM'È", SENZA GARANZIE O CONDIZIONI DI ALCUN TIPO, esplicite o implicite. Vedere la Licenza per la lingua specifica che regola le autorizzazioni e le limitazioni ai sensi della Licenza.
 
+<!-- credits:begin -->
+Copyright © 2021-2026 Ethea S.r.l.
+
+### Crediti
+
+Autori: Carlo Barazzetta, Andrea Magni  
+Sorgenti del progetto: https://github.com/EtheaDev/FExplorer  
+
+### Altre librerie di Ethea
+
+- **[SVGIconImageList](https://github.com/EtheaDev/SVGIconImageList)**
+- **[StyledComponents](https://github.com/EtheaDev/StyledComponents)**
+
+### Librerie di terze parti
+
+- **[Delphi Preview Handler](https://github.com/RRUZ/delphi-preview-handler)**  
+  The Initial Developer of the Original Code is Rodrigo Ruz V.  
+  Portions created by Rodrigo Ruz V. are Copyright © 2011-2023 Rodrigo Ruz V.
+- **[VCL Styles Utils](https://github.com/RRUZ/vcl-styles-utils)**  
+  Portions created by Rodrigo Ruz V. are Copyright © 2012-2023 Rodrigo Ruz V. (Mozilla Public License 1.1)
+- **[SynEdit (PyScripter fork)](https://github.com/pyscripter/SynEdit)**  
+  Portions created by Martin Waldenburg are Copyright © 1998 Martin Waldenburg (Mozilla Public License 1.1)
+- **[Skia4Delphi](https://skia4delphi.org)**  
+  Copyright © 2021-2025 Skia4Delphi Project (MIT License)
+- **[Image32 Library](https://www.angusj.com/delphi/image32/Docs/_Body.htm)**  
+  Copyright © 2019-2025 Angus Johnson (Boost Software License)
+- **[OpenSSL Library: Cryptography and SSL/TLS Toolkit](https://www.openssl.org)**  
+  Copyright © 1998-2018 The OpenSSL Project. All rights reserved.
+- **[Synopse/SynPDF](https://github.com/synopse/SynPDF)**  
+  Copyright © Synopse: all rights reserved.
+- **[HtmlToPdf](https://github.com/MuzioValerio/HtmlToPdf)**  
+  Copyright © Muzio Valerio.
+- **[HTMLViewer](https://github.com/BerndGabriel/HtmlViewer)**  
+  Copyright (c) 1995 - 2008 by L. David Baldwin  
+  Copyright (c) 1995 - 2023 by Anders Melander (DitherUnit.pas)  
+  Copyright (c) 1995 - 2023 by Ron Collins (HtmlGif1.pas)  
+  Copyright (c) 2008 - 2009 by Sebastian Zierer (Delphi 2009 Port)  
+  Copyright (c) 2008 - 2010 by Arvid Winkelsdorf (Fixes)  
+  Copyright (c) 2009 - 2023 by HtmlViewer Team
+- **[PKCS7Extractor](https://github.com/DelphiClubItalia/PKCS7Extractor)**  
+  Copyright © 2018 Delphi Club Italia (GNU LGPL v3)  
+  Original authors: Christian Cristofori, Giancarlo Oneglio
+- **[StyleSheet FatturaPA in South-Tyrol](https://github.com/provbz/fatturapa-xsl-southtyrol)**  
+  Copyright © 2017 Ferdinand Tavernini
+<!-- credits:end -->
+
 ![Delphi 12 Support](./Setup/SupportingDelphi.jpg)
 
 Related links: [embarcadero.com][11] - [learndelphi.org][12]
@@ -177,7 +232,7 @@ Related links: [embarcadero.com][11] - [learndelphi.org][12]
 
 [4]: https://github.com/EtheaDev/SVGIconImageList
 
-[5]: https://github.com/SynEdit/SynEdit
+[5]: https://github.com/pyscripter/SynEdit
 
 [6]: https://github.com/RRUZ/vcl-styles-utils
 

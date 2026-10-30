@@ -1,9 +1,9 @@
-{******************************************************************************}
+﻿{******************************************************************************}
 {                                                                              }
 {  StyledAnimatedComponents: a set of Styled VCL Component                     }
 {  with animations                                                             }
 {                                                                              }
-{  Copyright (c) 2022-2025 (Ethea S.r.l.)                                      }
+{  Copyright (c) 2022-2026 (Ethea S.r.l.)                                      }
 {  Author: Carlo Barazzetta                                                    }
 {  Contributors:                                                               }
 {                                                                              }
@@ -115,6 +115,11 @@ var
 begin
   inherited;
   LButton := GetButton as TStyledAnimatedButton;
+  //Defensive guard: TStyledAnimatedToolButton is disjoint from
+  //TStyledAnimatedButton, so GetButton could return nil for it; exit instead of
+  //dereferencing LButton.
+  if not Assigned(LButton) then
+    Exit;
   if Index = 0 then
   begin
     if EditStyledButton(LButton) then
@@ -164,17 +169,21 @@ begin
     try
       LNewButton.StyleDrawType := LToolbar.StyleDrawType;
       LNewButton.StyleRadius := LToolbar.StyleRadius;
+      LNewButton.StyleShadowSize := LToolbar.StyleShadowSize;
+      LNewButton.StyleBorderWidth := LToolbar.StyleBorderWidth;
       LNewButton.SetBounds(0, 0, LToolbar.ButtonWidth, LToolbar.ButtonHeight);
       if LToolbar.ShowCaptions then
       begin
         LNewButton.Name := Designer.UniqueName('Button');
         LNewButton.Caption := 'Button';
       end;
-      if EditStyledButton(LNewButton) then
+      if EditStyledControl(LNewButton) then
       begin
         LToolbar.SetToolbarStyle(LNewButton.StyleFamily,
           LNewButton.StyleClass, LNewButton.StyleAppearance);
         LToolbar.StyleRadius := LNewButton.StyleRadius;
+        LToolbar.StyleShadowSize := LNewButton.StyleShadowSize;
+        LToolbar.StyleBorderWidth := LNewButton.StyleBorderWidth;
         LToolbar.StyleDrawType := LNewButton.StyleDrawType;
         Designer.Modified;
       end;
@@ -255,6 +264,8 @@ begin
     LNavButton := LDbNavigator.Buttons[nbFirst];
     LNavButton.StyleDrawType := LDbNavigator.StyleDrawType;
     LNavButton.StyleRadius := LDbNavigator.StyleRadius;
+    LNavButton.StyleShadowSize := LDbNavigator.StyleShadowSize;
+    LNavButton.StyleBorderWidth := LDbNavigator.StyleBorderWidth;
     LNavButton.SetBounds(0, 0, LDbNavigator.ButtonWidth, LDbNavigator.ButtonHeight);
     if LDbNavigator.ShowCaptions then
     begin
@@ -266,6 +277,8 @@ begin
       LDbNavigator.SetDbNavigatorStyle(LNavButton.StyleFamily,
         LNavButton.StyleClass, LNavButton.StyleAppearance);
       LDbNavigator.StyleRadius := LNavButton.StyleRadius;
+      LDbNavigator.StyleShadowSize := LNavButton.StyleShadowSize;
+      LDbNavigator.StyleBorderWidth := LNavButton.StyleBorderWidth;
       LDbNavigator.StyleDrawType := LNavButton.StyleDrawType;
       Designer.Modified;
     end;

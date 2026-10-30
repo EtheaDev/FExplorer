@@ -1,9 +1,9 @@
-{******************************************************************************}
+﻿{******************************************************************************}
 {                                                                              }
 {  StyledDbNavigator: a DbNavigator with TStyledNavButtons inside              }
 {  Based on TStyledToolbar                                                     }
 {                                                                              }
-{  Copyright (c) 2022-2025 (Ethea S.r.l.)                                      }
+{  Copyright (c) 2022-2026 (Ethea S.r.l.)                                      }
 {  Author: Carlo Barazzetta                                                    }
 {  Contributors:                                                               }
 {                                                                              }
@@ -63,6 +63,9 @@ uses
   , Vcl.VirtualImageList
   , Vcl.ImageCollection
 {$ENDIF}
+{$IFDEF D13+}
+  , Vcl.Buttons
+{$ENDIF}
   ;
 
 resourcestring
@@ -78,6 +81,7 @@ const
   NavigatorMoveBtns = [TNavigateBtn.nbFirst..TNavigateBtn.nbLast];
 
 type
+  /// <summary>Exception class for styled database navigator errors</summary>
   EStyledDbnavigatorError = Exception;
 
   TCustomStyledDBNavigator = class;
@@ -85,14 +89,30 @@ type
   TStyledNavButton = class;
   TStyledNavDataLink = class;
 
+  /// <summary>Callback procedure for enabling/disabling navigator buttons</summary>
+  /// <param name="ADbNavigator">The navigator component</param>
+  /// <param name="ABtn">The button being evaluated</param>
+  /// <param name="AEnabled">Set to True/False to enable/disable the button</param>
   TEnableNavBtnProc = procedure(const ADbNavigator: TCustomStyledDBNavigator; const ABtn: TStyledNavButton; var AEnabled: Boolean) of Object;
+  /// <summary>Callback procedure for iterating navigator buttons</summary>
+  /// <param name="Button">The current button being processed</param>
   TButtonProc = reference to procedure (Button: TStyledNavButton);
+  /// <summary>Array type for navigator buttons indexed by TNavigateBtn</summary>
   TNavButtons = array[TNavigateBtn] of TStyledNavButton;
 
+  /// <summary>Event type for button click in navigators</summary>
   TNavigateButtonEvent = procedure (Sender: TObject; Button: TNavigateButton) of object;
+  /// <summary>Orientation options for the navigator layout</summary>
   TNavigatorOrientation = (orHorizontal, orVertical);
 
-  { TStyledNavButton }
+  /// <summary>Styled navigation button for database navigators</summary>
+  /// <remarks>
+  ///   TStyledNavButton is a specialized styled button for use within
+  ///   TStyledDbNavigator and TStyledBindNavigator. Each button represents
+  ///   a database navigation action (First, Prior, Next, Last, Insert, Delete,
+  ///   Edit, Post, Cancel, Refresh). Supports auto-repeat for navigation buttons
+  ///   when held down.
+  /// </remarks>
   TStyledNavButton = class(TStyledGraphicButton)
   private
     FIndex: TNavigateBtn;
@@ -107,6 +127,8 @@ type
     procedure SetImageAlignment(const AValue: TImageAlignment);
     function IsCustomDrawType: Boolean;
     function IsCustomRadius: Boolean;
+    function IsCustomShadowSize: Boolean;
+    function IsCustomBorderWidth: Boolean;
     function IsCustomRoundedCorners: Boolean;
     function IsStoredStyleFamily: Boolean;
     function IsStoredStyleAppearance: Boolean;
@@ -130,6 +152,8 @@ type
     property Caption: TCaption read GetCaption write SetCaption stored IsCaptionStored;
     //StyledComponents Attributes
     property StyleRadius stored IsCustomRadius;
+    property StyleShadowSize stored IsCustomShadowSize;
+    property StyleBorderWidth stored IsCustomBorderWidth;
     property StyleRoundedCorners stored IsCustomRoundedCorners;
     property StyleDrawType stored IsCustomDrawType;
     property StyleFamily stored IsStoredStyleFamily;
@@ -144,7 +168,14 @@ type
     property OnDropDownClick;
   end;
 
-  { TCustomStyledDBNavigator }
+  /// <summary>Base class for styled database navigators</summary>
+  /// <remarks>
+  ///   TCustomStyledDBNavigator is the base class for database navigation
+  ///   components. It provides a styled alternative to the standard TDBNavigator
+  ///   with customizable button appearance via StyleFamily, StyleClass, and
+  ///   StyleAppearance properties. Supports all standard navigation buttons
+  ///   with configurable visibility, hints, and captions.
+  /// </remarks>
   TCustomStyledDBNavigator = class(TCustomPanel)
   private
     //Standard support as TDbNavigator
@@ -171,6 +202,8 @@ type
 
     //Styled Attributes
     FStyleRadius: Integer;
+    FStyleShadowSize: Integer;
+    FStyleBorderWidth: Integer;
     FStyleDrawType: TStyledButtonDrawType;
     FStyleFamily: TStyledButtonFamily;
     FStyleClass: TStyledButtonClass;
@@ -209,6 +242,7 @@ type
     _DefaultClass: TStyledButtonClass;
     _DefaultAppearance: TStyledButtonAppearance;
     _DefaultStyleRadius: Integer;
+    _DefaultStyleBorderWidth: Integer;
     _DefaultCursor: TCursor;
 
     procedure ImageListChange(Sender: TObject);
@@ -237,6 +271,8 @@ type
     procedure WMWindowPosChanging(var Message: TWMWindowPosChanging); message WM_WINDOWPOSCHANGING;
     function IsCustomDrawType: Boolean;
     function IsCustomRadius: Boolean;
+    function IsCustomShadowSize: Boolean;
+    function IsCustomBorderWidth: Boolean;
     function IsStoredStyleAppearance: Boolean;
     function IsStoredStyleClass: Boolean;
     function IsStoredStyleFamily: Boolean;
@@ -245,6 +281,8 @@ type
     procedure SetStyleDrawType(const AValue: TStyledButtonDrawType);
     procedure SetStyleFamily(const AValue: TStyledButtonFamily);
     procedure SetStyleRadius(const AValue: Integer);
+    procedure SetStyleShadowSize(const AValue: Integer);
+    procedure SetStyleBorderWidth(const AValue: Integer);
     procedure SetDisabledImages(const AValue: TCustomImageList);
     procedure SetImages(const AValue: TCustomImageList);
     procedure SetStyleApplied(const AValue: Boolean);
@@ -283,6 +321,7 @@ type
       const AClass: TStyledButtonClass = DEFAULT_WINDOWS_CLASS;
       const AAppearance: TStyledButtonAppearance = DEFAULT_APPEARANCE;
       const AStyleRadius: Integer = DEFAULT_RADIUS;
+      const AStyleBorderWidth: Integer = DEFAULT_BORDER_WIDTH;
       const ACursor: TCursor = DEFAULT_CURSOR); virtual;
     //Styled constructor
     constructor CreateStyled(AOwner: TComponent;
@@ -350,13 +389,22 @@ type
     property OnEnableNavBtn:  TEnableNavBtnProc read FOnEnableNavBtn write FOnEnableNavBtn;
     //StyledComponents Attributes
     property StyleRadius: Integer read FStyleRadius write SetStyleRadius stored IsCustomRadius;
+    property StyleShadowSize: Integer read FStyleShadowSize write SetStyleShadowSize stored IsCustomShadowSize;
+    property StyleBorderWidth: Integer read FStyleBorderWidth write SetStyleBorderWidth stored IsCustomBorderWidth;
     property StyleDrawType: TStyledButtonDrawType read FStyleDrawType write SetStyleDrawType stored IsCustomDrawType;
     property StyleFamily: TStyledButtonFamily read FStyleFamily write SetStyleFamily stored IsStoredStyleFamily;
     property StyleClass: TStyledButtonClass read FStyleClass write SetStyleClass stored IsStoredStyleClass;
     property StyleAppearance: TStyledButtonAppearance read FStyleAppearance write SetStyleAppearance stored IsStoredStyleAppearance;
   end;
 
-  { TStyledDBNavigator }
+  /// <summary>Styled database navigator component with DataSource support</summary>
+  /// <remarks>
+  ///   TStyledDBNavigator is a styled alternative to TDBNavigator for navigating
+  ///   and manipulating database records. Connect to a dataset via the DataSource
+  ///   property. Buttons automatically enable/disable based on dataset state.
+  ///   Supports ConfirmDelete for delete confirmation dialogs, custom hints and
+  ///   captions, and all StyledComponents styling features.
+  /// </remarks>
   [ComponentPlatforms(pidWin32 or pidWin64)]
   TStyledDBNavigator = class (TCustomStyledDBNavigator)
   private
@@ -428,6 +476,8 @@ type
 
     //StyledComponents Attributes
     property StyleRadius;
+    property StyleShadowSize;
+    property StyleBorderWidth;
     property StyleDrawType;
     property StyleFamily;
     property StyleClass;
@@ -448,7 +498,14 @@ type
     destructor Destroy; override;
   end;
 
-  { TStyledBindNavigator }
+  /// <summary>Styled LiveBindings navigator component</summary>
+  /// <remarks>
+  ///   TStyledBindNavigator is a styled alternative to TBindNavigator for use
+  ///   with LiveBindings data sources. Implements IBindNavigator interface for
+  ///   compatibility with the LiveBindings framework. Connect to a data source
+  ///   via the DataSource property (TBaseLinkingBindSource). Provides the same
+  ///   styling capabilities as TStyledDBNavigator.
+  /// </remarks>
   [ComponentPlatforms(pidWin32 or pidWin64)]
   TStyledBindNavigator = class(TCustomStyledDbNavigator, IBindNavigator)
   private
@@ -529,6 +586,8 @@ type
 
     //StyledComponents Attributes
     property StyleRadius;
+    property StyleShadowSize;
+    property StyleBorderWidth;
     property StyleDrawType;
     property StyleFamily;
     property StyleClass;
@@ -646,6 +705,8 @@ begin
 
   FStyleDrawType := _DefaultStyleDrawType;
   FStyleRadius := _DefaultStyleRadius;
+  FStyleShadowSize := DEFAULT_SHADOW_SIZE;
+  FStyleBorderWidth := _DefaultStyleBorderWidth;
   FStyleFamily := AFamily;
   FStyleClass := AClass;
   FStyleAppearance := AAppearance;
@@ -712,6 +773,12 @@ begin
   FreeAndNil(FDefaultCaptions);
   FreeAndNil(FHints);
   FreeAndNil(FCaptions);
+  //Unregister the change links from their image lists before freeing them,
+  //otherwise the lists keep a reference to freed TChangeLink objects.
+  if Assigned(FDisabledImages) then
+    FDisabledImages.UnRegisterChanges(FDisabledImageChangeLink);
+  if Assigned(FImages) then
+    FImages.UnRegisterChanges(FImageChangeLink);
   FreeAndNil(FDisabledImageChangeLink);
   FreeAndNil(FImageChangeLink);
   {$IFDEF D10_4+}
@@ -735,6 +802,8 @@ end;
 
 procedure TCustomStyledDBNavigator.CMStyleChanged(var Message: TMessage);
 begin
+  //Propagate the style change to the base (and child buttons) first
+  inherited;
   UpdateButtonsIcons;
   Invalidate;
 end;
@@ -870,14 +939,18 @@ end;
 class procedure TCustomStyledDBNavigator.RegisterDefaultRenderingStyle(
   const ADrawType: TStyledButtonDrawType; const AFamily: TStyledButtonFamily;
   const AClass: TStyledButtonClass; const AAppearance: TStyledButtonAppearance;
-  const AStyleRadius: Integer; const ACursor: TCursor);
+  const AStyleRadius: Integer; const AStyleBorderWidth: Integer;
+  const ACursor: TCursor);
 begin
+  if AStyleBorderWidth < DEFAULT_BORDER_WIDTH then
+    raise EArgumentException.Create(SInvalidProperty);
   _DefaultStyleDrawType := ADrawType;
   _UseCustomDrawType := True;
   _DefaultFamily := AFamily;
   _DefaultClass := AClass;
   _DefaultAppearance := AAppearance;
   _DefaultStyleRadius := AStyleRadius;
+  _DefaultStyleBorderWidth := AStyleBorderWidth;
   _DefaultCursor := ACursor;
 end;
 
@@ -975,6 +1048,16 @@ begin
   Result := StyleRadius <> DEFAULT_RADIUS;
 end;
 
+function TCustomStyledDBNavigator.IsCustomShadowSize: Boolean;
+begin
+  Result := StyleShadowSize <> DEFAULT_SHADOW_SIZE;
+end;
+
+function TCustomStyledDBNavigator.IsCustomBorderWidth: Boolean;
+begin
+  Result := StyleBorderWidth <> DEFAULT_BORDER_WIDTH;
+end;
+
 function TCustomStyledDBNavigator.IsStoredStyleAppearance: Boolean;
 var
   LClass: TStyledButtonClass;
@@ -1063,7 +1146,20 @@ procedure TCustomStyledDBNavigator.SetImages(const AValue: TCustomImageList);
 begin
   if FImages <> AValue then
   begin
+    //Register for change notifications (so the navigator re-runs UpdateButtonsIcons
+    //when the list's images change) and for free-notification (so FImages is nilled
+    //when the list, often on another data module, is destroyed).
+    if Assigned(FImages) then
+    begin
+      FImages.RemoveFreeNotification(Self);
+      FImages.UnRegisterChanges(FImageChangeLink);
+    end;
     FImages := AValue;
+    if Assigned(FImages) then
+    begin
+      FImages.RegisterChanges(FImageChangeLink);
+      FImages.FreeNotification(Self);
+    end;
     ImageListChange(Self);
   end;
 end;
@@ -1391,6 +1487,15 @@ begin
   LValue := AValue;
   if LValue = '' then
     LValue := DEFAULT_CLASSIC_FAMILY;
+  //Reject an unregistered family: raise at design time / direct assignment, but
+  //fall back to Classic while a deployed form is streaming.
+  if not StyleFamilyExists(LValue) then
+  begin
+    if StyleFamilyLoadingFallback(Self) then
+      LValue := DEFAULT_CLASSIC_FAMILY
+    else
+      raise EStyledAttributesException.CreateFmt(ERROR_FAMILY_NOT_FOUND, [LValue]);
+  end;
   if (LValue <> Self.FStyleFamily) or not FStyleApplied then
   begin
     ProcessButtons(
@@ -1407,6 +1512,40 @@ begin
   end;
   if FStyleFamily = DEFAULT_CLASSIC_FAMILY then
     StyleElements := [seFont, seClient, seBorder];
+end;
+
+procedure TCustomStyledDBNavigator.SetStyleShadowSize(const AValue: Integer);
+begin
+  if FStyleShadowSize <> AValue then
+  begin
+    if AValue < DEFAULT_SHADOW_SIZE then
+      raise EReadError.create(SInvalidProperty);
+    ProcessButtons(
+      procedure (ABtn: TStyledNavButton)
+      begin
+        if ABtn.StyleShadowSize = FStyleShadowSize then
+          ABtn.StyleShadowSize := AValue;
+      end);
+    FStyleShadowSize := AValue;
+    StyleApplied := ApplyDbnavigatorStyle;
+  end;
+end;
+
+procedure TCustomStyledDBNavigator.SetStyleBorderWidth(const AValue: Integer);
+begin
+  if FStyleBorderWidth <> AValue then
+  begin
+    if AValue < DEFAULT_BORDER_WIDTH then
+      raise EReadError.create(SInvalidProperty);
+    ProcessButtons(
+      procedure (ABtn: TStyledNavButton)
+      begin
+        if ABtn.StyleBorderWidth = FStyleBorderWidth then
+          ABtn.StyleBorderWidth := AValue;
+      end);
+    FStyleBorderWidth := AValue;
+    StyleApplied := ApplyDbnavigatorStyle;
+  end;
 end;
 
 procedure TCustomStyledDBNavigator.SetStyleRadius(const AValue: Integer);
@@ -1525,6 +1664,8 @@ begin
     Images :=  LNavigator.FImages;
     FShowCaptions := LNavigator.FShowCaptions;
     FStyleRadius := LNavigator.FStyleRadius;
+    FStyleShadowSize := LNavigator.FStyleShadowSize;
+    FStyleBorderWidth := LNavigator.FStyleBorderWidth;
     FStyleDrawType := LNavigator.FStyleDrawType;
     FStyleFamily := LNavigator.FStyleFamily;
     FStyleClass := LNavigator.FStyleClass;
@@ -1568,11 +1709,15 @@ end;
 
 procedure TCustomStyledDBNavigator.WMSetFocus(var Message: TWMSetFocus);
 begin
+  //Let the base process focus first, so OnEnter fires
+  inherited;
   FButtons[FocusedButton].Invalidate;
 end;
 
 procedure TCustomStyledDBNavigator.WMKillFocus(var Message: TWMKillFocus);
 begin
+  //Let the base process focus loss first, so OnExit fires
+  inherited;
   FButtons[FocusedButton].Invalidate;
 end;
 
@@ -1643,7 +1788,17 @@ procedure TCustomStyledDBNavigator.SetDisabledImages(const AValue: TCustomImageL
 begin
   if FDisabledImages <> AValue then
   begin
+    if Assigned(FDisabledImages) then
+    begin
+      FDisabledImages.RemoveFreeNotification(Self);
+      FDisabledImages.UnRegisterChanges(FDisabledImageChangeLink);
+    end;
     FDisabledImages := AValue;
+    if Assigned(FDisabledImages) then
+    begin
+      FDisabledImages.RegisterChanges(FDisabledImageChangeLink);
+      FDisabledImages.FreeNotification(Self);
+    end;
     DisabledImageListChange(Self);
   end;
 end;
@@ -1871,6 +2026,8 @@ begin
       FDbNavigator._DefaultCursor,
       FDbNavigator._UseCustomDrawType);
     StyleRadius := FDbNavigator.StyleRadius;
+    StyleShadowSize := FDbNavigator.StyleShadowSize;
+    StyleBorderWidth := FDbNavigator.StyleBorderWidth;
     StyleDrawType := FDbNavigator.StyleDrawType;
     ControlStyle := [csCaptureMouse, csDoubleClicks, csSetCaption, csOpaque];
   end
@@ -1901,6 +2058,22 @@ begin
     Result := StyleDrawType <> FDbNavigator.StyleDrawType
   else
     Result := StyleDrawType <> btRoundRect;
+end;
+
+function TStyledNavButton.IsCustomShadowSize: Boolean;
+begin
+  if Assigned(FDbNavigator) then
+    Result := StyleShadowSize <> FDbNavigator.StyleShadowSize
+  else
+    Result := StyleShadowSize <> DEFAULT_SHADOW_SIZE;
+end;
+
+function TStyledNavButton.IsCustomBorderWidth: Boolean;
+begin
+  if Assigned(FDbNavigator) then
+    Result := StyleBorderWidth <> FDbNavigator.StyleBorderWidth
+  else
+    Result := StyleBorderWidth <> DEFAULT_BORDER_WIDTH;
 end;
 
 function TStyledNavButton.IsCustomRadius: Boolean;
@@ -2326,6 +2499,7 @@ initialization
   TCustomStyledDBNavigator._DefaultClass := DEFAULT_WINDOWS_CLASS;
   TCustomStyledDBNavigator._DefaultAppearance := DEFAULT_APPEARANCE;
   TCustomStyledDBNavigator._DefaultStyleRadius := DEFAULT_RADIUS;
+  TCustomStyledDBNavigator._DefaultStyleBorderWidth := DEFAULT_BORDER_WIDTH;
   TCustomStyledDBNavigator._DefaultCursor := DEFAULT_CURSOR;
 
 end.

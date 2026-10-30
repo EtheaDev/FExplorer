@@ -3,7 +3,7 @@
 {       SVGIconImageList: An extended ImageList for Delphi/FMX                 }
 {       to simplify use of SVG Icons (resize, opacity and more...)             }
 {                                                                              }
-{       Copyright (c) 2019-2025 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2019-2026 (Ethea S.r.l.)                                 }
 {       Author: Carlo Barazzetta                                               }
 {       Contributors:                                                          }
 {                                                                              }
@@ -47,7 +47,7 @@ uses
   ;
 
 const
-  SVGIconImageListVersion = '4.4.1';
+  SVGIconImageListVersion = '4.8.0';
   DEFAULT_SIZE = 32;
   ZOOM_DEFAULT = 100;
   SVG_INHERIT_COLOR = TAlphaColors.Null;
@@ -142,6 +142,11 @@ type
       const ApplyToRootOnly: Boolean;
       const AReplaceFixedColor: Boolean = False);
     procedure SetApplyFixedColorToRootOnly(const Value: Boolean);
+    function StoreFixedColor: Boolean;
+    function StoreGrayScale: Boolean;
+    //The ApplyFixedColorToRootOnly used to render: the item one when the item
+    //has its own FixedColor, the list one when it inherits the color
+    function GetRenderApplyFixedColorToRootOnly: Boolean;
   protected
     function GetDisplayName: string; override;
     function CreateMultiResBitmap: TMultiResBitmap; override;
@@ -155,9 +160,12 @@ type
     property MultiResBitmap;
     property IconName: string read GetIconName write SetIconName;
     property SVGText: string read GetSVGText write SetSVGText;
-    property FixedColor: TAlphaColor read GetFixedColor write SetFixedColor default SVG_INHERIT_COLOR;
+    //Stored only when the item has its own value: the getters answer the list
+    //value when the item inherits it, and writing that would turn it into an
+    //own value when the form is read back
+    property FixedColor: TAlphaColor read GetFixedColor write SetFixedColor stored StoreFixedColor default SVG_INHERIT_COLOR;
     property ApplyFixedColorToRootOnly: Boolean read FApplyFixedColorToRootOnly write SetApplyFixedColorToRootOnly default false;
-    property GrayScale: Boolean read GetGrayScale write SetGrayScale default False;
+    property GrayScale: Boolean read GetGrayScale write SetGrayScale stored StoreGrayScale default False;
     property Opacity: single read GetOpacity write SetOpacity stored StoreOpacity;
   end;
 
@@ -245,23 +253,23 @@ uses
   , System.SysUtils
   , FMX.Forms
   , FMX.Consts
-  {$IFDEF Image32_SVGEngine}
+  {$IFDEF FMX_Image32_SVGEngine}
+    {$IFNDEF SvgDisableEngineHint}
+    {$MESSAGE HINT 'Use Delphi native Image32 SVG-Engine for SVGIconImageList'}
+    {$ENDIF}
   , FMX.Image32SVG
   {$ENDIF}
-  {$IFDEF Skia_SVGEngine}
+  {$IFDEF FMX_Skia_SVGEngine}
+    {$IFNDEF SvgDisableEngineHint}
+    {$MESSAGE HINT 'Use Skia4Delphi "wrapper" SVG-Engine for SVGIconImageList'}
+    {$ENDIF}
   , FMX.ImageSkiaSVG
   {$ENDIF}
   ;
 
 procedure PaintToBitmap(const ABitmap: TBitmap; const ASVG: TFmxImageSVG;
   const AZoom: Integer = 100; const AKeepAspectRatio: Boolean = True);
-var
-  LRect: TRectF;
-  LWidth, LHeight: Integer;
 begin
-  LWidth := ABitmap.Canvas.Width;
-  LHeight := ABitmap.Canvas.Height;
-  LRect := TRect.Create(0, 0, LWidth, LHeight);
   ASVG.PaintToBitmap(ABitmap, AZoom, AKeepAspectRatio);
 end;
 
@@ -295,14 +303,19 @@ begin
   LSVG := SVG;
   LSVG.Opacity := Opacity;
   LSVG.FixedColor := FixedColor;
+  LSVG.ApplyFixedColorToRootOnly := ApplyFixedColorToRootOnly;
   LSVG.Grayscale := GrayScale;
   PaintToBitmap(LBitmap, LSVG, FZoom);
 end;
 
 function TSVGIconBitmapItem.GetBitmap: TBitmapOfItem;
 begin
-  DrawSVGIcon;
   Result := inherited Bitmap;
+  //Draw SVG Icon only if not already drawn at the correct size
+  //to prevent infinite notification loop (DoChange/ClearCache/Timer cycle)
+  if (Result.Width <> Round(FWidth * Scale)) or
+     (Result.Height <> Round(FHeight * Scale)) then
+    DrawSVGIcon;
 end;
 
 function TSVGIconBitmapItem.GetDisplayName: string;
@@ -324,12 +337,13 @@ end;
 
 function TSVGIconBitmapItem.GetApplyFixedColorToRootOnly: Boolean;
 begin
-  Result := FOwnerMultiResBitmap.FOwnerSourceItem.ApplyFixedColorToRootOnly;
+  Result := FOwnerMultiResBitmap.FOwnerSourceItem.GetRenderApplyFixedColorToRootOnly;
 end;
 
 function TSVGIconBitmapItem.GetHeight: Integer;
 begin
-  Result := inherited Height;
+  //The logical size (what SetHeight writes), not the bitmap pixels
+  Result := FHeight;
 end;
 
 function TSVGIconBitmapItem.GetOpacity: single;
@@ -351,7 +365,8 @@ end;
 
 function TSVGIconBitmapItem.GetWidth: Integer;
 begin
-  Result := inherited Width;
+  //The logical size (what SetWidth writes), not the bitmap pixels
+  Result := FWidth;
 end;
 
 procedure TSVGIconBitmapItem.SetBitmap(const AValue: TBitmapOfItem);
@@ -461,6 +476,7 @@ begin
   begin
     FOpacity := TSVGIconSourceItem(Source).FOpacity;
     FFixedColor := TSVGIconSourceItem(Source).FFixedColor;
+    FApplyFixedColorToRootOnly := TSVGIconSourceItem(Source).FApplyFixedColorToRootOnly;
     FGrayScale := TSVGIconSourceItem(Source).FGrayScale;
     FSVG.LoadFromText(TSVGIconSourceItem(Source).SVG.Source);
   end;
@@ -482,10 +498,10 @@ constructor TSVGIconSourceItem.Create(Collection: TCollection);
 begin
   inherited Create(Collection);
 
-  {$IFDEF Image32_SVGEngine}
+  {$IFDEF FMX_Image32_SVGEngine}
   FSVG := TFmxImage32SVG.Create;
   {$ENDIF}
-  {$IFDEF Skia_SVGEngine}
+  {$IFDEF FMX_Skia_SVGEngine}
   FSVG := TFmxImageSKIASVG.Create;
   {$ENDIF}
   FOpacity := -1;
@@ -627,7 +643,26 @@ end;
 
 function TSVGIconSourceItem.StoreOpacity: Boolean;
 begin
-  Result := (FOwnerImageList = nil) or (FOpacity <> FOwnerImageList.FOpacity);
+  //-1 = inherited from the list
+  Result := FOpacity <> -1;
+end;
+
+function TSVGIconSourceItem.StoreFixedColor: Boolean;
+begin
+  Result := FFixedColor <> SVG_INHERIT_COLOR;
+end;
+
+function TSVGIconSourceItem.StoreGrayScale: Boolean;
+begin
+  Result := FGrayScale;
+end;
+
+function TSVGIconSourceItem.GetRenderApplyFixedColorToRootOnly: Boolean;
+begin
+  if (FFixedColor <> SVG_INHERIT_COLOR) or (FOwnerImageList = nil) then
+    Result := FApplyFixedColorToRootOnly
+  else
+    Result := FOwnerImageList.FApplyFixedColorToRootOnly;
 end;
 
 procedure TSVGIconSourceItem.UpdateIconAttributes(
@@ -654,8 +689,9 @@ begin
     if (I=0) and (FOwnerImageList <> nil) then
     begin
       LItem.SetIconSize(FOwnerImageList.Width, FOwnerImageList.Height, FOwnerImageList.Zoom);
-      LSize.cx := LItem.Width;
-      LSize.cy := LItem.Height;
+      //The logical size of the icon (the bitmap is FWidth * Scale)
+      LSize.cx := LItem.FWidth;
+      LSize.cy := LItem.FHeight;
       FOwnerImageList.UpdateDestination(LSize, Index);
     end;
   end;
@@ -668,18 +704,36 @@ function TSVGIconImageList.InsertIcon(const AIndex: Integer;
 var
   LItem: TSVGIconSourceItem;
   LDest: TCustomDestinationItem;
+  LIconName: string;
+  LCount: Integer;
 begin
   LItem := Self.Source.Insert(AIndex) as TSVGIconSourceItem;
   Result := LItem;
-  LItem.MultiResBitmap.Add;
-  LItem.SVGText := ASVGText;
-  LDest := Self.Destination.Insert(AIndex);
+  //Name first, then the destination of this icon, and only then the SVG:
+  //assigning SVGText renders the icon and updates the destination at Index,
+  //which must already be this icon's one (with the de-duplicated name)
   if AIconName <> '' then
   begin
-    LItem.Name := AIconName;
-    with LDest.Layers.Add do
-      Name := AIconName;
+    LCount := 1;
+    LIconName := AIconName;
+    //Check dup Names
+    while true do
+    begin
+      if GetIconByName(LIconName) = nil then
+        break
+      else
+      begin
+        LIconName := AIconName+IntToStr(LCount);
+        Inc(LCount)
+      end;
+    end;
+    LItem.Name := LIconName;
   end;
+  LDest := Self.Destination.Insert(AIndex);
+  with LDest.Layers.Add do
+    Name := LItem.Name;
+  LItem.MultiResBitmap.Add;
+  LItem.SVGText := ASVGText;
 end;
 
 function TSVGIconImageList.CloneIcon(const AIndex: Integer; const AInsertIndex: Integer = -1): TSVGIconSourceItem;
@@ -692,10 +746,13 @@ begin
   if AInsertIndex >= 0 then LNewIndex := AInsertIndex
   else LNewIndex := AIndex;
 
-  Result := InsertIcon(LNewIndex, LItem.SVGText);
-  Result.Opacity := LItem.Opacity;
-  Result.FixedColor := LItem.FixedColor;
-  Result.GrayScale := LItem.GrayScale;
+  //Same name (made unique by InsertIcon), and the item own attributes: the
+  //getters would turn the inherited ones into own values
+  Result := InsertIcon(LNewIndex, LItem.SVGText, LItem.IconName);
+  Result.FOpacity := LItem.FOpacity;
+  Result.FFixedColor := LItem.FFixedColor;
+  Result.FApplyFixedColorToRootOnly := LItem.FApplyFixedColorToRootOnly;
+  Result.FGrayScale := LItem.FGrayScale;
   Result.SVG.LoadFromText(LItem.SVG.Source);
   RefreshAllIcons;
 end;
@@ -724,16 +781,17 @@ begin
 
   if Assigned(LItem) then
   begin
-    {$IFDEF Image32_SVGEngine}
+    {$IFDEF FMX_Image32_SVGEngine}
     Result := TFmxImage32SVG.Create;
     {$ENDIF}
-    {$IFDEF Skia_SVGEngine}
+    {$IFDEF FMX_Skia_SVGEngine}
     Result := TFmxImageSKIASVG.Create;
     {$ENDIF}
 
     Result.LoadFromText(LItem.SVG.Source);
     Result.Opacity := LItem.Opacity;
     Result.FixedColor := LItem.FixedColor;
+    Result.ApplyFixedColorToRootOnly := LItem.GetRenderApplyFixedColorToRootOnly;
     Result.GrayScale := LItem.GrayScale;
   end
   else
@@ -761,10 +819,10 @@ var
   LErrors: string;
 begin
   Result := 0;
-  {$IFDEF Image32_SVGEngine}
+  {$IFDEF FMX_Image32_SVGEngine}
   LSVG := TFmxImage32SVG.Create;
   {$ENDIF}
-  {$IFDEF Skia_SVGEngine}
+  {$IFDEF FMX_Skia_SVGEngine}
   LSVG := TFmxImageSKIASVG.Create;
   {$ENDIF}
   try
@@ -773,9 +831,11 @@ begin
     for LIndex := 0 to AFileNames.Count - 1 do
     begin
       LFileName := AFileNames[LIndex];
-      LSVG.LoadFromFile(LFileName);
       LIconName := ChangeFileExt(ExtractFileName(LFileName), '');
       try
+        //Inside the try: a bad file is reported with the others, it does not
+        //stop the batch
+        LSVG.LoadFromFile(LFileName);
         LItem := InsertIcon(Source.Count, LSVG.Source, LIconName);
         LItem.SVG := LSVG;
         Inc(Result);
@@ -806,6 +866,7 @@ begin
   begin
     Opacity := TSVGIconImageList(Source).Opacity;
     FFixedColor := TSVGIconImageList(Source).FFixedColor;
+    FApplyFixedColorToRootOnly := TSVGIconImageList(Source).FApplyFixedColorToRootOnly;
     FGrayScale := TSVGIconImageList(Source).FGrayScale;
     FAutoSizeBitmaps := TSVGIconImageList(Source).FAutoSizeBitmaps;
     Zoom := TSVGIconImageList(Source).FZoom;

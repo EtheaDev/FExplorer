@@ -1,8 +1,8 @@
-{******************************************************************************}
+﻿{******************************************************************************}
 {                                                                              }
 {  StyledButton Attributes Editor: Component editor for Styled Button          }
 {                                                                              }
-{  Copyright (c) 2022-2025 (Ethea S.r.l.)                                      }
+{  Copyright (c) 2022-2026 (Ethea S.r.l.)                                      }
 {  Author: Carlo Barazzetta                                                    }
 {  Contributors:                                                               }
 {                                                                              }
@@ -43,6 +43,7 @@ uses
   Vcl.Forms,
   Vcl.StdCtrls,
   Vcl.StyledButton,
+  Vcl.StyledPanel,
   Vcl.ButtonStylesAttributes,
   Vcl.StandardButtonStyles,
   Vcl.BootstrapButtonStyles,
@@ -127,6 +128,19 @@ uses
 
 var
   SavedBounds: TRect = (Left: 0; Top: 0; Right: 0; Bottom: 0);
+  SavedWindowState: TWindowState = wsNormal;
+
+procedure SaveEditorBounds(const AEditor: TForm);
+begin
+  //Bounds of the normal window only: the ones of a maximized window, restored
+  //on a normal one, give a window as big as the screen but not maximized
+  if AEditor.WindowState = wsNormal then
+    SavedBounds := AEditor.BoundsRect;
+  if AEditor.WindowState = wsMaximized then
+    SavedWindowState := wsMaximized
+  else
+    SavedWindowState := wsNormal;
+end;
 
 function EditStyledButtonAttributes(const AButton: TControl): Boolean;
 begin
@@ -178,7 +192,7 @@ begin
       DestButton.Style := AButtonRender.Style;
 
       Result := ShowModal = mrOk;
-      SavedBounds := BoundsRect;
+      SaveEditorBounds(LEditor);
     finally
       Free;
     end;
@@ -287,6 +301,9 @@ begin
 
   if SavedBounds.Right - SavedBounds.Left > 0 then
     SetBounds(SavedBounds.Left, SavedBounds.Top, SavedBounds.Width, SavedBounds.Height);
+  //After the normal bounds, so that "Restore" goes back to them
+  if SavedWindowState = wsMaximized then
+    WindowState := wsMaximized;
 end;
 
 procedure TStyledButtonCustomEditor.HelpButtonClick(Sender: TObject);

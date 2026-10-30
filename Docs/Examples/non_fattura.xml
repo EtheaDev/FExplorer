@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TISFunction>
+  <Id>#Id</Id>
+  <Extended_description>#Descrizione_estesa</Extended_description>
+  <FormClass>#FormClass</FormClass>
+  <IOClassName>#IOClassName</IOClassName>
+  <Flag_Menu>TRUE</Flag_Menu>
+  <ImageIndex>1</ImageIndex>
+  <Description>#Description</Description>
+  <UpdateTimeStamp>#TimeStamp</UpdateTimeStamp>
+</TISFunction>

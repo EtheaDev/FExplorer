@@ -115,8 +115,10 @@ uses
   SynHighlighterST,
   SynHighlighterLDraw,
   SynHighlighterOmni,
+  SynHighlighterMarkdown,
   SynSpellCheck,
-  SynURIOpener;
+  SynURIOpener,
+  SynEditActionsResource;
 
 procedure Register;
 
@@ -177,15 +179,17 @@ begin
     // other
     TSynBaanSyn, TSynGalaxySyn, TSynProgressSyn, TSynMsgSyn,
     TSynIdlSyn, TSynUnrealSyn, TSynCPMSyn, TSynTeXSyn, TSynYAMLSyn,
-    TSynHaskellSyn, TSynLDRSyn, TSynURISyn, TSynDOTSyn, TSynRCSyn
+    TSynHaskellSyn, TSynLDRSyn, TSynURISyn, TSynDOTSyn, TSynRCSyn,
+    TSynMarkdownSyn
   ]);
 
   // SynEdit Actions
   RegisterActions('SynEdit Spell Check',
     [TSynSpellCheckFile, TSynSpellCheckLine, TSynSpellCheckSelection,
     TSynSpellCheckWord, TSynSpellClearErrors, TSynSpellCheckAsYouType,
-    TSynSpellErrorAdd, TSynSpellErrorIgnoreOnce, 
-    TSynSpellErrorIgnore, TSynSpellErrorDelete], nil);
+    TSynSpellErrorAdd, TSynSpellErrorIgnoreOnce,
+    TSynSpellErrorIgnore, TSynSpellErrorDelete], TSynEditActions);
+  RegisterActions('Edit', [TSynEditRedo], TSynEditActions);
 end;
 
 end.

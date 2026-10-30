@@ -2,7 +2,7 @@
 {                                                                              }
 {       SVGIconImageList Component Editor                                      }
 {                                                                              }
-{       Copyright (c) 2019-2025 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2019-2026 (Ethea S.r.l.)                                 }
 {       Author: Carlo Barazzetta                                               }
 {       Contributors: Vincent Parrett, Kiriakos Vlahos                         }
 {                                                                              }
@@ -130,6 +130,8 @@ type
     AddWebButton: TButton;
     ReplaceWebButton: TButton;
     WebBevel: TBevel;
+    BackgroundTrackBar: TTrackBar;
+    IconBackgroundPanel: TPanel;
     procedure FormCreate(Sender: TObject);
     procedure ApplyButtonClick(Sender: TObject);
     procedure ClearAllButtonClick(Sender: TObject);
@@ -175,6 +177,7 @@ type
     procedure ApplyToRootOnlyItemCheckBoxClick(Sender: TObject);
     procedure AddWebButtonClick(Sender: TObject);
     procedure ReplaceWebButtonClick(Sender: TObject);
+    procedure BackgroundTrackBarTracking(Sender: TObject);
   private
     FOldSVGText: string;
     FOpenDialog: TOpenPictureDialogSvg;
@@ -188,7 +191,7 @@ type
     FUpdating: Boolean;
     FChanged: Boolean;
     FModified: Boolean;
-
+    procedure UpdateIconBackgroundColour;
     procedure BuildList(Selected: Integer);
     procedure UpdateCategories;
     procedure Apply;
@@ -246,7 +249,21 @@ uses
 
 var
   SavedBounds: TRect = (Left: 0; Top: 0; Right: 0; Bottom: 0);
+  SavedWindowState: TWindowState = wsNormal;
   paTopHeight: Integer;
+
+procedure SaveEditorState(const AEditor: TSVGIconImageListEditor);
+begin
+  //Bounds of the normal window only: the ones of a maximized window, restored
+  //on a normal one, give a window as big as the screen but not maximized
+  if AEditor.WindowState = wsNormal then
+    SavedBounds := AEditor.BoundsRect;
+  if AEditor.WindowState = wsMaximized then
+    SavedWindowState := wsMaximized
+  else
+    SavedWindowState := wsNormal;
+  paTopHeight := AEditor.paTop.Height;
+end;
 
 function EditSVGIconImageList(const AImageList: TSVGIconImageList): Boolean;
 var
@@ -272,8 +289,7 @@ begin
         Screen.Cursor := crDefault;
       end;
     end;
-    SavedBounds := LEditor.BoundsRect;
-    paTopHeight := LEditor.paTop.Height;
+    SaveEditorState(LEditor);
   finally
     LEditor.Free;
   end;
@@ -308,8 +324,7 @@ begin
         Screen.Cursor := crDefault;
       end;
     end;
-    SavedBounds := LEditor.BoundsRect;
-    paTopHeight := LEditor.paTop.Height;
+    SaveEditorState(LEditor);
   finally
     LEditor.Free;
   end;
@@ -350,8 +365,7 @@ begin
         Screen.Cursor := crDefault;
       end;
     end;
-    SavedBounds := LEditor.BoundsRect;
-    paTopHeight := LEditor.paTop.Height;
+    SaveEditorState(LEditor);
   finally
     LEditor.Free;
   end;
@@ -545,6 +559,14 @@ begin
   end;
 end;
 
+procedure TSVGIconImageListEditor.UpdateIconBackgroundColour;
+var
+  LGrayValue: byte;
+begin
+  LGrayValue := BackgroundTrackBar.Position;
+  IconBackgroundPanel.Color := RGB(LGrayValue, LGrayValue, LGrayValue);
+end;
+
 procedure TSVGIconImageListEditor.WidthEditChange(Sender: TObject);
 begin
   if FUpdating then Exit;
@@ -642,6 +664,7 @@ var
   Item: TSVGIconItem;
 begin
   FOpenDialog.Options := FOpenDialog.Options - [ofAllowMultiSelect];
+  FOpenDialog.FileName:=ExtractFilename(FEditingList.SVGIconItems[ImageView.ItemIndex].IconName)+'.svg';  // JR
   if FOpenDialog.Execute then
   begin
     FEditingList.BeginUpdate;
@@ -658,6 +681,7 @@ begin
       BuildList(ImageView.Items[ImageView.ItemIndex].ImageIndex);
     finally
       FEditingList.EndUpdate;
+      FEditingList.RecreateBitmaps;
       Screen.Cursor := crDefault;
     end;
   end;
@@ -816,6 +840,11 @@ begin
   end;
 end;
 
+procedure TSVGIconImageListEditor.BackgroundTrackBarTracking(Sender: TObject);
+begin
+  UpdateIconBackgroundColour;
+end;
+
 procedure TSVGIconImageListEditor.BuildList(Selected: Integer);
 begin
   FEditingList.BeginUpdate;
@@ -965,6 +994,7 @@ begin
   WebBevel.Visible := False;
   {$ENDIF}
 
+  UpdateIconBackgroundColour;
   FUpdating := False;
   ResetError;
   FEditingList := TSVGIconImageList.Create(Self);
@@ -1181,6 +1211,9 @@ begin
 
   if SavedBounds.Right - SavedBounds.Left > 0 then
     SetBounds(SavedBounds.Left, SavedBounds.Top, SavedBounds.Width, SavedBounds.Height);
+  //After the normal bounds, so that "Restore" goes back to them
+  if SavedWindowState = wsMaximized then
+    WindowState := wsMaximized;
 
   if paTopHeight <> 0 then
     paTop.Height := paTopHeight;

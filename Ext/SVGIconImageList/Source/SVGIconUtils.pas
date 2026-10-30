@@ -3,18 +3,12 @@
 {       SVGIconImageList: An extended ImageList for Delphi/VCL                 }
 {       to simplify use of SVG Icons (resize, opacity and more...)             }
 {                                                                              }
-{       Copyright (c) 2019-2025 (Ethea S.r.l.)                                 }
+{       Copyright (c) 2019-2026 (Ethea S.r.l.)                                 }
 {       Author: Carlo Barazzetta                                               }
 {       Contributors: Vincent Parrett, Kiriakos Vlahos                         }
 {                                                                              }
 {       https://github.com/EtheaDev/SVGIconImageList                           }
 {                                                                              }
-{******************************************************************************}
-{       Original version (c) 2005, 2008 Martin Walter with license:            }
-{       Use of this file is permitted for commercial and non-commercial        }
-{       use, as long as the author is credited.                                }
-{       home page: http://www.mwcs.de                                          }
-{       email    : martin.walter@mwcs.de                                       }
 {******************************************************************************}
 {                                                                              }
 {  Licensed under the Apache License, Version 2.0 (the "License");             }
@@ -49,14 +43,14 @@ uses
   ;
 
 Type
-  TPngExportSize = (es16, es32, es48, es64, es96, es128, es192, es256, esCustom);
+  TPngExportSize = (es16, es18, es24, es32, es48, es64, es96, es128, es192, es256, esCustom);
   TPngExportSizes = Set of TPngExportSize;
 
   TExportToPngEvent = procedure (const ASizes: TPngExportSizes; const SVGText: string;
     const AFolder, AFormat: string; ACustomSize: Integer) of Object;
 
 const
-  AllPngExportSizes = [es16, es32, es48, es64, es96, es128, es192, es256, esCustom];
+  AllPngExportSizes = [es16, es18, es24, es32, es48, es64, es96, es128, es192, es256, esCustom];
 
 function UpdateSVGIconListView(const AListView: TListView;
   const ACategory: string = '';
@@ -194,7 +188,7 @@ begin
     LImagePng := PNG4TransparentBitMap(LBitmap);
     LFileName := IncludeTrailingPathDelimiter(AOutFolder)+
       StringReplace(AFileName, '\', '_',[rfReplaceAll]);
-    ChangeFileExt(LFileName,'.png');
+    LFileName := ChangeFileExt(LFileName,'.png');
     LImagePng.SaveToFile(LFileName);
   finally
     LBitmap.Free;
@@ -235,8 +229,7 @@ begin
     {$ENDIF}
     else
       Exit;
-    Result := LIconItems.Count;
-    for I := 0 to Result -1 do
+    for I := 0 to LIconItems.Count -1 do
     begin
       LItem := LIconItems[I];
       if (ACategory = '') or
@@ -245,6 +238,8 @@ begin
         LListItem := AListView.Items.Add;
         LListItem.Caption := GetItemCaption;
         LListItem.ImageIndex := I;
+        //The number of items added (with a category filter, not all icons)
+        Inc(Result);
       end;
     end;
   finally
@@ -263,16 +258,23 @@ var
   LListItem: TListItem;
   LImageList: TCustomImageList;
 begin
+  Result := 0;
   LImageList := AListView.LargeImages as TCustomImageList;
+  if LImageList = nil then
+    Exit;
   AListView.Items.BeginUpdate;
   try
-    Result := LImageList.Count;
-    for I := 0 to Result -1 do
+    //Walk the rows of the list view: with a category filter they are fewer
+    //than the icons, and row I shows the icon of its own ImageIndex
+    for I := 0 to AListView.Items.Count -1 do
     begin
+      LListItem := AListView.Items[I];
+      if (LListItem.ImageIndex < 0) or (LListItem.ImageIndex >= LImageList.Count) then
+        Continue;
+      Inc(Result);
       if (LImageList is TSVGIconImageListBase) then
       begin
-        LItem := TSVGIconImageListBase(LImageList).SVGIconItems[I];
-        LListItem := AListView.Items[I];
+        LItem := TSVGIconImageListBase(LImageList).SVGIconItems[LListItem.ImageIndex];
         if AShowCaption then
         begin
           LListItem.Caption := Format('%d.%s',
@@ -284,8 +286,7 @@ begin
       {$IFDEF D10_3}
       if (LImageList is TVirtualImageList) then
       begin
-        LVirtualItem := TVirtualImageList(LImageList).Images.Items[I];
-        LListItem := AListView.Items[I];
+        LVirtualItem := TVirtualImageList(LImageList).Images.Items[LListItem.ImageIndex];
         if AShowCaption then
         begin
           LListItem.Caption := Format('%d.%s',

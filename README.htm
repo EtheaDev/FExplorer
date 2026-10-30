@@ -1,4 +1,15 @@
 <style type="text/css">
+body{
+  font-family: Arial, sans-serif;
+}
+img{
+  max-width: 100%;
+  height: auto;
+}
+video{
+  max-width: 100%;
+  height: auto;
+}
 code{
   font-family: "Consolas", monospace;
 }
@@ -21,67 +32,140 @@ table{
   border:1px solid;
   border-collapse:collapse;
 }
-th{  padding:5px;
+th{
+  padding:5px;
   border:1px solid;
 }
 td{
   padding:5px;
   border:1px solid;
 }
+mark{
+  background-color: #fff3a0;
+  color: #000;
+}
+kbd{
+  font-family: "Consolas", monospace;
+  border: 1px solid #bbb;
+  padding: 0 4px;
+}
+div.math{
+  text-align: center;
+}
+pre.mermaid{
+  border: none;
+  padding: 0;
+}
+.markdown-alert{
+  padding: 0.5em 1em;
+  margin-bottom: 1em;
+  border-left: 4px solid #d0d7de;
+}
+.markdown-alert-title{
+  font-weight: bold;
+}
+.markdown-alert-note{
+  border-left: 4px solid #0969da;
+}
+.markdown-alert-note .markdown-alert-title{
+  color: #0969da;
+}
+.markdown-alert-tip{
+  border-left: 4px solid #1a7f37;
+}
+.markdown-alert-tip .markdown-alert-title{
+  color: #1a7f37;
+}
+.markdown-alert-important{
+  border-left: 4px solid #8250df;
+}
+.markdown-alert-important .markdown-alert-title{
+  color: #8250df;
+}
+.markdown-alert-warning{
+  border-left: 4px solid #9a6700;
+}
+.markdown-alert-warning .markdown-alert-title{
+  color: #9a6700;
+}
+.markdown-alert-caution{
+  border-left: 4px solid #cf222e;
+}
+.markdown-alert-caution .markdown-alert-title{
+  color: #cf222e;
+}
 </style>
-<h1>FExplorer (Fattura Elettronica in Windows Explorer) <a href="https://opensource.org/licenses/Apache-2.0"><img src="https://img.shields.io/badge/License-Apache%202.0-yellowgreen.svg" alt="License"/></a></h1>
-<h2><strong>Anteprima Fattura Elettronica (Viewer e Icone) integrato in Windows Explorer e Visualizzatore</strong></h2>
-<h3>Versione attuale 2.4.0 del 28 Febbraio 2025</h3>
+<h1 id="fexplorer-fattura-elettronica-in-windows-explorer-license">FExplorer (Fattura Elettronica in Windows Explorer) <a href="https://opensource.org/licenses/Apache-2.0"><img src="https://img.shields.io/badge/License-Apache%202.0-yellowgreen.svg" alt="License" /></a></h1>
+<h2 id="anteprima-fattura-elettronica-viewer-e-icone-integrato-in-windows-explorer-e-visualizzatore"><strong>Anteprima Fattura Elettronica (Viewer e Icone) integrato in Windows Explorer e Visualizzatore</strong></h2>
+<h3 id="versione-attuale-241-del-30-ottobre-2026">Versione attuale 2.4.1 del 30 Ottobre 2026</h3>
 <p><strong>Una serie di strumenti per gestire i file xml contenenti Fatture Elettroniche in Windows:</strong></p>
 <ul>
-<li><p>Un <a href="https://docs.microsoft.com/en-us/windows/win32/shell/preview-handlers">Preview handler</a>  che permette di vedere una anteprima della Fattura Elettronica nel &ldquo;Pannello Anteprima&rdquo; di Windows Explorer.</p>
+<li>
+<p>Un <a href="https://docs.microsoft.com/en-us/windows/win32/shell/preview-handlers">Preview handler</a>  che permette di vedere una anteprima della Fattura Elettronica nel “Pannello Anteprima” di Windows Explorer.</p>
 </li>
-<li><p>Un <a href="https://docs.microsoft.com/en-us/windows/win32/shell/thumbnail-providers">Thumbnail handler</a> che permette di vedere l'anteprina delle F.E. come icone dentro Windows Explorer</p>
+<li>
+<p>Un <a href="https://docs.microsoft.com/en-us/windows/win32/shell/thumbnail-providers">Thumbnail handler</a> che permette di vedere l'anteprina delle F.E. come icone dentro Windows Explorer</p>
 </li>
-<li><p>Un <a href="https://github.com/EtheaDev/FExplorer/wiki/Using-The-SVG-Text-Editor">Visualizzatore</a> di F.E. che permette di visualizzarla in formati diversi e stamparla</p>
+<li>
+<p>Un <a href="https://github.com/EtheaDev/FExplorer/wiki/Using-The-SVG-Text-Editor">Visualizzatore</a> di F.E. che permette di visualizzarla in formati diversi e stamparla</p>
 </li>
 </ul>
-<h3>Funzionalità</h3>
+<h3 id="funzionalità">Funzionalità</h3>
 <ul>
-<li>Possibilità di scegliere lo stile di visualizzazione della fattura (PA, AssoSoftware, Custom&hellip;)</li>
+<li>Possibilità di scegliere lo stile di visualizzazione della fattura (PA, AssoSoftware, Custom…)</li>
 <li>Possibilità di associare colori diversi alle icone in base ai tipi di F.E. o ad altre regole</li>
 <li>Supporta Windows Vista, 7, 8 and 10 (sia 32 bit che 64 bit).</li>
 <li>Supporto dei temi (Scuro o Chiaro) in accordo con le preferenze dell'utente in Windows</li>
 <li>Supporto ai file firmati digitalmente (p7m) grazie alla libreria PKCS7Extractor</li>
 </ul>
-<h3>Installazione semplice</h3>
-<p>Clicca per scaricare il Setup: <a href="https://github.com/EtheaDev/FExplorer/releases/latest/download/FExplorerSetup.exe">FExplorerSetup.exe</a> (che si trova anche nella &ldquo;release area&rdquo;).</p>
-<p><img src="./Images/Setup.png" alt="Preview Thumbnails Dark"/></p>
+<h3 id="installazione-semplice">Installazione semplice</h3>
+<p>Clicca per scaricare il Setup: <a href="https://github.com/EtheaDev/FExplorer/releases/latest/download/FExplorerSetup.exe">FExplorerSetup.exe</a> (che si trova anche nella “release area”).</p>
+<p><img src="./Images/Setup.png" alt="Preview Thumbnails Dark" /></p>
 <p>INFO: il setup è firmato con certificato!</p>
-<h3>Pannello Preview e Anteprima Icone in azione</h3>
+<h3 id="pannello-preview-e-anteprima-icone-in-azione">Pannello Preview e Anteprima Icone in azione</h3>
 <p>Con Windows 10 e tema scuro:</p>
-<p><img src="./Images/FExplorer.png" alt="Preview Thumbnails Dark"/></p>
-<h3>Visualizzatore della Fattura Elettronica</h3>
+<p><img src="./Images/FExplorer.png" alt="Preview Thumbnails Dark" /></p>
+<h3 id="visualizzatore-della-fattura-elettronica">Visualizzatore della Fattura Elettronica</h3>
 <p>Un comodo visualizzatore della fattura elettronica per poterla anche stampare.</p>
-<p><img src="./Images/FEViewer.png" alt="FEViewer"/></p>
-<h3>Build e Installazione manuale (per sviluppatori Delphi)</h3>
+<p><img src="./Images/FEViewer.png" alt="FEViewer" /></p>
+<h3 id="build-e-installazione-manuale-per-sviluppatori-delphi">Build e Installazione manuale (per sviluppatori Delphi)</h3>
 <p>Se hai Delphi 11 o Delphi 12, puoi compilare manualmente il progetto.</p>
-<h2>Compilazione/Installazione packages di componenti di terze parti</h2>
+<h2 id="compilazioneinstallazione-packages-di-componenti-di-terze-parti">Compilazione/Installazione packages di componenti di terze parti</h2>
 <p>Utilizzare il file {FExplorer}\Ext\AllPackagesGroup.groupproj per caricare nell'IDE tutti i package da compilare e installare</p>
 <p>Utilizzare il file {FExplorer}\Source\FExplorerGroup.groupproj per caricare nell'IDE i 2 progetti da compilare</p>
 <p>Per installare manualmente FExplorer.dll seguire questi step:</p>
 <ol>
-<li><p>Chiudere tutte le istanze di Windows Explorer in cui è attivo il gestore di anteprima o è stato utilizzato il gestore di anteprima (ricorda che la dll rimane in memoria fino alla chiusura di Windows Explorer).</p>
+<li>
+<p>Chiudere tutte le istanze di Windows Explorer in cui è attivo il gestore di anteprima o è stato utilizzato il gestore di anteprima (ricorda che la dll rimane in memoria fino alla chiusura di Windows Explorer).</p>
 </li>
-<li><p>Se hai già utilizzato il programma di installazione, disinstallare i componenti dal sistema.</p>
+<li>
+<p>Se hai già utilizzato il programma di installazione, disinstallare i componenti dal sistema.</p>
 </li>
-<li><p>Per installare manualmente la dll modificare opportunamente il file <code>Setup \ Register64bit.bat</code> ed eseguirlo (run-as-administrator).</p>
+<li>
+<p>Per installare manualmente la dll modificare opportunamente il file <code>Setup \ Register64bit.bat</code> ed eseguirlo (run-as-administrator).</p>
 </li>
-<li><p>Se si desidera disinstallare la dll, modificare opportunamente il file Setup \ UnRegister64Bit.bat` ed eseguirlo.</p>
+<li>
+<p>Se si desidera disinstallare la dll, modificare opportunamente il file Setup \ UnRegister64Bit.bat` ed eseguirlo.</p>
 </li>
-<li><p>Una volta registrato, puoi continuare a modificare il codice e ricompilare la dll (attenzione a chiudere tutte le istanze di Explorer ogni volta che si ricompila).</p>
+<li>
+<p>Una volta registrato, puoi continuare a modificare il codice e ricompilare la dll (attenzione a chiudere tutte le istanze di Explorer ogni volta che si ricompila).</p>
 </li>
 </ol>
-<h2>Release Notes</h2>
+<h2 id="release-notes">Release Notes</h2>
+<p>30 Ottobre 2026 - Versione 2.4.1</p>
+<ul>
+<li>Editor: nel menu contestuale le voci “A capo automatico” e “Mostra numeri di riga”, con il segno di spunta: valgono per tutti gli editor aperti e vengono salvate con le altre opzioni dell'editor</li>
+<li>Visualizzatore: la larghezza del menu laterale compresso dipende dall'altezza del menu, così non compare più la barra di scorrimento verticale con il menu stretto</li>
+<li>Setup: nessuna scelta della lingua, l'installazione usa la lingua di Windows</li>
+<li>Licenze e crediti: lo stesso elenco delle librerie di terze parti nel setup, nel README e nella finestra Informazioni</li>
+<li>Nuovi logo, scatola e immagine del wizard di setup</li>
+<li>Copyright aggiornato al 2026; progetti compilabili anche con l'IDE a 64 bit di Delphi 12</li>
+<li>Usa StyledComponents 4.5.0</li>
+</ul>
 <p>28 Febbraio 2025 - Versione 2.4.0</p>
 <ul>
-<li>Aggiunta opzione &ldquo;A capo automatico&rdquo; per l'editor (attiva di default)</li>
-<li>Aggiornato componente &ldquo;Editor&rdquo;</li>
+<li>Aggiunta opzione “A capo automatico” per l'editor (attiva di default)</li>
+<li>Aggiornato componente “Editor”</li>
 </ul>
 <p>30 mag 2024 - Versione 2.3.1</p>
 <ul>
@@ -107,7 +191,7 @@ td{
 </ul>
 <p>23 Nov 2022 - Versione 2.1.0</p>
 <ul>
-<li>Aggiunto &ldquo;Stile&rdquo; SudTirolo (ITA/DEU)<a href="https://github.com/provbz/fatturapa-xsl-southtyrol">16</a></li>
+<li>Aggiunto “Stile” SudTirolo (ITA/DEU)<a href="https://github.com/provbz/fatturapa-xsl-southtyrol">16</a></li>
 <li>Aggiunta possibilità di spegnere pannello anteprima icona e testo XML nel Viewer</li>
 </ul>
 <p>11 Sep 2022 - Versione 2.0.0</p>
@@ -163,12 +247,15 @@ td{
 </ul>
 <p>FExplorer:</p>
 <ul>
-<li>default apertura file &ldquo;read-only&rdquo;</li>
-<li>Settings:</li>
+<li>default apertura file “read-only”</li>
+<li>Settings:
+<ul>
 <li>possibilità di abilitare l'editing dei file</li>
 <li>possibilità di caricare anche file xsl</li>
 <li>auto-riconoscimento xsl di trasformazione fatture*</li>
 <li>auto-riconoscimento xsl di trasformazioni icone svg*</li>
+</ul>
+</li>
 </ul>
 <p>*queste due funzioni permettono di utilizzare l'editor per testare nuovi stili di trasformazione di fatture e di icone</p>
 <p>Bug-fixing:</p>
@@ -179,12 +266,55 @@ td{
 </ul>
 <p>14 Apr 2021 - Versione 1.0.0</p>
 <p>26 Mar 2021 - Creazione Repo</p>
-<h2>Credits</h2>
-<p>Grazie a *<em> Rodrigo Ruz V. *</em> (autore di <a href="https://theroadtodelphi.com/">theroadtodelphi.com</a> Blog) per il suo ottimolavoro su <a href="https://github.com/RRUZ/delphi-preview-handler">delphi-preview-handler</a> da cui questo progetto ha usato codice e ispirazione.</p>
-<p>Grazie a *<em> Carlo Barazzetta *</em> per il suo ottimo lavoro su <a href="https://github.com/EtheaDev/SVGShellExtensions/">SvgShellExtensions</a> da cui questo progetto ha usato molto codice e ispirazione.</p>
-<p>Grazie ad *<em> Andrea Magni *</em> che ha collaborato alla realizzazione di questo progetto.</p>
-<h2>Licenza</h2>
-<p>Rilasciato sotto licenza <a href="https://opensource.org/licenses/Apache-2.0">Apache License, Version 2.0</a> (the &ldquo;License&rdquo;);</p>
-<p>A meno che non sia richiesto dalla legge applicabile o concordato per iscritto, il software distribuito in base alla Licenza è distribuito &ldquo;COSÌ COM'È&rdquo;, SENZA GARANZIE O CONDIZIONI DI ALCUN TIPO, esplicite o implicite. Vedere la Licenza per la lingua specifica che regola le autorizzazioni e le limitazioni ai sensi della Licenza.</p>
-<p><img src="./Setup/SupportingDelphi.jpg" alt="Delphi 12 Support"/></p>
+<h2 id="credits">Credits</h2>
+<p>Grazie a ** Rodrigo Ruz V. ** (autore di <a href="https://theroadtodelphi.com/">theroadtodelphi.com</a> Blog) per il suo ottimolavoro su <a href="https://github.com/RRUZ/delphi-preview-handler">delphi-preview-handler</a> da cui questo progetto ha usato codice e ispirazione.</p>
+<p>Grazie a ** Carlo Barazzetta ** per il suo ottimo lavoro su <a href="https://github.com/EtheaDev/SVGShellExtensions/">SvgShellExtensions</a> da cui questo progetto ha usato molto codice e ispirazione.</p>
+<p>Grazie ad ** Andrea Magni ** che ha collaborato alla realizzazione di questo progetto.</p>
+<h2 id="licenza">Licenza</h2>
+<p>Rilasciato sotto licenza <a href="https://opensource.org/licenses/Apache-2.0">Apache License, Version 2.0</a> (the “License”);</p>
+<p>A meno che non sia richiesto dalla legge applicabile o concordato per iscritto, il software distribuito in base alla Licenza è distribuito “COSÌ COM'È”, SENZA GARANZIE O CONDIZIONI DI ALCUN TIPO, esplicite o implicite. Vedere la Licenza per la lingua specifica che regola le autorizzazioni e le limitazioni ai sensi della Licenza.</p>
+<!-- raw HTML omitted -->
+<p>Copyright © 2021-2026 Ethea S.r.l.</p>
+<h3 id="crediti">Crediti</h3>
+<p>Autori: Carlo Barazzetta, Andrea Magni<br />
+Sorgenti del progetto: <a href="https://github.com/EtheaDev/FExplorer">https://github.com/EtheaDev/FExplorer</a></p>
+<h3 id="altre-librerie-di-ethea">Altre librerie di Ethea</h3>
+<ul>
+<li><strong><a href="https://github.com/EtheaDev/SVGIconImageList">SVGIconImageList</a></strong></li>
+<li><strong><a href="https://github.com/EtheaDev/StyledComponents">StyledComponents</a></strong></li>
+</ul>
+<h3 id="librerie-di-terze-parti">Librerie di terze parti</h3>
+<ul>
+<li><strong><a href="https://github.com/RRUZ/delphi-preview-handler">Delphi Preview Handler</a></strong><br />
+The Initial Developer of the Original Code is Rodrigo Ruz V.<br />
+Portions created by Rodrigo Ruz V. are Copyright © 2011-2023 Rodrigo Ruz V.</li>
+<li><strong><a href="https://github.com/RRUZ/vcl-styles-utils">VCL Styles Utils</a></strong><br />
+Portions created by Rodrigo Ruz V. are Copyright © 2012-2023 Rodrigo Ruz V. (Mozilla Public License 1.1)</li>
+<li><strong><a href="https://github.com/pyscripter/SynEdit">SynEdit (PyScripter fork)</a></strong><br />
+Portions created by Martin Waldenburg are Copyright © 1998 Martin Waldenburg (Mozilla Public License 1.1)</li>
+<li><strong><a href="https://skia4delphi.org">Skia4Delphi</a></strong><br />
+Copyright © 2021-2025 Skia4Delphi Project (MIT License)</li>
+<li><strong><a href="https://www.angusj.com/delphi/image32/Docs/_Body.htm">Image32 Library</a></strong><br />
+Copyright © 2019-2025 Angus Johnson (Boost Software License)</li>
+<li><strong><a href="https://www.openssl.org">OpenSSL Library: Cryptography and SSL/TLS Toolkit</a></strong><br />
+Copyright © 1998-2018 The OpenSSL Project. All rights reserved.</li>
+<li><strong><a href="https://github.com/synopse/SynPDF">Synopse/SynPDF</a></strong><br />
+Copyright © Synopse: all rights reserved.</li>
+<li><strong><a href="https://github.com/MuzioValerio/HtmlToPdf">HtmlToPdf</a></strong><br />
+Copyright © Muzio Valerio.</li>
+<li><strong><a href="https://github.com/BerndGabriel/HtmlViewer">HTMLViewer</a></strong><br />
+Copyright (c) 1995 - 2008 by L. David Baldwin<br />
+Copyright (c) 1995 - 2023 by Anders Melander (DitherUnit.pas)<br />
+Copyright (c) 1995 - 2023 by Ron Collins (HtmlGif1.pas)<br />
+Copyright (c) 2008 - 2009 by Sebastian Zierer (Delphi 2009 Port)<br />
+Copyright (c) 2008 - 2010 by Arvid Winkelsdorf (Fixes)<br />
+Copyright (c) 2009 - 2023 by HtmlViewer Team</li>
+<li><strong><a href="https://github.com/DelphiClubItalia/PKCS7Extractor">PKCS7Extractor</a></strong><br />
+Copyright © 2018 Delphi Club Italia (GNU LGPL v3)<br />
+Original authors: Christian Cristofori, Giancarlo Oneglio</li>
+<li><strong><a href="https://github.com/provbz/fatturapa-xsl-southtyrol">StyleSheet FatturaPA in South-Tyrol</a></strong><br />
+Copyright © 2017 Ferdinand Tavernini</li>
+</ul>
+<!-- raw HTML omitted -->
+<p><img src="./Setup/SupportingDelphi.jpg" alt="Delphi 12 Support" /></p>
 <p>Related links: <a href="https://www.embarcadero.com/">embarcadero.com</a> - <a href="https://learndelphi.org/">learndelphi.org</a></p>

@@ -1,9 +1,9 @@
-{******************************************************************************}
+﻿{******************************************************************************}
 {                                                                              }
 {  StyledCategoryButtons: a Styled CategoryButtons with TStyledButtonItem      }
 {  Based on TCategoryButtons and TButtonItem                                   }
 {                                                                              }
-{  Copyright (c) 2022-2025 (Ethea S.r.l.)                                      }
+{  Copyright (c) 2022-2026 (Ethea S.r.l.)                                      }
 {  Author: Carlo Barazzetta                                                    }
 {  Contributors:                                                               }
 {                                                                              }
@@ -57,20 +57,36 @@ resourcestring
   ERROR_SETTING_CATEGORYBUTTONS_STYLE = 'Error setting CategoryButtons Style: %s/%s/%s not available';
 
 type
+  /// <summary>Exception class for styled category buttons errors</summary>
   EStyledCategoryButtonsError = Exception;
 
   TStyledCategoryButtons = class;
+  /// <summary>Class reference type for TStyledCategoryButtons descendants</summary>
   TStyledCategoryButtonsClass = class of TStyledCategoryButtons;
   TStyledButtonItem = class;
+  /// <summary>Class reference type for TStyledButtonItem descendants</summary>
   TStyledButtonItemClass = class of TButtonItem;
   TStyledButtonCategory = class;
+  /// <summary>Class reference type for TStyledButtonCategory descendants</summary>
   TStyledButtonCategoryClass = class of TStyledButtonCategory;
   TStyledButtonCategories = class;
+  /// <summary>Class reference type for TStyledButtonCategories descendants</summary>
   TStyledButtonCategoriesClass = class of TStyledButtonCategories;
 
 
+  /// <summary>Callback procedure for iterating category button items</summary>
+  /// <param name="Button">The current button item being processed</param>
   TButtonProc = reference to procedure (Button: TStyledButtonItem);
 
+  /// <summary>Event handler for retrieving notification badge information</summary>
+  /// <param name="ACategoryIndex">Index of the category</param>
+  /// <param name="AButtonItemIndex">Index of the button item within the category</param>
+  /// <param name="ABadgeContent">Badge text content</param>
+  /// <param name="ASize">Badge size</param>
+  /// <param name="APosition">Badge position on the button</param>
+  /// <param name="AColor">Badge background color</param>
+  /// <param name="AFontColor">Badge text color</param>
+  /// <param name="AFontStyle">Badge font style</param>
   TGetCategoryButtonsBadgeInfo = procedure (
     const ACategoryIndex: Integer;
     const AButtonItemIndex: Integer;
@@ -81,14 +97,24 @@ type
     var AFontColor: TColor;
     var AFontStyle: TFontStyles) of Object;
 
-  { TStyledButtonCategory }
+  /// <summary>Styled button category for organizing button items</summary>
+  /// <remarks>
+  ///   TStyledButtonCategory represents a group of related buttons within
+  ///   a TStyledCategoryButtons component. Categories can be collapsed/expanded
+  ///   and provide visual grouping with header text.
+  /// </remarks>
   TStyledButtonCategory = class(TButtonCategory)
   protected
   public
     constructor Create(Collection: TCollection); override;
   end;
 
-  { TStyledButtonCategories }
+  /// <summary>Collection class for styled button categories</summary>
+  /// <remarks>
+  ///   TStyledButtonCategories is a collection that holds TStyledButtonCategory
+  ///   objects, each containing one or more TStyledButtonItem objects. This
+  ///   provides a two-level hierarchy for organizing buttons.
+  /// </remarks>
   TStyledButtonCategories = class(TButtonCategories)
   private
     function GetStyledCategoryButtons: TStyledCategoryButtons;
@@ -101,28 +127,48 @@ type
     property Items[Index: Integer]: TStyledButtonCategory read GetItem write SetItem; default;
   end;
 
-  { TStyledButtonItem }
+  /// <summary>Styled button item with individual style support</summary>
+  /// <remarks>
+  ///   TStyledButtonItem represents a single button within a category.
+  ///   Each item can have its own StyleFamily, StyleClass, StyleAppearance,
+  ///   StyleDrawType, StyleRadius, and StyleRoundedCorners properties,
+  ///   allowing individual buttons to have different appearances.
+  /// </remarks>
   TStyledButtonItem = class(TButtonItem)
   private
     FCollection: TButtonCollection;
     //Styled Attributes
     FStyleRadius: Integer;
+    FStyleShadowSize: Integer;
+    FStyleBorderWidth: Integer;
     FStyleRoundedCorners: TRoundedCorners;
     FStyleDrawType: TStyledButtonDrawType;
     FStyleFamily: TStyledButtonFamily;
     FStyleClass: TStyledButtonClass;
     FStyleAppearance: TStyledButtonAppearance;
     FStyleApplied: Boolean;
+    //Attributes of an item whose style differs from the container, resolved
+    //once and kept until the item style or the container style changes
+    FCachedNormal, FCachedPressed, FCachedSelected, FCachedHot,
+      FCachedDisabled: TStyledButtonAttributes;
+    FCachedKey: string;
+    FCachedGeneration: Integer;
+    function GetCachedAttributes(const AGeneration: Integer;
+      const AState: TStyledButtonState): TStyledButtonAttributes;
     procedure InvalidateOwner;
     function IsCustomDrawType: Boolean;
     function IsCustomRoundedCorners: Boolean;
     function IsCustomRadius: Boolean;
+    function IsCustomShadowSize: Boolean;
+    function IsCustomBorderWidth: Boolean;
     function IsStoredStyle: Boolean;
     procedure SetStyleFamily(const AValue: TStyledButtonFamily);
     procedure SetStyleClass(const AValue: TStyledButtonClass);
     procedure SetStyleAppearance(const AValue: TStyledButtonAppearance);
     procedure SetStyleDrawType(const AValue: TStyledButtonDrawType);
     procedure SetStyleRadius(const AValue: Integer);
+    procedure SetStyleShadowSize(const AValue: Integer);
+    procedure SetStyleBorderWidth(const AValue: Integer);
     procedure SetStyleRoundedCorners(const AValue: TRoundedCorners);
     function GetStyledCategoryButtons: TStyledCategoryButtons;
     function ApplyButtonStyle: Boolean;
@@ -130,6 +176,10 @@ type
   public
     procedure Assign(Source: TPersistent); override;
     constructor Create(Collection: TCollection); override;
+    destructor Destroy; override;
+    /// <summary>Sets the item style using family, class, and appearance</summary>
+    /// <remarks>An empty value keeps the current one or, if the item has none,
+    /// uses the CategoryButtons style</remarks>
     procedure SetButtonStyle(const AStyleFamily: TStyledButtonFamily;
       const AStyleClass: TStyledButtonClass;
       const AStyleAppearance: TStyledButtonAppearance);
@@ -138,6 +188,8 @@ type
 
     //StyledComponents Attributes
     property StyleRadius: Integer read FStyleRadius write SetStyleRadius stored IsCustomRadius;
+    property StyleShadowSize: Integer read FStyleShadowSize write SetStyleShadowSize stored IsCustomShadowSize;
+    property StyleBorderWidth: Integer read FStyleBorderWidth write SetStyleBorderWidth stored IsCustomBorderWidth;
     property StyleDrawType: TStyledButtonDrawType read FStyleDrawType write SetStyleDrawType stored IsCustomDrawType;
     property StyleRoundedCorners: TRoundedCorners read FStyleRoundedCorners write SetStyleRoundedCorners stored IsCustomRoundedCorners;
     property StyleFamily: TStyledButtonFamily read FStyleFamily write SetStyleFamily stored IsStoredStyle;
@@ -146,11 +198,21 @@ type
   end;
 
 
-  { TStyledCategoryButtons }
+  /// <summary>Styled category buttons component with modern appearance</summary>
+  /// <remarks>
+  ///   TStyledCategoryButtons is a styled alternative to TCategoryButtons that
+  ///   provides modern visual appearance through the StyledComponents styling
+  ///   system. Organizes buttons into collapsible categories with headers.
+  ///   Supports custom button styles (StyleFamily, StyleClass, StyleAppearance),
+  ///   notification badges via OnGetNotificationBadgeInfo, and all standard
+  ///   category buttons features. Individual items can override the component's
+  ///   default style. Use RegisterDefaultRenderingStyle to set global defaults.
+  /// </remarks>
   [ComponentPlatforms(pidWin32 or pidWin64)]
   TStyledCategoryButtons = class(TCategoryButtons)
   private
     //StyledButton Attributes
+    FStyleGeneration: Integer; //bumped by ApplyButtonStyle: invalidates the items' cached attributes
     FButtonStyleNormal: TStyledButtonAttributes;
     FButtonStylePressed: TStyledButtonAttributes;
     FButtonStyleSelected: TStyledButtonAttributes;
@@ -159,6 +221,8 @@ type
 
     //Styled Attributes
     FStyleRadius: Integer;
+    FStyleShadowSize: Integer;
+    FStyleBorderWidth: Integer;
     FStyleDrawType: TStyledButtonDrawType;
     FStyleRoundedCorners: TRoundedCorners;
     FStyleFamily: TStyledButtonFamily;
@@ -185,12 +249,15 @@ type
     _DefaultClass: TStyledButtonClass;
     _DefaultAppearance: TStyledButtonAppearance;
     _DefaultStyleRadius: Integer;
+    _DefaultStyleBorderWidth: Integer;
     _DefaultButtonsCursor: TCursor;
 
     procedure ImageMarginsChange(Sender: TObject);
     function IsCustomDrawType: Boolean;
     function IsCustomRoundedCorners: Boolean;
     function IsCustomRadius: Boolean;
+    function IsCustomShadowSize: Boolean;
+    function IsCustomBorderWidth: Boolean;
     function ImageMarginsStored: Boolean;
     function IsStoredStyleAppearance: Boolean;
     function IsStoredStyleClass: Boolean;
@@ -200,6 +267,8 @@ type
     procedure SetStyleDrawType(const AValue: TStyledButtonDrawType);
     procedure SetStyleFamily(const AValue: TStyledButtonFamily);
     procedure SetStyleRadius(const AValue: Integer);
+    procedure SetStyleShadowSize(const AValue: Integer);
+    procedure SetStyleBorderWidth(const AValue: Integer);
     procedure SetStyleRoundedCorners(const AValue: TRoundedCorners);
     function ApplyCategoryButtonsStyle: Boolean;
     procedure SetStyleApplied(const AValue: Boolean);
@@ -214,30 +283,35 @@ type
     procedure SetButtonStyleNormal(const AValue: TStyledButtonAttributes);
     procedure SetButtonStylePressed(const AValue: TStyledButtonAttributes);
     procedure SetButtonStyleSelected(const AValue: TStyledButtonAttributes);
-    procedure GetDrawingStyle(const ACanvas: TCanvas;
+    function GetDrawingStyle(const ACanvas: TCanvas;
       const AButtonState: TStyledButtonState;
-      const AItem: TStyledButtonItem);
+      const AItem: TStyledButtonItem): TStyledButtonAttributes;
+    function CalcMaxShadowSize(const AItem: TStyledButtonItem;
+      const AAttributes: TStyledButtonAttributes): Integer;
+    function GetShadowSizeOf(const AItem: TStyledButtonItem;
+      const AAttributes: TStyledButtonAttributes): Integer;
     function GetAttributes(const AMode: TStyledButtonState): TStyledButtonAttributes;
     procedure DrawBackgroundAndBorder(const ACanvas: TCanvas;
       const ADrawRect, ADropDownRect: TRect;
       const AStyleDrawType: TStyledButtonDrawType;
-      const ARadius: Single; const ARoundedCorners: TRoundedCorners);
+      const ARadius: Single; const ARoundedCorners: TRoundedCorners;
+      const AShadowSize: Integer);
     procedure DrawCaptionAndImage(const ACanvas: TCanvas; const ASurfaceRect: TRect;
-      const ACaption: TCaption; const AImageIndex: Integer);
+      const ACaption: TCaption; const AImageIndex: Integer; const AEnabled: Boolean;
+  const AMaxBorderWidth: Integer);
     procedure SetCaptionAlignment(const AValue: TAlignment);
     function GetImageSize(out AWidth, AHeight: Integer;
       out AImageList: TCustomImageList): boolean;
-    procedure DrawText(const ASurfaceRect: TRect;
-      const ACanvas: TCanvas; const AText: string;
-      const AAlignment: TAlignment; const ASpacing: Integer; var ARect: TRect;
-      AFlags: Cardinal);
     procedure SetSpacing(const AValue: Integer);
     procedure SetFlat(const AValue: Boolean);
     function IsStyleEnabled: Boolean;
     procedure SetCursor(const AValue: TCursor);
     procedure SetImageAlignment(const AValue: TImageAlignment);
     function GetScaleFactor: Single;
-    function CalcMaxBorderWidth: Integer;
+    function CalcMaxBorderWidth(const AItem: TStyledButtonItem;
+      const AAttributes: TStyledButtonAttributes): Integer;
+    function GetBorderWidthOf(const AItem: TStyledButtonItem;
+      const AAttributes: TStyledButtonAttributes): Integer;
     function GetButtonCategories: TStyledButtonCategories;
     procedure SetButtonCategories(const AValue: TStyledButtonCategories);
     procedure SetImageMargins(const AValue: TImageMargins);
@@ -271,6 +345,7 @@ type
       const AClass: TStyledButtonClass = DEFAULT_WINDOWS_CLASS;
       const AAppearance: TStyledButtonAppearance = DEFAULT_APPEARANCE;
       const AStyleRadius: Integer = DEFAULT_RADIUS;
+      const AStyleBorderWidth: Integer = DEFAULT_BORDER_WIDTH;
       const AButtonsCursor: TCursor = DEFAULT_CURSOR); virtual;
     procedure SetCategoryButtonsStyle(const AStyleFamily: TStyledButtonFamily;
       const AStyleClass: TStyledButtonClass;
@@ -304,6 +379,8 @@ type
 
     //StyledComponents Attributes
     property StyleRadius: Integer read FStyleRadius write SetStyleRadius stored IsCustomRadius;
+    property StyleShadowSize: Integer read FStyleShadowSize write SetStyleShadowSize stored IsCustomShadowSize;
+    property StyleBorderWidth: Integer read FStyleBorderWidth write SetStyleBorderWidth stored IsCustomBorderWidth;
     property StyleDrawType: TStyledButtonDrawType read FStyleDrawType write SetStyleDrawType stored IsCustomDrawType;
     property StyleRoundedCorners: TRoundedCorners read FStyleRoundedCorners write SetStyleRoundedCorners stored IsCustomRoundedCorners;
     property StyleFamily: TStyledButtonFamily read FStyleFamily write SetStyleFamily stored IsStoredStyleFamily;
@@ -333,7 +410,7 @@ constructor TStyledCategoryButtons.CreateStyled(AOwner: TComponent;
   const AFamily: TStyledButtonFamily; const AClass: TStyledButtonClass;
   const AAppearance: TStyledButtonAppearance);
 begin
-  Assert(Assigned(AOwner));
+//  Assert(Assigned(AOwner));
   inherited Create(AOwner);
 
   //new properties for StyledCategoryButtons
@@ -359,6 +436,8 @@ begin
 
   FStyleDrawType := _DefaultStyleDrawType;
   FStyleRadius := _DefaultStyleRadius;
+  FStyleShadowSize := DEFAULT_SHADOW_SIZE;
+  FStyleBorderWidth := _DefaultStyleBorderWidth;
   FStyleRoundedCorners := ALL_ROUNDED_CORNERS;
   FStyleFamily := AFamily;
   FStyleClass := AClass;
@@ -413,7 +492,8 @@ end;
 procedure TStyledCategoryButtons.DrawBackgroundAndBorder(
   const ACanvas: TCanvas; const ADrawRect, ADropDownRect: TRect;
   const AStyleDrawType: TStyledButtonDrawType;
-  const ARadius: Single; const ARoundedCorners: TRoundedCorners);
+  const ARadius: Single; const ARoundedCorners: TRoundedCorners;
+  const AShadowSize: Integer);
 var
   LButtonOffset: Integer;
   LDropDownRect: TRect;
@@ -421,7 +501,10 @@ var
 begin
   LScaleFactor := GetScaleFactor;
   LDropDownRect := ADropDownRect;
-  //Draw Button Shape
+  //Draw the shadow (outside the face, inside the item) and the Button Shape
+  if (AShadowSize > 0) and (ACanvas.Brush.Style = bsSolid) then
+    CanvasDrawShadow(ACanvas, ADrawRect, AStyleDrawType,
+      ARadius*LScaleFactor, ARoundedCorners, AShadowSize);
   CanvasDrawshape(ACanvas, ADrawRect, AStyleDrawType,
     ARadius*LScaleFactor, ARoundedCorners);
 
@@ -465,45 +548,10 @@ begin
     Result := False;
 end;
 
-procedure TStyledCategoryButtons.DrawText(
-  const ASurfaceRect: TRect;
-  const ACanvas: TCanvas;
-  const AText: string; const AAlignment: TAlignment;
-  const ASpacing: Integer;
-  var ARect: TRect; AFlags: Cardinal);
-var
-  R: TRect;
-  LText: string;
-begin
-  //Drawing Caption
-  R := ARect;
-  LText := AText;
-  Winapi.Windows.DrawText(ACanvas.Handle, PChar(AText), Length(AText),
-    R, AFlags or DT_CALCRECT);
-  case AAlignment of
-    taLeftJustify:
-    begin
-      OffsetRect(R, ASpacing, (ARect.Height - R.Height) div 2);
-    end;
-    taRightJustify:
-    begin
-      OffsetRect(R, ARect.Width - R.Width - ASpacing, (ARect.Height - R.Height) div 2);
-    end;
-    else
-    begin
-      OffsetRect(R, (ARect.Width - R.Width) div 2, (ARect.Height - R.Height) div 2);
-    end;
-  end;
-  if ASurfaceRect.Right < R.Right + ASpacing then
-    R.Right := ASurfaceRect.Right - ASpacing;
-  if ASurfaceRect.Left > R.Left - ASpacing then
-    R.Left := ASurfaceRect.Left + ASpacing;
-  ACanvas.TextRect(R, LText, [tfEndEllipsis]);
-end;
-
 procedure TStyledCategoryButtons.DrawCaptionAndImage(
   const ACanvas: TCanvas; const ASurfaceRect: TRect;
-  const ACaption: TCaption; const AImageIndex: Integer);
+  const ACaption: TCaption; const AImageIndex: Integer; const AEnabled: Boolean;
+  const AMaxBorderWidth: Integer);
 var
   LTextFlags: Cardinal;
   LImageRect, LTextRect: TRect;
@@ -534,18 +582,19 @@ begin
   //Calculate LTextRect and LImageRect using ImageMargins and ImageAlignment
   CalcImageAndTextRect(ASurfaceRect, ACaption, LTextRect, LImageRect,
     LImageWidth, LImageHeight, FImageAlignment, FImageMargins,
-    CalcMaxBorderWidth, GetScaleFactor);
+    AMaxBorderWidth, GetScaleFactor);
 
   if LUseImageList and not Assigned(OnDrawIcon) then
   begin
-    //Uses an ImageList to draw the Icon
+    //Uses an ImageList to draw the Icon; AEnabled carries the per-item state so
+    //a disabled item's icon is greyed.
     Images.Draw(ACanvas, LImageRect.Left, LImageRect.Top,
-      AImageIndex, Enabled);
+      AImageIndex, AEnabled);
   end;
 
   if boShowCaptions in ButtonOptions then
-    DrawText(ASurfaceRect, ACanvas, ACaption, FCaptionAlignment, FSpacing,
-      LTextRect, LTextFlags);
+    DrawButtonText(ACanvas, ACaption, FCaptionAlignment, FSpacing,
+      AMaxBorderWidth, LTextRect, LTextFlags, True);
 end;
 
 {$IFNDEF D10_4+}
@@ -558,15 +607,16 @@ end;
 function TStyledCategoryButtons.StyledButtonState(
   const AState: TButtonDrawState): TStyledButtonState;
 begin
-  //Calculate Styled State based on State
-  if (bdsHot in AState) and not (bdsDown in AState) then
+  //Calculate Styled State based on State. Disabled must win over hot/selection,
+  //so test it first (otherwise a stale selection hides the disabled look).
+  if not Enabled then
+    Result := bsmDisabled
+  else if (bdsHot in AState) and not (bdsDown in AState) then
     Result := bsmHot
   else if bdsDown in AState then
     Result := bsmPressed
-  else if bdsFocused in AState then
+  else if (bdsFocused in AState) or (bdsSelected in AState) then
     Result := bsmSelected
-  else if not Enabled then
-    Result := bsmDisabled
   else
     Result := bsmNormal;
 end;
@@ -593,6 +643,10 @@ var
   LBadgeFontColor: TColor;
   LBadgeFontStyle: TFontStyles;
   LBadgeContent: string;
+  LButtonItemEnabled: Boolean;
+  LDrawAttributes: TStyledButtonAttributes;
+  LFaceRect: TRect;
+  LShadowSize: Integer;
 begin
   //Do not call inherited
   LButtonItem := AButton as TStyledButtonItem;
@@ -602,10 +656,16 @@ begin
     OnDrawButton(Self, LButtonItem, ACanvas, ARect, AState)
   else
   begin
-    if Assigned(OnBeforeDrawButton) then
-      OnBeforeDrawButton(Self, LButtonItem, ACanvas, ARect, AState);
-
     LState := StyledButtonState(AState);
+    //Honour the per-item Enabled: a disabled item must render greyed and win
+    //over hot/selection, matching the stock TCategoryButtons renderer.
+    {$IFDEF D13+}
+    LButtonItemEnabled := LButtonItem.Enabled;
+    {$ELSE}
+    LButtonItemEnabled := True;
+    {$ENDIF}
+    if not LButtonItemEnabled then
+      LState := bsmDisabled;
 
     LOldParentFont := ParentFont;
     LOldFontName := ACanvas.Font.Name;
@@ -614,7 +674,13 @@ begin
     LOldBrushStyle := ACanvas.Brush.Style;
     LOldPenWidth := ACanvas.Pen.Width;
     try
-      GetDrawingStyle(ACanvas, LState, LButtonItem);
+      LDrawAttributes := GetDrawingStyle(ACanvas, LState, LButtonItem);
+      //the face is reduced by the (scaled) shadow: the shadow is drawn inside the item
+      LShadowSize := Max(0, Round(CalcMaxShadowSize(LButtonItem, LDrawAttributes) * GetScaleFactor));
+      LFaceRect := CalcShadowFaceRect(ARect, LShadowSize);
+      LShadowSize := Max(0, Round(GetShadowSizeOf(LButtonItem, LDrawAttributes) * GetScaleFactor));
+      if (LShadowSize > 0) and (LFaceRect.Width = ARect.Width) and (LFaceRect.Height = ARect.Height) then
+        LShadowSize := 0; //too small for the shadow
 
       //At the moment, no DropDown for Buttons
       LDropDownRect := TRect.Create(0,0,0,0);
@@ -641,15 +707,20 @@ begin
           ACanvas.Brush.Style := bsClear;
       end;
 
-      DrawBackgroundAndBorder(ACanvas, ARect, LDropDownRect,
-        LButtonItem.StyleDrawType, LButtonItem.StyleRadius, LButtonItem.StyleRoundedCorners);
+      if Assigned(OnBeforeDrawButton) then
+        OnBeforeDrawButton(Self, LButtonItem, ACanvas, ARect, AState);
 
-      LSurfaceRect := ARect;
+      DrawBackgroundAndBorder(ACanvas, LFaceRect, LDropDownRect,
+        LButtonItem.StyleDrawType, LButtonItem.StyleRadius, LButtonItem.StyleRoundedCorners,
+        LShadowSize);
+
+      LSurfaceRect := LFaceRect;
       if LDropDownRect.Width <> 0 then
         Dec(LSurfaceRect.Right, LDropDownRect.Width);
 
       DrawCaptionAndImage(ACanvas, LSurfaceRect, LButtonItem.Caption,
-        LButtonItem.ImageIndex);
+        LButtonItem.ImageIndex, Enabled and LButtonItemEnabled,
+        CalcMaxBorderWidth(LButtonItem, LDrawAttributes));
 
       { Draw the icon - prefer the event }
       if Assigned(OnDrawIcon) then
@@ -776,15 +847,6 @@ begin
   end;
 end;
 
-function TStyledCategoryButtons.CalcMaxBorderWidth: Integer;
-begin
-  Result := Max(Max(Max(Max(FButtonStyleNormal.BorderWidth,
-    FButtonStylePressed.BorderWidth),
-    FButtonStyleSelected.BorderWidth),
-    FButtonStyleHot.BorderWidth),
-    FButtonStyleDisabled.BorderWidth);
-end;
-
 function TStyledCategoryButtons.ImageMarginsStored: Boolean;
 begin
   Result := not IsDefaultImageMargins;
@@ -803,6 +865,16 @@ end;
 function TStyledCategoryButtons.IsCustomRadius: Boolean;
 begin
   Result := StyleRadius <> DEFAULT_RADIUS;
+end;
+
+function TStyledCategoryButtons.IsCustomShadowSize: Boolean;
+begin
+  Result := StyleShadowSize <> DEFAULT_SHADOW_SIZE;
+end;
+
+function TStyledCategoryButtons.IsCustomBorderWidth: Boolean;
+begin
+  Result := StyleBorderWidth <> DEFAULT_BORDER_WIDTH;
 end;
 
 function TStyledCategoryButtons.IsStoredStyleAppearance: Boolean;
@@ -865,14 +937,18 @@ end;
 class procedure TStyledCategoryButtons.RegisterDefaultRenderingStyle(
   const ADrawType: TStyledButtonDrawType; const AFamily: TStyledButtonFamily;
   const AClass: TStyledButtonClass; const AAppearance: TStyledButtonAppearance;
-  const AStyleRadius: Integer; const AButtonsCursor: TCursor);
+  const AStyleRadius: Integer; const AStyleBorderWidth: Integer;
+  const AButtonsCursor: TCursor);
 begin
+  if AStyleBorderWidth < DEFAULT_BORDER_WIDTH then
+    raise EArgumentException.Create(SInvalidProperty);
   _DefaultStyleDrawType := ADrawType;
   _UseCustomDrawType := True;
   _DefaultFamily := AFamily;
   _DefaultClass := AClass;
   _DefaultAppearance := AAppearance;
   _DefaultStyleRadius := AStyleRadius;
+  _DefaultStyleBorderWidth := AStyleBorderWidth;
   _DefaultButtonsCursor := AButtonsCursor;
 end;
 
@@ -882,6 +958,7 @@ var
   LStyleClass: TStyledButtonClass;
   LStyleAppearance: TStyledButtonAppearance;
 begin
+  Inc(FStyleGeneration); //the items re-resolve their cached attributes
   if AsVCLStyle then
   begin
     //if StyleElements contains seClient then use
@@ -924,6 +1001,8 @@ begin
     FStyleClass := TStyledCategoryButtons(Source).FStyleClass;
     FStyleAppearance := TStyledCategoryButtons(Source).FStyleAppearance;
     FStyleRadius := TStyledCategoryButtons(Source).FStyleRadius;
+    FStyleShadowSize := TStyledCategoryButtons(Source).FStyleShadowSize;
+    FStyleBorderWidth := TStyledCategoryButtons(Source).FStyleBorderWidth;
     FStyleRoundedCorners := TStyledCategoryButtons(Source).FStyleRoundedCorners;
     FStyleDrawType := TStyledCategoryButtons(Source).FStyleDrawType;
     FButtonsCursor := TStyledCategoryButtons(Source).FButtonsCursor;
@@ -1122,6 +1201,15 @@ begin
   LValue := AValue;
   if LValue = '' then
     LValue := DEFAULT_CLASSIC_FAMILY;
+  //Reject an unregistered family: raise at design time / direct assignment, but
+  //fall back to Classic while a deployed form is streaming.
+  if not StyleFamilyExists(LValue) then
+  begin
+    if StyleFamilyLoadingFallback(Self) then
+      LValue := DEFAULT_CLASSIC_FAMILY
+    else
+      raise EStyledAttributesException.CreateFmt(ERROR_FAMILY_NOT_FOUND, [LValue]);
+  end;
   if (LValue <> Self.FStyleFamily) or not FStyleApplied then
   begin
     if not (csLoading in ComponentState) then
@@ -1138,6 +1226,40 @@ begin
   end;
   if FStyleFamily = DEFAULT_CLASSIC_FAMILY then
     StyleElements := [seFont, seClient, seBorder];
+end;
+
+procedure TStyledCategoryButtons.SetStyleShadowSize(const AValue: Integer);
+begin
+  if FStyleShadowSize <> AValue then
+  begin
+    if AValue < DEFAULT_SHADOW_SIZE then
+      raise EReadError.create(SInvalidProperty);
+    ProcessButtons(
+      procedure (ABtn: TStyledButtonItem)
+      begin
+        if ABtn.StyleShadowSize = FStyleShadowSize then
+          ABtn.StyleShadowSize := AValue;
+      end);
+    FStyleShadowSize := AValue;
+    StyleApplied := ApplyCategoryButtonsStyle;
+  end;
+end;
+
+procedure TStyledCategoryButtons.SetStyleBorderWidth(const AValue: Integer);
+begin
+  if FStyleBorderWidth <> AValue then
+  begin
+    if AValue < DEFAULT_BORDER_WIDTH then
+      raise EReadError.create(SInvalidProperty);
+    ProcessButtons(
+      procedure (ABtn: TStyledButtonItem)
+      begin
+        if ABtn.StyleBorderWidth = FStyleBorderWidth then
+          ABtn.StyleBorderWidth := AValue;
+      end);
+    FStyleBorderWidth := AValue;
+    StyleApplied := ApplyCategoryButtonsStyle;
+  end;
 end;
 
 procedure TStyledCategoryButtons.SetStyleRadius(const AValue: Integer);
@@ -1189,9 +1311,12 @@ end;
 procedure TStyledCategoryButtons.SetButtonStyleDisabled(
   const AValue: TStyledButtonAttributes);
 begin
-  if FButtonStyleDisabled <> AValue then
+  //Copy into the owned sub-object instead of swapping the pointer (which would
+  //alias/double-free another component's attributes). Comparing values (not
+  //pointers) also makes this a real no-change guard; nil is a safe no-op.
+  if Assigned(AValue) and not SameStyledButtonStyle(FButtonStyleDisabled, AValue) then
   begin
-    FButtonStyleDisabled := AValue;
+    FButtonStyleDisabled.Assign(AValue);
     Invalidate;
   end;
 end;
@@ -1199,9 +1324,9 @@ end;
 procedure TStyledCategoryButtons.SetButtonStyleHot(
   const AValue: TStyledButtonAttributes);
 begin
-  if FButtonStyleHot <> AValue then
+  if Assigned(AValue) and not SameStyledButtonStyle(FButtonStyleHot, AValue) then
   begin
-    FButtonStyleHot := AValue;
+    FButtonStyleHot.Assign(AValue);
     Invalidate;
   end;
 end;
@@ -1209,9 +1334,9 @@ end;
 procedure TStyledCategoryButtons.SetButtonStyleNormal(
   const AValue: TStyledButtonAttributes);
 begin
-  if FButtonStyleNormal <> AValue then
+  if Assigned(AValue) and not SameStyledButtonStyle(FButtonStyleNormal, AValue) then
   begin
-    FButtonStyleNormal := AValue;
+    FButtonStyleNormal.Assign(AValue);
     Invalidate;
   end;
 end;
@@ -1219,9 +1344,9 @@ end;
 procedure TStyledCategoryButtons.SetButtonStylePressed(
   const AValue: TStyledButtonAttributes);
 begin
-  if FButtonStylePressed <> AValue then
+  if Assigned(AValue) and not SameStyledButtonStyle(FButtonStylePressed, AValue) then
   begin
-    FButtonStylePressed := AValue;
+    FButtonStylePressed.Assign(AValue);
     Invalidate;
   end;
 end;
@@ -1229,9 +1354,9 @@ end;
 procedure TStyledCategoryButtons.SetButtonStyleSelected(
   const AValue: TStyledButtonAttributes);
 begin
-  if FButtonStyleSelected <> AValue then
+  if Assigned(AValue) and not SameStyledButtonStyle(FButtonStyleSelected, AValue) then
   begin
-    FButtonStyleSelected := AValue;
+    FButtonStyleSelected.Assign(AValue);
     Invalidate;
   end;
 end;
@@ -1298,9 +1423,61 @@ begin
   end;
 end;
 
-procedure TStyledCategoryButtons.GetDrawingStyle(const ACanvas: TCanvas;
+function TStyledCategoryButtons.GetShadowSizeOf(const AItem: TStyledButtonItem;
+  const AAttributes: TStyledButtonAttributes): Integer;
+begin
+  //StyleShadowSize of the item overrides the shadow of the style family in every state
+  if AItem.StyleShadowSize >= 0 then
+    Result := AItem.StyleShadowSize
+  else
+    Result := AAttributes.ShadowSize;
+end;
+
+function TStyledCategoryButtons.CalcMaxShadowSize(const AItem: TStyledButtonItem;
+  const AAttributes: TStyledButtonAttributes): Integer;
+begin
+  //Biggest shadow of the states: it decides the margin around the face, so that
+  //the face does not move when the state changes
+  if AItem.StyleShadowSize >= 0 then
+    Result := AItem.StyleShadowSize
+  else
+    Result := Max(Max(Max(Max(Max(FButtonStyleNormal.ShadowSize,
+      FButtonStylePressed.ShadowSize),
+      FButtonStyleSelected.ShadowSize),
+      FButtonStyleHot.ShadowSize),
+      FButtonStyleDisabled.ShadowSize),
+      AAttributes.ShadowSize);
+end;
+
+function TStyledCategoryButtons.GetBorderWidthOf(const AItem: TStyledButtonItem;
+  const AAttributes: TStyledButtonAttributes): Integer;
+begin
+  //StyleBorderWidth of the item overrides the border of the style in every state
+  if AItem.StyleBorderWidth >= 0 then
+    Result := AItem.StyleBorderWidth
+  else
+    Result := AAttributes.BorderWidth;
+end;
+
+function TStyledCategoryButtons.CalcMaxBorderWidth(const AItem: TStyledButtonItem;
+  const AAttributes: TStyledButtonAttributes): Integer;
+begin
+  //Biggest border of the states: it decides the margin of the text and of the image,
+  //so that they do not move when the state changes
+  if AItem.StyleBorderWidth >= 0 then
+    Result := AItem.StyleBorderWidth
+  else
+    Result := Max(Max(Max(Max(Max(FButtonStyleNormal.BorderWidth,
+      FButtonStylePressed.BorderWidth),
+      FButtonStyleSelected.BorderWidth),
+      FButtonStyleHot.BorderWidth),
+      FButtonStyleDisabled.BorderWidth),
+      AAttributes.BorderWidth);
+end;
+
+function TStyledCategoryButtons.GetDrawingStyle(const ACanvas: TCanvas;
   const AButtonState: TStyledButtonState;
-  const AItem: TStyledButtonItem);
+  const AItem: TStyledButtonItem): TStyledButtonAttributes;
 var
   LCustomAttributes: Boolean;
   LSyleAttributes: TStyledButtonAttributes;
@@ -1308,39 +1485,29 @@ begin
   LCustomAttributes := ((AItem.FStyleFamily) <> FStyleFamily) or
     ((AItem.FStyleClass) <> FStyleClass) or
     ((AItem.FStyleAppearance) <> FStyleAppearance);
-  try
-    if LCustomAttributes then
-    begin
-      //Getting custom drawing styles for single button
-      StyleFamilyUpdateAttributes(
-        AItem.FStyleFamily, AItem.FStyleClass, AItem.FStyleAppearance,
-        FButtonStyleNormal, FButtonStylePressed, FButtonStyleSelected,
-        FButtonStyleHot, FButtonStyleDisabled);
-    end;
-
-    //Getting custom drawing styles for all buttons
+  if LCustomAttributes then
+    //Item with its own style: attributes resolved once and cached by the item
+    //(they were resolved twice per item per paint: swapped into the container
+    //attributes and restored, see StyledPerfTests)
+    LSyleAttributes := AItem.GetCachedAttributes(FStyleGeneration, AButtonState)
+  else
+    //Drawing styles of the container, shared by all the buttons
     LSyleAttributes := GetAttributes(AButtonState);
 
-    ACanvas.Pen.Style := LSyleAttributes.PenStyle;
-    ACanvas.Pen.Width := Round(LSyleAttributes.BorderWidth{$IFDEF D10_3+}*ScaleFactor{$ENDIF});
-    ACanvas.Pen.Color := LSyleAttributes.BorderColor;
-    ACanvas.Brush.Style := LSyleAttributes.BrushStyle;
-    if LSyleAttributes.ButtonDrawStyle <> btnClear then
-      ACanvas.Brush.Color := LSyleAttributes.ButtonColor;
-    ACanvas.Font := Font;
-    ACanvas.Font.Color := LSyleAttributes.FontColor;
-    if ParentFont then
-      ACanvas.Font.Style := LSyleAttributes.FontStyle;
-  finally
-    if LCustomAttributes then
-    begin
-      //Restore drawing styles for every buttons
-      StyleFamilyUpdateAttributes(
-        FStyleFamily, FStyleClass, FStyleAppearance,
-        FButtonStyleNormal, FButtonStylePressed, FButtonStyleSelected,
-        FButtonStyleHot, FButtonStyleDisabled);
-    end;
-  end;
+  ACanvas.Pen.Style := LSyleAttributes.PenStyle;
+  ACanvas.Pen.Width := Round(GetBorderWidthOf(AItem, LSyleAttributes){$IFDEF D10_3+}*ScaleFactor{$ENDIF});
+  //no border: a custom width of 0 draws no pen at all
+  if (AItem.StyleBorderWidth = 0) and (LSyleAttributes.PenStyle <> psClear) then
+    ACanvas.Pen.Style := psClear;
+  ACanvas.Pen.Color := LSyleAttributes.BorderColor;
+  ACanvas.Brush.Style := LSyleAttributes.BrushStyle;
+  if LSyleAttributes.ButtonDrawStyle <> btnClear then
+    ACanvas.Brush.Color := LSyleAttributes.ButtonColor;
+  ACanvas.Font := Font;
+  ACanvas.Font.Color := LSyleAttributes.FontColor;
+  if ParentFont then
+    ACanvas.Font.Style := LSyleAttributes.FontStyle;
+  Result := LSyleAttributes;
 end;
 
 function TStyledCategoryButtons.GetButtonCategories: TStyledButtonCategories;
@@ -1401,12 +1568,18 @@ end;
 
 procedure TStyledButtonItem.LoadDefaultStyles;
 begin
-  if Assigned(CategoryButtons) and (CategoryButtons.FStyleApplied) and not FStyleApplied then
+  //Inherit the container's style and shape when the item has none of its own.
+  //Do not require the container's FStyleApplied: an empty control can never
+  //set it, so items added at runtime would keep the class defaults.
+  if Assigned(CategoryButtons) and not FStyleApplied and
+    not (csLoading in CategoryButtons.ComponentState) then
   begin
     FStyleFamily := CategoryButtons.StyleFamily;
     FStyleClass := CategoryButtons.StyleClass;
     FStyleAppearance := CategoryButtons.StyleAppearance;
     FStyleRadius := CategoryButtons.StyleRadius;
+    FStyleShadowSize := CategoryButtons.StyleShadowSize;
+    FStyleBorderWidth := CategoryButtons.StyleBorderWidth;
     FStyleRoundedCorners := CategoryButtons.StyleRoundedCorners;
     FStyleDrawType := CategoryButtons.StyleDrawType;
   end;
@@ -1426,12 +1599,62 @@ begin
   end;
 end;
 
+destructor TStyledButtonItem.Destroy;
+begin
+  FCachedNormal.Free;
+  FCachedPressed.Free;
+  FCachedSelected.Free;
+  FCachedHot.Free;
+  FCachedDisabled.Free;
+  inherited;
+end;
+
+function TStyledButtonItem.GetCachedAttributes(const AGeneration: Integer;
+  const AState: TStyledButtonState): TStyledButtonAttributes;
+var
+  LKey: string;
+  LClass: TStyledButtonClass;
+  LAppearance: TStyledButtonAppearance;
+begin
+  if not Assigned(FCachedNormal) then
+  begin
+    FCachedNormal := TStyledButtonAttributes.Create(nil);
+    FCachedPressed := TStyledButtonAttributes.Create(nil);
+    FCachedSelected := TStyledButtonAttributes.Create(nil);
+    FCachedHot := TStyledButtonAttributes.Create(nil);
+    FCachedDisabled := TStyledButtonAttributes.Create(nil);
+  end;
+  //Self-validating cache: keyed by the item style, invalidated by the
+  //container generation (bumped on every container ApplyButtonStyle, i.e.
+  //on CM_STYLECHANGED and on the container style setters)
+  LKey := FStyleFamily + '|' + FStyleClass + '|' + FStyleAppearance;
+  if (LKey <> FCachedKey) or (AGeneration <> FCachedGeneration) then
+  begin
+    LClass := FStyleClass;
+    LAppearance := FStyleAppearance;
+    StyleFamilyUpdateAttributes(FStyleFamily, LClass, LAppearance,
+      FCachedNormal, FCachedPressed, FCachedSelected, FCachedHot, FCachedDisabled);
+    FCachedKey := LKey;
+    FCachedGeneration := AGeneration;
+  end;
+  case AState of
+    bsmPressed: Result := FCachedPressed;
+    bsmSelected: Result := FCachedSelected;
+    bsmHot: Result := FCachedHot;
+    bsmDisabled: Result := FCachedDisabled;
+  else
+    Result := FCachedNormal;
+  end;
+end;
+
 constructor TStyledButtonItem.Create(Collection: TCollection);
 begin
   inherited;
   FCollection := Collection as TButtonCollection;
   FStyleDrawType := TStyledCategoryButtons._DefaultStyleDrawType;
   FStyleRadius := TStyledCategoryButtons._DefaultStyleRadius;
+  FStyleShadowSize := DEFAULT_SHADOW_SIZE;
+  FStyleBorderWidth := DEFAULT_BORDER_WIDTH;
   FStyleRoundedCorners := ALL_ROUNDED_CORNERS;
   LoadDefaultStyles;
 end;
@@ -1468,6 +1691,18 @@ begin
     (FStyleRadius <> CategoryButtons.FStyleRadius);
 end;
 
+function TStyledButtonItem.IsCustomShadowSize: Boolean;
+begin
+  Result := Assigned(CategoryButtons) and
+    (FStyleShadowSize <> CategoryButtons.FStyleShadowSize);
+end;
+
+function TStyledButtonItem.IsCustomBorderWidth: Boolean;
+begin
+  Result := Assigned(CategoryButtons) and
+    (FStyleBorderWidth <> CategoryButtons.FStyleBorderWidth);
+end;
+
 function TStyledButtonItem.IsStoredStyle: Boolean;
 begin
   Result := Assigned(CategoryButtons) and
@@ -1478,10 +1713,22 @@ end;
 
 procedure TStyledButtonItem.SetStyleFamily(
   const AValue: TStyledButtonFamily);
+var
+  LValue: TStyledButtonFamily;
 begin
-  if FStyleFamily <> AValue then
+  LValue := AValue;
+  //Reject an unregistered family: raise at design time / direct assignment, but
+  //fall back to Classic while a deployed form is streaming (see TStyledCategoryButtons).
+  if (LValue <> '') and not StyleFamilyExists(LValue) then
   begin
-    FStyleFamily := AValue;
+    if StyleFamilyLoadingFallback(CategoryButtons) then
+      LValue := DEFAULT_CLASSIC_FAMILY
+    else
+      raise EStyledAttributesException.CreateFmt(ERROR_FAMILY_NOT_FOUND, [LValue]);
+  end;
+  if FStyleFamily <> LValue then
+  begin
+    FStyleFamily := LValue;
     InvalidateOwner;
   end;
   ApplyButtonStyle;
@@ -1504,12 +1751,22 @@ procedure TStyledButtonItem.SetButtonStyle(
   const AStyleAppearance: TStyledButtonAppearance);
 begin
   FStyleApplied := False;
-  FStyleFamily := AStyleFamily;
-  FStyleClass := AStyleClass;
-  FStyleAppearance := AStyleAppearance;
+  //Empty values keep the current style, or use the CategoryButtons style
+  if AStyleFamily <> '' then
+    FStyleFamily := AStyleFamily
+  else if (FStyleFamily = '') and Assigned(CategoryButtons) then
+    FStyleFamily := CategoryButtons.StyleFamily;
+  if AStyleClass <> '' then
+    FStyleClass := AStyleClass
+  else if (FStyleClass = '') and Assigned(CategoryButtons) then
+    FStyleClass := CategoryButtons.StyleClass;
+  if AStyleAppearance <> '' then
+    FStyleAppearance := AStyleAppearance
+  else if (FStyleAppearance = '') and Assigned(CategoryButtons) then
+    FStyleAppearance := CategoryButtons.StyleAppearance;
   if not ApplyButtonStyle then
     raise EStyledCategoryButtonsError.CreateFmt(ERROR_SETTING_BUTTON_STYLE,
-      [AStyleFamily, AStyleClass, AStyleAppearance]);
+      [FStyleFamily, FStyleClass, FStyleAppearance]);
 end;
 
 procedure TStyledButtonItem.SetStyleAppearance(
@@ -1539,6 +1796,26 @@ begin
   if FStyleRadius <> AValue then
   begin
     FStyleRadius := AValue;
+    InvalidateOwner;
+  end;
+  ApplyButtonStyle;
+end;
+
+procedure TStyledButtonItem.SetStyleShadowSize(const AValue: Integer);
+begin
+  if FStyleShadowSize <> AValue then
+  begin
+    FStyleShadowSize := AValue;
+    InvalidateOwner;
+  end;
+  ApplyButtonStyle;
+end;
+
+procedure TStyledButtonItem.SetStyleBorderWidth(const AValue: Integer);
+begin
+  if FStyleBorderWidth <> AValue then
+  begin
+    FStyleBorderWidth := AValue;
     InvalidateOwner;
   end;
   ApplyButtonStyle;
@@ -1595,6 +1872,7 @@ initialization
   TStyledCategoryButtons._DefaultClass := DEFAULT_WINDOWS_CLASS;
   TStyledCategoryButtons._DefaultAppearance := DEFAULT_APPEARANCE;
   TStyledCategoryButtons._DefaultStyleRadius := DEFAULT_RADIUS;
+  TStyledCategoryButtons._DefaultStyleBorderWidth := DEFAULT_BORDER_WIDTH;
   TStyledCategoryButtons._DefaultButtonsCursor := DEFAULT_CURSOR;
 
 end.

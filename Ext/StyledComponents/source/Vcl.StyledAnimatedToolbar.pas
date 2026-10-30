@@ -1,9 +1,9 @@
-{******************************************************************************}
+﻿{******************************************************************************}
 {                                                                              }
 {  StyledToolbar: a Toolbar with TStyledAnimatedToolButtons inside             }
 {  Based on TStyledToolbar and animations using Skia4Delphi                    }
 {                                                                              }
-{  Copyright (c) 2022-2025 (Ethea S.r.l.)                                      }
+{  Copyright (c) 2022-2026 (Ethea S.r.l.)                                      }
 {  Author: Carlo Barazzetta                                                    }
 {  Contributors:                                                               }
 {                                                                              }
@@ -76,8 +76,8 @@ type
     procedure SetAutoSizeAnimationMargin(const AValue: Integer);
     procedure SetAutoAnimationTypes(const AValue: TAutoAnimationTypes);
     procedure WMSetFocus(var Message: TMessage); message WM_SETFOCUS;
-    procedure CMMouseEnter(var Message: TNotifyEvent); message CM_MOUSEENTER;
-    procedure CMMouseLeave(var Message: TNotifyEvent); message CM_MOUSELEAVE;
+    procedure CMMouseEnter(var Message: TMessage); message CM_MOUSEENTER;
+    procedure CMMouseLeave(var Message: TMessage); message CM_MOUSELEAVE;
     procedure ReadData(AStream: TStream);
     procedure WriteData(AStream: TStream);
   strict protected
@@ -271,14 +271,14 @@ begin
   inherited;
 end;
 
-procedure TStyledAnimatedToolButton.CMMouseEnter(var Message: TNotifyEvent);
+procedure TStyledAnimatedToolButton.CMMouseEnter(var Message: TMessage);
 begin
   if AnimateOnMouseOver in FAutoAnimationTypes then
     AnimatedImage.StartAnimation;
   inherited;
 end;
 
-procedure TStyledAnimatedToolButton.CMMouseLeave(var Message: TNotifyEvent);
+procedure TStyledAnimatedToolButton.CMMouseLeave(var Message: TMessage);
 begin
   if AnimateOnMouseOver in FAutoAnimationTypes then
     AnimatedImage.StopAnimation;
