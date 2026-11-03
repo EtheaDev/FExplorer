@@ -2,7 +2,7 @@
 
 ## **Anteprima Fattura Elettronica (Viewer e Icone) integrato in Windows Explorer e Visualizzatore**
 
-### Versione attuale 2.4.1 del 30 Ottobre 2026
+### Versione attuale 2.4.2 del 3 Novembre 2026
 
 **Una serie di strumenti per gestire i file xml contenenti Fatture Elettroniche in Windows:**
 
@@ -62,6 +62,9 @@ Per installare manualmente FExplorer.dll seguire questi step:
 5. Una volta registrato, puoi continuare a modificare il codice e ricompilare la dll (attenzione a chiudere tutte le istanze di Explorer ogni volta che si ricompila).
 
 ## Release Notes ##
+
+3 Novembre 2026 - Versione 2.4.2
+- Editor e anteprima: usano Ethea SynEdit 3.0.0 (https://github.com/EtheaDev/SynEdit), il fork EtheaDev di pyscripter/SynEdit con tutte le unit sotto lo scope `SynEdit.`
 
 30 Ottobre 2026 - Versione 2.4.1
 - Editor: nel menu contestuale le voci "A capo automatico" e "Mostra numeri di riga", con il segno di spunta: valgono per tutti gli editor aperti e vengono salvate con le altre opzioni dell'editor

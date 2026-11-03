@@ -34,12 +34,12 @@ uses
   , Vcl.ImgList
   , Vcl.Controls
   , System.ImageList
-  , SynEdit
-  , SynHighlighterXML
+  , SynEdit.Core
+  , SynEdit.Highlighter.XML
   , SynEditOptionsDialog
-  , SynEditPrint
-  , SynEditCodeFolding
-  , SynEditHighlighter
+  , SynEdit.Print
+  , SynEdit.CodeFolding
+  , SynEdit.Highlighter
   , SVGIconImageListBase
   , SVGIconImageList
   , Vcl.BaseImageCollection

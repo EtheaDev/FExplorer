@@ -30,11 +30,11 @@ interface
 uses
   Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms,
   Dialogs, ComCtrls, StdCtrls, ExtCtrls, ImgList, Contnrs,
-  SynEdit, ActnList, Menus, ToolWin,
-  StdActns, SynEditHighlighter,
-  FExplorer.Resources, SynEditPrint, SynEditOptionsDialog, ActnCtrls, ActnMan,
-  ActnMenus, SynCompletionProposal, SynEditTypes, SynEditMiscClasses,
-  SynEditSearch, XPStyleActnCtrls, System.Actions, SVGIconImage, Vcl.Buttons,
+  SynEdit.Core, ActnList, Menus, ToolWin,
+  StdActns, SynEdit.Highlighter,
+  FExplorer.Resources, SynEdit.Print, SynEditOptionsDialog, ActnCtrls, ActnMan,
+  ActnMenus, SynEdit.CompletionProposal, SynEdit.Types, SynEdit.MiscClasses,
+  SynEdit.Search, XPStyleActnCtrls, System.Actions, SVGIconImage, Vcl.Buttons,
   Vcl.CategoryButtons, Vcl.WinXCtrls, System.ImageList, Vcl.VirtualImageList,
   FExplorer.Settings
   , System.Generics.Collections
@@ -425,7 +425,7 @@ uses
   , dlgConfirmReplace
   , FExplorer.About
   , DPageSetup
-  , FSynHighlightProp
+  , SynEdit.FHighlightProp
   , Math
   , Winapi.SHFolder
   , FExplorer.SettingsForm

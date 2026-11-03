@@ -34,13 +34,13 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ExtCtrls, SynEdit,
+  Dialogs, StdCtrls, ExtCtrls, SynEdit.Core,
   System.Generics.Collections,
-  SynEditHighlighter,
-  ComCtrls, ToolWin, ImgList, SynHighlighterXML,
-  Vcl.Menus, SynEditExport,
-  SynExportHTML, SynExportRTF, SynEditMiscClasses,
-  FExplorer.Settings, System.ImageList, SynEditCodeFolding,
+  SynEdit.Highlighter,
+  ComCtrls, ToolWin, ImgList, SynEdit.Highlighter.XML,
+  Vcl.Menus, SynEdit.Export,
+  SynEdit.ExportHTML, SynEdit.ExportRTF, SynEdit.MiscClasses,
+  FExplorer.Settings, System.ImageList, SynEdit.CodeFolding,
   SVGIconImageList, SVGIconImageListBase, SVGIconImage, Vcl.VirtualImageList,
   Vcl.OleCtrls, SHDocVw, Xml.xmldom, Xml.XMLIntf, Xml.Win.msxmldom, Xml.XMLDoc,
   FExplorer.Resources, HTMLUn2, HtmlView,
@@ -123,7 +123,7 @@ type
 implementation
 
 uses
-  SynEditTypes
+  SynEdit.Types
   , Vcl.Clipbrd
 {$IFNDEF DISABLE_STYLES}
   , Vcl.Themes
